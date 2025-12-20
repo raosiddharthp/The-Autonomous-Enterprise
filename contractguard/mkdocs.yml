@@ -1,0 +1,30 @@
+site_name: "contractguard Platform"
+theme:
+  name: material
+  palette:
+    primary: google-blue
+    accent: light blue
+  features:
+    - navigation.sections
+    - navigation.expand
+
+nav:
+  - Overview: index.md
+  - 1. Strategy & Discovery:
+      - Business Case & Personas: strategy/business-case.md
+      - Challenges & Requirements: strategy/requirements.md
+  - 2. Architecture Vision:
+      - Architecture Artifacts: architecture/artifacts.md
+      - Roadmap & Phases: architecture/roadmap.md
+  - 3. The Multi-Agent Platform:
+      - Agentic Workflow Design: agents/workflow.md
+      - Data & ML Architecture: platform/data-ml.md
+  - 4. Cloud Infrastructure:
+      - Technical Stack: infra/stack.md
+      - IaC & CI/CD: infra/automation.md
+  - 5. Enterprise Readiness:
+      - Governance & Compliance: governance/compliance.md
+      - Change Management Plan: governance/change-mgmt.md
+  - 6. Operations & Handoff:
+      - Support Runbook: ops/handoff.md
+      - Observability & SLOs: ops/monitoring.md

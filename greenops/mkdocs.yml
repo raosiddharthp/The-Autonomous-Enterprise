@@ -1,0 +1,23 @@
+site_name: "Executive Portfolio | EA • Cloud Architect • MLE"
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: blue
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - search.share
+
+nav:
+  - Professional Profile: index.md
+  - 🟢 GreenOps Optimizer:
+      - Strategy: greenops/docs/strategy/business-case.md
+      - Architecture: greenops/docs/architecture/artifacts.md
+      - Agentic AI: greenops/docs/agents/workflow.md
+      - Infrastructure: greenops/docs/infra/stack.md
+  - 🔵 FinRisk Sentinel:
+      - Strategy: finrisk-sentinel/docs/strategy/business-case.md
+      - Agentic AI: finrisk-sentinel/docs/agents/workflow.md
+  - 🟡 ContractGuard:
+      - Strategy: contractguard/docs/strategy/business-case.md
