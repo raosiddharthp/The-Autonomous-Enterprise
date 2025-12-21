@@ -352,7 +352,7 @@
                     </tr>
                 </tbody>
             </table>        </div>
-        <div class="section">
+       
         <div class="section">
             <h3>04. Model Lifecycle & MLOps: Engineering Predictive Sustainability</h3>
             <p>
@@ -433,10 +433,50 @@
             </table>
         </div>
         <div class="section">
-            <h3>05. Cloud Infrastructure</h3>
-            <p>Placeholder: Terraform, GKE, networking, carbon-aware regions, multi-region resilience...</p>
-        </div>
+        <div class="section">
+            <h3>05. Cloud Infrastructure: Multi-Region Carbon-Aware Blueprints</h3>
+            <p>
+                The GreenOps infrastructure is designed for high availability and environmental efficiency. By utilizing Infrastructure as Code (IaC) via Terraform, the platform ensures that the underlying Google Cloud resources are as dynamic and optimized as the AI agents that manage them.
+            </p>
 
+            <h4>1. Architectural Strategy: The Carbon-Neutral Landing Zone</h4>
+            <p>
+                The infrastructure is organized into a modular landing zone that facilitates secure, cross-region workload portability.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Infrastructure as Code:</strong> 100% of the GCP resources are provisioned using Terraform, ensuring environment consistency across staging and production.</li>
+                <li><strong>Multi-Region Strategy:</strong> Deployment is focused on "Green Regions"—GCP data centers with the lowest carbon intensity (CUE) scores—while maintaining low latency for end-users.</li>
+                <li><strong>Resource Tiering:</strong> Workloads are categorized into "Migratable" (batch/stateless) and "Static" (stateful), allowing the Agentic Executor to prioritize shifts without risking data integrity.</li>
+            </ul>
+
+            <h4>2. Core Infrastructure Components</h4>
+            <p>
+                To achieve a 40% cost reduction and 30% emissions drop, the platform integrates specific GCP services into an event-driven mesh:
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Compute (GKE & Cloud Run):</strong> High-density clusters that support rapid scaling and region migration for containerized workloads.</li>
+                <li><strong>Networking (Global Load Balancing):</strong> Utilized to route traffic dynamically as workloads shift between low-emission regions.</li>
+                <li><strong>The "Nervous System" (Pub/Sub & Cloud Scheduler):</strong> Functions as the trigger layer for carbon-aware shifts, allowing agents to invoke infrastructure changes via serverless Cloud Functions.</li>
+                <li><strong>Observability (Cloud Monitoring & Logging):</strong> Provides the real-time telemetry required for the "Auditor" agent to calculate rightsizing recommendations and sustainability metrics.</li>
+            </ul>
+
+            <h4>3. Sustainability-First IaC Implementation</h4>
+            <p>
+                At the L6 level, infrastructure is not just about uptime; it is about Policy-as-Code.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Carbon-Aware Provisioning:</strong> Terraform modules are configured to query the Google Carbon Footprint API during the plan phase, preventing the accidental deployment of high-carbon resources.</li>
+                <li><strong>Automated Rightsizing:</strong> Integrated with Agent Builder with Gemini, the infrastructure layer receives real-time resizing commands to reduce overprovisioning by 50%.</li>
+                <li><strong>Billing Export Integration:</strong> BigQuery and Dataflow process emissions and cost data, feeding the "Strategist" agent the metrics needed for region arbitration.</li>
+            </ul>
+
+            <h4>4. Security & Governance (VPC Service Controls)</h4>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Identity & Access Management:</strong> Agents operate using Google Service Accounts (GSA) with strictly scoped permissions, following the principle of least privilege.</li>
+                <li><strong>Data Perimeter:</strong> VPC Service Controls (VPC-SC) protect the BigQuery and Vertex AI environments, ensuring that sensitive sustainability and financial telemetry remain within a secure perimeter.</li>
+                <li><strong>Auditability:</strong> Every infrastructure change triggered by an AI agent is logged, providing a transparent audit trail for corporate ESG reporting.</li>
+            </ul>
+        </div>
         <div class="section">
             <h3>06. Governance & SRE</h3>
             <p>Placeholder: SOC2/GDPR controls, automated reporting, 99.9% uptime, handoff to support...</p>
