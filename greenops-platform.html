@@ -478,10 +478,52 @@
             </ul>
         </div>
         <div class="section">
-            <h3>06. Governance & SRE</h3>
-            <p>Placeholder: SOC2/GDPR controls, automated reporting, 99.9% uptime, handoff to support...</p>
-        </div>
+        <div class="section">
+            <h3>06. Governance & SRE: Reliability in an Autonomous Ecosystem</h3>
+            <p>
+                Operating an autonomous platform like GreenOps requires a "Safety-First" approach to engineering. We apply Google SRE principles to manage the "Error Budget" of our agentic swarms, ensuring that AI-driven optimizations never compromise system availability or data integrity.
+            </p>
 
+            <h4>1. SRE Framework: Balancing Innovation with Stability</h4>
+            <p>
+                We define success through rigorous Service Level Objectives (SLOs) that govern the behavior of the Agentic Swarm.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Availability SLI:</strong> Target 99.9% uptime for the GreenOps control plane, ensuring continuous carbon monitoring.</li>
+                <li><strong>Latency Guardrails:</strong> Any agent-recommended migration is automatically vetoed by Cloud Monitoring if the projected network latency exceeds 200ms.</li>
+                <li><strong>Optimization Accuracy:</strong> We track the variance between predicted carbon savings and actual emissions reported by the Google Carbon Footprint API.</li>
+            </ul>
+
+            <h4>2. Governance & Compliance (The "Guardrails")</h4>
+            <p>
+                To meet enterprise ESG and security standards, the platform implements Policy-as-Code.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>IAM & Least Privilege:</strong> Each agent (Scout, Auditor, Executor) operates under a dedicated Google Service Account (GSA) with fine-grained permissions, preventing unauthorized infrastructure changes.</li>
+                <li><strong>Auditability:</strong> Every optimization action—from a GKE rightsizing to a multi-region workload shift—is logged in Cloud Logging, creating a transparent "Decision Trail" for SOC2 and ESG audits.</li>
+                <li><strong>VPC Service Controls:</strong> We enforce a secure data perimeter around BigQuery and Vertex AI to protect sensitive financial and sustainability telemetry from exfiltration.</li>
+            </ul>
+
+            <h4>3. The "Human-in-the-Loop" (HITL) Safety Pattern</h4>
+            <p>
+                While the goal is 100% autonomy, we implement a tiered escalation model to manage high-risk operations.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Tier 1 (Automated):</strong> Routine rightsizing and minor resource adjustments are executed autonomously.</li>
+                <li><strong>Tier 2 (Advisory):</strong> Significant cross-continental migrations require an SRE Approval via a Slack/Teams integration before the Terraform execution begins.</li>
+                <li><strong>Tier 3 (Emergency):</strong> A manual "Kill Switch" in the Cloud Console can instantly disable agentic writes, reverting the system to a static, high-availability state.</li>
+            </ul>
+
+            <h4>4. Operations & Support Handoff</h4>
+            <p>
+                GreenOps is designed to be "self-healing," but it remains integrated with standard ITIL processes.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Automated Runbooks:</strong> We provide MkDocs-based interactive guides and troubleshooting scripts for operations teams to handle agentic "stalls" or data ingestion failures.</li>
+                <li><strong>Observability Stack:</strong> We use R Shiny dashboards to provide ESG Officers with real-time "Carbon Waterfall" charts, visualizing exactly how agent actions contributed to the 30% emissions drop.</li>
+                <li><strong>Alerting Swarms:</strong> If the Vertex AI model detects a 10% drift in forecast accuracy, an automated ticket is generated for the MLE team to review the training pipeline.</li>
+            </ul>
+        </div>
         <div class="section">
             <h3>Impact & Outcomes</h3>
             <p>Placeholder: Key metrics, lessons learned, scalability insights, business value delivered...</p>
