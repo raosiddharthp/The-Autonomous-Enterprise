@@ -180,7 +180,7 @@
 
             <h4>3. The GreenOps Economic Model</h4>
             <p>
-                To demonstrate L6-level business acumen, the platform is governed by a Sustainability ROI Formula:
+                The platform is governed by a Sustainability ROI Formula:
             </p>
             <p style="text-align: center; font-style: italic; margin: 30px 0;">
                 [ ROI_{Green} = frac{(Cost_{Baseline} - Cost_{Optimized}) + (Carbon_{Credits_Saved})}{Platform Operating Cost} ]
@@ -198,15 +198,13 @@
                 <li><strong>Phase 1: Observability (Crawl)</strong> — Ingesting BigQuery billing exports and Google Carbon Footprint data to create a baseline "Truth Layer."</li>
                 <li><strong>Phase 2: Recommendation (Walk)</strong> — Deploying Gemini-powered agents to provide "human-in-the-loop" optimization suggestions (Vertex AI Agent Builder).</li>
                 <li><strong>Phase 3: Autonomy (Run)</strong> — Transitioning to a Closed-Loop System where LangGraph agents execute cross-region migrations via Terraform and Cloud Scheduler without human intervention.</li>
-            </ul>
+            </ul> 
 
             <h4>5. Competitive Advantage on GCP</h4>
             <p>
                 The strategic decision to build on Google Cloud was driven by the native integration of the Carbon Footprint API and Vertex AI. Unlike competitors, GCP provides hourly carbon intensity data, enabling the GreenOps Agent to make granular decisions that open-source alternatives cannot replicate without massive custom engineering.
             </p>
-        </div>            <h3>01. Business Strategy</h3>
-            <p>Placeholder: TOGAF Phase A – Vision, stakeholder interviews, ROI analysis, sustainability mandates...</p>
-        </div>
+        
 
         <div class="section">
         <div class="section">
@@ -284,7 +282,78 @@
             </ul>
         </div>
         <div class="section">
-$(cat /tmp/greenops_intelligence.html)
+                  <div class="section">
+            <h3>03. Intelligence Platform: The Data & ML Backbone</h3>
+            <p>
+                The GreenOps Intelligence Platform serves as the "Central Nervous System," converting raw telemetry from global power grids and cloud billing exports into actionable insights. It leverages a modern Data Mesh architecture on Google Cloud to ensure high availability, data quality, and low-latency inference for the agentic swarm.
+            </p>
+
+            <h4>1. Data Engineering Pipeline (The "Truth Layer")</h4>
+            <p>
+                Before an agent can reason, it needs high-fidelity data. We use an event-driven ingestion engine to process diverse sustainability datasets.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Ingestion:</strong> Cloud Pub/Sub captures real-time signals from external Energy APIs (e.g., WattTime, Electricity Maps) and internal GCP Billing Exports.</li>
+                <li><strong>Processing:</strong> Cloud Dataflow performs windowed aggregations and normalization, calculating the "Carbon-per-Dollar" metric for every running workload.</li>
+                <li><strong>Storage:</strong> BigQuery acts as our serverless Data Warehouse, storing petabytes of historical emissions and cost data for trend analysis and model training.</li>
+            </ul>
+
+            <h4>2. Machine Learning Operations (MLOps) with Vertex AI</h4>
+            <p>
+                We treat ML models as first-class citizens. The platform automates the transition from experimentation to production.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Forecasting Engine:</strong> We utilize Prophet time-series models deployed on Vertex AI Prediction to forecast carbon intensity spikes across 24 global regions. This allows the platform to preemptively shift workloads before "dirty" energy hits the grid.</li>
+                <li><strong>Model Registry:</strong> All versions of our forecasting and rightsizing models are stored in the Vertex AI Model Registry, enabling seamless rollbacks and A/B testing of optimization strategies.</li>
+                <li><strong>Feature Store:</strong> Vertex AI Feature Store serves as a centralized repository for normalized energy metrics, ensuring "The Scout" and "The Auditor" agents share a consistent view of the world.</li>
+            </ul>
+
+            <h4>3. Gemini-Powered Optimization Logic</h4>
+            <p>
+                Beyond traditional forecasting, we leverage Generative AI for complex, multi-variable reasoning.
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Agent Builder with Gemini:</strong> We use Gemini 1.5 Pro to analyze unstructured usage patterns and natural language policy documents (e.g., "Do not migrate during European business hours").</li>
+                <li><strong>Contextual Reasoning:</strong> Gemini identifies "zombie resources"—idle instances that traditional thresholds might miss—by correlating CPU metrics with business-cycle data stored in BigQuery.</li>
+            </ul>
+
+            <h4>4. Observability & Feedback Loops</h4>
+            <p>
+                An intelligence platform is only as good as its feedback. We close the loop using GCP's Operations Suite:
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Sustainability Metrics:</strong> Custom Cloud Monitoring dashboards visualize the "Actual vs. Predicted" carbon savings.</li>
+                <li><strong>Automated Retraining:</strong> If Cloud Logging detects a drift in forecast accuracy (e.g., >10% variance), it triggers a Vertex AI Pipeline to retrain the Prophet model on the latest 30 days of grid data.</li>
+            </ul>
+
+            <h4>5. Technical Highlights</h4>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;">
+                        <th style="padding: 12px; text-align: left;">Component</th>
+                        <th style="padding: 12px; text-align: left;">Technology</th>
+                        <th style="padding: 12px; text-align: left;">Enterprise Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 10px;">Orchestration</td>
+                        <td style="padding: 10px;">Vertex AI Pipelines</td>
+                        <td style="padding: 10px;">Reduced model deployment time from weeks to hours</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">Analytics</td>
+                        <td style="padding: 10px;">BigQuery ML</td>
+                        <td style="padding: 10px;">Enables SQL-based anomaly detection for sudden cost spikes</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 10px;">Streaming</td>
+                        <td style="padding: 10px;">Dataflow (Python)</td>
+                        <td style="padding: 10px;">Processes 100k+ events/sec for real-time region arbitration</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="section">
             <h3>04. Model Lifecycle</h3>
             <p>Placeholder: Training, evaluation, MLOps pipelines, Vertex AI Model Registry...</p>
