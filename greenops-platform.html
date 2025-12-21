@@ -209,10 +209,80 @@
         </div>
 
         <div class="section">
-            <h3>02. Multi-Agent Design</h3>
-            <p>Placeholder: Agentic architecture, open-source agents, chain-of-thought orchestration...</p>
-        </div>
+        <div class="section">
+            <h3>02. Multi-Agent Design: The "Autonomous Optimizer"</h3>
+            <p>
+                The GreenOps platform is powered by a decentralized Multi-Agent System (MAS). Rather than a single monolithic script, the system utilizes specialized agents that collaborate via LangGraph to solve the "Carbon-Cost-Performance" trilemma. This design ensures modularity, allowing individual agents to be upgraded (e.g., swapping a fine-tuned Llama-3 for Gemini 1.5 Pro) without disrupting the entire pipeline.
+            </p>
 
+            <h4>1. The Collaborative Agent Swarm</h4>
+            <p>
+                We utilize a ReAct (Reasoning + Acting) pattern to move from static automation to dynamic autonomy.
+            </p>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;">
+                        <th style="padding: 12px; text-align: left;">Agent Role</th>
+                        <th style="padding: 12px; text-align: left;">Intelligence Layer</th>
+                        <th style="padding: 12px; text-align: left;">Primary Responsibility</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 10px;">The Scout</td>
+                        <td style="padding: 10px;">Vertex AI (Prophet)</td>
+                        <td style="padding: 10px;">Ingests real-time grid intensity data and forecasts carbon spikes 24 hours in advance</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">The Auditor</td>
+                        <td style="padding: 10px;">Gemini 1.5 Pro</td>
+                        <td style="padding: 10px;">Monitors Cloud Billing APIs and BigQuery to identify "low-value/high-carbon" workloads</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 10px;">The Strategist</td>
+                        <td style="padding: 10px;">LangChain/CrewAI</td>
+                        <td style="padding: 10px;">Evaluates trade-offs. It "negotiates" between cost savings and carbon reduction targets</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">The Executor</td>
+                        <td style="padding: 10px;">Terraform/GCP SDK</td>
+                        <td style="padding: 10px;">The "Hands-on-Keyboard." It issues the signed commands to shift GKE workloads or resize Cloud Run instances</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>2. Agentic Workflow Logic (Stateful Orchestration)</h4>
+            <p>
+                The system is managed as a Directed Acyclic Graph (DAG) using LangGraph. This prevents "hallucination loops" by enforcing strict state transitions:
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Sense:</strong> The Scout identifies that us-central1 will have a carbon-intensity spike at 2:00 PM.</li>
+                <li><strong>Think:</strong> The Strategist queries the Auditor for current spot pricing in europe-north1 (wind-powered).</li>
+                <li><strong>Validate:</strong> The agent checks Cloud Monitoring to ensure the target region has enough quota and low enough latency.</li>
+                <li><strong>Act:</strong> The Executor triggers a Terraform-based "Blue-Green" deployment to the new region.</li>
+                <li><strong>Report:</strong> The Narrator (Vertex AI) generates a natural language summary of the carbon saved for the ESG Dashboard.</li>
+            </ul>
+
+            <h4>3. Google Cloud Integration: The Backbone</h4>
+            <p>
+                While the "brains" are agentic, the "nervous system" is 100% Google Cloud:
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>Vertex AI Model Registry:</strong> Manages the lifecycle of the Prophet forecasting models, ensuring agents always use the most accurate carbon prediction weights.</li>
+                <li><strong>Agent Builder with Gemini:</strong> Provides the high-level reasoning for Real-time Rightsizing. It analyzes historical m-series vs c-series usage to recommend instance types that balance performance with energy efficiency.</li>
+                <li><strong>BigQuery & Dataflow:</strong> Acts as the "Long-term Memory." Dataflow streams gigabytes of emissions telemetry into BigQuery, which the agents query to learn from past optimization successes.</li>
+                <li><strong>Pub/Sub & Cloud Scheduler:</strong> The "Trigger Layer." When an agent makes a decision, it publishes a message to Pub/Sub, which invokes a serverless Cloud Function to execute the infrastructure change.</li>
+            </ul>
+
+            <h4>4. Enterprise Readiness & Safety Guardrails</h4>
+            <p>
+                To ensure production reliability, we implement Human-in-the-loop (HITL) and Policy-as-Code:
+            </p>
+            <ul style="font-size: 1.05em; line-height: 1.7;">
+                <li><strong>The "Circuit Breaker":</strong> If the Agent suggests a migration that would result in >200ms latency, Cloud Monitoring triggers an automated veto.</li>
+                <li><strong>IAM Least Privilege:</strong> Each agent operates under its own Google Service Account (GSA) with strictly scoped permissions, preventing "Privilege Escalation" in the event of an agentic error.</li>
+            </ul>
+        </div>
         <div class="section">
             <h3>03. Intelligence Platform</h3>
             <p>Placeholder: Vertex AI, BigQuery, Dataflow, integration with open-source components...</p>
