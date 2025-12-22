@@ -650,7 +650,32 @@
             </ul>
 
             <h4>4. Operations & Support Handoff</h4>
-            <p>
+
+        <h4 style="margin-top: 50px;">Governance, SRE & Safety Visualizations</h4>
+        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
+            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
+            <div style="margin-top: 20px;">
+                <p><strong>Figure 1: SRE Framework & SLO Dashboard</strong></p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="docs/sre-slo-dashboard.png" alt="SLOs, Error Budget, and Cloud Monitoring Dashboard" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Availability, latency, and accuracy SLOs with error budget tracking</em></p>
+                </div>
+
+                <p><strong>Figure 2: Human-in-the-Loop (HITL) Escalation Flow</strong></p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="docs/hitl-escalation-flow.png" alt="Tiered HITL Safety Pattern" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Tier 1 Automated → Tier 2 Advisory → Tier 3 Emergency Kill Switch</em></p>
+                </div>
+
+                <p><strong>Figure 3: Security & Governance Perimeter</strong></p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="docs/security-governance-perimeter.png" alt="VPC-SC, IAM GSAs, and Audit Trail" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Least-privilege IAM, VPC-SC data perimeter, and decision auditability</em></p>
+                </div>
+
+                <p>These diagrams illustrate the reliability engineering practices that ensure safe, auditable autonomy in production.</p>
+            </div>
+        </details>            <p>
                 GreenOps is designed to be "self-healing," but it remains integrated with standard ITIL processes.
             </p>
             <ul style="font-size: 1.05em; line-height: 1.7;">
