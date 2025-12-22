@@ -199,7 +199,43 @@
                 <li><strong>Phase 3: Autonomy (Run)</strong> — Transitioning to a Closed-Loop System where LangGraph agents execute cross-region migrations via Terraform and Cloud Scheduler without human intervention.</li>
             </ul> 
 
-            <h4>5. Competitive Advantage on GCP</h4>
+
+        <details style="margin: 40px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
+            <summary style="font-size: 1.3em; font-weight: bold; cursor: pointer; color: #00008b;">Strategic Architecture: From ESG Vision to GCP Reality</summary>
+            <div style="margin-top: 20px;">
+                <p>
+                    The GreenOps solution was developed using the TOGAF Architecture Development Method to ensure strategic alignment and long-term coherence across business, data, application, and technology domains.
+                </p>
+
+                <ul style="font-size: 1.05em; line-height: 1.7;">
+                    <li><strong>Phase A: Architecture Vision</strong> — Defined the sustainability target architecture, stakeholder map, and business scenario ("Achieve Carbon-Neutral Scaling by 2027").</li>
+                    <li><strong>Phase B: Business Architecture</strong> — Mapped ESG goals to business capabilities (e.g., "Carbon-Aware Workload Management" as a new capability). Produced Capability Heatmap and Value Stream Maps.</li>
+                    <li><strong>Phase C: Information Systems Architecture</strong> — Designed data flows for carbon telemetry (BigQuery as central truth layer) and application components (agent swarm orchestration).</li>
+                    <li><strong>Phase D: Technology Architecture</strong> — Selected GCP as the target platform, justifying Vertex AI, Pub/Sub, and Cloud Run over alternatives using formal Architectural Decision Records (ADRs).</li>
+                    <li><strong>Phase E/F: Opportunities & Solutions / Migration Planning</strong> — Created a 3-phase migration roadmap (Observability → Recommendation → Autonomy) with prioritized initiatives and migration waves.</li>
+                    <li><strong>Phase H: Architecture Change Management</strong> — Established governance guardrails, including automated drift detection and policy-as-code enforcement.</li>
+                </ul>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <img src="docs/greenops-adm-cycle.png" alt="GreenOps TOGAF ADM Cycle" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Figure: GreenOps TOGAF ADM Cycle Application</em></p>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <img src="docs/greenops-capability-map.png" alt="Business Capability Map" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Figure: Business Capability Map with GreenOps Enhancements</em></p>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <img src="docs/greenops-c4-model.png" alt="GreenOps C4 Context & Container Diagram" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <p><em>Figure: C4 Model - Context and Container Views</em></p>
+                </div>
+
+                <p>
+                    These artefacts were used to secure executive sponsorship and ensure the technical implementation remained aligned with enterprise strategy throughout the project lifecycle.
+                </p>
+            </div>
+        </details>            <h4>5. Competitive Advantage on GCP</h4>
             <p>
                 The strategic decision to build on Google Cloud was driven by the native integration of the Carbon Footprint API and Vertex AI. Unlike competitors, GCP provides hourly carbon intensity data, enabling the GreenOps Agent to make granular decisions that open-source alternatives cannot replicate without massive custom engineering.
             </p>
