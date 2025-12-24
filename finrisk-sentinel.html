@@ -132,37 +132,193 @@
 
         <div class="section">
             <h3>01. Business Strategy</h3>
-            <p>Placeholder: SAFe program for anti-fraud, risk priorities, compliance drivers...</p>
+            <h4>Description & Opportunity</h4>
+            <p>FinRisk Sentinel addresses the breaking point in global financial crime compliance: exploding transaction volumes, $5B+ in 2024 regulatory fines, and 90%+ false positives wasting analyst time. It pivots from reactive rule-based systems to a proactive Multi-Agent Swarm that automates L1/L2 investigations.</p>
+
+            <h4>Stakeholder Alignment Matrix</h4>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;"><th>Stakeholder</th><th>Primary Concern</th><th>Value Proposition</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>C-Level</td><td>Costs & Fines</td><td>60% OpEx reduction, mitigated risk</td></tr>
+                    <tr><td>Compliance/CRO</td><td>Auditability</td><td>Full Chain-of-Thought logs</td></tr>
+                    <tr><td>IT Architects</td><td>Security & Scale</td><td>Zero-trust VPC, 99.9% availability</td></tr>
+                    <tr><td>Data Science</td><td>Drift & Accuracy</td><td>Vertex AI Monitoring integration</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Lean Business Case & ROI</h4>
+            <p>Cost per alert reduced from $45 → $2.50 | 75% FTE repurposed to threat hunting | Faster low-risk customer onboarding.</p>
+
+            <h4>Implementation Roadmap (SAFe PI Structure)</h4>
+            <ul>
+                <li>PI 1: Foundation – Infrastructure & baseline models</li>
+                <li>PI 2: Agentic Swarm – CrewAI + Gemini integration</li>
+                <li>PI 3: Scale & Harden – VPC-SC enterprise rollout</li>
+            </ul>
+
+            <details>
+                <summary>Business Alignment Diagrams</summary>
+                <ul>
+                    <li>Strategy Map (Value Stream) – Transaction to SAR flow with AI acceleration points</li>
+                    <li>Business Capability Map (L1/L2) – Filling real-time pattern recognition gap</li>
+                    <li>Target State Conceptual Architecture – Gen AI App → Agent → Platform → GCP hierarchy</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>02. Multi-Agent Design</h3>
-            <p>Placeholder: Agent swarm for screening, investigation, alerting...</p>
+            <h4>Distributed Cognition Model</h4>
+            <p>Specialized agents collaborate via LangGraph workflow, ensuring accuracy, reduced hallucinations, and full audit trail.</p>
+
+            <h4>Agent Swarm Roles</h4>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;"><th>Agent</th><th>Model</th><th>Responsibility</th><th>Key Tools</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Intake Agent</td><td>Gemini 1.5 Flash</td><td>Triage & entity extraction</td><td>Pub/Sub, Dataflow</td></tr>
+                    <tr><td>Investigator</td><td>Gemini 1.5 Pro</td><td>Deep history correlation</td><td>BigQuery, Vertex Search</td></tr>
+                    <tr><td>Screener</td><td>Mixtral 8x7B</td><td>Watchlist/PEP screening</td><td>Dow Jones/Refinitiv APIs</td></tr>
+                    <tr><td>Auditor</td><td>Llama 3</td><td>Policy-as-Code validation</td><td>Internal Wiki</td></tr>
+                    <tr><td>Reporter</td><td>Mixtral 8x7B</td><td>SAR narrative drafting</td><td>GCS storage</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Workflow & Safety</h4>
+            <p>Hybrid sequential-parallel execution | Conditional escalation | Evaluator-optimizer loop | Model Armor PII/jailbreak protection | HITL final approval with confidence scoring.</p>
+
+            <details>
+                <summary>Agent System Architecture Diagrams</summary>
+                <ul>
+                    <li>Agent Interaction Sequence Diagram (TOGAF-style)</li>
+                    <li>State Machine Diagram (LangGraph loop-back logic)</li>
+                    <li>Security Boundary Diagram (VPC-SC perimeter)</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>03. Intelligence Platform</h3>
-            <p>Placeholder: Event-driven architecture, Vertex AI anomaly detection...</p>
+            <h4>Real-Time Data Pipeline</h4>
+            <p>Pub/Sub ingestion → Dataflow streaming ETL (windowing, enrichment) → BigQuery sink for immediate inference.</p>
+
+            <h4>MLOps Lifecycle</h4>
+            <p>Vertex AI Pipelines | Model Registry | Automated retraining on drift | Champion-Challenger shadow testing.</p>
+
+            <h4>Optimization & Observability</h4>
+            <p>Gemini Flash smart triage | CoT logs in Cloud Logging | Looker dashboards for swarm health | Expert feedback loop for fine-tuning.</p>
+
+            <details>
+                <summary>Data and Intelligence Flow Diagrams</summary>
+                <ul>
+                    <li>Data-to-AI Flow: Transaction → Pub/Sub → Dataflow → BigQuery → Vertex</li>
+                    <li>MLOps Pipeline Visualization (Ingest → Train → Deploy → Monitor)</li>
+                    <li>Agent-Data Interaction Map</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>04. Model Lifecycle</h3>
-            <p>Placeholder: Time-series models, LLM for narratives...</p>
+            <h4>Hybrid Model Ecosystem</h4>
+            <p>Discriminative (XGBoost/BigQuery ML) for detection + Generative (fine-tuned Mixtral) for explanation & reporting.</p>
+
+            <h4>Development → Deployment → Governance</h4>
+            <p>Vertex Workbench | PEFT/QLoRA fine-tuning | Dual inference (online endpoints + batch) | Model Monitoring v2 for drift/skew | XAI Shapley explanations fed to agents.</p>
+
+            <details>
+                <summary>Model Lifecycle and Inference Diagrams</summary>
+                <ul>
+                    <li>ML CI/CD/CT Feedback Loop</li>
+                    <li>Hybrid Inference Architecture</li>
+                    <li>Explainability Flow (XAI → Investigator prompt)</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>05. Cloud Infrastructure</h3>
-            <p>Placeholder: Pub/Sub, GKE, high-availability setup...</p>
+            <h4>Core Components</h4>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;"><th>Component</th><th>Function</th><th>Rationale</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>GKE Autopilot</td><td>Agent Hosting</td><td>NoOps scaling</td></tr>
+                    <tr><td>Cloud Dataflow</td><td>Stream Processing</td><td>Unified stream/batch</td></tr>
+                    <tr><td>Memorystore Redis</td><td>State Management</td><td>Sub-ms agent memory</td></tr>
+                    <tr><td>Cloud KMS</td><td>Encryption</td><td>CMEK control</td></tr>
+                    <tr><td>Cloud Armor</td><td>Edge Security</td><td>L7 protection</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Security & IaC</h4>
+            <p>Zero-trust VPC-SC | Private Service Connect | Terraform modules with GitOps.</p>
+
+            <details>
+                <summary>Infrastructure Topology and Flow Diagrams</summary>
+                <ul>
+                    <li>Logical Network Topology</li>
+                    <li>Event-Driven Flow Diagram</li>
+                    <li>High Availability Map</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>06. Governance & SRE</h3>
-            <p>Placeholder: Audit trails, regulatory compliance, handoff...</p>
+            <h4>Three Lines of Defense</h4>
+            <p>1st: Real-time guardrails | 2nd: Risk reviews | 3rd: Immutable audit records.</p>
+
+            <h4>Safety Layers</h4>
+            <p>Model Armor (PII/redaction) | Confidence scoring | HITL escalation below 85 | Active learning from human feedback.</p>
+
+            <h4>SRE Practices</h4>
+            <p>SLOs: &lt;200ms latency, 90% SAR acceptance | Error budgets tied to feature velocity.</p>
+
+            <details>
+                <summary>Governance and Operational Diagrams</summary>
+                <ul>
+                    <li>Governance Triangle</li>
+                    <li>HITL Decision Flow</li>
+                    <li>SRE Error Budget Tracker</li>
+                </ul>
+            </details>
         </div>
 
         <div class="section">
             <h3>Impact & Outcomes</h3>
-            <p>Placeholder: Fraud detection metrics, false positive reduction...</p>
+            <h4>Key Performance Indicators (12 Months Post-Production)</h4>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;"><th>Metric</th><th>Legacy</th><th>Sentinel</th><th>Improvement</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Case Resolution Time</td><td>4.5 hrs</td><td>1.1 hrs</td><td>75% faster</td></tr>
+                    <tr><td>SAR Drafting</td><td>60 min</td><td>9 min</td><td>85% faster</td></tr>
+                    <tr><td>False Positive Rate</td><td>12%</td><td>4.8%</td><td>60% reduction</td></tr>
+                    <tr><td>Filing Quality</td><td>72%</td><td>94%</td><td>+30% first-pass accept</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Strategic Wins</h4>
+            <ul>
+                <li>Handled 400% transaction spike without added headcount</li>
+                <li>Cleared Tier-1 audit 40% faster</li>
+                <li>Upskilled 50+ analysts into AI-enabled Threat Hunters</li>
+            </ul>
+
+            <details>
+                <summary>Impact and Evolution Diagrams</summary>
+                <ul>
+                    <li>Efficiency Frontier Chart (Cost vs. Accuracy shift)</li>
+                    <li>Scalability Heatmap during peaks</li>
+                    <li>Future Roadmap (PI 4–6): Multi-modal agents & global hubs</li>
+                </ul>
+            </details>
         </div>
     </div>
 </body>
