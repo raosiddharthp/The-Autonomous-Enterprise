@@ -132,659 +132,597 @@
             <p><em>This table highlights the certified skills applied across the project lifecycle, delivering measurable enterprise value in sustainability and cost optimization.</em></p>
         </div>
 
-        <div class="section">
-            <h3>Business Strategy: Scaling Sustainable Infrastructure</h3>
-            <p>
-                Enterprise cloud spend is often the second or third largest OpEx item. However, 30% of that spend is wasted on overprovisioned resources, and carbon accounting remains a manual, "after-the-fact" reporting exercise.
-            </p>
-            <p>
-                <strong>The Opportunity:</strong> Transform sustainability from a "cost center" into a "cost optimizer."<br>
-                <strong>The Strategy:</strong> Use <em>Agentic Arbitrage</em>—automated decision-making that selects cloud regions and resource types based on the fluctuating intersection of electricity spot prices and carbon intensity.
-            </p>
-
-            <h4>2. Stakeholder Alignment Matrix (SAFe & TOGAF Integration)</h4>
-            <p>
-                At the enterprise scale, strategy requires buy-in from diverse personas. GreenOps uses a Value Stream approach to deliver relevant outcomes to each:
-            </p>
-            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 12px; text-align: left;">Strategic Pillar</th>
-                        <th style="padding: 12px; text-align: left;">Executive Stakeholder</th>
-                        <th style="padding: 12px; text-align: left;">Key Strategic Objective (KSO)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Operational Excellence</td>
-                        <td style="padding: 10px;">CIO / CTO</td>
-                        <td style="padding: 10px;">Reduce TCO via automated resource lifecycle management</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Corporate Responsibility</td>
-                        <td style="padding: 10px;">Chief Sustainability Officer</td>
-                        <td style="padding: 10px;">Real-time carbon data integration into annual ESG disclosure (SEC/CSRD compliance)</td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Financial Governance</td>
-                        <td style="padding: 10px;">Head of FinOps</td>
-                        <td style="padding: 10px;">Shift from static budgeting to dynamic allocation based on ROI/carbon density</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>3. The GreenOps Economic Model</h4>
-            <p>
-                The platform is governed by a Sustainability ROI Formula:
-            </p>
-            <p style="text-align: center; font-style: italic; margin: 30px 0;">
-                [ ROI_{Green} = frac{(Cost_{Baseline} - Cost_{Optimized}) + (Carbon_{Credits_Saved})}{Platform Operating Cost} ]
-            </p>
-            <p>
-                <strong>Carbon Arbitrage:</strong> The system exploits the "Carbon-Price Delta"—moving non-critical batch jobs to low-carbon regions (e.g., Finland or Iowa) during peak renewable energy hours.<br>
-                <strong>Lean Portfolio Management (LPM):</strong> Using SAFe guardrails to ensure "Green" migrations do not violate NFRs such as maximum 150ms latency for end-users.
-            </p>
-
-            <h4>4. Implementation Roadmap</h4>
-            <p>
-                Rather than a "big bang" rollout, the strategy follows a crawl-walk-run sequence to minimize organizational risk:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Phase 1: Observability (Crawl)</strong> — Ingesting BigQuery billing exports and Google Carbon Footprint data to create a baseline "Truth Layer."</li>
-                <li><strong>Phase 2: Recommendation (Walk)</strong> — Deploying Gemini-powered agents to provide "human-in-the-loop" optimization suggestions (Vertex AI Agent Builder).</li>
-                <li><strong>Phase 3: Autonomy (Run)</strong> — Transitioning to a Closed-Loop System where LangGraph agents execute cross-region migrations via Terraform and Cloud Scheduler without human intervention.</li>
-            </ul> 
-
-
-        <details style="margin: 40px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.3em; font-weight: bold; cursor: pointer; color: #00008b;">Strategic Architecture: From ESG Vision to GCP Reality</summary>
-            <div style="margin-top: 20px;">
-                <p>
-                    The GreenOps solution was developed using the TOGAF Architecture Development Method to ensure strategic alignment and long-term coherence across business, data, application, and technology domains.
+        <section id="greenops-summary" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+            <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #2e7d32;">
+                <h2 style="color: #2e7d32; margin-top: 0; border-bottom: 2px solid #e8f5e9; padding-bottom: 10px; font-size: 1.75rem;">Executive Summary: GreenOps Autonomous Sustainability Engine</h2>
+                
+                <p style="font-size: 1.15rem; line-height: 1.6; color: #1b5e20; font-weight: 500; margin-bottom: 20px;">
+                    <strong>Vision:</strong> To transform enterprise IT from a static cost center into a <strong>Carbon-Aware, Autonomous Infrastructure</strong> that turns "Sustainability" from a reporting checkbox into a real-time architectural capability.
                 </p>
-
-                <ul style="font-size: 1.05em; line-height: 1.7;">
-                    <li><strong>Phase A: Architecture Vision</strong> — Defined the sustainability target architecture, stakeholder map, and business scenario ("Achieve Carbon-Neutral Scaling by 2027").</li>
-                    <li><strong>Phase B: Business Architecture</strong> — Mapped ESG goals to business capabilities (e.g., "Carbon-Aware Workload Management" as a new capability). Produced Capability Heatmap and Value Stream Maps.</li>
-                    <li><strong>Phase C: Information Systems Architecture</strong> — Designed data flows for carbon telemetry (BigQuery as central truth layer) and application components (agent swarm orchestration).</li>
-                    <li><strong>Phase D: Technology Architecture</strong> — Selected GCP as the target platform, justifying Vertex AI, Pub/Sub, and Cloud Run over alternatives using formal Architectural Decision Records (ADRs).</li>
-                    <li><strong>Phase E/F: Opportunities & Solutions / Migration Planning</strong> — Created a 3-phase migration roadmap (Observability → Recommendation → Autonomy) with prioritized initiatives and migration waves.</li>
-                    <li><strong>Phase H: Architecture Change Management</strong> — Established governance guardrails, including automated drift detection and policy-as-code enforcement.</li>
-                </ul>
-
-                <div style="text-align: center; margin: 40px 0;">
-                    <img src="docs/greenops-adm-cycle.png" alt="GreenOps TOGAF ADM Cycle" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Figure: GreenOps TOGAF ADM Cycle Application</em></p>
-                </div>
-
-                <div style="text-align: center; margin: 40px 0;">
-                    <img src="docs/greenops-capability-map.png" alt="Business Capability Map" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Figure: Business Capability Map with GreenOps Enhancements</em></p>
-                </div>
-
-                <div style="text-align: center; margin: 40px 0;">
-                    <img src="docs/greenops-c4-model.png" alt="GreenOps C4 Context & Container Diagram" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Figure: C4 Model - Context and Container Views</em></p>
-                </div>
-
-                <p>
-                    These artefacts were used to secure executive sponsorship and ensure the technical implementation remained aligned with enterprise strategy throughout the project lifecycle.
-                </p>
-            </div>
-        </details>            <h4>5. Competitive Advantage on GCP</h4>
-            <p>
-                The strategic decision to build on Google Cloud was driven by the native integration of the Carbon Footprint API and Vertex AI. Unlike competitors, GCP provides hourly carbon intensity data, enabling the GreenOps Agent to make granular decisions that open-source alternatives cannot replicate without massive custom engineering.
-            </p>
-        </div>
-
-        <div class="section">
-            <h3>Multi-Agent Design: The "Autonomous Optimizer"</h3>
-            <p>
-                The GreenOps platform is powered by a decentralized Multi-Agent System (MAS). Rather than a single monolithic script, the system utilizes specialized agents that collaborate via LangGraph to solve the "Carbon-Cost-Performance" trilemma. This design ensures modularity, allowing individual agents to be upgraded (e.g., swapping a fine-tuned Llama-3 for Gemini 1.5 Pro) without disrupting the entire pipeline.
-            </p>
-
-            <h4>1. The Collaborative Agent Swarm</h4>
-            <p>
-                We utilize a ReAct (Reasoning + Acting) pattern to move from static automation to dynamic autonomy.
-            </p>
-            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 12px; text-align: left;">Agent Role</th>
-                        <th style="padding: 12px; text-align: left;">Intelligence Layer</th>
-                        <th style="padding: 12px; text-align: left;">Primary Responsibility</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">The Scout</td>
-                        <td style="padding: 10px;">Vertex AI (Prophet)</td>
-                        <td style="padding: 10px;">Ingests real-time grid intensity data and forecasts carbon spikes 24 hours in advance</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">The Auditor</td>
-                        <td style="padding: 10px;">Gemini 1.5 Pro</td>
-                        <td style="padding: 10px;">Monitors Cloud Billing APIs and BigQuery to identify "low-value/high-carbon" workloads</td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">The Strategist</td>
-                        <td style="padding: 10px;">LangChain/CrewAI</td>
-                        <td style="padding: 10px;">Evaluates trade-offs. It "negotiates" between cost savings and carbon reduction targets</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">The Executor</td>
-                        <td style="padding: 10px;">Terraform/GCP SDK</td>
-                        <td style="padding: 10px;">The "Hands-on-Keyboard." It issues the signed commands to shift GKE workloads or resize Cloud Run instances</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>2. Agentic Workflow Logic (Stateful Orchestration)</h4>
-            <p>
-                The system is managed as a Directed Acyclic Graph (DAG) using LangGraph. This prevents "hallucination loops" by enforcing strict state transitions:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Sense:</strong> The Scout identifies that us-central1 will have a carbon-intensity spike at 2:00 PM.</li>
-                <li><strong>Think:</strong> The Strategist queries the Auditor for current spot pricing in europe-north1 (wind-powered).</li>
-                <li><strong>Validate:</strong> The agent checks Cloud Monitoring to ensure the target region has enough quota and low enough latency.</li>
-                <li><strong>Act:</strong> The Executor triggers a Terraform-based "Blue-Green" deployment to the new region.</li>
-                <li><strong>Report:</strong> The Narrator (Vertex AI) generates a natural language summary of the carbon saved for the ESG Dashboard.</li>
-            </ul>
-
-            <h4>3. Google Cloud Integration: The Backbone</h4>
-            <p>
-                While the "brains" are agentic, the "nervous system" is 100% Google Cloud:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Vertex AI Model Registry:</strong> Manages the lifecycle of the Prophet forecasting models, ensuring agents always use the most accurate carbon prediction weights.</li>
-                <li><strong>Agent Builder with Gemini:</strong> Provides the high-level reasoning for Real-time Rightsizing. It analyzes historical m-series vs c-series usage to recommend instance types that balance performance with energy efficiency.</li>
-                <li><strong>BigQuery & Dataflow:</strong> Acts as the "Long-term Memory." Dataflow streams gigabytes of emissions telemetry into BigQuery, which the agents query to learn from past optimization successes.</li>
-                <li><strong>Pub/Sub & Cloud Scheduler:</strong> The "Trigger Layer." When an agent makes a decision, it publishes a message to Pub/Sub, which invokes a serverless Cloud Function to execute the infrastructure change.</li>
-            </ul>
-
-            <h4>4. Enterprise Readiness & Safety Guardrails</h4>
-
-        <h4 style="margin-top: 50px;">Agent Swarm & Workflow Diagrams</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: Collaborative Agent Swarm (LangGraph/CrewAI Orchestration)</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/multi-agent-swarm.png" alt="Multi-Agent Swarm Collaboration Diagram" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Supervisor-orchestrated swarm with Scout, Auditor, Strategist, and Executor agents</em></p>
-                </div>
-
-                <p><strong>Figure 2: Stateful Agentic Workflow (Sense → Think → Validate → Act → Report)</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/agentic-workflow-dag.png" alt="Agentic Workflow DAG with LangGraph" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Directed Acyclic Graph enforcing strict state transitions to prevent hallucination loops</em></p>
-                </div>
-
-                <p><strong>Figure 3: ReAct Pattern in Individual Agents</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/react-pattern.png" alt="ReAct Reasoning + Acting Loop" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Reasoning + Acting loop enabling dynamic autonomy within each specialized agent</em></p>
-                </div>
-
-                <p>These diagrams illustrate the modular, stateful design that enables reliable autonomy while allowing seamless upgrades (e.g., Gemini vs. open-source LLMs).</p>
-            </div>
-        </details>            <p>
-                To ensure production reliability, we implement Human-in-the-loop (HITL) and Policy-as-Code:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>The "Circuit Breaker":</strong> If the Agent suggests a migration that would result in >200ms latency, Cloud Monitoring triggers an automated veto.</li>
-                <li><strong>IAM Least Privilege:</strong> Each agent operates under its own Google Service Account (GSA) with strictly scoped permissions, preventing "Privilege Escalation" in the event of an agentic error.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h3>Intelligence Platform: The Data & ML Backbone</h3>
-            <p>
-                The GreenOps Intelligence Platform serves as the "Central Nervous System," converting raw telemetry from global power grids and cloud billing exports into actionable insights. It leverages a modern Data Mesh architecture on Google Cloud to ensure high availability, data quality, and low-latency inference for the agentic swarm.
-            </p>
-
-            <h4>1. Data Engineering Pipeline (The "Truth Layer")</h4>
-            <p>
-                Before an agent can reason, it needs high-fidelity data. We use an event-driven ingestion engine to process diverse sustainability datasets.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Ingestion:</strong> Cloud Pub/Sub captures real-time signals from external Energy APIs (e.g., WattTime, Electricity Maps) and internal GCP Billing Exports.</li>
-                <li><strong>Processing:</strong> Cloud Dataflow performs windowed aggregations and normalization, calculating the "Carbon-per-Dollar" metric for every running workload.</li>
-                <li><strong>Storage:</strong> BigQuery acts as our serverless Data Warehouse, storing petabytes of historical emissions and cost data for trend analysis and model training.</li>
-            </ul>
-
-            <h4>2. Machine Learning Operations (MLOps) with Vertex AI</h4>
-            <p>
-                We treat ML models as first-class citizens. The platform automates the transition from experimentation to production.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Forecasting Engine:</strong> We utilize Prophet time-series models deployed on Vertex AI Prediction to forecast carbon intensity spikes across 24 global regions. This allows the platform to preemptively shift workloads before "dirty" energy hits the grid.</li>
-                <li><strong>Model Registry:</strong> All versions of our forecasting and rightsizing models are stored in the Vertex AI Model Registry, enabling seamless rollbacks and A/B testing of optimization strategies.</li>
-                <li><strong>Feature Store:</strong> Vertex AI Feature Store serves as a centralized repository for normalized energy metrics, ensuring "The Scout" and "The Auditor" agents share a consistent view of the world.</li>
-            </ul>
-
-            <h4>3. Gemini-Powered Optimization Logic</h4>
-            <p>
-                Beyond traditional forecasting, we leverage Generative AI for complex, multi-variable reasoning.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Agent Builder with Gemini:</strong> We use Gemini 1.5 Pro to analyze unstructured usage patterns and natural language policy documents (e.g., "Do not migrate during European business hours").</li>
-                <li><strong>Contextual Reasoning:</strong> Gemini identifies "zombie resources"—idle instances that traditional thresholds might miss—by correlating CPU metrics with business-cycle data stored in BigQuery.</li>
-            </ul>
-
-            <h4>4. Observability & Feedback Loops</h4>
-            <p>
-                An intelligence platform is only as good as its feedback. We close the loop using GCP's Operations Suite:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Sustainability Metrics:</strong> Custom Cloud Monitoring dashboards visualize the "Actual vs. Predicted" carbon savings.</li>
-                <li><strong>Automated Retraining:</strong> If Cloud Logging detects a drift in forecast accuracy (e.g., >10% variance), it triggers a Vertex AI Pipeline to retrain the Prophet model on the latest 30 days of grid data.</li>
-            </ul>
-
-            <h4>5. Technical Highlights</h4>
-
-        <h4 style="margin-top: 50px;">Data & ML Backbone Visualizations</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: Event-Driven Data Engineering Pipeline (Truth Layer)</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/data-engineering-pipeline.png" alt="Pub/Sub → Dataflow → BigQuery Pipeline" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Real-time ingestion and processing for carbon telemetry</em></p>
-                </div>
-
-                <p><strong>Figure 2: Vertex AI MLOps Pipeline</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/vertex-mlops-pipeline.png" alt="Vertex AI Pipelines, Registry, and Prediction" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Automated training, registry, and inference for forecasting models</em></p>
-                </div>
-
-                <p><strong>Figure 3: Observability Dashboard & Feedback Loops</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/observability-dashboard.png" alt="Cloud Monitoring Sustainability Metrics" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Real-time "Actual vs. Predicted" carbon savings visualization</em></p>
-                </div>
-
-                <p>These diagrams illustrate the scalable, automated data and ML backbone that enables low-latency, high-fidelity intelligence for the agentic swarm.</p>
-            </div>
-        </details>            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 12px; text-align: left;">Component</th>
-                        <th style="padding: 12px; text-align: left;">Technology</th>
-                        <th style="padding: 12px; text-align: left;">Enterprise Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Orchestration</td>
-                        <td style="padding: 10px;">Vertex AI Pipelines</td>
-                        <td style="padding: 10px;">Reduced model deployment time from weeks to hours</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Analytics</td>
-                        <td style="padding: 10px;">BigQuery ML</td>
-                        <td style="padding: 10px;">Enables SQL-based anomaly detection for sudden cost spikes</td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Streaming</td>
-                        <td style="padding: 10px;">Dataflow (Python)</td>
-                        <td style="padding: 10px;">Processes 100k+ events/sec for real-time region arbitration</td>
-                    </tr>
-                </tbody>
-            </table>      
-
-        </div>
-
-        <div class="section">
-            <h3>Model Lifecycle & MLOps</h3>
-            <p>
-                In the GreenOps platform, the "intelligence" is a living system. We manage the lifecycle of our carbon-forecasting and cost-optimization models using Vertex AI, ensuring that our autonomous agents always act on the most accurate, low-latency predictions available.
-            </p>
-
-            <h4>1. Model Development & Experimentation</h4>
-            <p>
-                We bridge the gap between open-source flexibility and enterprise-grade scalability.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Time-Series Forecasting:</strong> We use the Prophet algorithm for multi-region carbon intensity forecasting, training on historical grid data stored in BigQuery.</li>
-                <li><strong>Prototyping:</strong> Development occurs in Vertex AI Workbench, allowing for seamless transition from Python-based exploration to scalable training pipelines.</li>
-                <li><strong>Hyperparameter Tuning:</strong> We utilize Vertex AI Vizier to optimize model parameters, ensuring high forecast accuracy (90%+) across diverse global energy markets.</li>
-            </ul>
-
-            <h4>2. The Training Pipeline (CI/CD for ML)</h4>
-            <p>
-                To ensure reliability, we treat model training as a code-driven, automated process.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Vertex AI Pipelines:</strong> We use KFP (Kubeflow Pipelines) to orchestrate the end-to-end workflow—from data extraction in BigQuery to model evaluation.</li>
-                <li><strong>Automated Retraining:</strong> Pipelines are triggered by Cloud Scheduler or whenever Cloud Logging detects a drop in prediction accuracy, preventing "Model Decay" as energy grid patterns shift.</li>
-                <li><strong>Model Registry:</strong> Once validated, every model is versioned in the Vertex AI Model Registry, providing a single source of truth for our Agentic Swarm.</li>
-            </ul>
-
-            <h4>3. Deployment & Inference (The Intelligence at Work)</h4>
-            <p>
-                Our agents require sub-second inference to make real-time workload-shifting decisions.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Scalable Endpoints:</strong> Models are deployed to Vertex AI Prediction Endpoints, providing an auto-scaling API that our LangChain/CrewAI agents query during the "Reasoning" phase.</li>
-                <li><strong>Agent Integration:</strong> The Gemini-powered Agents use these predictions as high-context inputs to determine if a workload migration is strategically sound.</li>
-                <li><strong>Pre-computed Inference:</strong> For high-volume batch jobs, we use BigQuery ML to generate bulk carbon-forecasts directly within the data layer, reducing egress costs and latency.</li>
-            </ul>
-
-            <h4>4. Continuous Monitoring & Governance</h4>
-            <p>
-                At Google, a model is only as good as its last audit.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Model Monitoring:</strong> We track Feature Drift and Prediction Drift in real-time. If the input data (e.g., energy prices) deviates significantly from the training set, the system alerts the Operations Team via Cloud Monitoring.</li>
-                <li><strong>Explainable AI (XAI):</strong> We use Vertex Explainable AI to provide feature attributions. This allows us to explain why an agent recommended a specific region shift (e.g., "70% weighting on solar availability in europe-west1").</li>
-                <li><strong>Lineage Tracking:</strong> Using Vertex AI Metadata, we track the full lineage of every decision—from the raw dataset to the specific model version used by the agent—ensuring full ESG auditability.</li>
-            </ul>
-
-            <h4>Technical Summary: The MLOps Stack</h4>
-
-        <h4 style="margin-top: 50px;">Model Lifecycle Visualizations</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: Vertex AI MLOps End-to-End Pipeline</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/mlops-pipeline.png" alt="Vertex AI Pipelines, Registry, and Prediction Flow" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Automated training, versioning, deployment, and retraining for forecasting models</em></p>
-                </div>
-
-                <p><strong>Figure 2: Model Registry & Prediction Endpoint Integration</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/model-registry-endpoint.png" alt="Model Registry to Prediction Endpoint" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Versioned models serving low-latency inference to agents</em></p>
-                </div>
-
-                <p><strong>Figure 3: Monitoring, Drift Detection & Explainability</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/drift-monitoring-xai.png" alt="Drift Detection and XAI in Vertex AI" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Real-time drift alerts and feature attributions for governance</em></p>
-                </div>
-
-                <p>These diagrams illustrate the production-grade MLOps lifecycle that ensures predictive sustainability models remain accurate and auditable.</p>
-            </div>
-        </details>            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 12px; text-align: left;">Phase</th>
-                        <th style="padding: 12px; text-align: left;">Google Cloud Technology</th>
-                        <th style="padding: 12px; text-align: left;">Key Outcome</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Orchestration</td>
-                        <td style="padding: 10px;">Vertex AI Pipelines (KFP)</td>
-                        <td style="padding: 10px;">100% Reproducible training cycles</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Registry</td>
-                        <td style="padding: 10px;">Vertex AI Model Registry</td>
-                        <td style="padding: 10px;">Version control for AI "Brains"</td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Inference</td>
-                        <td style="padding: 10px;">Vertex AI Prediction</td>
-                        <td style="padding: 10px;">Low-latency API for Agentic Swarms</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Evaluation</td>
-                        <td style="padding: 10px;">Vertex AI Model Evaluation</td>
-                        <td style="padding: 10px;">Automated "Go/No-Go" deployment gates</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-        <div class="section">
-            <h3>Cloud Infrastructure: Multi-Region Blueprints</h3>
-            <p>
-                The GreenOps infrastructure is designed for high availability and environmental efficiency. By utilizing Infrastructure as Code (IaC) via Terraform, the platform ensures that the underlying Google Cloud resources are as dynamic and optimized as the AI agents that manage them.
-            </p>
-
-            <h4>1. Architectural Strategy: The Carbon-Neutral Landing Zone</h4>
-            <p>
-                The infrastructure is organized into a modular landing zone that facilitates secure, cross-region workload portability.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Infrastructure as Code:</strong> 100% of the GCP resources are provisioned using Terraform, ensuring environment consistency across staging and production.</li>
-                <li><strong>Multi-Region Strategy:</strong> Deployment is focused on "Green Regions"—GCP data centers with the lowest carbon intensity (CUE) scores—while maintaining low latency for end-users.</li>
-                <li><strong>Resource Tiering:</strong> Workloads are categorized into "Migratable" (batch/stateless) and "Static" (stateful), allowing the Agentic Executor to prioritize shifts without risking data integrity.</li>
-            </ul>
-
-            <h4>2. Core Infrastructure Components</h4>
-            <p>
-                To achieve a 40% cost reduction and 30% emissions drop, the platform integrates specific GCP services into an event-driven mesh:
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Compute (GKE & Cloud Run):</strong> High-density clusters that support rapid scaling and region migration for containerized workloads.</li>
-                <li><strong>Networking (Global Load Balancing):</strong> Utilized to route traffic dynamically as workloads shift between low-emission regions.</li>
-                <li><strong>The "Nervous System" (Pub/Sub & Cloud Scheduler):</strong> Functions as the trigger layer for carbon-aware shifts, allowing agents to invoke infrastructure changes via serverless Cloud Functions.</li>
-                <li><strong>Observability (Cloud Monitoring & Logging):</strong> Provides the real-time telemetry required for the "Auditor" agent to calculate rightsizing recommendations and sustainability metrics.</li>
-            </ul>
-
-            <h4>3. Sustainability-First IaC Implementation</h4>
-            <p>
-                At the L6 level, infrastructure is not just about uptime; it is about Policy-as-Code.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Carbon-Aware Provisioning:</strong> Terraform modules are configured to query the Google Carbon Footprint API during the plan phase, preventing the accidental deployment of high-carbon resources.</li>
-                <li><strong>Automated Rightsizing:</strong> Integrated with Agent Builder with Gemini, the infrastructure layer receives real-time resizing commands to reduce overprovisioning by 50%.</li>
-                <li><strong>Billing Export Integration:</strong> BigQuery and Dataflow process emissions and cost data, feeding the "Strategist" agent the metrics needed for region arbitration.</li>
-            </ul>
-
-            <h4>4. Security & Governance (VPC Service Controls)</h4>
-
-        <h4 style="margin-top: 50px;">Carbon-Aware Infrastructure Diagrams</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: Multi-Region Carbon-Aware Architecture</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/multi-region-architecture.png" alt="Multi-Region Carbon-Aware Landing Zone" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Workload tiering and green region deployment with global load balancing</em></p>
-                </div>
-
-                <p><strong>Figure 2: Event-Driven Infrastructure Mesh</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/event-driven-mesh.png" alt="Pub/Sub → Cloud Functions → GKE Flow" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Core components enabling carbon-aware shifts</em></p>
-                </div>
-
-                <p><strong>Figure 3: Security & Governance Perimeter</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/security-perimeter.png" alt="VPC-SC and IAM for Agents" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Data perimeter and audit trail visualization</em></p>
-                </div>
-
-                <p>These diagrams illustrate the multi-region, carbon-aware infrastructure that enables dynamic optimization while maintaining security and governance.</p>
-            </div>
-        </details>            <ul style="font-size: 1.05em; line-height: 1.7;">                <li><strong>Identity & Access Management:</strong> Agents operate using Google Service Accounts (GSA) with strictly scoped permissions, following the principle of least privilege.</li>
-                <li><strong>Data Perimeter:</strong> VPC Service Controls (VPC-SC) protect the BigQuery and Vertex AI environments, ensuring that sensitive sustainability and financial telemetry remain within a secure perimeter.</li>
-                <li><strong>Auditability:</strong> Every infrastructure change triggered by an AI agent is logged, providing a transparent audit trail for corporate ESG reporting.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h3>Governance & SRE: Reliability</h3>
-            <p>
-                Operating an autonomous platform like GreenOps requires a "Safety-First" approach to engineering. We apply Google SRE principles to manage the "Error Budget" of our agentic swarms, ensuring that AI-driven optimizations never compromise system availability or data integrity.
-            </p>
-
-            <h4>1. SRE Framework: Balancing Innovation with Stability</h4>
-            <p>
-                We define success through rigorous Service Level Objectives (SLOs) that govern the behavior of the Agentic Swarm.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Availability SLI:</strong> Target 99.9% uptime for the GreenOps control plane, ensuring continuous carbon monitoring.</li>
-                <li><strong>Latency Guardrails:</strong> Any agent-recommended migration is automatically vetoed by Cloud Monitoring if the projected network latency exceeds 200ms.</li>
-                <li><strong>Optimization Accuracy:</strong> We track the variance between predicted carbon savings and actual emissions reported by the Google Carbon Footprint API.</li>
-            </ul>
-
-            <h4>2. Governance & Compliance (The "Guardrails")</h4>
-            <p>
-                To meet enterprise ESG and security standards, the platform implements Policy-as-Code.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>IAM & Least Privilege:</strong> Each agent (Scout, Auditor, Executor) operates under a dedicated Google Service Account (GSA) with fine-grained permissions, preventing unauthorized infrastructure changes.</li>
-                <li><strong>Auditability:</strong> Every optimization action—from a GKE rightsizing to a multi-region workload shift—is logged in Cloud Logging, creating a transparent "Decision Trail" for SOC2 and ESG audits.</li>
-                <li><strong>VPC Service Controls:</strong> We enforce a secure data perimeter around BigQuery and Vertex AI to protect sensitive financial and sustainability telemetry from exfiltration.</li>
-            </ul>
-
-            <h4>3. The "Human-in-the-Loop" (HITL) Safety Pattern</h4>
-            <p>
-                While the goal is 100% autonomy, we implement a tiered escalation model to manage high-risk operations.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Tier 1 (Automated):</strong> Routine rightsizing and minor resource adjustments are executed autonomously.</li>
-                <li><strong>Tier 2 (Advisory):</strong> Significant cross-continental migrations require an SRE Approval via a Slack/Teams integration before the Terraform execution begins.</li>
-                <li><strong>Tier 3 (Emergency):</strong> A manual "Kill Switch" in the Cloud Console can instantly disable agentic writes, reverting the system to a static, high-availability state.</li>
-            </ul>
-
-            <h4>4. Operations & Support Handoff</h4>
-            <p>
-                GreenOps is designed to be "self-healing," but it remains integrated with standard ITIL processes.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Automated Runbooks:</strong> We provide MkDocs-based interactive guides and troubleshooting scripts for operations teams to handle agentic "stalls" or data ingestion failures.</li>
-                <li><strong>Observability Stack:</strong> We use R Shiny dashboards to provide ESG Officers with real-time "Carbon Waterfall" charts, visualizing exactly how agent actions contributed to the 30% emissions drop.</li>
-                <li><strong>Alerting Swarms:</strong> If the Vertex AI model detects a 10% drift in forecast accuracy, an automated ticket is generated for the MLE team to review the training pipeline.</li>
-            </ul>
-
-        <h4 style="margin-top: 50px;">Governance, SRE & Safety Visualizations</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand diagrams</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: SRE Framework & SLO Dashboard</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/sre-slo-dashboard.png" alt="SLOs, Error Budget, and Cloud Monitoring Dashboard" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Availability, latency, and accuracy SLOs with error budget tracking</em></p>
-                </div>
-
-                <p><strong>Figure 2: Human-in-the-Loop (HITL) Escalation Flow</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/hitl-escalation-flow.png" alt="Tiered HITL Safety Pattern" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Tier 1 Automated → Tier 2 Advisory → Tier 3 Emergency Kill Switch</em></p>
-                </div>
-
-                <p><strong>Figure 3: Security & Governance Perimeter</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/security-governance-perimeter.png" alt="VPC-SC, IAM GSAs, and Audit Trail" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Least-privilege IAM, VPC-SC data perimeter, and decision auditability</em></p>
-                </div>
-
-                <p>These diagrams illustrate the reliability engineering practices that ensure safe, auditable autonomy in production.</p>
-            </div>
-        </details>            <p>
-                GreenOps is designed to be "self-healing," but it remains integrated with standard ITIL processes.
-            </p>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Automated Runbooks:</strong> We provide MkDocs-based interactive guides and troubleshooting scripts for operations teams to handle agentic "stalls" or data ingestion failures.</li>
-                <li><strong>Observability Stack:</strong> We use R Shiny dashboards to provide ESG Officers with real-time "Carbon Waterfall" charts, visualizing exactly how agent actions contributed to the 30% emissions drop.</li>
-                <li><strong>Alerting Swarms:</strong> If the Vertex AI model detects a 10% drift in forecast accuracy, an automated ticket is generated for the MLE team to review the training pipeline.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h3>Impact & Outcomes: Quantifying ROI</h3>
-            <p>
-                The GreenOps platform moved the needle on two of the most critical enterprise KPIs: Operational Expenditure (OpEx) and Environmental, Social, and Governance (ESG) performance. By treating sustainability as an engineering challenge, we successfully decoupled business growth from its carbon footprint.
-            </p>
-
-            <h4>1. Key Performance Indicators (KPIs)</h4>
-            <p>
-                The following metrics represent the verified outcomes of the pilot deployment across 10 global regions:
-            </p>
-            <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 12px; text-align: left;">Metric Category</th>
-                        <th style="padding: 12px; text-align: left;">Baseline (Manual)</th>
-                        <th style="padding: 12px; text-align: left;">Optimized (GreenOps)</th>
-                        <th style="padding: 12px; text-align: left;">Net Impact</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Cloud OpEx</td>
-                        <td style="padding: 10px;">$1.2M / Annually</td>
-                        <td style="padding: 10px;">$720k / Annually</td>
-                        <td style="padding: 10px;"><strong>40% Cost Reduction</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Carbon Intensity</td>
-                        <td style="padding: 10px;">450 gCO2eq/kWh</td>
-                        <td style="padding: 10px;">315 gCO2eq/kWh</td>
-                        <td style="padding: 10px;"><strong>30% Emissions Drop</strong></td>
-                    </tr>
-                    <tr style="background-color: #f8f9fa;">
-                        <td style="padding: 10px;">Operational Effort</td>
-                        <td style="padding: 10px;">160 hrs/month</td>
-                        <td style="padding: 10px;">32 hrs/month</td>
-                        <td style="padding: 10px;"><strong>80% Automation Gain</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Forecast Accuracy</td>
-                        <td style="padding: 10px;">65% (Manual)</td>
-                        <td style="padding: 10px;">90% (Prophet MLE)</td>
-                        <td style="padding: 10px;"><strong>25% Accuracy Uplift</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>2. Strategic Business Outcomes</h4>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>Decoupled Growth:</strong> Scaled the platform to support a 50% increase in workload volume without a corresponding rise in carbon emissions, effectively achieving Carbon-Neutral Scaling.</li>
-                <li><strong>Regulatory Readiness:</strong> Automated 80% of the narrative generation for CSRD (Corporate Sustainability Reporting Directive) compliance using the Vertex AI "Narrator" agent.</li>
-                <li><strong>Unit Economics Mastery:</strong> Transitioned from tracking "Total Cost" to tracking "Carbon-per-Order," allowing the business to price its services more accurately based on their environmental impact.</li>
-            </ul>
-
-            <h4>3. Lessons Learned & Architectural Evolution</h4>
-            <ul style="font-size: 1.05em; line-height: 1.7;">
-                <li><strong>The "Latency vs. Green" Trade-off:</strong> We discovered that the greenest region isn't always the best choice for user-facing apps. This led to our Tiered Workload Strategy, where non-critical batch jobs are 100% carbon-aware, while user-facing APIs prioritize low latency within a carbon-optimized "window."</li>
-                <li><strong>Agent Reliability:</strong> Initial agent "hallucinations" in region selection were solved by implementing LangGraph state management, proving that autonomous systems require rigorous, stateful guardrails in production.</li>
-                <li><strong>The Value of Dataflow:</strong> Streaming carbon grid data via Dataflow instead of batch processing reduced the "reaction time" to carbon spikes from 24 hours to 15 minutes.</li>
-            </ul>
-
-            <h4>Final Executive Summary</h4>
-            <p>
-                The GreenOps project demonstrates that Sustainability is a competitive advantage. By leveraging Google Cloud's unique carbon data and Vertex AI's orchestration, we built a platform that pays for itself in cost savings while significantly de-risking the organization's environmental liabilities.
-            </p>
-
-        <h4 style="margin-top: 50px;">Impact Visualizations & KPI Summary</h4>
-        <details style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-            <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer; color: #00008b;">Click to expand visualizations</summary>
-            <div style="margin-top: 20px;">
-                <p><strong>Figure 1: KPI Dashboard – Before vs. After GreenOps</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/kpi-before-after.png" alt="KPI Comparison Dashboard" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>40% OpEx reduction, 30% emissions drop, 80% automation gain</em></p>
-                </div>
-
-                <p><strong>Figure 2: Carbon Savings Waterfall Chart</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/carbon-waterfall.png" alt="Carbon Savings Breakdown" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Breakdown of emissions reduction by agent action</em></p>
-                </div>
-
-                <p><strong>Figure 3: ROI Timeline & Payback Period</strong></p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="docs/roi-timeline.png" alt="Cumulative Savings vs. Cost" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><em>Platform pays for itself in under 9 months with ongoing annual savings</em></p>
-                </div>
-
-                <p>These visualizations quantify the business impact and prove that autonomous sustainability delivers measurable ROI at enterprise scale.</p>
-            </div>
-        </details>            <p>
-                The GreenOps project demonstrates that Sustainability is a competitive advantage. By leveraging Google Cloud's unique carbon data and Vertex AI's orchestration, we built a platform that pays for itself in cost savings while significantly de-risking the organization's environmental liabilities.
-            </p>
         
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px;">
+                    <div>
+                        <h4 style="margin-bottom: 12px; font-size: 1.1rem; color: #333; border-left: 3px solid #34a853; padding-left: 10px;">The Strategic Imperative</h4>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: #555;">
+                            Enterprises face rising "Carbon Taxes" and regulatory pressure to prove ESG compliance. GreenOps eliminates the "Green-Washing" risk by automating the cognitive heavy lifting of workload shifting and rightsizing, removing manual intervention in complex, multi-region environments.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 12px; font-size: 1.1rem; color: #333; border-left: 3px solid #34a853; padding-left: 10px;">The Solution: Agentic ESG Orchestration</h4>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: #555;">
+                            A unified, event-driven platform on <strong>Google Cloud</strong> synthesizing <strong>Vertex AI</strong> carbon forecasting with a <strong>Hierarchical Swarm</strong> of specialized agents (CrewAI/Gemini) that autonomously find the "Greenest Path" for every workload.
+                        </p>
+                    </div>
+                </div>
+        
+                <div style="margin-top: 30px; padding: 25px; background-color: #f1f8e9; border-radius: 8px; border: 1px solid #dcedc8;">
+                    <h4 style="margin-top: 0; margin-bottom: 15px; color: #2e7d32; font-size: 1.1rem;">Quantifiable Strategic Impact</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; color: #333; line-height: 1.6;">
+                            <li>📉 <strong>30% Emissions Reduction:</strong> Real-time workload shifting to low-carbon regions.</li>
+                            <li>⚡ <strong>40% Cost Optimization:</strong> Automated rightsizing via Gemini-driven recommendations.</li>
+                        </ul>
+                        <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; color: #333; line-height: 1.6;">
+                            <li>📝 <strong>80% Narrative Automation:</strong> AI-generated ESG reports using fine-tuned OS LLMs.</li>
+                            <li>🌍 <strong>70% Workload Coverage:</strong> Autonomous optimization across multi-region GCP designs.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-top: 35px; width: 100%; box-sizing: border-box;">
+                <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                    <span style="margin-right: 10px;">▶</span> View Strategic Sustainability Viewpoints (TOGAF & SAFe)
+                </summary>
+                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. ESG Value Stream Mapping (SAFe)</h4>
+                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the flow from carbon telemetry ingestion to automated ESG narrative generation.</p>
+                        
+                    </div>
+                    <div>
+                        <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. Carbon-Aware Architecture (Phase D)</h4>
+                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Layered view showing the integration between Google Billing, Carbon Footprint API, and Agent Builder.</p>
+                        
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <div class="section">
+            <section id="greenops-strategy" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">01. Business Strategy: The Carbon-Aware Economic Framework</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    In the current regulatory landscape, cloud inefficiency is no longer just a financial burden—it is a carbon liability. By operationalizing the <strong>Architecture Development Method (TOGAF ADM)</strong>, GreenOps transforms IT infrastructure into a strategic lever for corporate sustainability, decoupling business growth from carbon output.
+                </p>
+            
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 35px;">
+                    <div style="background: #f1f8e9; padding: 20px; border-radius: 8px; border: 1px solid #c8e6c9;">
+                        <h4 style="color: #2e7d32; margin-top: 0;">1. Strategic Value Proposition</h4>
+                        <ul style="font-size: 0.95rem; color: #333; line-height: 1.6; padding-left: 20px;">
+                            <li><strong>The Problem:</strong> Static FinOps ignores the geographical variance of carbon intensity in the energy grid.</li>
+                            <li><strong>The Solution:</strong> Autonomous orchestration shifting workloads to renewable-rich regions in real-time.</li>
+                            <li><strong>Outcome:</strong> Verifiable Net-Zero progress with deterministic audit trails.</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f1f8e9; padding: 20px; border-radius: 8px; border: 1px solid #c8e6c9;">
+                        <h4 style="color: #2e7d32; margin-top: 0;">2. Economic Model (ROAI)</h4>
+                        <div style="font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; text-align: center; margin: 15px 0; padding: 10px; background: #fff; border: 1px dashed #34a853; border-radius: 4px;">
+                            $ROI_{GreenOps} = \frac{(Saved\_OpEx) + (Carbon\_Tax\_Avoid)}{(Migration\_Cost) + (Inference\_Cost)}$
+                        </div>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">
+                            <strong>Carbon-Arbitrage:</strong> Leveraging <strong>Gemini 1.5 Flash</strong> to identify "Zombie" resources, reducing waste by 50%.
+                        </p>
+                    </div>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">3. Stakeholder Alignment Matrix (SAFe & TOGAF)</h3>
+                <div style="overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 35px;">
+                    <table style="width: 100%; border-collapse: collapse; background-color: #fff; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="background-color: #2e7d32; color: white; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">Strategic Pillar</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Stakeholder</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Strategic Objective (KSO)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">ESG Compliance</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">CSO</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Automated, audit-ready ESG narratives for regulatory filings.</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Cost Optimization</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">CFO</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Recovering 40% of cloud spend through autonomous rightsizing.</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Operational Agility</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">CTO</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Carbon-aware "Follow the Sun" workload shifting via Terraform.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> 4. Relevant Architecture Artifacts for EA Review (TOGAF Phase B)
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. Sustainability Capability Map</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Defines organizational capabilities for carbon-aware rightsizing and regional shifting.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. ESG Value Stream Mapping</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes lead time reduction for ESG reporting through AI narrative automation.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">C. Carbon-Cost Optimization Matrix</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Decision model balancing workload latency requirements against carbon intensity.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">D. Information Architecture Lineage</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Tracks data flow from raw GCP Billing/Carbon APIs to the ESG reporting layer.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #34a853;">
+                    <h4 style="margin-top: 0; color: #81c784; font-size: 1.1rem;">5. Implementation Roadmap: The Sustainable Transition</h4>
+                    <ul style="font-size: 0.95rem; line-height: 1.8; margin-bottom: 0;">
+                        <li><strong>Phase 1: Observation (Crawl):</strong> Ingesting 100% cloud telemetry into <strong>BigQuery</strong> for baseline carbon visibility.</li>
+                        <li><strong>Phase 2: Augmented Rightsizing (Walk):</strong> Deploying <strong>Agent Builder</strong> for human-in-the-loop optimization approval.</li>
+                        <li><strong>Phase 3: Autonomous Shifting (Run):</strong> <strong>CrewAI swarm</strong> triggering automated migrations to low-carbon regions.</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="section">
+            <section id="greenops-agents" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">02. Multi-Agent Design: The Autonomous Sustainability Swarm</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    GreenOps shifts from traditional automation to a <strong>Hierarchical Agentic Orchestration</strong> pattern. By utilizing specialized, carbon-aware agents, the system negotiates trade-offs between workload performance, cost, and environmental impact in real-time, backed by an auditable "Reasoning Trace".
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. The Swarm Architecture: Role-Based Carbon Specialization</h3>
+                <div style="overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 35px;">
+                    <table style="width: 100%; border-collapse: collapse; background-color: #fff; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="background-color: #2e7d32; color: white; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">Agent Persona</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Cognitive Engine</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Tooling / GCP Integration</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Governance Guardrail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Sustainability Supervisor</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Gemini 1.5 Pro</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Vertex AI Orchestration</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Policy-as-Code:</strong> Cannot migrate without availability checks.</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Emissions Detective</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Prophet (Fine-tuned)</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Carbon Footprint API</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Precision Threshold:</strong> Must provide forecast confidence > 90%.</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Rightsizing Engineer</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Gemini 1.5 Flash</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">GCP Billing API</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Cost Ceiling:</strong> All recommendations must result in net-positive ROI.</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Infrastructure Pilot</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">CrewAI / Terraform</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">GKE Autopilot</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Immutable IaC:</strong> All changes must pass Terraform Plan dry-runs.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. Agentic Design Patterns & Technical Moats</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Carbon-Aware RAG</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Agents utilize <strong>Vector Search</strong> of energy grid data and ESG policies to inform shifting decisions.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Self-Correction Loop</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">If migrations fail predicted drops, agents initiate root-cause analysis and update the model registry.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Deterministic State</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Built on <strong>LangGraph</strong>; every thought and tool call is logged in <strong>Cloud Logging</strong> for transparent audits.</p>
+                    </div>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Multi-Agent Orchestration Artifacts (TOGAF Phase C)
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. Agentic Orchestration Flow</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the hierarchical supervisor pattern and stateful handoffs between specialized agents.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. ReAct Tool-Use Trace</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Tracking the reasoning loop between the Pilot and GCP-native Billing/Carbon APIs.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81c784;">
+                    <h4 style="margin-top: 0; color: #81c784; font-size: 1.1rem;">Sovereign Decision Support: The GreenOps Advantage</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        GreenOps optimizes the <strong>Inference-to-Value</strong> ratio by utilizing <strong>Gemini 1.5 Flash</strong> for high-volume rightsizing triage and <strong>Gemini 1.5 Pro</strong> for high-reasoning regional shift negotiations. This hierarchy ensures 99.9% availability while achieving a 30% emissions drop across multi-region GCP architectures.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="section">
+            <section id="greenops-fabric" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">03. The Sentinel Fabric: GCP Intelligence & Data Platform</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    The <strong>GreenOps Fabric</strong> represents the <strong>Information Systems Architecture (TOGAF Phase C)</strong>, providing a unified backbone for real-time sustainability intelligence. To drive autonomous optimization, the platform processes high-velocity billing telemetry alongside temporal carbon intensity data with sub-second precision.
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. Intelligence Platform Architecture</h3>
+                <div style="overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 35px;">
+                    <table style="width: 100%; border-collapse: collapse; background-color: #fff; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="background-color: #2e7d32; color: white; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">Architectural Layer</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">GCP Technology Component</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Strategic Functionality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Ingestion (Streaming)</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Pub/Sub & Dataflow</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">High-throughput processing of GCP Billing and Carbon Footprint APIs.</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Telemetry (Warehouse)</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">BigQuery</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Centralized repository for multi-region cost and emissions telemetry.</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Knowledge (RAG)</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Vertex AI Search</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Dual-vector RAG indexing global energy grid data and ESG policies.</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Governance (Audit)</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Cloud Data Lineage</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Automated tracking of data provenance from raw API call to ESG report.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. The Sustainability Data Fabric: API to Audit</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-left: 4px solid #34a853; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Semantic Data Layer</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Utilizes <strong>Vertex AI Vector Search</strong> to index energy grid performance, enabling agents to identify regional "Carbon Hotspots".</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-left: 4px solid #34a853; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Predictive Telemetry</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Integrates <strong>BigQuery ML</strong> for in-warehouse time-series forecasting, identifying efficient windows for batch workloads.</p>
+                    </div>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Data Fabric & Information Viewpoints (TOGAF Phase C)
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. Information Systems Architecture</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the flow from streaming telemetry ingestion to the Intelligence Warehouse and RAG layer.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. Data Lineage & Audit Map</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Detailed map showing how raw carbon telemetry is transformed into "Agentic Shifting Actions".</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #e8f5e9; color: #1b5e20; padding: 25px; border-radius: 8px; border: 1px solid #c8e6c9;">
+                    <h4 style="margin-top: 0; color: #1b5e20; font-size: 1.1rem;">The Competitive Moat: Immutable ESG Provenance</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        Sentinel establishes <strong>Total Carbon Transparency</strong> by preserving all agentic decisions as structured JSON artifacts in <strong>BigQuery</strong>. This provides an immutable "Time-Travel" audit trail for external sustainability auditors, proving a 30% emissions drop across the enterprise with zero data fragmentation.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="section">
+            <section id="greenops-mlops" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">04. Model Design & Lifecycle: Sovereign Sustainability Intelligence</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    In a Tier-1 enterprise environment, "Model Drift" in carbon forecasting translates directly into ESG regulatory risk. GreenOps utilizes a <strong>Sovereign MLOps</strong> framework to ensure that every workload shift and ESG narrative is accurate, explainable, and compliant with <strong>TOGAF Phase H</strong> standards.
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. Tiered Ensemble & ESG Safety Layer</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Discriminative Layer</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;"><strong>Prophet & BQML</strong> models process years of energy grid data to identify low-emission windows with 90% forecast accuracy.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Generative Layer</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;"><strong>Fine-tuned OS LLMs</strong> (Llama/Mixtral) automate 80% of sustainability narratives using SEC/FCA reporting standards.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Safety Layer</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">A specialized <strong>Gemma 2 Critic</strong> checks for "Green-washing" hallucinations before final ESG report submission.</p>
+                    </div>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. Vertex AI "Sovereign MLOps" Pipeline</h3>
+                <div style="background: #fdfdfd; border: 1px solid #e0e0e0; padding: 30px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <ul style="line-height: 2.2; color: #333; font-size: 1.05rem; margin: 0; padding-left: 20px; list-style-type: none;">
+                        <li style="margin-bottom: 15px; border-left: 4px solid #4285F4; padding-left: 15px;">🔄 <strong>Continuous Evaluation:</strong> Vertex AI Pipelines test against "Golden Datasets" to maintain alignment with carbon accounting standards.</li>
+                        <li style="margin-bottom: 15px; border-left: 4px solid #FBBC04; padding-left: 15px;">🔍 <strong>Explainable AI (XAI):</strong> Integrated Shapley values provide auditors with specific drivers (Grid Mix, PUE) for every optimization.</li>
+                        <li style="border-left: 4px solid #EA4335; padding-left: 15px;">🛡️ <strong>Drift Circuit Breaker:</strong> Model Monitoring automatically flags and pauses autonomous shifting if prediction error exceeds 5%.</li>
+                    </ul>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Model Governance & MLOps Blueprints
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. CI/CD/CT Lifecycle Map</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the automated retraining loop and version-controlled model change management.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. XAI Feature Attribution View</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Demonstrates how local explanations are provided to auditors for every carbon-aware decision.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81c784;">
+                    <h4 style="margin-top: 0; color: #81c784; font-size: 1.1rem;">Solving the "Black Box" Sustainability Problem</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        GreenOps solves the auditability gap by exporting every agent "Thought" and "Action" as a structured JSON object to <strong>BigQuery</strong>. This allows regulators to perform "Time-Travel" audits, reviewing exactly which tool-calls and carbon forecasts led to a specific workload migration or ESG narrative.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="section">
+            <section id="greenops-infrastructure" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">05. Sovereign Infrastructure: Zero-Trust & Carbon-Aware Resilience</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    To establish the <strong>Technology Architecture (TOGAF Phase D)</strong>, GreenOps utilizes a "Sovereign Landing Zone" where infrastructure is treated as immutable code. This ensures that regional migrations are secure, compliant with data sovereignty, and resilient to energy grid volatility.
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. Zero-Trust Sustainability Perimeter</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">VPC Service Controls</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Establishes a virtual perimeter around <strong>BigQuery</strong> and <strong>Vertex AI</strong> to prevent data exfiltration during regional migrations.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Identity-Aware Proxy</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Ensures only authorized ESG officers can access carbon-optimization dashboards or override autonomous logic.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Data Sovereignty</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Utilizes <strong>Customer-Managed Encryption Keys (CMEK)</strong> via Cloud KMS for total sovereignty over carbon telemetry at rest.</p>
+                    </div>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. Multi-Region Resilience & Carbon-Aware Shifting</h3>
+                <div style="background: #fdfdfd; border: 1px solid #e0e0e0; padding: 30px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <ul style="line-height: 2.2; color: #333; font-size: 1.05rem; margin: 0; padding-left: 20px; list-style-type: none;">
+                        <li style="margin-bottom: 18px; border-left: 4px solid #34A853; padding-left: 15px;">🚀 <strong>GKE Autopilot Scalability:</strong> Workload containers deployed across a "Carbon-Aware" cluster mesh with <strong>Global Load Balancing</strong>.</li>
+                        <li style="margin-bottom: 18px; border-left: 4px solid #4285F4; padding-left: 15px;">🔄 <strong>Active-Active Persistence:</strong> <strong>Memorystore for Redis</strong> provides cross-region session replication to prevent session drops during shifting.</li>
+                        <li style="border-left: 4px solid #607D8B; padding-left: 15px;">🛠️ <strong>Immutable GitOps:</strong> Entire stacks provisioned via <strong>Terraform</strong>, ensuring the "Greenest" region maintains baseline technical parity.</li>
+                    </ul>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Security & Resilience Viewpoints (TOGAF Phase D)
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. Carbon-Aware Workload Shifting Flow</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Sequence diagram showing sub-ms rerouting of transaction streams to healthier regional energy grids.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. Zero-Trust Perimeter Topology</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the VPC Service Controls and Cloud Armor integration for the ESG data fabric.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81c784;">
+                    <h4 style="margin-top: 0; color: #81c784; font-size: 1.1rem;">Why This Infrastructure Works</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        This stack is <strong>CSO Ready</strong> (guarantees Net-Zero alignment), <strong>CISO Ready</strong> (VPC-SC and CMEK sovereignty), and <strong>CFO Ready</strong> (serverless GKE that scales to zero). It transforms the SRE function into a <strong>Sustainability Controller</strong> for the AI-augmented enterprise.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="section">
+            <section id="greenops-governance" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">06. Governance & SRE: Engineering for Sustainability Hardness</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    In the enterprise sustainability sector, a system is only as valid as its audit trail. GreenOps implements a <strong>"White-Box" Governance</strong> framework that ensures every workload shift and ESG narrative is backed by an immutable <strong>Traceability of Truth</strong>.
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. The "Traceability of Truth" Framework</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Carbon Explainability</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Utilizes <strong>Vertex AI (XAI)</strong> to provide feature attribution (Grid Mix, PUE) for every optimization recommendation.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Agentic Audit Trail</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Captures the internal monologue of the <strong>CrewAI</strong> swarm as structured JSON logs in <strong>BigQuery</strong>.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-top: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Sustainability Gating</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Deterministic "Circuit Breaker" routing any optimization with confidence &lt; 90% to human managers.</p>
+                    </div>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. SRE: Managing "Net-Zero" Reliability</h3>
+                <div style="background: #fdfdfd; border: 1px solid #e0e0e0; padding: 30px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <ul style="line-height: 2.2; color: #333; font-size: 1.05rem; margin: 0; padding-left: 20px; list-style-type: none;">
+                        <li style="margin-bottom: 18px; border-left: 4px solid #4285F4; padding-left: 15px;">📈 <strong>Availability SLO:</strong> 99.99% success rate for real-time carbon telemetry ingestion.</li>
+                        <li style="margin-bottom: 18px; border-left: 4px solid #FBBC04; padding-left: 15px;">⚡ <strong>Optimization SLO:</strong> 95% of workloads shifted to low-carbon regions within specified windows.</li>
+                        <li style="border-left: 4px solid #34A853; padding-left: 15px;">📉 <strong>Data Freshness:</strong> Maintaining &lt; 5-minute lag for carbon intensity updates from the energy grid.</li>
+                    </ul>
+                </div>
+            
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1b5e20; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Incident Response & Sustainability Audit Blueprints
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. The Sustainability Circuit Breaker</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Automated suspension of agents based on carbon forecast drift or data quality degradation.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. GreenOps "Golden Signals" Dashboard</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Looker-based monitoring suite for real-time ESG compliance and platform health.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81c784;">
+                    <h4 style="margin-top: 0; color: #81c784; font-size: 1.1rem;">Engineering for Financial & Environmental Hardness</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        Sentinel transforms the SRE function into a <strong>Digital Green Auditor</strong>. By analyzing years of historical energy telemetry via Gemini's 2M context window, the system identifies patterns months before they become systemic ESG failures, reducing year-end audit support time by 50%.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="section">
+            <section id="greenops-outcomes" style="max-width: 1000px; margin: 40px auto 40px 60px; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; clear: both; display: block; padding-bottom: 60px;">
+                <h2 style="color: #2e7d32; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-bottom: 25px;">07. Impact & Outcomes: Strategic Financial & Environmental Transformation</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                    GreenOps shifts enterprise IT from a cost-heavy "Carbon Liability" to an <strong>"Audit-Proof" Sustainability Asset</strong>. By automating the infrastructure optimization lifecycle, the platform moves the organization toward <strong>Continuous Compliance Certainty</strong>, realizing substantial gains in operational efficiency and hard-dollar savings.
+                </p>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">1. Hard-Dollar Impact: The ESG Value Realization</h3>
+                <div style="overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 35px;">
+                    <table style="width: 100%; border-collapse: collapse; background-color: #fff; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="background-color: #2e7d32; color: white; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">Value Driver</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Manual Baseline</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">GreenOps Outcome</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Financial/ESG Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Cloud OpEx Recovery</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">0-5% Rightsizing</td>
+                                <td style="padding: 12px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold;">40% Reduction</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">$5,000/mo saved (Demo Scale)</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Carbon Emissions</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Static / Increasing</td>
+                                <td style="padding: 12px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold;">30% Drop</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Direct Net-Zero Progress</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">ESG Narrative Speed</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">40+ Hours</td>
+                                <td style="padding: 12px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold;">8 Minutes</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">80% Manual Labor Reduction</td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Resource Utilization</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">50% Waste</td>
+                                <td style="padding: 12px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold;">95% Efficient</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">50% Lower Overprovisioning</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <h3 style="color: #2e7d32; margin-bottom: 20px;">2. Operational Agility & Continuous Compliance</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 35px;">
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-left: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Forecasting Precision</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Achieved <strong>90% accuracy</strong> in carbon footprint predictions using Prophet time-series models on Vertex AI.</p>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #dee2e6; border-left: 4px solid #2e7d32; padding: 20px; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #333;">Reporting Excellence</h4>
+                        <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">ESG narratives maintain 100% regulatory adherence, enhancing reporting compliance by <strong>45%</strong>.</p>
+                    </div>
+                </div>
+            
+                <details style="background: #fffde7; border: 1px solid #fff9c4; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #fbc02d; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> View Value Realization & Compliance Blueprints
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">A. Operational Value Stream Map</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the elimination of manual bottlenecks from ingestion to region shifting.</p>
+                            
+                        </div>
+                        <div>
+                            <h4 style="color: #2e7d32; border-left: 4px solid #34a853; padding-left: 10px; margin-bottom: 10px;">B. Executive Sustainability Dashboard</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">The R Shiny/Looker interface providing real-time ROAI metrics and carbon waterfall charts.</p>
+                            
+                        </div>
+                    </div>
+                </details>
+            
+                <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-right: 6px solid #fbc02d;">
+                    <h4 style="margin-top: 0; color: #fbc02d; font-size: 1.1rem;">Realizing the "Carbon-Neutral" Close</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                        GreenOps is a <strong>Strategic ESG Asset</strong>. By analyzing years of historical telemetry via Gemini's 2M context window, the system identifies optimization opportunities months before they become cost failures. This approach reduces year-end support costs and proves that sustainability is a driver of—not a tax on—enterprise innovation.
+                    </p>
+                </div>
+            </section>
         </div>
     
 </body>
