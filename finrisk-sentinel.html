@@ -511,7 +511,6 @@
         <li style="margin-bottom: 0;">🛡️ <strong>Drift Circuit Breaker:</strong> Model Monitoring automatically routes cases to manual review if accuracy drops below threshold.</li>
     </ul>
 </div>
-                    </div>
                 </div>
             
                 <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
@@ -640,13 +639,17 @@
                 </div>
             
                 <h3 style="color: #0052cc; margin-bottom: 20px;">2. SRE: Managing the "Year-End Close" Reliability</h3>
-<div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
-    <ul style="line-height: 2; color: #444; font-size: 1rem; margin: 0; padding-left: 25px; list-style-type: none;">
-        <li style="margin-bottom: 15px;">📈 <strong>Availability SLO:</strong> 99.99% success rate for real-time transaction ingestion and unbundling.</li>
-        <li style="margin-bottom: 15px;">⚡ <strong>Latency SLO:</strong> 95% of SARs drafted and pre-validated in &lt; 60 seconds.</li>
-        <li style="margin-bottom: 0;">📉 <strong>Freshness:</strong> Maintaining a &lt; 5-minute lag for synchronization between the ERP core and BigQuery.</li>
-    </ul>
-</div>
+                <div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <ul style="line-height: 1.8; color: #444; font-size: 0.95rem; margin: 0; padding-left: 20px;">
+                            <li>📈 <strong>Availability SLO:</strong> 99.99% success rate for real-time transaction ingestion and unbundling.</li>
+                            <li>⚡ <strong>Latency SLO:</strong> 95% of SARs drafted and pre-validated in &lt; 60 seconds.</li>
+                            <li>📉 <strong>Freshness:</strong> Maintaining a &lt; 5-minute lag for synchronization between the ERP core and BigQuery.</li>
+                        </ul>
+                        <div style="border: 1px dashed #ccc; padding: 10px; background: #fff; text-align: center;">
+                            <p style="font-size: 0.8rem; color: #999;"></p>
+                        </div>
+                    </div>
                 </div>
             
                 <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
