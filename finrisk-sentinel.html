@@ -234,37 +234,41 @@
                     </tbody>
                 </table>
             
-                <h3 style="color: #0052cc; margin-bottom: 25px;">4. Relevant Architecture Artifacts for EA Review</h3>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 35px;">
-                    <div>
-                        <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px;">A. Strategic Theme Alignment (SAFe LPM)</h4>
-                        <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
-                            Maps the "Reduce Compliance OpEx" theme to Epic Hypotheses for Agentic SAR Generation.
-                        </p>
-                        
+                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+                    <summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <span style="margin-right: 10px;">▶</span> 4. Relevant Architecture Artifacts for EA Review
+                    </summary>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                        <div>
+                            <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px; margin-bottom: 10px;">A. Strategic Theme Alignment (SAFe LPM)</h4>
+                            <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
+                                Maps the "Reduce Compliance OpEx" theme to Epic Hypotheses for Agentic SAR Generation.
+                            </p>
+                            <div style="border: 1px dashed #bbb; padding: 20px; text-align: center; color: #999; background: #fff;"></div>
+                        </div>
+                        <div>
+                            <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px; margin-bottom: 10px;">B. TOGAF TRM & GCP Service Mapping</h4>
+                            <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
+                                Layered view demonstrating modularity across BigQuery, Cloud Run, and Vertex AI.
+                            </p>
+                            <div style="border: 1px dashed #bbb; padding: 20px; text-align: center; color: #999; background: #fff;"></div>
+                        </div>
+                        <div>
+                            <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px; margin-bottom: 10px;">C. Contract-to-Filing Value Stream</h4>
+                            <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
+                                Visualizes lead time reduction where GenAI removes manual investigation bottlenecks.
+                            </p>
+                            <div style="border: 1px dashed #bbb; padding: 20px; text-align: center; color: #999; background: #fff;"></div>
+                        </div>
+                        <div>
+                            <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px; margin-bottom: 10px;">D. Information Systems Lineage</h4>
+                            <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
+                                Tracks data sovereignty and auditability from transactions to SAR filing (TOGAF Phase C).
+                            </p>
+                            <div style="border: 1px dashed #bbb; padding: 20px; text-align: center; color: #999; background: #fff;"></div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px;">B. TOGAF TRM & GCP Service Mapping</h4>
-                        <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
-                            Layered view demonstrating modularity across BigQuery, Cloud Run, and Vertex AI.
-                        </p>
-                        
-                    </div>
-                    <div>
-                        <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px;">C. Contract-to-Filing Value Stream</h4>
-                        <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
-                            Visualizes lead time reduction where GenAI removes manual investigation bottlenecks.
-                        </p>
-                        
-                    </div>
-                    <div>
-                        <h4 style="color: #333; border-left: 4px solid #0052cc; padding-left: 10px;">D. Information Systems Lineage</h4>
-                        <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">
-                            Tracks data sovereignty and auditability from transactions to SAR filing (TOGAF Phase C).
-                        </p>
-                        
-                    </div>
+                </details>
                 </div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px;">
@@ -500,16 +504,13 @@
                 </div>
             
                 <h3 style="color: #0052cc; margin-bottom: 20px;">2. Vertex AI "Sovereign MLOps" Pipeline</h3>
-                <div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <ul style="line-height: 1.8; color: #444; font-size: 0.95rem; margin: 0; padding-left: 20px;">
-                            <li>🔄 <strong>Continuous Evaluation:</strong> Vertex AI Pipelines test against "Golden Datasets" to maintain 98.5% alignment with senior investigator logic.</li>
-                            <li>🔍 <strong>Explainable AI (XAI):</strong> Integrated Shapley values provide auditors with specific drivers (e.g., Velocity, Geography) for every anomaly score.</li>
-                            <li>🛡️ <strong>Drift Circuit Breaker:</strong> Model Monitoring automatically routes cases to manual review if accuracy drops below threshold.</li>
-                        </ul>
-                        <div style="border: 1px dashed #ccc; padding: 10px; background: #fff; text-align: center;">
-                            <p style="font-size: 0.8rem; color: #999;"></p>
-                        </div>
+<div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+    <ul style="line-height: 2; color: #444; font-size: 1rem; margin: 0; padding-left: 25px; list-style-type: none;">
+        <li style="margin-bottom: 15px;">🔄 <strong>Continuous Evaluation:</strong> Vertex AI Pipelines test against "Golden Datasets" to maintain 98.5% alignment with senior investigator logic.</li>
+        <li style="margin-bottom: 15px;">🔍 <strong>Explainable AI (XAI):</strong> Integrated Shapley values provide auditors with specific drivers (e.g., Velocity, Geography) for every anomaly score.</li>
+        <li style="margin-bottom: 0;">🛡️ <strong>Drift Circuit Breaker:</strong> Model Monitoring automatically routes cases to manual review if accuracy drops below threshold.</li>
+    </ul>
+</div>
                     </div>
                 </div>
             
@@ -571,16 +572,13 @@
                 </div>
             
                 <h3 style="color: #0052cc; margin-bottom: 20px;">2. Multi-Region Resilience & SRE Principles</h3>
-                <div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <ul style="line-height: 1.8; color: #444; font-size: 0.95rem; margin: 0; padding-left: 20px;">
-                            <li>🚀 <strong>GKE Autopilot Scalability:</strong> Agent containers deployed across us-central1 and us-east4 with <strong>Global Load Balancing</strong>.</li>
-                            <li>🔄 <strong>Active-Active Persistence:</strong> <strong>Memorystore for Redis</strong> provides cross-region session replication for agent "Investigation States."</li>
-                            <li>🛠️ <strong>Immutable GitOps:</strong> Entire environments provisioned via <strong>Terraform</strong>, ensuring parity between Dev, UAT, and Production.</li>
-                        </ul>
-                        <div style="border: 1px dashed #ccc; padding: 10px; background: #fff; text-align: center;">
-                            <p style="font-size: 0.8rem; color: #999;"></p>
-                        </div>
+<div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+    <ul style="line-height: 2; color: #444; font-size: 1rem; margin: 0; padding-left: 25px; list-style-type: none;">
+        <li style="margin-bottom: 15px;">🚀 <strong>GKE Autopilot Scalability:</strong> Agent containers deployed across us-central1 and us-east4 with <strong>Global Load Balancing</strong>.</li>
+        <li style="margin-bottom: 15px;">🔄 <strong>Active-Active Persistence:</strong> <strong>Memorystore for Redis</strong> provides cross-region session replication for agent "Investigation States."</li>
+        <li style="margin-bottom: 0;">🛠️ <strong>Immutable GitOps:</strong> Entire environments provisioned via <strong>Terraform</strong>, ensuring parity between Dev, UAT, and Production.</li>
+    </ul>
+</div>
                     </div>
                 </div>
             
@@ -642,17 +640,13 @@
                 </div>
             
                 <h3 style="color: #0052cc; margin-bottom: 20px;">2. SRE: Managing the "Year-End Close" Reliability</h3>
-                <div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <ul style="line-height: 1.8; color: #444; font-size: 0.95rem; margin: 0; padding-left: 20px;">
-                            <li>📈 <strong>Availability SLO:</strong> 99.99% success rate for real-time transaction ingestion and unbundling.</li>
-                            <li>⚡ <strong>Latency SLO:</strong> 95% of SARs drafted and pre-validated in &lt; 60 seconds.</li>
-                            <li>📉 <strong>Freshness:</strong> Maintaining a &lt; 5-minute lag for synchronization between the ERP core and BigQuery.</li>
-                        </ul>
-                        <div style="border: 1px dashed #ccc; padding: 10px; background: #fff; text-align: center;">
-                            <p style="font-size: 0.8rem; color: #999;"></p>
-                        </div>
-                    </div>
+<div style="background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
+    <ul style="line-height: 2; color: #444; font-size: 1rem; margin: 0; padding-left: 25px; list-style-type: none;">
+        <li style="margin-bottom: 15px;">📈 <strong>Availability SLO:</strong> 99.99% success rate for real-time transaction ingestion and unbundling.</li>
+        <li style="margin-bottom: 15px;">⚡ <strong>Latency SLO:</strong> 95% of SARs drafted and pre-validated in &lt; 60 seconds.</li>
+        <li style="margin-bottom: 0;">📉 <strong>Freshness:</strong> Maintaining a &lt; 5-minute lag for synchronization between the ERP core and BigQuery.</li>
+    </ul>
+</div>
                 </div>
             
                 <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
