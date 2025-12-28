@@ -143,51 +143,9 @@
 
     
 
-    <h2>System of Systems Interconnections</h2>
-    <p>Interconnections are orchestrated via a <strong>GCP Event Mesh (Pub/Sub)</strong> and a shared <strong>Data Fabric (BigQuery)</strong>. This enables emergent behaviors, such as a 40% risk reduction through chained detection across FinRisk and Asset subsystems.</p>
-    
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Data Flow</th>
-                    <th>Mechanism</th>
-                    <th>Autonomy Trigger</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Contract Guard → Doc Analyzer</td><td>API Call</td><td>Extraction agents activate on upload.</td></tr>
-                <tr><td>Doc Analyzer → Rev Rec AI</td><td>Pub/Sub</td><td>Recognition agents process obligations.</td></tr>
-                <tr><td>FinRisk → Risk Analysis</td><td>Pub/Sub</td><td>Streaming agents escalate in real-time.</td></tr>
-                <tr><td>Governance → All Subsystems</td><td>Dataplex</td><td>Governance agents quarantine toxic data.</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="grid-2">
-        <div>
-            <h2>Agentic Autonomy Layer</h2>
-            <p><strong>Tier 1 (Perception):</strong> Sensors detect events via Pub/Sub listeners.</p>
-            <p><strong>Tier 2 (Reasoning):</strong> CoT agents (Gemini/Llama) with critic loops (>98% grounding).</p>
-            <p><strong>Tier 3 (Action):</strong> Executors trigger function calling for scheduling/resolutions.</p>
-        </div>
-        <div>
-            <h2>Outcomes & Metrics</h2>
-            <ul>
-                <li><strong>Risk Reduction:</strong> 30-50% via chained detection.</li>
-                <li><strong>Efficiency:</strong> 40% faster quote-to-cash cycles.</li>
-                <li><strong>Scale:</strong> 10k+ events/sec @ &lt;5s E2E latency.</li>
-                <li><strong>Green:</strong> 20-25% carbon savings via GreenOps.</li>
-            </ul>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 Autonomous Enterprise SoS Portfolio. Built on GCP with Vertex AI, BigQuery, and Cloud Run.
-    </footer>
-    <section id="sos-visual" style="margin-bottom: 60px;">
+    <<section id="sos-visual" style="margin-bottom: 60px;">
         <h2>System of Systems Interconnections</h2>
-        <p style="margin-bottom: 25px; font-size: 1.1rem;">Interconnections are orchestrated via a <strong>GCP Event Mesh (Pub/Sub)</strong> and a shared <strong>Data Fabric (BigQuery)</strong>. This architecture enables emergent behaviors—such as automated risk propagation—through decoupled subsystem synergies.</p>
+        <p style="margin-bottom: 25px;">Interconnections are orchestrated via a <strong>GCP Event Mesh (Pub/Sub)</strong> and a shared <strong>Data Fabric (BigQuery)</strong>. This architecture enables emergent behaviors—such as automated risk propagation—through decoupled subsystem synergies.</p>
     
         <details style="background: #ffffff; border: 1px solid #0f172a; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
             <summary style="background-color: #0f172a; color: white; padding: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
@@ -206,25 +164,26 @@
         <div class="table-container">
             <table>
                 <thead>
-                    <tr style="background: #0f172a; color: white;">
-                        <th style="padding: 12px; border: 1px solid #ddd;">Data Flow Path</th>
-                        <th style="padding: 12px; border: 1px solid #ddd;">Mechanism</th>
-                        <th style="padding: 12px; border: 1px solid #ddd;">Autonomy Trigger</th>
+                    <tr>
+                        <th>Data Flow Path</th>
+                        <th>Mechanism</th>
+                        <th>Autonomy Trigger</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>Contract-to-Revenue:</strong> Guard &rarr; Analyzer &rarr; RevRec</td><td style="padding: 12px; border: 1px solid #ddd;">Avro Schema / PubSub</td><td style="padding: 12px; border: 1px solid #ddd;">Extraction agents activate on document blob upload.</td></tr>
-                    <tr style="background: #f8fafc;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>Risk Propagation:</strong> FinRisk &rarr; Analysis &rarr; OmniMind</td><td style="padding: 12px; border: 1px solid #ddd;">Eventarc Trigger</td><td style="padding: 12px; border: 1px solid #ddd;">Anomaly scores trigger proactive customer engagement.</td></tr>
-                    <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>Metabolic Loop:</strong> Asset &rarr; GreenOps &rarr; Dashboard</td><td style="padding: 12px; border: 1px solid #ddd;">BigQuery Federated</td><td style="padding: 12px; border: 1px solid #ddd;">Utilization drift triggers resource re-optimization.</td></tr>
+                    <tr><td><strong>Contract-to-Revenue:</strong> Guard &rarr; Analyzer &rarr; RevRec</td><td>Avro Schema / PubSub</td><td>Extraction agents activate on document blob upload.</td></tr>
+                    <tr><td><strong>Risk Propagation:</strong> FinRisk &rarr; Analysis &rarr; OmniMind</td><td>Eventarc Trigger</td><td>Anomaly scores trigger proactive customer engagement.</td></tr>
+                    <tr><td><strong>Metabolic Loop:</strong> Asset &rarr; GreenOps &rarr; Dashboard</td><td>BigQuery Federated</td><td>Utilization drift triggers resource re-optimization.</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
+    
     <section id="security-substrate" style="margin-bottom: 60px; background: #0f172a; color: white; padding: 35px; border-radius: 12px; position: relative; overflow: hidden;">
-        <div style="position: absolute; right: -20px; top: -20px; opacity: 0.1; font-size: 10rem; color: #fff;">
+        <div style="position: absolute; right: -20px; top: -20px; opacity: 0.1; font-size: 10rem;">
             <i class="fas fa-shield-alt"></i>
         </div>
-        <h2 style="color: #60a5fa; border-left: 5px solid #60a5fa; padding-left: 15px; margin-top: 0; border-bottom: none;">The Sovereign Substrate</h2>
+        <h2 style="color: #60a5fa; border-left: 5px solid #60a5fa; padding-left: 15px; margin-top: 0;">The Sovereign Substrate</h2>
         <p style="color: #94a3b8; font-size: 1.05rem; margin-bottom: 25px;">
             To meet bank-grade compliance and data residency requirements, the SoS is deployed within a <strong>Sovereign Landing Zone</strong>. This ensures the agentic layer never compromises data sovereignty or security perimeters.
         </p>
@@ -235,22 +194,23 @@
             </div>
             <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
                 <h4 style="margin: 0 0 10px 0; color: #60a5fa;"><i class="fas fa-key" style="margin-right: 8px;"></i> CMEK</h4>
-                <p style="font-size: 0.85rem; margin: 0; color: #cbd5e1;">Customer Managed Encryption Keys ensure the enterprise retains 100% control over data encryption.</p>
+                <p style="font-size: 0.85rem; margin: 0; color: #cbd5e1;">Customer Managed Encryption Keys ensure the enterprise retains 100% control over data-at-rest encryption.</p>
             </div>
             <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
                 <h4 style="margin: 0 0 10px 0; color: #60a5fa;"><i class="fas fa-user-shield" style="margin-right: 8px;"></i> Zero-Trust IAM</h4>
-                <p style="font-size: 0.85rem; margin: 0; color: #cbd5e1;">Principal-based access for agents, verified via Identity-Aware Proxy (IAP) and context-aware scopes.</p>
+                <p style="font-size: 0.85rem; margin: 0; color: #cbd5e1;">Principal-based "Least Privilege" access for agents, verified via Identity-Aware Proxy (IAP).</p>
             </div>
         </div>
     </section>
+    
     <section id="outcomes" style="margin-bottom: 60px;">
         <h2>Outcomes and Performance Metrics</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <div class="grid-2">
             <div style="background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                <ul style="list-style: none; padding: 0; font-size: 1rem;">
-                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-chart-line" style="color: #2e7d32; margin-right: 10px;"></i> 40% Cycle Acceleration:</strong> Via integrated agentic quote-to-cash flows.</li>
-                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-exclamation-triangle" style="color: #d32f2f; margin-right: 10px;"></i> 30-50% Risk Mitigation:</strong> Through multi-node chained anomaly detection.</li>
-                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-leaf" style="color: #388e3c; margin-right: 10px;"></i> 25% Carbon Savings:</strong> Achieved via GreenOps Metabolic optimization.</li>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-chart-line" style="color: #2e7d32; margin-right: 10px;"></i> 40% Cycle Acceleration:</strong> Integrated quote-to-cash flows.</li>
+                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-exclamation-triangle" style="color: #d32f2f; margin-right: 10px;"></i> 30-50% Risk Mitigation:</strong> Chained anomaly detection.</li>
+                    <li style="margin-bottom: 15px;"><strong><i class="fas fa-leaf" style="color: #388e3c; margin-right: 10px;"></i> 25% Carbon Savings:</strong> GreenOps Metabolic optimization.</li>
                 </ul>
             </div>
             
