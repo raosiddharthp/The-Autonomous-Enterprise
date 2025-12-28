@@ -419,6 +419,73 @@
                     </div>
                 </details>
             </section>
+            <section id="technical-roadmap" style="max-width: 1000px; margin: 40px auto 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <h3 style="color: #e65100; margin-bottom: 20px; border-left: 5px solid #ffb74d; padding-left: 15px; font-size: 1.5rem;">01d. Technical Rollout Roadmap</h3>
+                
+                <p style="font-size: 1.05rem; color: #555; margin-bottom: 25px; line-height: 1.6;">
+                    This implementation roadmap sequences prioritized user stories into <strong>SAFe Program Increments (PIs)</strong>, starting with Must-Have forecasting and IoT ingestion. The strategy targets early predictive reliability and downtime reduction in Phase 1 before scaling into hierarchical agent orchestration and safety-critical ecosystem integration.
+                </p>
+            
+                <details style="background: #ffffff; border: 1px solid #e65100; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <summary style="background-color: #e65100; color: white; padding: 20px; font-size: 1.25rem; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-boxes" style="margin-right: 10px;"></i> Implementation Phases & PI Mapping</span>
+                        <span style="font-size: 0.9rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Click to Expand</span>
+                    </summary>
+                    
+                    <div style="padding: 20px; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #fff3e0; color: #e65100; border-bottom: 2px solid #e65100;">
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Phase</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Focus</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Stories</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Deliverables</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Value Realized</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Dependencies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">1: MVP</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Predictive Forecasting</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-01, 02, 03</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Pub/Sub IoT Pipeline; RUL Detective (TimesFM)</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #e65100; font-weight: bold;">40% Downtime Reduction; 90% RUL Accuracy</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Sensor/Telemetry Feeds</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">2: Reasoning</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Orchestration & Triage</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-04, 05, 06</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Log Analyst (Gemma 2); LangGraph State Engine</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #e65100; font-weight: bold;">Root Cause in Seconds; 15% ROI Lift</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Phase 1 Model Stability</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">3: Synergy</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Safety & SoS Integration</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-07, 08</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Semantic Breakers; GreenOps/Risk Pub/Sub Feeds</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #e65100; font-weight: bold;">Safety-Critical Pauses; Eco-Optimizations</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Subsystem Topics; Governance Layer</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">4: Resilience</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Scale & Adaptation</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Enablers</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Vertex Monitoring; DR/Autoscaling Policies</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #e65100; font-weight: bold;">RTO &lt;15 Mins; 25% OpEx Savings</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Full MLOps Maturity</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            
+                <p style="font-size: 0.95rem; color: #555; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                    This sequencing priorities Must-Have stories in Phase 1 to mitigate unplanned failures quickly (core business pain). Under SAFe, each PI includes enabler spikes (e.g., time-series model versioning) and ART coordination for cross-subsystem flows, specifically with GreenOps for utilization-driven decommissioning.
+                </p>
+            </section>
         </div>
 
         <div class="section">

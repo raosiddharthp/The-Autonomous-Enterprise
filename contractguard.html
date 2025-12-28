@@ -437,6 +437,73 @@
                     </div>
                 </details>
             </section>
+            <section id="technical-roadmap" style="max-width: 1000px; margin: 40px auto 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <h3 style="color: #4527a0; margin-bottom: 20px; border-left: 5px solid #7e57c2; padding-left: 15px; font-size: 1.5rem;">01d. Technical Rollout Roadmap</h3>
+                
+                <p style="font-size: 1.05rem; color: #555; margin-bottom: 25px; line-height: 1.6;">
+                    This implementation roadmap sequences prioritized user stories into <strong>SAFe Program Increments (PIs)</strong>, starting with Must-Have automation for core contract review and risk scoring. The strategy focuses on reducing manual approvals and disputes in Phase 1 before scaling into proactive obligation monitoring and ecosystem-wide auditability.
+                </p>
+            
+                <details style="background: #ffffff; border: 1px solid #4527a0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <summary style="background-color: #4527a0; color: white; padding: 20px; font-size: 1.25rem; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-file-contract" style="margin-right: 10px;"></i> Implementation Phases & PI Mapping</span>
+                        <span style="font-size: 0.9rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Click to Expand</span>
+                    </summary>
+                    
+                    <div style="padding: 20px; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #f3e5f5; color: #4527a0; border-bottom: 2px solid #4527a0;">
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Phase</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Focus</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Stories</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Deliverables</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Value Realized</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Dependencies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">1: MVP</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Review & Risk Scoring</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-01, 02, 03</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Redliner (Mistral-7B); AutoGen Negotiation Swarm</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #4527a0; font-weight: bold;">50% Approval Time Reduction</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Upstream Document Feeds</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">2: Oversight</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Proactive Monitoring</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-04, 05, 06</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Semantic Discovery; Gemini Risk Feeds; HITL</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #4527a0; font-weight: bold;">60% Lower Risk Exposure</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Phase 1 Agent Stability</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">3: Audit</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Scale & Lineage</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-07, 08</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Vertex MLOps Lineage; R Shiny Dashboard</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #4527a0; font-weight: bold;">Full GDPR/SOC2 Trails</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Shared Governance Layer</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">4: Scale</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Continuous Refinement</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Enablers</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Drift Detection; LoRA Fine-Tuning Jobs</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #4527a0; font-weight: bold;">90%+ Clause Precision</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Rev Rec AI/FinRisk Feedback</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            
+                <p style="font-size: 0.95rem; color: #555; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                    This sequencing prioritizes Must-Have stories in Phase 1 to deliver rapid value in contract velocity, de-risking adoption with legal stakeholders. Under SAFe, each PI includes enabler spikes (e.g., LoRA tuning) and ART coordination for cross-subsystem dependencies, specifically with Serverless Doc Analyzer for multimodal enrichment.
+                </p>
+            </section>
         </div>
 
         <div class="section">

@@ -468,6 +468,73 @@
                 </div>
             </details>
         </section>
+        <section id="technical-roadmap" style="max-width: 1000px; margin: 40px auto 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <h3 style="color: #0d47a1; margin-bottom: 20px; border-left: 5px solid #1976d2; padding-left: 15px; font-size: 1.5rem;">01d. Technical Rollout Roadmap</h3>
+            
+            <p style="font-size: 1.05rem; color: #555; margin-bottom: 25px; line-height: 1.6;">
+                This implementation roadmap sequences prioritized user stories into <strong>SAFe Program Increments (PIs)</strong>, prioritizing Must-Have compliance automation in Phase 1 to address IFRS 15/ASC 606 risks. The strategy establishes foundational trust through automated validation before scaling into agentic autonomy and cross-subsystem integration.
+            </p>
+        
+            <details style="background: #ffffff; border: 1px solid #0d47a1; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <summary style="background-color: #0d47a1; color: white; padding: 20px; font-size: 1.25rem; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fas fa-file-invoice-dollar" style="margin-right: 10px;"></i> Implementation Phases & PI Mapping</span>
+                    <span style="font-size: 0.9rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Click to Expand</span>
+                </summary>
+                
+                <div style="padding: 20px; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #e3f2fd; color: #0d47a1; border-bottom: 2px solid #0d47a1;">
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Phase</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Focus</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Stories</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Deliverables</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Value Realized</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Dependencies</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">1: MVP</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Compliance Automation</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">US-01, 02, 03</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Doc AI Ingestion; POB Analyst (Llama-3 RAG)</td>
+                                <td style="padding: 10px; border: 1px solid #ddd; color: #0d47a1; font-weight: bold;">85%+ POB Accuracy</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Contract Guard Document Feeds</td>
+                            </tr>
+                            <tr style="background-color: #fcfcfc;">
+                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">2: Oversight</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Auditability & HITL</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">US-04, 05, 06</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">LangGraph Orchestration; Vertex XAI Trails</td>
+                                <td style="padding: 10px; border: 1px solid #ddd; color: #0d47a1; font-weight: bold;">50% Audit Time Reduction</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Phase 1 Agent Stability</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">3: Integration</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Ecosystem Resilience</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">US-07, 08</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Multi-region Replication; Pub/Sub Events</td>
+                                <td style="padding: 10px; border: 1px solid #ddd; color: #0d47a1; font-weight: bold;">Zero-Downtime Period Closes</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">FinRisk Sentinel Endpoints</td>
+                            </tr>
+                            <tr style="background-color: #fcfcfc;">
+                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">4: Scale</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Continuous Optimization</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Enablers</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Vertex AI Monitoring; Champion-Challenger</td>
+                                <td style="padding: 10px; border: 1px solid #ddd; color: #0d47a1; font-weight: bold;">Long-term Compliance SLOs</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">Full MLOps Maturity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        
+            <p style="font-size: 0.95rem; color: #555; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                This sequencing mitigates business risk by automating core IFRS 15 steps in Phase 1, establishing trust and compliance ROI quickly. Under SAFe, each PI includes enabler spikes (e.g., model registry setup) and ART synchronization for cross-project alignment, particularly with Contract Guard for document flow integrity.
+            </p>
+        </section>
         <section id="multi-agent-chain" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
             <h2 style="color: #00008b; border-bottom: 2px solid #0052cc; padding-bottom: 10px;">Multi-Agent Reasoning Chain: The IFRS 15 "Logic Swarm"</h2>
             

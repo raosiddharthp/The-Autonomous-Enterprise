@@ -443,6 +443,73 @@
                     </div>
                 </details>
             </section>
+            <section id="technical-roadmap" style="max-width: 1000px; margin: 40px auto 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <h3 style="color: #b71c1c; margin-bottom: 20px; border-left: 5px solid #ef5350; padding-left: 15px; font-size: 1.5rem;">01d. Technical Rollout Roadmap</h3>
+                
+                <p style="font-size: 1.05rem; color: #555; margin-bottom: 25px; line-height: 1.6;">
+                    This implementation roadmap sequences prioritized user stories into <strong>SAFe Program Increments (PIs)</strong>, prioritizing Must-Have real-time ingestion and triage in Phase 1 to eliminate latency gaps. The strategy focuses on reducing false positives early before scaling into agentic swarm resolution and ecosystem-wide risk propagation.
+                </p>
+            
+                <details style="background: #ffffff; border: 1px solid #b71c1c; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <summary style="background-color: #b71c1c; color: white; padding: 20px; font-size: 1.25rem; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-radar" style="margin-right: 10px;"></i> Implementation Phases & PI Mapping</span>
+                        <span style="font-size: 0.9rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Click to Expand</span>
+                    </summary>
+                    
+                    <div style="padding: 20px; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #ffebee; color: #b71c1c; border-bottom: 2px solid #b71c1c;">
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Phase</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Focus</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Stories</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Deliverables</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Value Realized</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Dependencies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">1: MVP</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Streaming Triage</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-01, 02, 03</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Pub/Sub + Dataflow; Triage Agent (Gemini)</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #b71c1c; font-weight: bold;">&lt;5s Latency; 60% FP Reduction</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Threat Feeds Integration</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">2: Autonomy</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Agentic Resolution</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-04, 05, 06</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">LangGraph SAR Swarm; R Shiny Trend Maps</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #b71c1c; font-weight: bold;">75% Autonomous Resolution</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Phase 1 Model Stability</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">3: Integration</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Escalation & SoS</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-07, 08</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">HITL Gating; Omni CCAI Alert Webhooks</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #b71c1c; font-weight: bold;">Ecosystem-wide Risk Alerts</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Omni CCAI API Endpoints</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">4: Resilience</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Scale & Adaptation</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Enablers</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Multi-region Failover; Zero-Trust Policies</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #b71c1c; font-weight: bold;">99.9% Continuous Vigilance</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Full Cloud Armor/VPC-SC</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            
+                <p style="font-size: 0.95rem; color: #555; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                    This sequencing priorities Must-Have stories in Phase 1 to deliver rapid visibility into emerging threats. Under SAFe, each PI includes enabler spikes (e.g., zero-trust enforcement) and ART coordination for cross-subsystem event contracts, ensuring seamless score ingestion from FinRisk Sentinel.
+                </p>
+            </section>
         </div>
 
         <div class="section">

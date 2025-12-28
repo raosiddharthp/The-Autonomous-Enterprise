@@ -430,6 +430,73 @@
                     </div>
                 </details>
             </section>
+            <section id="technical-roadmap" style="max-width: 1000px; margin: 40px auto 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <h3 style="color: #283593; margin-bottom: 20px; border-left: 5px solid #5c6bc0; padding-left: 15px; font-size: 1.5rem;">01d. Technical Rollout Roadmap</h3>
+                
+                <p style="font-size: 1.05rem; color: #555; margin-bottom: 25px; line-height: 1.6;">
+                    This implementation roadmap sequences prioritized user stories into <strong>SAFe Program Increments (PIs)</strong>, prioritizing Must-Have validation and tagging in Phase 1. The strategy blocks toxic data propagation at the source before scaling into predictive drift detection, automated lineage, and self-correcting governance loops.
+                </p>
+            
+                <details style="background: #ffffff; border: 1px solid #283593; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <summary style="background-color: #283593; color: white; padding: 20px; font-size: 1.25rem; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-microchip" style="margin-right: 10px;"></i> Implementation Phases & PI Mapping</span>
+                        <span style="font-size: 0.9rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Click to Expand</span>
+                    </summary>
+                    
+                    <div style="padding: 20px; overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #e8eaf6; color: #283593; border-bottom: 2px solid #283593;">
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Phase</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Focus</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Stories</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 20%;">Deliverables</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Value Realized</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; width: 15%;">Dependencies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">1: MVP</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Validation & PII Foundation</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-01, 02, 03</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Rule Architect (Gemini 1.5); spaCy/DLP Tagger</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #283593; font-weight: bold;">99% Toxic Data Prevention; &lt;5s Latency</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Great Expectations Setup</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">2: Trust</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Drift Detection & Lineage</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-04, 05, 06</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Vertex AI Drift Monitoring; Dataplex Lineage</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #283593; font-weight: bold;">70% Audit Cost Reduction; Proactive Alerts</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Phase 1 Stability; BQ Store</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">3: Autonomy</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Self-Correction & SoS</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">US-07, 08</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Fan-out Correction Loops; R Scorecards</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #283593; font-weight: bold;">Self-Improving Quality Rules</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Downstream Data Flow Activation</td>
+                                </tr>
+                                <tr style="background-color: #fcfcfc;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">4: Scale</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Sustained Adaptation</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Enablers</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Autoscaling Validation; Open-Source Retraining</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; color: #283593; font-weight: bold;">80% Data Debt Reduction</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">Full MLOps Maturity</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            
+                <p style="font-size: 0.95rem; color: #555; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                    This sequencing priorities Must-Have stories in Phase 1 to deliver immediate data integrity wins. Under SAFe, each PI includes enabler spikes (e.g., Dataplex cataloging) and ART coordination for cross-subsystem validation gates, particularly with Serverless Doc Analyzer for metadata enrichment accuracy.
+                </p>
+            </section>
         </div>
 
         <div class="section">
