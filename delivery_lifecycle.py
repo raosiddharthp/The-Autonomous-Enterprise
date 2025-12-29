@@ -1,28 +1,37 @@
-from diagrams import Diagram, Edge
-from diagrams.programming.language import Python
-from diagrams.custom import Custom
+from diagrams import Diagram, Cluster, Edge
+from diagrams.gcp.operations import Monitoring
+from diagrams.gcp.devtools import GCR
+from diagrams.gcp.compute import Run
+from diagrams.gcp.ml import VertexAI
 
-# Using generic nodes to represent the iterative cycle stages
-# Filename: delivery_lifecycle.png
-with Diagram("TOGAF ADM: Agentic Delivery Lifecycle", show=False, filename="delivery_lifecycle", direction="TB"):
+# Gold Standard attributes: Horizontal span, high-fidelity spacing
+graph_attr = {
+    "pad": "0.1",
+    "nodesep": "1.0",
+    "ranksep": "1.5",
+    "bgcolor": "transparent",
+    "margin": "0"
+}
 
-    # Defining the stages of the iteration cycle
-    vision = Python("Architecture\nVision")
-    business = Python("Business\nArchitecture")
-    systems = Python("Information Systems\nArchitecture")
-    tech = Python("Technology\nArchitecture")
-    opportunities = Python("Opportunities\n& Solutions")
-    migration = Python("Migration\nPlanning")
-    implementation = Python("Implementation\nGovernance")
-    change = Python("Architecture Change\nManagement")
+with Diagram("Architectural Governance: Agile Delivery Loop", show=False, filename="delivery_lifecycle", direction="LR", graph_attr=graph_attr):
 
-    # Creating the circular iteration loop
-    vision >> business >> systems >> tech >> opportunities >> migration >> implementation >> change >> vision
-
-    # Central Requirements Hub
-    requirements = Python("Requirements\nManagement")
+    # Representing the core ADM Phases with standard Technical/Management icons
+    vision = VertexAI("Phase A:\nArchitecture Vision")
+    business = Run("Phase B:\nBusiness Arch")
+    info_sys = GCR("Phase C:\nInformation Systems")
+    tech_arch = Monitoring("Phase D:\nTechnology Arch")
     
-    # Connecting all stages to the central hub to represent the TOGAF ADM core
-    stages = [vision, business, systems, tech, opportunities, migration, implementation, change]
-    for stage in stages:
-        stage - Edge(style="dotted", color="grey") - requirements
+    with Cluster("Agile Implementation (Sprints)"):
+        opps = Run("Phase E/F:\nOpportunities & Solutions")
+        migration = VertexAI("Phase G:\nImplementation Governance")
+
+    # Defining the Iterative Loop (Left to Right)
+    vision >> Edge(label="Strategy", color="darkblue") >> business
+    business >> Edge(label="Data/App", color="darkblue") >> info_sys
+    info_sys >> Edge(label="Infra", color="darkblue") >> tech_arch
+    
+    # Connecting to the Agile Execution Cluster
+    tech_arch >> Edge(label="Execution", color="darkgreen", style="bold") >> opps >> migration
+    
+    # The Return Feedback Loop (The 'Iteration' part of TOGAF)
+    migration >> Edge(label="Lessons Learned", color="gray", style="dashed") >> vision
