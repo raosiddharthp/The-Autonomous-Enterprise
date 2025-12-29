@@ -152,12 +152,11 @@
                 <span><i class="fas fa-sitemap" style="margin-right: 10px;"></i> View Level 0: System Context Diagram (C4 Model)</span>
                 <span style="font-size: 0.8rem; border: 1px solid white; padding: 2px 8px; border-radius: 4px;">Expand Diagram</span>
             </summary>
-            <div style="padding: 20px; text-align: center; background: #f8fafc;">
-                <div style="border: 2px dashed #cbd5e1; padding: 40px; color: #64748b;">
-                    <i class="fas fa-project-diagram fa-3x" style="margin-bottom: 15px;"></i>
-                    <p><strong>C4 System Context Map Rendering...</strong></p>
-                    <p style="font-size: 0.85rem;">[Visualizing: Contract Guard → Doc Analyzer → RevRec-AI → Strategy Dashboard]</p>
-                </div>
+            <div style="text-align: center; padding: 20px;">
+                <img src="system_context.png" alt="Level 0 System Context Diagram" style="max-width: 100%; height: auto; border-radius: 8px;">
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                    Figure 0.1: System Context Diagram (C4 Level 0) illustrating the decoupled synergy between legal, financial, and strategic subsystems via GCP Pub/Sub.
+                </p>
             </div>
         </details>
     
@@ -191,7 +190,16 @@
                 </summary>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Architectural Overlay]</strong></p>
+                        <p><strong>Architectural Overlay</strong></p>
+                        <div class="value-stream-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                            <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Operational Value Stream: Agentic Integration Map
+                            </h4>
+                            <img src="value_stream.png" alt="SAFe Value Stream & Agentic Touchpoints" style="width: 100%; max-width: 1100px; height: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto; font-style: italic;">
+                                Figure 0.2: Architectural Overlay mapping the 10 subsystems across the Operational Value Stream stages: Ingestion → Processing → Recognition → Risk → Steering.
+                            </p>
+                        </div>
                         <p style="font-size: 0.85rem;">Mapping the 10 subsystems across the Operational Value Stream stages: Ingestion &rarr; Processing &rarr; Recognition &rarr; Risk &rarr; Steering.</p>
                     </div>
                 </div>
@@ -204,7 +212,16 @@
                 </summary>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Infrastructure Schematic]</strong></p>
+                        <p><strong>Infrastructure Schematic</strong></p>
+                        <div class="schematic-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                            <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Security Architecture: Sovereign Landing Zone
+                            </h4>
+                            <img src="landing_zone.png" alt="Sovereign Landing Zone Architecture" style="width: 100%; max-width: 900px; height: auto; border-radius: 8px; border: 1px solid #eee;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Figure 0.3: Infrastructure Schematic illustrating VPC-SC perimeters, CMEK encryption, and regional data residency controls for regulated enterprise data.
+                            </p>
+                        </div>
                         <p style="font-size: 0.85rem;">Illustrates VPC-SC perimeters, CMEK encryption, and data residency controls for regulated enterprise data.</p>
                     </div>
                 </div>
@@ -217,7 +234,16 @@
                 </summary>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Decoupling Mechanism]</strong></p>
+                        <p><strong>Decoupling Mechanism</strong></p>
+                        <div class="mesh-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                            <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Event Mesh: Asynchronous Fan-Out Pattern
+                            </h4>
+                            <img src="event_mesh.png" alt="Pub/Sub Event Mesh Interconnectivity" style="width: 100%; max-width: 950px; height: auto; border-radius: 8px;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Figure 0.4: Decoupling Mechanism illustrating core fan-out patterns and asynchronous triggers from Contract Guard to downstream subscribers.
+                            </p>
+                        </div>
                         <p style="font-size: 0.85rem;">Core fan-out patterns showing asynchronous triggers from Contract Guard to downstream subscribers.</p>
                     </div>
                 </div>
@@ -228,9 +254,18 @@
                     <i class="fas fa-database" style="margin-right: 12px; color: #3b82f6; width: 20px;"></i> 
                     <span>BigQuery Data Lake / Fabric View</span>
                 </summary>
+                <div class="fabric-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                    <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Data Fabric: Governed Federated Query Layer
+                    </h4>
+                    <img src="data_fabric.png" alt="BigQuery Data Governance Fabric" style="width: 100%; max-width: 950px; height: auto; border-radius: 8px;">
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                        Figure 0.5: Data Governance Fabric visualizing federated queries across subsystems with integrated Open-Source Governance gates and IAM policy tagging.
+                    </p>
+                </div>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Data Governance Fabric]</strong></p>
+                        <p><strong>Data Governance Fabric</strong></p>
                         <p style="font-size: 0.85rem;">Visualizing federated queries across subsystems with integrated Open-Source Governance gates.</p>
                     </div>
                 </div>
@@ -241,9 +276,18 @@
                     <i class="fas fa-robot" style="margin-right: 12px; color: #3b82f6; width: 20px;"></i> 
                     <span>Multi-Agent Orchestration Patterns</span>
                 </summary>
+                <div class="agentic-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                    <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Cognitive Pattern: Orchestrator-Specialist-Critic Loop
+                    </h4>
+                    <img src="agentic_logic.png" alt="Agentic Reasoning Logic" style="width: 100%; max-width: 900px; height: auto; border-radius: 8px;">
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                        Figure 0.6: Agentic Reasoning Logic illustrating hierarchical swarms using Gemini & LangGraph for autonomous task refinement and validation.
+                    </p>
+                </div>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Agentic Reasoning Logic]</strong></p>
+                        <p><strong>Agentic Reasoning Logic</strong></p>
                         <p style="font-size: 0.85rem;">Hierarchical and Peer swarms: Orchestrator &rarr; Specialist &rarr; Critic loop using Gemini & LangGraph.</p>
                     </div>
                 </div>
@@ -254,9 +298,18 @@
                     <i class="fas fa-sync-alt" style="margin-right: 12px; color: #3b82f6; width: 20px;"></i> 
                     <span>TOGAF ADM Iteration Cycle</span>
                 </summary>
+                <div class="lifecycle-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                    <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Architectural Governance: Agile Delivery Loop
+                    </h4>
+                    <img src="delivery_lifecycle.png" alt="TOGAF ADM Delivery Lifecycle" style="width: 100%; max-width: 850px; height: auto; border-radius: 8px;">
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                        Figure 0.7: Delivery Lifecycle illustrating the agile iteration cycle for the phased delivery of agentic autonomous enablers within the TOGAF ADM framework.
+                    </p>
+                </div>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Delivery Lifecycle]</strong></p>
+                        <p><strong>Delivery Lifecycle</strong></p>
                         <p style="font-size: 0.85rem;">Agile iteration cycle for the phased delivery of agentic autonomous enablers.</p>
                     </div>
                 </div>
@@ -267,9 +320,18 @@
                     <i class="fas fa-history" style="margin-right: 12px; color: #3b82f6; width: 20px;"></i> 
                     <span>Emergent Closed-Loop: Risk Propagation Sequence</span>
                 </summary>
+                <div class="sequence-container" style="text-align: center; padding: 30px; background: #ffffff;">
+                    <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Emergent Behavior: Autonomous Risk Mitigation Loop
+                    </h4>
+                    <img src="risk_sequence.png" alt="Risk Propagation Sequence Diagram" style="width: 100%; max-width: 850px; height: auto; border-radius: 8px;">
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                        Figure 0.8: Sequence Diagram tracing a real-time risk event from FinRisk Sentinel through impact analysis to automated Omni CCAI mitigation.
+                    </p>
+                </div>
                 <div style="padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
                     <div style="border: 2px dashed #cbd5e1; padding: 30px; color: #64748b; border-radius: 6px;">
-                        <p><strong>[Sequence Diagram]</strong></p>
+                        <p><strong>Sequence Diagram</strong></p>
                         <p style="font-size: 0.85rem;">Tracing a risk event from FinRisk Sentinel &rarr; Real-Time Risk &rarr; Omni CCAI mitigation.</p>
                     </div>
                 </div>
