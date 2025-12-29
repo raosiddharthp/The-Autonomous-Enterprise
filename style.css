@@ -1,109 +1,88 @@
+/* style.css - Clean Architectural Design System (No Sidebar) */
+
+/* 1. MASTER THEME REPOSITORY */
+:root {
+    --primary: #00008b; --secondary: #007bff; --accent: #a0d8ef; --soft-bg: #f8f9fa; --border: #ff0000;
+}
+
+body.greenops-theme   { --primary: #1b5e20; --secondary: #2e7d32; --accent: #81c784; --soft-bg: #f1f8e9; --border: #81c784; }
+body.finrisk-theme    { --primary: #b71c1c; --secondary: #c62828; --accent: #ef5350; --soft-bg: #ffebee; --border: #ef5350; }
+body.revrec-theme     { --primary: #0d47a1; --secondary: #1976d2; --accent: #64b5f6; --soft-bg: #e3f2fd; --border: #64b5f6; }
+body.legal-theme      { --primary: #4527a0; --secondary: #673ab7; --accent: #b39ddb; --soft-bg: #f3e5f5; --border: #b39ddb; }
+body.asset-theme      { --primary: #e65100; --secondary: #ef6c00; --accent: #ffb74d; --soft-bg: #fff3e0; --border: #ffb74d; }
+body.dashboard-theme  { --primary: #1a237e; --secondary: #303f9f; --accent: #7986cb; --soft-bg: #e8eaf6; --border: #7986cb; }
+body.risk-theme       { --primary: #b71c1c; --secondary: #d32f2f; --accent: #ef5350; --soft-bg: #ffebee; --border: #ef5350; }
+body.governance-theme { --primary: #283593; --secondary: #3f51b5; --accent: #9fa8da; --soft-bg: #e8eaf6; --border: #9fa8da; }
+body.analyzer-theme   { --primary: #006064; --secondary: #00838f; --accent: #4dd0e1; --soft-bg: #e0f7fa; --border: #4dd0e1; }
+body.ccai-theme       { --primary: #2e7d32; --secondary: #388e3c; --accent: #81c784; --soft-bg: #e8f5e9; --border: #81c784; }
+
+/* 2. CORE LAYOUT (NO SIDEBAR) */
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
     min-height: 100vh;
     background-color: #f8f9fa;
-}
-
-.sidebar {
-    width: 220px;
-    background-color: #a0d8ef;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    padding-top: 60px;
-    text-align: center;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.15);
-    z-index: 100;
-}
-
-.sidebar a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.sidebar h1 {
-    color: #00008b;
-    font-size: 2.2em;
-    margin: 0;
-}
-
-.search-icon {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    font-size: 2em;
-    color: #00008b;
-    z-index: 200;
-    cursor: pointer;
-}
-
-.header-ribbon {
-    background-color: #007bff;
-    padding: 20px 0;
-    text-align: center;
-    margin-left: 220px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    position: relative;
-    z-index: 90;
-}
-
-.header-ribbon nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.header-ribbon nav a {
-    color: white;
-    text-decoration: none;
-    background-color: rgba(255,255,255,0.15);
-    padding: 12px 20px;
-    border: 2px solid white;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.3s;
-    white-space: nowrap;
-}
-
-.header-ribbon nav a:hover {
-    background-color: rgba(255,255,255,0.3);
-    transform: scale(1.05);
-}
-
-.header-ribbon nav a.active {
-    background-color: white;
-    color: #007bff;
-}
-
-.main-content {
-    margin-left: 220px;
-    padding: 40px 60px;
-    min-height: 100vh;
-}
-
-.main-content h1 {
-    color: #00008b;
-    font-size: 2.8em;
-    border-bottom: 5px solid #ff0000;
-    padding-bottom: 10px;
-    display: inline-block;
-}
-
-/* New: Project description paragraph styling */
-.project-description {
-    font-size: 1.2em;
-    line-height: 1.7;
-    margin: 40px auto 60px auto;
-    max-width: 1000px;
     color: #333;
 }
 
-/* Keep existing section styling */
+/* Sidebar Completely Removed */
+.sidebar {
+    display: none !important;
+}
+
+/* 3. HOME NAVIGATION BUTTON (Project Pages) */
+.home-nav-container {
+    padding: 20px 60px;
+    background: white;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.btn-home {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+    background-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-home i {
+    margin-right: 8px;
+}
+
+/* 4. MAIN CONTENT (Centered & Full Width) */
+.main-content {
+    padding: 40px 60px;
+    max-width: 1000px; /* Optimal reading width */
+    margin: 0 auto;   /* Center the document */
+}
+
+/* 5. COMPONENTS */
+.main-content h1 {
+    color: var(--primary);
+    font-size: 2.8em;
+    border-bottom: 5px solid var(--border);
+    padding-bottom: 10px;
+    display: inline-block;
+    margin-top: 0;
+}
+
 .section {
     background: white;
     border-radius: 12px;
@@ -113,16 +92,23 @@ body {
 }
 
 .section h3 {
-    color: #00008b;
-    font-size: 1.4em;
-    border-left: 6px solid #007bff;
+    color: var(--primary) !important;
+    border-left: 6px solid var(--secondary) !important;
     padding-left: 20px;
+}
+
+table th { background-color: var(--primary) !important; color: white !important; }
+table tr:nth-child(even) { background-color: var(--soft-bg); }
+details summary { background-color: var(--secondary) !important; color: white !important; padding: 15px; cursor: pointer; border-radius: 8px; }
+
+/* 6. LANDING PAGE RIBBON (Only if home-page class exists) */
+body.home-page .header-ribbon {
+    background-color: var(--secondary);
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 body.project-page .header-ribbon {
     display: none;
-}
-
-body.home-page .main-content {
-    padding-top: 20px;
 }
