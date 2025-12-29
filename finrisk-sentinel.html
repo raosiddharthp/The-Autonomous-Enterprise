@@ -223,29 +223,65 @@
                     </tbody>
                 </table>
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 35px; width: 100%; box-sizing: border-box;">
-                    <summary style="font-weight: bold; font-size: 1.25rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center; border-bottom: 2px solid #0052cc; padding-bottom: 10px; margin-bottom: 15px;">
-                        <span style="margin-right: 12px;">▼</span> 4. Relevant Architecture Artifacts for EA Review
-                    </summary>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 10px 0;">
-                        <div style="background: #fff; padding: 15px; border-radius: 5px; border-left: 4px solid #0052cc;">
-                            <h4 style="color: #333; margin-top: 0; margin-bottom: 8px;">A. Strategic Theme Alignment (SAFe LPM)</h4>
-                            <p style="font-size: 0.95rem; color: #444; line-height: 1.5; margin: 0;">Maps the "Reduce Compliance OpEx" theme to Epic Hypotheses for Agentic SAR Generation.</p>
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-bullseye" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>A. Strategic Theme Alignment (SAFe LPM)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">LPM View: Reducing Compliance OpEx</h4>
+                            <img src="finrisk_theme_alignment.png" alt="Strategic Theme Alignment" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Mapping the "Reduce Compliance OpEx" strategic theme to Epic Hypotheses for Agentic SAR (Suspicious Activity Report) Generation.
+                            </p>
                         </div>
-                        <div style="background: #fff; padding: 15px; border-radius: 5px; border-left: 4px solid #0052cc;">
-                            <h4 style="color: #333; margin-top: 0; margin-bottom: 8px;">B. TOGAF TRM & GCP Service Mapping</h4>
-                            <p style="font-size: 0.95rem; color: #444; line-height: 1.5; margin: 0;">Layered view demonstrating modularity across BigQuery, Cloud Run, and Vertex AI.</p>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-layer-group" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>B. TOGAF TRM & GCP Service Mapping</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Technical Reference Model: GCP Modularity</h4>
+                            <img src="finrisk_trm_mapping.png" alt="TOGAF TRM Mapping" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Layered architecture demonstrating modularity across BigQuery (Data), Cloud Run (Compute), and Vertex AI (Intelligence).
+                            </p>
                         </div>
-                        <div style="background: #fff; padding: 15px; border-radius: 5px; border-left: 4px solid #0052cc;">
-                            <h4 style="color: #333; margin-top: 0; margin-bottom: 8px;">C. Contract-to-Filing Value Stream</h4>
-                            <p style="font-size: 0.95rem; color: #444; line-height: 1.5; margin: 0;">Visualizes lead time reduction where GenAI removes manual investigation bottlenecks.</p>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-file-invoice-dollar" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>C. Contract-to-Filing Value Stream</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Efficiency View: GenAI Lead Time Reduction</h4>
+                            <img src="finrisk_value_stream.png" alt="Contract-to-Filing Value Stream" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Visualizing the elimination of manual investigation bottlenecks, reducing SAR filing lead time from days to minutes.
+                            </p>
                         </div>
-                        <div style="background: #fff; padding: 15px; border-radius: 5px; border-left: 4px solid #0052cc;">
-                            <h4 style="color: #333; margin-top: 0; margin-bottom: 8px;">D. Information Systems Lineage</h4>
-                            <p style="font-size: 0.95rem; color: #444; line-height: 1.5; margin: 0;">Tracks data sovereignty and auditability from transactions to SAR filing (TOGAF Phase C).</p>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-project-diagram" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>D. Information Systems Lineage (Phase C)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Data Sovereignty: Transaction to Filing Trace</h4>
+                            <img src="finrisk_lineage.png" alt="Information Systems Lineage" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;">
+                                Tracking auditable data flow and sovereignty from core transaction ingestion to automated regulatory filing.
+                            </p>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                
+                </div>
                 
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px;">
@@ -559,28 +595,51 @@
                     </div>
                 </div>
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Technical Architecture & Reasoning Artifacts
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. Multi-Agent Orchestration Flow</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the Hierarchical Supervisor pattern and stateful handoffs between specialized compliance agents.</p>
-                            
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-users-cog" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>A. Multi-Agent Orchestration Flow (Hierarchical Supervisor)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Orchestration Pattern: Stateful Compliance Handoffs</h4>
+                            <img src="finrisk_orchestration_flow.png" alt="Multi-Agent Orchestration" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Visualizing the Hierarchical Supervisor pattern where a central controller manages stateful handoffs between specialized Researcher and Auditor agents.
+                            </p>
                         </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. Agentic State Machine (LangGraph)</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Control flow diagram showing nodes for Triage, Researcher, and Auditor to ensure deterministic audit trails.</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-route" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>B. Agentic State Machine (LangGraph Logic)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Control Flow: Deterministic Audit Trails</h4>
+                            <img src="finrisk_state_machine.png" alt="Agentic State Machine" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Deterministic control flow showing nodes for Triage, Researcher, and Auditor to ensure every financial investigation follows a verifiable audit trail.
+                            </p>
                         </div>
-                        <div style="grid-column: span 2;">
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">C. ReAct Tool-Use Sequence Trace</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Sequence diagram tracking the Reasoning + Acting loop between the Researcher agent and GCP-native APIs (Spanner/DLP).</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-terminal" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>C. ReAct Tool-Use Sequence Trace (Reasoning Loop)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Reasoning Loop: Agentic Tool Invocation (Spanner/DLP)</h4>
+                            <img src="finrisk_react_trace.png" alt="ReAct Tool-Use Trace" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Tracing the Reasoning + Acting loop between the Researcher agent and GCP-native APIs for PII redaction (DLP) and historical ledger access (Spanner).
+                            </p>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81d4fa;">
                     <h4 style="margin-top: 0; color: #81d4fa; font-size: 1.1rem;">Strategic Value: Sovereign Decision Support</h4>
@@ -648,28 +707,51 @@
                     </div>
                 </div>
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Data Fabric & Governance Viewpoints (TOGAF Phase C)
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. Information Systems Architecture</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the end-to-end flow from streaming ingestion to the Intelligence Warehouse and RAG-enabled Agent Layer.</p>
-                            
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-database" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>A. Information Systems Architecture (Telemetry to RAG)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Systems Flow: Streaming Ingestion & RAG Layer</h4>
+                            <img src="finrisk_systems_arch.png" alt="Information Systems Architecture" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Visualizing the end-to-end flow from high-velocity streaming transaction ingestion to the Intelligence Warehouse and RAG-enabled Agent Layer.
+                            </p>
                         </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. Data Lineage & Audit Map</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Detailed provenance map showing how raw data is transformed into "Agentic Thoughts" and compliant SAR filings.</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-history" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>B. Data Lineage & Audit Map (Provenance)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Transformation Map: Raw Data to SAR Filing</h4>
+                            <img src="finrisk_audit_map.png" alt="Data Lineage & Audit Map" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Detailed provenance map showing the lifecycle of raw transaction data as it is transformed into agentic reasoning nodes and compliant SAR filings.
+                            </p>
                         </div>
-                        <div style="grid-column: span 2;">
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">C. High-Availability Risk Core</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Regional multi-zone deployment strategy for the Pub/Sub and Dataflow backbone to ensure 99.9% availability.</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-server" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>C. High-Availability Risk Core (Resilience)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Deployment View: Regional Multi-Zone Strategy</h4>
+                            <img src="finrisk_ha_core.png" alt="High-Availability Risk Core" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Regional multi-zone deployment strategy for the Pub/Sub and Dataflow backbone to ensure 99.9% availability for critical risk processing.
+                            </p>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #e3f2fd; color: #0d47a1; padding: 25px; border-radius: 8px; border: 1px solid #bbdefb;">
                     <h4 style="margin-top: 0; color: #0d47a1; font-size: 1.1rem;">The Competitive Moat: Native AML AI Integration</h4>
@@ -720,23 +802,37 @@
 </div>
             
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Regulatory Governance & Traceability Blueprints
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. CI/CD/CT Lifecycle Map</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the automated retraining loop and version-controlled model change management.</p>
-                            
-                        </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. Policy-as-Code Guardrails</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Shows how <strong>GCP Secret Manager</strong> hosts versioned YAML policies for real-time "Risk Appetite" updates.</p>
-                            
-                        </div>
-                    </div>
-                </details>
+<div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+            <i class="fas fa-sync-alt" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+            <span>A. CI/CD/CT Lifecycle Map (MLOps Governance)</span>
+        </summary>
+        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">MLOps Pipeline: Automated Retraining & Version Control</h4>
+            <img src="finrisk_mlops_lifecycle.png" alt="CI/CD/CT Lifecycle Map" style="width: 100%; max-width: 1100px; height: auto;">
+            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                Visualizing the automated retraining loop (CT) and version-controlled model change management for risk-scoring agents.
+            </p>
+        </div>
+    </details>
+
+    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+            <i class="fas fa-gavel" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+            <span>B. Policy-as-Code Guardrails (Risk Appetite)</span>
+        </summary>
+        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Security Architecture: Versioned Risk Policies</h4>
+            <img src="finrisk_policy_guardrails.png" alt="Policy-as-Code Guardrails" style="width: 100%; max-width: 1100px; height: auto;">
+            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                Visualizing how GCP Secret Manager hosts versioned YAML policies to provide real-time, auditable "Risk Appetite" updates to the agent swarm.
+            </p>
+        </div>
+    </details>
+
+</div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81d4fa;">
                     <h4 style="margin-top: 0; color: #81d4fa; font-size: 1.1rem;">The Reasoning Trace: Solving the "Black Box" Problem</h4>
@@ -786,23 +882,37 @@
     </ul>
 </div>
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Security & Resilience Viewpoints (TOGAF Phase D)
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. Zero-Trust Perimeter Map</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the VPC Service Controls topology and the integration of Cloud Armor for Layer-7 DDoS protection.</p>
-                            
-                        </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. Regional Failover Sequence</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Sequence diagram showing sub-ms rerouting of transaction streams to healthy regions during a zone failure.</p>
-                            
-                        </div>
-                    </div>
-                </details>
+<div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+            <i class="fas fa-user-shield" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+            <span>A. Zero-Trust Perimeter Map (Sovereignty)</span>
+        </summary>
+        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Infrastructure View: VPC-SC & Layer-7 Protection</h4>
+            <img src="finrisk_zero_trust.png" alt="Zero-Trust Perimeter Map" style="width: 100%; max-width: 1100px; height: auto;">
+            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                Visualizing the VPC Service Controls topology and Cloud Armor integration ensuring Layer-7 DDoS protection for the FinRisk data fabric.
+            </p>
+        </div>
+    </details>
+
+    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+            <i class="fas fa-sync" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+            <span>B. Regional Failover Sequence (Resilience)</span>
+        </summary>
+        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Sequence: sub-ms Transaction Rerouting</h4>
+            <img src="finrisk_failover_sequence.png" alt="Regional Failover Sequence" style="width: 100%; max-width: 1100px; height: auto;">
+            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                Logical sequence showing sub-ms rerouting of transaction streams to healthy secondary regions during a primary zone failure.
+            </p>
+        </div>
+    </details>
+
+</div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81d4fa;">
                     <h4 style="margin-top: 0; color: #81d4fa; font-size: 1.1rem;">Why This Infrastructure Works</h4>
@@ -845,23 +955,37 @@
                     </ul>
                 </div>
             
-                <details style="background: #f1f3f4; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #1a237e; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Incident Response & Auditability Blueprints
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. The Financial Circuit Breaker</h4>
-                            <p style="font-size: 0.85rem; color: #666;">Suspension of agents based on model drift.</p>
-                            <div style="border: 1px dashed #ccc; height: 100px; text-align: center; line-height: 100px; color: #999; background: #fff;">[Circuit Breaker Diagram]</div>
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-power-off" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>A. The Financial Circuit Breaker (Model Guardrails)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Guardrail Logic: Automated Agent Suspension</h4>
+                            <img src="finrisk_circuit_breaker.png" alt="Financial Circuit Breaker" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Visualizing the automated circuit breaker pattern that suspends risk agents when model drift or prediction confidence falls outside of regulatory safety thresholds.
+                            </p>
                         </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. SRE "Golden Signals" Dashboard</h4>
-                            <p style="font-size: 0.85rem; color: #666;">Real-time compliance health monitoring.</p>
-                            <div style="border: 1px dashed #ccc; height: 100px; text-align: center; line-height: 100px; color: #999; background: #fff;">[SRE Dashboard Diagram]</div>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-microchip" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>B. SRE "Golden Signals" Dashboard (Platform Health)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Observability: Real-time Compliance Monitoring</h4>
+                            <img src="finrisk_sre_dashboard.png" alt="SRE Golden Signals Dashboard" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Architecture of the SRE monitoring suite, tracking latency, error rates, and compliance health signals across the agentic fraud detection backbone.
+                            </p>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-left: 6px solid #81d4fa;">
                     <h4 style="margin-top: 0; color: #81d4fa; font-size: 1.1rem;">Disaster Recovery & FinOps</h4>
@@ -934,28 +1058,51 @@
                     </div>
                 </div>
             
-                <details style="background: #fffde7; border: 1px solid #fff9c4; border-radius: 8px; padding: 15px; margin-bottom: 35px;">
-                    <summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #fbc02d; list-style: none; display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">▶</span> View Value Realization & Compliance Blueprints
-                    </summary>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">A. Operational Value Stream Map</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Visualizes the elimination of investigative bottlenecks from detection to automated SAR filing.</p>
-                            
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-project-diagram" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>A. Operational Value Stream Map (Lead Time Optimization)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Value Stream: Detection to Automated SAR Filing</h4>
+                            <img src="finrisk_value_stream_realization.png" alt="Operational Value Stream Map" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Visualizing the elimination of investigative bottlenecks, comparing the legacy manual path to the streamlined, agent-led SAR filing process.
+                            </p>
                         </div>
-                        <div>
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">B. Fraud "Smoothing" Analysis</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Line chart comparing high-variance manual detection vs. the smooth, deterministic logic of FinRisk Sentinel.</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-chart-line" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>B. Fraud "Smoothing" Analysis (Deterministic Logic)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Efficiency View: Manual Variance vs. Agentic Consistency</h4>
+                            <img src="finrisk_fraud_smoothing.png" alt="Fraud Smoothing Analysis" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Comparative analysis of high-variance manual detection cycles vs. the smooth, deterministic, and predictable logic of FinRisk Sentinel.
+                            </p>
                         </div>
-                        <div style="grid-column: span 2;">
-                            <h4 style="color: #0052cc; border-bottom: 1px solid #ccc; padding-bottom: 5px;">C. Compliance Dashboard (Executive View)</h4>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">The R Shiny/Looker interface providing real-time ROAI metrics and audit status to the CCO.</p>
-                            
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-user-tie" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                            <span>C. Compliance Dashboard (Executive ROAI)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">CCO View: Real-time ROAI & Audit Status</h4>
+                            <img src="finrisk_exec_dashboard.png" alt="Executive Compliance Dashboard" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                The Looker-based interface architecture providing the Chief Compliance Officer (CCO) with real-time Return on AI (ROAI) and comprehensive audit status.
+                            </p>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #ffffff; padding: 25px; border-radius: 8px; border-right: 6px solid #fbc02d;">
                     <h4 style="margin-top: 0; color: #fbc02d; font-size: 1.1rem;">Realizing the "Zero-Failure" Close</h4>
