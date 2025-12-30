@@ -717,21 +717,35 @@
                     </div>
                 </div>
             
-                <details style="margin: 30px 0; padding: 20px; background: #263238; border-radius: 12px; border: 1px solid #37474f;">
-                    <summary style="font-size: 1.1em; font-weight: bold; cursor: pointer; color: #81d4fa;">View Technical Implementation (Reactivity & Security)</summary>
-                    <div style="margin-top: 20px; color: #cfd8dc;">
-                        <ul style="font-size: 0.9rem; line-height: 1.7;">
-                            <li>⚡ <strong>Reactive Computation:</strong> Using R's <code>observeEvent()</code> to call <strong>Cloud Run APIs</strong> instantly when funding sliders move.</li>
-                            <li>🎨 <strong>Material Design:</strong> High-contrast "Dark Mode" enterprise theme using <code>bslib</code> for executive tablet readability.</li>
-                            <li>🔒 <strong>Row-Level Security (RLS):</strong> BigQuery permissions are passed through the R session, ensuring users only see authorized data.</li>
-                        </ul>
-                        
-                        <div style="text-align: center; margin: 20px 0; border: 1px dashed #81d4fa; padding: 20px; color: #81d4fa; background: #37474f;">
-                            [Placeholder: Strategy Alignment "Sunburst" - R Shiny Visualization]
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-bolt" style="margin-right: 12px; color: #0288d1; width: 20px;"></i> 
+                            <span>TOGAF Phase D: Reactive Computation & Security Posture</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #263238; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">The Command Hub: Strategy Alignment Sunburst</h4>
+                            
+                            <img src="strat_alignment_sunburst.png" alt="Strategy Alignment Sunburst R Shiny Visualization" style="width: 100%; max-width: 1100px; height: auto; margin-bottom: 20px;">
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 25px;">
+                                <div style="padding: 15px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                                    <strong style="color: #263238; display: block; margin-bottom: 5px;">⚡ Reactive APIs</strong>
+                                    <span style="font-size: 0.85rem; color: #555;">R observeEvent() hooks calling Cloud Run APIs instantly for real-time scenario modeling.</span>
+                                </div>
+                                <div style="padding: 15px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                                    <strong style="color: #263238; display: block; margin-bottom: 5px;">🎨 bslib UI</strong>
+                                    <span style="font-size: 0.85rem; color: #555;">High-contrast Material Design optimized for executive tablet readability.</span>
+                                </div>
+                                <div style="padding: 15px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                                    <strong style="color: #263238; display: block; margin-bottom: 5px;">🔒 BigQuery RLS</strong>
+                                    <span style="font-size: 0.85rem; color: #555;">Row-Level Security permissions passed through R sessions to ensure data sovereignty.</span>
+                                </div>
+                            </div>
                         </div>
-                        
-                    </div>
-                </details>
+                    </details>
+                </div>
             
                 <div style="background-color: #e3f2fd; border-left: 5px solid #0052cc; padding: 25px; border-radius: 8px; margin-top: 40px;">
                     <h3 style="margin-top: 0; color: #0052cc;">Savings in the Boardroom</h3>
