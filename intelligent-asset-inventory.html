@@ -222,26 +222,51 @@
                     </div>
                 </div>
             
-                <details style="margin: 30px 0; padding: 20px; background: #f1f8e9; border-radius: 12px; border: 1px solid #c8e6c9;">
-                    <summary style="font-size: 1.1em; font-weight: bold; cursor: pointer; color: #2e7d32;">View Operational Reliability Dashboard Strategy</summary>
-                    <div style="margin-top: 20px;">
-                        <p style="font-size: 0.95rem; color: #444;">The dashboard follows a <strong>Hierarchical Command View</strong> designed for the "5-second rule":</p>
-                        <ul style="font-size: 0.9rem; line-height: 1.7; color: #555;">
-                            <li>🚥 <strong>Tier 1 (Vitality):</strong> Aggregate Fleet Health Scores and MTBF targets.</li>
-                            <li>📉 <strong>Tier 2 (Prediction):</strong> RUL Probability Distributions and Degradation Profiles.</li>
-                            <li>🤖 <strong>Tier 3 (Agentic):</strong> Real-time recommendation logs from the <strong>Maintenance Swarm</strong>.</li>
-                        </ul>
-                        
-                        <div style="text-align: center; margin: 20px 0; border: 1px dashed #2e7d32; padding: 20px; color: #2e7d32; background: white;">
-                            [Placeholder: RUL Fuel Gauge & Maintenance Drift Trend Visualization]
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-layer-group" style="margin-right: 12px; color: #2e7d32; width: 20px;"></i> 
+                            <span>TOGAF Phase B: Hierarchical Command View ("5-Second Rule")</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #2e7d32; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Fleet Reliability Command Center</h4>
+                            
+                            <div style="margin-bottom: 40px;">
+                                <h5 style="color: #1b5e20; font-size: 0.95rem;">Tier 1: Vitality (Fleet Health & MTBF)</h5>
+                                <img src="asset_tier1_vitality.png" alt="Fleet Health and MTBF Aggregation" style="width: 100%; max-width: 1000px; height: auto;">
+                                <p style="font-size: 0.85rem; color: #666; font-style: italic; margin-top: 10px;">Strategic View: Aggregating fleet-wide health scores for executive MTBF target tracking.</p>
+                            </div>
+                
+                            <div style="margin-bottom: 40px;">
+                                <h5 style="color: #1b5e20; font-size: 0.95rem;">Tier 2: Prediction (RUL & Degradation)</h5>
+                                <img src="asset_tier2_prediction.png" alt="RUL Probability Distributions" style="width: 100%; max-width: 1000px; height: auto;">
+                                <p style="font-size: 0.85rem; color: #666; font-style: italic; margin-top: 10px;">Data View: Visualizing Remaining Useful Life (RUL) and sensor-driven degradation profiles.</p>
+                            </div>
+                
+                            <div style="margin-bottom: 40px;">
+                                <h5 style="color: #1b5e20; font-size: 0.95rem;">Tier 3: Agentic (Maintenance Swarm)</h5>
+                                <img src="asset_tier3_agentic.png" alt="Maintenance Swarm Action Logs" style="width: 100%; max-width: 1000px; height: auto;">
+                                <p style="font-size: 0.85rem; color: #666; font-style: italic; margin-top: 10px;">Operational View: Real-time recommendation logs from the autonomous Maintenance Swarm.</p>
+                            </div>
                         </div>
-                        
-                        
-                        <p style="font-style: italic; color: #666; font-size: 0.85rem;">
-                            By integrating <strong>HITL (Human-in-the-Loop)</strong> validation, we improve retraining accuracy with every "Thumbs Up" from the field technicians.
-                        </p>
-                    </div>
-                </details>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-tachometer-alt" style="margin-right: 12px; color: #2e7d32; width: 20px;"></i> 
+                            <span>Value Stream: RUL Fuel Gauge & Drift Trends</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #2e7d32; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Maintenance Drift & HITL Retraining</h4>
+                            <img src="asset_rul_drift_trend.png" alt="RUL Fuel Gauge and Drift Visualization" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                Integrating HITL (Human-in-the-Loop) validation to visualize drift trends and improve prediction accuracy via field technician feedback loops.
+                            </p>
+                        </div>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #81d4fa; padding: 25px; border-radius: 8px; margin-top: 30px;">
                     <h4 style="margin-top: 0; color: #fff;">The Strategic Outcome</h4>
