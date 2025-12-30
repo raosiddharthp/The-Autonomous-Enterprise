@@ -810,23 +810,35 @@
                     </ul>
                 </div>
             
-                <details style="margin: 30px 0; padding: 20px; background: #fff3e0; border-radius: 12px; border: 1px solid #ffe0b2;">
-                    <summary style="font-size: 1.1em; font-weight: bold; cursor: pointer; color: #e65100;">View Explainability (XAI) & "Audit-Ready" Architecture</summary>
-                    <div style="margin-top: 20px;">
-                        <p style="font-size: 0.95rem; color: #444;">We solve the "Black Box" problem using <strong>Vertex Explainable AI (XAI)</strong> to justify every risk score:</p>
-                        
-                        <div style="text-align: center; margin: 20px 0; border: 1px dashed #e65100; padding: 20px; color: #e65100; background: white;">
-                            [Placeholder: Feature Attribution Heatmap for Legal Clause Risk Scoring]
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-microscope" style="margin-right: 12px; color: #e65100; width: 20px;"></i> 
+                            <span>TOGAF Phase G: Audit-Ready Architecture (Vertex XAI)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #e65100; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Feature Attribution: Justifying Legal Risk Scores</h4>
+                            <img src="contractguard_xai_attribution.png" alt="Feature Attribution Heatmap" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>Governance View:</strong> Utilizing Vertex Explainable AI (XAI) to highlight "toxic" legal terminology, providing a transparent audit trail for automated indemnity scoring.
+                            </p>
                         </div>
-                        
-            
-                        <ul style="font-size: 0.9rem; line-height: 1.7; color: #555;">
-                            <li><strong>Feature Attribution:</strong> Highlights specific "Toxic" words (e.g., <em>uncapped liability</em>) that drove the score.</li>
-                            <li><strong>Model Registry:</strong> Full lineage tracking including the specific Git commit of the Legal Playbook.</li>
-                            <li><strong>Circuit Breaker:</strong> Automated roll-back to the previous "Champion" model if ROUGE scores decay.</li>
-                        </ul>
+                    </details>
+                
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="padding: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                            <h5 style="color: #e65100; margin-top: 0;">A. Model Registry & Lineage</h5>
+                            <img src="contractguard_model_registry.png" style="width: 100%; height: auto; margin-bottom: 10px;">
+                            <p style="font-size: 0.85rem; color: #666;"><strong>Lineage:</strong> Mapping revenue-impacting AI models to specific Git commits of the Legal Playbook.</p>
+                        </div>
+                        <div style="padding: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                            <h5 style="color: #e65100; margin-top: 0;">B. MLOps Circuit Breaker</h5>
+                            <img src="contractguard_xai_circuit_breaker.png" style="width: 100%; height: auto; margin-bottom: 10px;">
+                            <p style="font-size: 0.85rem; color: #666;"><strong>Resilience:</strong> Automated roll-back to "Champion" models if ROUGE/Confidence scores decay.</p>
+                        </div>
                     </div>
-                </details>
+                </div>
             
                 <div style="background-color: #263238; color: #81d4fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
                     <h4 style="margin-top: 0; color: #fff;">Cost-Efficient Excellence</h4>
