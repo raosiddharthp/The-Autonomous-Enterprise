@@ -707,21 +707,51 @@
                     </ul>
                 </div>
             
-                <details style="margin: 30px 0; padding: 20px; background: #eef4ff; border-radius: 12px; border: 1px solid #cce0ff;">
-                    <summary style="font-size: 1.1em; font-weight: bold; cursor: pointer; color: #0052cc;">View Cross-Project Intelligence & Data Flow (EA View)</summary>
-                    <div style="margin-top: 20px;">
-                        <p style="font-size: 0.95rem; color: #444;">This diagram proves legal data is the fuel for downstream revenue recognition:</p>
-                        <ul style="font-size: 0.9rem; line-height: 1.7; color: #555;">
-                            <li><strong>Semantic Enrichment:</strong> Flow from Document AI → Vertex Embeddings → Vector Search → Firestore Metadata.</li>
-                            <li><strong>Portfolio Sync:</strong> <em>ContractGuard</em> sharing data with <em>RevRec-AI</em> via a <strong>Cloud Pub/Sub</strong> bus to adjust revenue schedules.</li>
-                        </ul>
-                        
-                        <div style="text-align: center; margin: 20px 0; border: 1px dashed #0052cc; padding: 20px; color: #0052cc; background: white;">
-                            [Placeholder: Semantic Data Fabric Diagram - RAG + Firestore + BigQuery]
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-project-diagram" style="margin-right: 12px; color: #0052cc; width: 20px;"></i> 
+                            <span>TOGAF Phase C: Semantic Data Fabric (RAG + BigQuery)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #0052cc; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Information View: Enterprise Knowledge Core</h4>
+                            <img src="contractguard_semantic_fabric.png" alt="TOGAF Phase C Data Fabric" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>EA Viewpoint:</strong> Visualizing the Semantic Data Fabric where RAG-based legal intelligence is integrated with BigQuery for enterprise-wide risk heatmaps.
+                            </p>
                         </div>
-                        
-                    </div>
-                </details>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-magic" style="margin-right: 12px; color: #0052cc; width: 20px;"></i> 
+                            <span>A. Semantic Enrichment (Document AI to Firestore)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #0052cc; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Pipeline View: Unstructured to Metadata Flow</h4>
+                            <img src="contractguard_semantic_enrichment.png" alt="Semantic Enrichment Pipeline" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>Technical View:</strong> Sequential flow from raw PDF ingestion via Document AI to high-dimensional Vertex Embeddings and stateful Firestore metadata.
+                            </p>
+                        </div>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-sync-alt" style="margin-right: 12px; color: #0052cc; width: 20px;"></i> 
+                            <span>B. Portfolio Sync (ContractGuard & RevRec-AI)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #0052cc; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">SAFe Large Solution: Cross-Project Data Bus</h4>
+                            <img src="contractguard_portfolio_sync.png" alt="Portfolio Sync Data Flow" style="width: 100%; max-width: 1100px; height: auto;">
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>Solution View:</strong> Real-time synchronization of revenue-impacting legal clauses to RevRec-AI via a Cloud Pub/Sub enterprise message bus.
+                            </p>
+                        </div>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #81d4fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
                     <h4 style="margin-top: 0; color: #fff;">Knowledge-as-a-Service</h4>
