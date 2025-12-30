@@ -154,30 +154,65 @@
                 </div>
             </div>
         
-            <details style="margin: 40px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #ddd;">
-                <summary style="font-size: 1.3em; font-weight: bold; cursor: pointer; color: #00008b;">Strategic Architecture: The Legal Guardrail (TOGAF Phase B/C)</summary>
-                <div style="margin-top: 20px;">
-                    <p style="line-height: 1.6; color: #444;">
-                        ContractGuard was developed using the <strong>TOGAF ADM</strong> to ensure legal risk management is an integrated capability within the wider Autonomous Enterprise ecosystem.
-                    </p>
-        
-                    <ul style="font-size: 1.05em; line-height: 1.7; color: #555;">
-                        <li><strong>Phase B: Business</strong> — Defining the "Obligation Lifecycle" from signature to termination as a core business process.</li>
-                        <li><strong>Phase C: Information</strong> — Designing the <strong>Semantic Search</strong> layer to index "Rights" vs "Liabilities" within a BigQuery Data Fabric.</li>
-                        <li><strong>Phase D: Technology</strong> — Utilizing <strong>Gemini 1.5 Pro</strong> for long-context reasoning across 500+ page master service agreements.</li>
-                    </ul>
-        
-                    <div style="text-align: center; margin: 40px 0; border: 2px dashed #ccc; padding: 40px; color: #999;">
-                        <p><strong>[Placeholder: Legal Obligation Value Stream Diagram]</strong></p>
-                        <p><em>Visualizing the flow from "Clause Detection" to "Compliance Alert."</em></p>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-briefcase" style="margin-right: 12px; color: #00008b; width: 20px;"></i> 
+                        <span>Phase B: Business Architecture (Obligation Lifecycle)</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">TOGAF Viewpoint: End-to-End Obligation Management</h4>
+                        <img src="contractguard_phase_b_biz.png" alt="TOGAF Phase B Business Architecture" style="width: 100%; max-width: 1100px; height: auto;">
+                        <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                            Defining the "Obligation Lifecycle" as a core business process, from signature-time risk assessment to final termination compliance.
+                        </p>
                     </div>
-                    
-        
-                    <p style="font-style: italic; color: #666; border-top: 1px solid #eee; padding-top: 15px;">
-                        ContractGuard acts as the "Compliance Filter" for the portfolio, ensuring that actions suggested by **RevRec-AI** or **OmniMind CCAI** remain within the legal boundaries defined in the contract vault.
-                    </p>
-                </div>
-            </details>
+                </details>
+            
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-database" style="margin-right: 12px; color: #00008b; width: 20px;"></i> 
+                        <span>Phase C: Information Architecture (Semantic Data Fabric)</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Data View: Semantic Indexing of Rights & Liabilities</h4>
+                        <img src="contractguard_phase_c_info.png" alt="TOGAF Phase C Information Architecture" style="width: 100%; max-width: 1100px; height: auto;">
+                        <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                            Mapping the Semantic Search layer within a BigQuery Data Fabric to distinguish between enforceable rights and financial liabilities.
+                        </p>
+                    </div>
+                </details>
+            
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-microchip" style="margin-right: 12px; color: #00008b; width: 20px;"></i> 
+                        <span>Phase D: Technology Architecture (Gemini 1.5 Pro Reasoning)</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Technical View: Long-Context Agentic Reasoning</h4>
+                        <img src="contractguard_phase_d_tech.png" alt="TOGAF Phase D Technology Architecture" style="width: 100%; max-width: 1100px; height: auto;">
+                        <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                            Utilizing Gemini 1.5 Pro's 2M token context window for deep reasoning across complex Master Service Agreements (MSAs).
+                        </p>
+                    </div>
+                </details>
+            
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-stream" style="margin-right: 12px; color: #00008b; width: 20px;"></i> 
+                        <span>Operational Value Stream: Legal Compliance Flow</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #00008b; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Value Stream: Clause Detection to Compliance Alert</h4>
+                        <img src="contractguard_value_stream.png" alt="Legal Obligation Value Stream" style="width: 100%; max-width: 1100px; height: auto;">
+                        <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                            <strong>SAFe Operational View:</strong> Visualizing the automated flow of a legal obligation from initial detection to proactive compliance alerting.
+                        </p>
+                    </div>
+                </details>
+            
+            </div>
         </section>
 
         <section id="business-strategy" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
