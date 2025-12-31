@@ -649,20 +649,41 @@
                     </ul>
                 </div>
             
-                <details style="margin: 30px 0; padding: 20px; background: #eef4ff; border-radius: 12px; border: 1px solid #cce0ff;">
-                    <summary style="font-size: 1.1em; font-weight: bold; cursor: pointer; color: #0052cc;">View Data Lineage & Vertex AI Training Loops</summary>
-                    <div style="margin-top: 20px;">
-                        
-                        <h4 style="color: #1a237e;">A. Integrated Data Lineage & Governance Framework</h4>
-                        <p style="font-size: 0.9rem;">Shows the secure path from Pub/Sub to Agent Contextualization. Impact: Ensures <strong>0% data exfiltration</strong> by keeping the ML lifecycle inside the <strong>VPC-SC perimeter</strong>.</p>
-                        
-            
-                        <h4 style="color: #1a237e; margin-top: 25px;">B. Vertex AI CI/CD/CT Pipeline (MLE Artifact)</h4>
-                        <p style="font-size: 0.9rem;">Visualizes how <strong>ARIMA</strong> and <strong>K-MEANS</strong> models are automatically retrained as new "ground truth" labels are added by Risk Investigators.</p>
-                        
-            
-                    </div>
-                </details>
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-database" style="margin-right: 12px; color: #0052cc; width: 20px;"></i> 
+                            <span>TOGAF Phase C: Integrated Data Lineage & Governance</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Information View: 0% Data Exfiltration (VPC-SC Perimeter)</h4>
+                            
+                            <img src="risk_data_lineage.png" alt="Integrated Data Lineage and Governance Framework Diagram" style="width: 100%; max-width: 1100px; height: auto; margin-bottom: 20px;">
+                            
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>EA Viewpoint:</strong> Visualizing the secure data path from Pub/Sub ingestion to Agent Contextualization. The entire ML lifecycle operates within the VPC Service Controls perimeter, ensuring zero data exfiltration for highly sensitive risk data.
+                            </p>
+                        </div>
+                    </details>
+                
+                    <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                            <i class="fas fa-sync-alt" style="margin-right: 12px; color: #0052cc; width: 20px;"></i> 
+                            <span>TOGAF Phase G: Vertex AI CI/CD/CT Pipeline (MLE Artifact)</span>
+                        </summary>
+                        <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                            <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Implementation View: Continuous Training for ARIMA & K-Means</h4>
+                            
+                            <img src="risk_vertex_ai_cicdct.png" alt="Vertex AI CI/CD/CT Pipeline for ARIMA and K-Means models" style="width: 100%; max-width: 1100px; height: auto; margin-bottom: 20px;">
+                            
+                            <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                                <strong>MLOps View:</strong> Visualizing how ARIMA and K-MEANS models are automatically retrained. As Risk Investigators add new "ground truth" labels, the CI/CD/CT pipeline triggers continuous learning, ensuring model accuracy evolves with emerging threats.
+                            </p>
+                        </div>
+                    </details>
+                
+                </div>
             
                 <div style="background-color: #263238; color: #81d4fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
                     <h4 style="margin-top: 0; color: #fff;">Deterministic Compliance</h4>
