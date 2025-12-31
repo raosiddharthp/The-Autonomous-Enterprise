@@ -153,54 +153,48 @@
                 </div>
             </div>
         
-            <details style="margin: 40px 0; padding: 20px; background: #f0f4f8; border-radius: 12px; border: 1px solid #d1d9e6;">
-                <summary style="font-size: 1.3em; font-weight: bold; cursor: pointer; color: #1a237e;">Architectural Strategy: The Sovereign Risk Perimeter (EA & SAFe)</summary>
-                <div style="margin-top: 20px;">
-                    <p style="line-height: 1.6; color: #444;">
-                        To satisfy <strong>TOGAF EA</strong> and <strong>SAFe SPC</strong> mandates, the system is designed as a mission-critical "Epic" within the enterprise portfolio.
-                    </p>
-        
-                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; border: 1px solid #ddd; background: #fff;">
-                        <thead>
-                            <tr style="background-color: #e3f2fd;">
-                                <th style="padding: 12px; border: 1px solid #ddd;">Pillar</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Enterprise Implementation</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Strategic Outcome</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Agentic Swarms</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">LangGraph + CrewAI</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">SAR narratives generated 85% faster than manual.</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">In-Warehouse ML</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">BigQuery ML (K-Means)</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">"Silent Anomaly" detection with >90% precision.</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Lean Portfolio</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">SAFe Budget Guardrails</td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">Ensures the Risk Epic Funnel aligns with impact.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-        
-                    <div style="text-align: center; margin: 40px 0; border: 2px dashed #ccc; padding: 40px; color: #999;">
-                        <p><strong>[Placeholder: Multi-Region Event-Driven Risk Landing Zone Diagram]</strong></p>
-                        <p><em>Visualizing the Pub/Sub to Dataflow real-time ingestion path.</em></p>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 35px;">
+
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-shield-alt" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                        <span>TOGAF Phase B: The Sovereign Risk Perimeter (EA & SAFe)</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Enterprise "Epic" Management: Lean Portfolio Guardrails</h4>
+                        
+                        <img src="risk_lean_portfolio.png" alt="SAFe Lean Portfolio Management Diagram" style="width: 100%; max-width: 1100px; height: auto; margin-bottom: 20px;">
+                        
+                        <p style="margin-top: 20px; font-size: 0.95rem; color: #444; font-style: italic; max-width: 850px; margin-left: auto; margin-right: auto;">
+                            <strong>Strategic View:</strong> Implementing SAFe Budget Guardrails to ensure the "Risk Epic Funnel" aligns with high-impact security priorities. This acts as the connective tissue for data processed by Doc Analyzer and RevRec-AI.
+                        </p>
                     </div>
-                    
-        
-                    <p style="font-style: italic; color: #666; border-top: 1px solid #eee; padding-top: 15px;">
-                        This system operates as the "Global Sentinel" for the portfolio, ensuring that data processed by <strong>Doc Analyzer</strong> and <strong>RevRec-AI</strong> adheres to real-time sanctions and security standards.
-                    </p>
-                    <p style="font-style: italic; color: #666; border-top: 1px solid #eee; padding-top: 15px;">
-                        The Continuous Risk Monitoring System is the "Final Filter." It monitors the outputs of RevRec-AI for anomalies and the inputs of ContractGuard for sanctioned entities. It is the connective tissue that ensures the enterprise doesn't just grow, but grows safely.
-                    </p>
+                </details>
+            
+                <details style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <summary style="padding: 15px; font-weight: bold; cursor: pointer; background: #f8fafc; display: flex; align-items: center;">
+                        <i class="fas fa-network-wired" style="margin-right: 12px; color: #1a237e; width: 20px;"></i> 
+                        <span>TOGAF Phase D: Multi-Region Event-Driven Risk Landing Zone</span>
+                    </summary>
+                    <div style="padding: 30px; text-align: center; border-top: 1px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="color: #1a237e; margin-bottom: 25px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Infrastructure View: Real-Time Ingestion Path</h4>
+                        <img src="risk_event_landing_zone.png" alt="Multi-Region Event-Driven Landing Zone Diagram" style="width: 100%; max-width: 1100px; height: auto;">
+                    </div>
+                </details>
+            
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="padding: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                        <h5 style="color: #1a237e; margin-top: 0;">Agentic Swarms (LangGraph)</h5>
+                        <img src="risk_agentic_swarm.png" style="width: 100%; height: auto; margin-bottom: 10px;">
+                        <p style="font-size: 0.85rem; color: #666;">Generated SAR narratives 85% faster than manual review.</p>
+                    </div>
+                    <div style="padding: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                        <h5 style="color: #1a237e; margin-top: 0;">In-Warehouse ML (BigQuery)</h5>
+                        <img src="risk_bq_ml_clustering.png" style="width: 100%; height: auto; margin-bottom: 10px;">
+                        <p style="font-size: 0.85rem; color: #666;">K-Means anomaly detection with >90% precision on "Silent Risks".</p>
+                    </div>
                 </div>
-            </details>
+            </div>
         </section>
         <div class="section">
             <section id="business-strategy" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
