@@ -29,12 +29,12 @@
 
         /* Project Grid */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
-        .project-card { border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; position: relative; background: #ffffff; }
+        .project-card { border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; background: #ffffff; }
         .project-card:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); border-color: var(--secondary); }
         .project-link { display: inline-block; margin-top: 15px; font-weight: bold; color: var(--secondary); text-decoration: none; }
 
-        /* Image Placeholders */
-        .img-placeholder { background: #eaecf0; border: 2px dashed #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 350px; margin: 25px 0; color: #64748b; font-style: italic; font-size: 1rem; text-align: center; padding: 20px; }
+        /* Image Styling */
+        .diagram-img { width: 100%; max-width: 900px; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 20px 0; display: block; margin-left: auto; margin-right: auto; }
 
         .hero { background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; padding: 100px 40px; text-align: center; }
         .hero h1 { font-size: 3rem; margin: 0; }
@@ -97,8 +97,8 @@
     <!-- Consolidated GCP Integration -->
     <section id="gcp-integration">
         <h2>Google Cloud Integration: The Sovereign Foundation</h2>
-        <p>The entire Autonomous Enterprise ecosystem shares a common, sovereign GCP foundation that ensures security, scalability, and zero-trust data handling across all subsystems.</p>
-        <div class="img-placeholder">[PLACEHOLDER: Common GCP Service Fabric & Shared VPC-SC Perimeter Diagram]</div>
+        <p>The entire ecosystem is anchored in a <strong>Sovereign, Serverless, and Zero-Trust</strong> landing zone standard. Every project inherits this baseline to ensure bank-grade security.</p>
+        <img src="common_gcp_fabric.png" class="diagram-img" alt="Common GCP Service Fabric & Shared VPC Perimeter">
         <ul style="columns: 2; column-gap: 40px; list-style: none; padding-left: 0; font-size: 1.05rem;">
             <li>• <strong>Vertex AI & Gemini:</strong> Multi-modal reasoning, agentic swarms, and RAG grounding</li>
             <li>• <strong>BigQuery:</strong> Federated data fabric, ML, and real-time analytics</li>
@@ -162,39 +162,44 @@
     <section id="sos-architecture">
         <h2>High-Level System of Systems Architecture</h2>
         <p>A unified view of the Autonomous Enterprise as interconnected intelligence layers, from ingestion to customer orchestration.</p>
-        <div class="img-placeholder">[PLACEHOLDER: High-Level System of Systems Architecture Diagram – Layered View with Project Mapping]</div>
+        <img src="high_level_sos_architecture.png" class="diagram-img" alt="High-Level System of Systems Architecture – Layered View with Project Mapping">
     </section>
 
     <!-- SAFe Solution Train -->
     <section id="safe-integration">
         <h2>SAFe 6.0: The ART of ARTs – Solution Train Coordination</h2>
         <p>Domain-specific Agile Release Trains (ARTs) are coordinated by a Solution Train to deliver cross-cutting enablers (security, governance, data quality) consistently across the ecosystem.</p>
-        <div class="img-placeholder">[PLACEHOLDER: Solution Train Structure – ARTs, Enablers, and Project Mapping Diagram]</div>
+        <img src="solution_train_structure.png" class="diagram-img" alt="SAFe Solution Train Structure – ARTs, Enablers, and Project Mapping">
+    </section>
+
+    <!-- TOGAF ADM Cycle -->
+    <section id="togaf-enterprise">
+        <h2>TOGAF ADM: Enterprise-Wide Application</h2>
+        <p>Application of TOGAF Phases across the ecosystem to maintain architectural integrity and strategic alignment.</p>
+        <img src="togaf_adm_cycle.png" class="diagram-img" alt="TOGAF ADM Iteration Cycle for the Autonomous Enterprise Suite">
     </section>
 
     <!-- Day 2 Governance -->
     <section id="day-2-ops">
         <h2>Day 2 Governance: Sovereign, Self-Healing Operations</h2>
         <p>Beyond initial deployment, the Autonomous Enterprise maintains resilience, compliance, and continuous improvement through automated Day 2 practices.</p>
-        <div class="data-table">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Governance Pillar</th>
-                        <th>Implementation</th>
-                        <th>Outcome</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Observability & SLOs</td><td>Cloud Monitoring, Trace, Logging</td><td>99.99% uptime & sub-second latency alerts</td></tr>
-                    <tr><td>Security & Sovereignty</td><td>VPC-SC, CMEK, IAP, DLP</td><td>Zero exfiltration & regulatory residency</td></tr>
-                    <tr><td>MLOps & Drift Defense</td><td>Vertex AI Monitoring & Pipelines</td><td>Automated retraining & model freshness</td></tr>
-                    <tr><td>FinOps Guardrails</td><td>Budget alerts & scale-to-zero</td><td>Near-zero idle cost across portfolio</td></tr>
-                    <tr><td>Human-in-the-Loop</td><td>Confidence gating & escalation</td><td>Safety for high-risk decisions</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="img-placeholder">[PLACEHOLDER: Day 2 Governance Framework Diagram – Monitoring, Security, MLOps Loops]</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Governance Pillar</th>
+                    <th>Implementation</th>
+                    <th>Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Observability & SLOs</td><td>Cloud Monitoring, Trace, Logging</td><td>99.99% uptime & sub-second latency alerts</td></tr>
+                <tr><td>Security & Sovereignty</td><td>VPC-SC, CMEK, IAP, DLP</td><td>Zero exfiltration & regulatory residency</td></tr>
+                <tr><td>MLOps & Drift Defense</td><td>Vertex AI Monitoring & Pipelines</td><td>Automated retraining & model freshness</td></tr>
+                <tr><td>FinOps Guardrails</td><td>Budget alerts & scale-to-zero</td><td>Near-zero idle cost across portfolio</td></tr>
+                <tr><td>Human-in-the-Loop</td><td>Confidence gating & escalation</td><td>Safety for high-risk decisions</td></tr>
+            </tbody>
+        </table>
+        <img src="day2_governance_framework.png" class="diagram-img" alt="Day 2 Governance Framework – Monitoring, Security, MLOps Loops">
     </section>
 
     <!-- Portfolio Project Grid -->
@@ -203,51 +208,61 @@
         <p>11 interconnected GCP-native solutions forming a unified System of Systems.</p>
         <div class="project-grid">
             <div class="project-card">
+                <i class="fas fa-leaf" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>GreenOps Platform</h3>
                 <p>Carbon-aware sustainability intelligence for GCP workloads.</p>
                 <a href="greenops-platform.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>FinRisk Sentinel</h3>
                 <p>Real-time financial risk monitoring and anomaly detection.</p>
                 <a href="finrisk-sentinel.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-database" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>Data Quality & Governance</h3>
                 <p>Automated validation, drift detection, and rule generation.</p>
                 <a href="data-quality-governance.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-cogs" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>Intelligent Asset Inventory</h3>
                 <p>Predictive maintenance and RUL forecasting for physical assets.</p>
                 <a href="intelligent-asset-inventory.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-tachometer-alt" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>Executive Strategy Dashboard</h3>
                 <p>C-suite portfolio governance and OKR forecasting.</p>
                 <a href="executive-strategy-dashboard.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-file-invoice-dollar" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>RevRec-AI</h3>
                 <p>Autonomous revenue recognition and IFRS/ASC 606 compliance.</p>
                 <a href="revrec-ai.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-file-contract" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>ContractGuard</h3>
                 <p>Agentic contract review, risk scoring, and negotiation simulation.</p>
                 <a href="contractguard.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-shield-alt" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>Continuous Risk Monitoring</h3>
                 <p>Real-time threat detection and SAR automation.</p>
                 <a href="continuous-risk-monitoring.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-file-alt" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>Serverless Document Analyzer</h3>
                 <p>Zero-cost unstructured data ingestion and multimodal extraction.</p>
                 <a href="serverless-document-analyzer.html" class="project-link">View Project →</a>
             </div>
             <div class="project-card">
+                <i class="fas fa-headset" style="font-size: 2rem; color: var(--secondary);"></i>
                 <h3>OmniMind CCAI</h3>
                 <p>Agentic contact center with 80% autonomous resolution.</p>
                 <a href="omnimind.html" class="project-link">View Project →</a>
@@ -259,7 +274,7 @@
     <section id="impact-outcomes">
         <h2>Aggregate Value Realization</h2>
         <p>Combined impact of the Autonomous Enterprise ecosystem on operational efficiency, compliance, and strategic growth.</p>
-        <div class="img-placeholder">[PLACEHOLDER: Cumulative Portfolio ROI Waterfall & Impact Metrics Chart]</div>
+        <img src="cumulative_portfolio_roi.png" class="diagram-img" alt="Cumulative Portfolio ROI Waterfall & Impact Metrics Chart">
     </section>
 
     <footer style="text-align: center; color: #666; padding: 40px; margin-top: 40px;">
