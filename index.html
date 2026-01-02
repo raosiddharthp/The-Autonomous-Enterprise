@@ -7,76 +7,266 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #1a237e; --secondary: #0d47a1; --accent: #ffd700;
-            --bg: #f4f7f9; --text: #333; --border: #e0e0e0;
+            --primary: #1a237e; /* Navy */
+            --secondary: #0d47a1; /* Blue */
+            --accent: #ffd700; /* Gold */
+            --bg: #f4f7f9;
+            --text: #333;
+            --border: #e0e0e0;
         }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* Section Styling */
         section { background: white; padding: 40px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         h1, h2, h3 { color: var(--primary); }
         h2 { border-left: 5px solid var(--secondary); padding-left: 15px; margin-bottom: 25px; text-transform: uppercase; font-size: 1.5rem; letter-spacing: 1px; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-        .metric-card { background: var(--primary); color: white; padding: 20px; border-radius: 8px; text-align: center; }
-        .metric-value { display: block; font-size: 2rem; font-weight: bold; color: var(--accent); }
+
+        /* Table Styling */
         .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .data-table th { background: #f8f9fa; text-align: left; padding: 12px; border-bottom: 2px solid var(--border); font-size: 0.9rem; }
         .data-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
-        .project-card { border: 1px solid var(--border); padding: 20px; border-radius: 10px; transition: transform 0.2s; position: relative; }
-        .project-card:hover { transform: translateY(-5px); border-color: var(--secondary); }
+
+        /* Project Grid */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+        .project-card { border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; position: relative; background: #ffffff; }
+        .project-card:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); border-color: var(--secondary); }
         .project-link { display: inline-block; margin-top: 15px; font-weight: bold; color: var(--secondary); text-decoration: none; }
-        .img-placeholder { background: #eaecf0; border: 2px dashed #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 300px; margin: 20px 0; color: #64748b; font-style: italic; }
-        .hero { background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; padding: 80px 40px; text-align: center; border-radius: 0 0 20px 20px; }
+
+        /* Image Placeholders */
+        .img-placeholder { background: #eaecf0; border: 2px dashed #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 350px; margin: 25px 0; color: #64748b; font-style: italic; font-size: 1rem; text-align: center; padding: 20px; }
+
+        .hero { background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white; padding: 100px 40px; text-align: center; }
+        .hero h1 { font-size: 3rem; margin: 0; }
+        .hero p { font-size: 1.4rem; max-width: 900px; margin: 20px auto 0; opacity: 0.95; }
     </style>
 </head>
 <body>
+
 <header class="hero">
-    <h1>The Autonomous Enterprise: A System of Systems Architecture</h1>
-    <p style="font-size: 1.2rem; max-width: 800px; margin: 20px auto;">11 interconnected GCP-native solutions delivering sovereign, agentic intelligence.</p>
+    <h1>The Autonomous Enterprise</h1>
+    <p>A TOGAF-Aligned, SAFe-Governed System of Systems on Google Cloud</p>
 </header>
+
 <div class="container">
-    <section id="executive-summary">
-        <h2>Executive Summary: Integrated Transformation</h2>
-        <p>The Autonomous Enterprise is an engineered ecosystem designed to eliminate cognitive friction across the revenue lifecycle via a <strong>Solution Train</strong>.</p>
-        <div class="metrics-grid">
-            <div class="metric-card"><span class="metric-value">$15M+</span><small>Cumulative OpEx Savings</small></div>
-            <div class="metric-card"><span class="metric-value">92%</span><small>Compliance Coverage</small></div>
-            <div class="metric-card"><span class="metric-value">85%</span><small>AI Deflection Rate</small></div>
+
+    <!-- Executive Summary -->
+    <div class="executive-summary" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin: 40px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <h3 style="color: #0052cc; margin-top: 0; border-bottom: 2px solid #eef4ff; padding-bottom: 10px;">Executive Summary: The Autonomous Enterprise – A Sovereign System of Systems</h3>
+        
+        <p style="font-size: 1.1rem; line-height: 1.7; color: #333; font-weight: 500; margin-bottom: 20px;">
+            <strong>Vision:</strong> To create a fully autonomous, agentic enterprise where growth is decoupled from human latency — a TOGAF-aligned, SAFe-governed System of Systems on Google Cloud that orchestrates sustainability, finance, risk, governance, operations, and customer experience as interconnected, self-optimizing intelligence layers.
+        </p>
+    
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+            <div>
+                <h4 style="margin-bottom: 10px; font-size: 1rem; color: #333;">The Strategic Imperative</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #555;">
+                    Enterprises today face exponential complexity: regulatory scrutiny, sustainability mandates, unstructured data deluge, fragmented decision-making, and rising cyber/financial risks. Legacy silos and manual processes create latency gaps that erode competitiveness and expose organizations to millions in avoidable costs.
+                </p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 10px; font-size: 1rem; color: #333;">The Integrated Solution</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #555;">
+                    The <strong>Autonomous Enterprise</strong> is a cohesive ecosystem of 11 GCP-native platforms — from serverless document ingestion to agentic contact center orchestration — unified by a sovereign data fabric, zero-trust perimeters, and hierarchical GenAI swarms. Every component contributes to a single, auditable intelligence layer.
+                </p>
+            </div>
         </div>
-    </section>
+    
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #ddd;">
+            <h4 style="margin-bottom: 15px; font-size: 1rem; color: #333;">Portfolio-Wide Strategic Impact</h4>
+            <ul style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; list-style: none; padding-left: 0; font-size: 0.9rem; color: #555;">
+                <li>🌍 <strong>Sustainability:</strong> 30–40% carbon & cost reduction (GreenOps)</li>
+                <li>💰 <strong>Finance:</strong> 70% automation in revenue recognition & compliance (RevRec-AI, ContractGuard)</li>
+                <li>🛡️ <strong>Risk:</strong> 60% false positive reduction & real-time threat resolution (FinRisk, Continuous Monitoring)</li>
+                <li>🔧 <strong>Operations:</strong> 40% unplanned downtime elimination (Intelligent Asset Inventory)</li>
+                <li>📊 <strong>Governance:</strong> 70% audit cost savings & 40% trust uplift (Data Quality Pipeline)</li>
+                <li>📈 <strong>Strategy:</strong> 90% faster executive decisioning (Strategy Dashboard)</li>
+                <li>🤝 <strong>CX:</strong> 80% inquiry deflection & 40% OpEx reduction (OmniMind CCAI)</li>
+                <li>🔒 <strong>Foundation:</strong> Sovereign, serverless ingestion for all (Document Analyzer)</li>
+            </ul>
+        </div>
+    
+        <div style="margin-top: 30px; padding: 20px; background: #e8f5e9; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <p style="font-size: 1rem; line-height: 1.6; color: #1b5e20; margin: 0; font-style: italic;">
+                Built on Google Cloud’s sovereign AI stack with VPC-SC perimeters, CMEK encryption, and agentic orchestration, this portfolio delivers <strong>enterprise-grade autonomy</strong> — reducing operational friction, ensuring regulatory certainty, and enabling proactive, data-driven growth at scale.
+            </p>
+        </div>
+    </div>
+
+    <!-- Consolidated GCP Integration -->
     <section id="gcp-integration">
         <h2>Google Cloud Integration: The Sovereign Foundation</h2>
-        <div class="img-placeholder">[IMAGE: Common GCP Service Fabric & Shared VPC Perimeter]</div>
+        <p>The entire Autonomous Enterprise ecosystem shares a common, sovereign GCP foundation that ensures security, scalability, and zero-trust data handling across all subsystems.</p>
+        <div class="img-placeholder">[PLACEHOLDER: Common GCP Service Fabric & Shared VPC-SC Perimeter Diagram]</div>
+        <ul style="columns: 2; column-gap: 40px; list-style: none; padding-left: 0; font-size: 1.05rem;">
+            <li>• <strong>Vertex AI & Gemini:</strong> Multi-modal reasoning, agentic swarms, and RAG grounding</li>
+            <li>• <strong>BigQuery:</strong> Federated data fabric, ML, and real-time analytics</li>
+            <li>• <strong>Pub/Sub & Dataflow:</strong> Event-driven ingestion and streaming pipelines</li>
+            <li>• <strong>Cloud Run / Functions:</strong> Scale-to-zero serverless execution</li>
+            <li>• <strong>Document AI:</strong> Multimodal unstructured data extraction</li>
+            <li>• <strong>VPC-SC & CMEK:</strong> Sovereign perimeters and data residency</li>
+            <li>• <strong>Cloud Monitoring & Logging:</strong> Observability and audit trails</li>
+        </ul>
     </section>
+
+    <!-- Consolidated Skills Matrix -->
     <section id="skills-matrix">
         <h2>Skills & Expertise: Solution Train Competencies</h2>
+        <p>Cross-portfolio capabilities that enable the Autonomous Enterprise as a unified system of systems.</p>
         <table class="data-table">
-            <thead><tr><th>Skill / Expertise</th><th>Role / Persona</th><th>Portfolio-Wide Deliverable</th><th>Business Impact</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Skill / Expertise</th>
+                    <th>Role / Persona</th>
+                    <th>Portfolio-Wide Deliverable</th>
+                    <th>Business Impact</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr><td>Enterprise Architecture (TOGAF 10)</td><td>Lead Architect</td><td>ADM Cycle across all 11 Subsystems</td><td>Standardized Technical Debt Reduction</td></tr>
-                <tr><td>Sovereign Security (VPC-SC/IAM)</td><td>CISO Liaison</td><td>Zero-Trust Perimeter Landing Zone</td><td>Risk Mitigation & Data Sovereignty</td></tr>
+                <tr>
+                    <td>Enterprise Architecture (TOGAF)</td>
+                    <td>Lead Architect / CDO</td>
+                    <td>ADM Cycle & Capability Mapping across all subsystems</td>
+                    <td>Standardized integration & 30% technical debt reduction</td>
+                </tr>
+                <tr>
+                    <td>SAFe 6.0 SPC</td>
+                    <td>Solution Train Engineer</td>
+                    <td>Solution Train coordination & ART of ARTs</td>
+                    <td>35% improved strategic alignment & delivery velocity</td>
+                </tr>
+                <tr>
+                    <td>GCP Cloud Architecture</td>
+                    <td>Cloud Architect / CISO</td>
+                    <td>Sovereign landing zone with VPC-SC & CMEK</td>
+                    <td>Zero-trust security & regulatory compliance</td>
+                </tr>
+                <tr>
+                    <td>GenAI Engineering</td>
+                    <td>AI/ML Lead</td>
+                    <td>Hierarchical agentic swarms (LangGraph/CrewAI)</td>
+                    <td>80% automation of cognitive tasks</td>
+                </tr>
+                <tr>
+                    <td>Data Governance & MLOps</td>
+                    <td>Data Steward / MLE</td>
+                    <td>Drift detection, lineage, and self-healing pipelines</td>
+                    <td>40% trust uplift & 70% audit cost reduction</td>
+                </tr>
             </tbody>
         </table>
     </section>
-    <section id="sos-architecture"><h2>High-Level System of Systems Architecture</h2><div class="img-placeholder">[IMAGE: Interactive System of Systems Diagram]</div></section>
-    <section id="safe-integration"><h2>SAFe 6.0: The ART of ARTs</h2><div class="img-placeholder">[IMAGE: Solution Train Structure]</div></section>
-    <section id="togaf-enterprise"><h2>TOGAF ADM: Enterprise-Wide Application</h2><div class="img-placeholder">[IMAGE: TOGAF ADM Iteration Cycle for the Suite]</div></section>
+
+    <!-- High-Level System of Systems Architecture -->
+    <section id="sos-architecture">
+        <h2>High-Level System of Systems Architecture</h2>
+        <p>A unified view of the Autonomous Enterprise as interconnected intelligence layers, from ingestion to customer orchestration.</p>
+        <div class="img-placeholder">[PLACEHOLDER: High-Level System of Systems Architecture Diagram – Layered View with Project Mapping]</div>
+    </section>
+
+    <!-- SAFe Solution Train -->
+    <section id="safe-integration">
+        <h2>SAFe 6.0: The ART of ARTs – Solution Train Coordination</h2>
+        <p>Domain-specific Agile Release Trains (ARTs) are coordinated by a Solution Train to deliver cross-cutting enablers (security, governance, data quality) consistently across the ecosystem.</p>
+        <div class="img-placeholder">[PLACEHOLDER: Solution Train Structure – ARTs, Enablers, and Project Mapping Diagram]</div>
+    </section>
+
+    <!-- Day 2 Governance -->
     <section id="day-2-ops">
         <h2>Day 2 Governance: Sovereign, Self-Healing Operations</h2>
-        <table class="data-table">
-            <tr><td><strong>Observability:</strong> Cloud Monitoring SLOs</td><td><strong>Sovereignty:</strong> CMEK & Data Residency</td></tr>
-            <tr><td><strong>MLOps:</strong> Drift Detection & Retraining</td><td><strong>FinOps:</strong> Budget Guardrails</td></tr>
-        </table>
+        <p>Beyond initial deployment, the Autonomous Enterprise maintains resilience, compliance, and continuous improvement through automated Day 2 practices.</p>
+        <div class="data-table">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Governance Pillar</th>
+                        <th>Implementation</th>
+                        <th>Outcome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Observability & SLOs</td><td>Cloud Monitoring, Trace, Logging</td><td>99.99% uptime & sub-second latency alerts</td></tr>
+                    <tr><td>Security & Sovereignty</td><td>VPC-SC, CMEK, IAP, DLP</td><td>Zero exfiltration & regulatory residency</td></tr>
+                    <tr><td>MLOps & Drift Defense</td><td>Vertex AI Monitoring & Pipelines</td><td>Automated retraining & model freshness</td></tr>
+                    <tr><td>FinOps Guardrails</td><td>Budget alerts & scale-to-zero</td><td>Near-zero idle cost across portfolio</td></tr>
+                    <tr><td>Human-in-the-Loop</td><td>Confidence gating & escalation</td><td>Safety for high-risk decisions</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="img-placeholder">[PLACEHOLDER: Day 2 Governance Framework Diagram – Monitoring, Security, MLOps Loops]</div>
     </section>
+
+    <!-- Portfolio Project Grid -->
     <section id="project-grid">
-        <h2>Enterprise Asset Catalog</h2>
+        <h2>Portfolio Components: The Autonomous Enterprise Ecosystem</h2>
+        <p>11 interconnected GCP-native solutions forming a unified System of Systems.</p>
         <div class="project-grid">
-            <div class="project-card"><h3>RevRec-AI</h3><p>Revenue integrity reconciliation.</p><a href="revrec-ai.html" class="project-link">Deep-Dive →</a></div>
-            <div class="project-card"><h3>OmniMind</h3><p>Cognitive engagement layer.</p><a href="omnimind.html" class="project-link">Deep-Dive →</a></div>
+            <div class="project-card">
+                <h3>GreenOps Platform</h3>
+                <p>Carbon-aware sustainability intelligence for GCP workloads.</p>
+                <a href="greenops-platform.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>FinRisk Sentinel</h3>
+                <p>Real-time financial risk monitoring and anomaly detection.</p>
+                <a href="finrisk-sentinel.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>Data Quality & Governance</h3>
+                <p>Automated validation, drift detection, and rule generation.</p>
+                <a href="data-quality-governance.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>Intelligent Asset Inventory</h3>
+                <p>Predictive maintenance and RUL forecasting for physical assets.</p>
+                <a href="intelligent-asset-inventory.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>Executive Strategy Dashboard</h3>
+                <p>C-suite portfolio governance and OKR forecasting.</p>
+                <a href="executive-strategy-dashboard.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>RevRec-AI</h3>
+                <p>Autonomous revenue recognition and IFRS/ASC 606 compliance.</p>
+                <a href="revrec-ai.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>ContractGuard</h3>
+                <p>Agentic contract review, risk scoring, and negotiation simulation.</p>
+                <a href="contractguard.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>Continuous Risk Monitoring</h3>
+                <p>Real-time threat detection and SAR automation.</p>
+                <a href="continuous-risk-monitoring.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>Serverless Document Analyzer</h3>
+                <p>Zero-cost unstructured data ingestion and multimodal extraction.</p>
+                <a href="serverless-document-analyzer.html" class="project-link">View Project →</a>
+            </div>
+            <div class="project-card">
+                <h3>OmniMind CCAI</h3>
+                <p>Agentic contact center with 80% autonomous resolution.</p>
+                <a href="omnimind.html" class="project-link">View Project →</a>
+            </div>
         </div>
     </section>
-    <section id="impact-outcomes"><h2>Aggregate Value Realization</h2><div class="img-placeholder">[IMAGE: Cumulative Value Waterfall Chart]</div></section>
-    <footer style="text-align: center; color: #666; padding: 40px;"><p>SAFe 6.0 | TOGAF 10 | Google Cloud Reference Architecture</p></footer>
+
+    <!-- Aggregate Impact -->
+    <section id="impact-outcomes">
+        <h2>Aggregate Value Realization</h2>
+        <p>Combined impact of the Autonomous Enterprise ecosystem on operational efficiency, compliance, and strategic growth.</p>
+        <div class="img-placeholder">[PLACEHOLDER: Cumulative Portfolio ROI Waterfall & Impact Metrics Chart]</div>
+    </section>
+
+    <footer style="text-align: center; color: #666; padding: 40px; margin-top: 40px;">
+        <p>Autonomous Enterprise Framework • TOGAF • SAFe 6.0 • Google Cloud Sovereign Architecture • © 2026 Siddharth Rao</p>
+    </footer>
+
 </div>
+
 </body>
 </html>
