@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADR Index · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:16px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:52px;position:relative;overflow:hidden}
+.phdr::before{content:'ADR';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:160px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,56px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.75;max-width:600px}
+.content{max-width:960px;margin:0 auto;padding:64px var(--col)}
+.group{margin-bottom:64px}
+.group-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.group-label::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.group-title{font-family:var(--serif);font-size:clamp(22px,2.8vw,34px);font-weight:300;color:var(--text);line-height:1.15;margin-bottom:24px}
+.group-title em{font-style:italic;color:var(--gold)}
+.adr{background:var(--white);border:1px solid var(--border);padding:24px 28px;margin-bottom:4px;border-left:4px solid var(--border)}
+.adr.accepted{border-left-color:var(--green)}
+.adr.superseded{border-left-color:var(--amber)}
+.adr-header{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.1em;text-transform:uppercase}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em;line-height:1.2}
+.adr-meta{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap}
+.adr-meta-item{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.adr-meta-item strong{color:var(--text-2);font-weight:500}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px}
+.st-accepted{background:#E6F4EA;color:#0D5226}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7;margin-bottom:8px}
+.adr-alt{padding:8px 12px;background:var(--surface-2);border-left:2px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.6;margin-bottom:8px}
+.adr-alt strong{color:var(--text-2);font-weight:500}
+.page-ref{font-family:var(--mono);font-size:10px;color:var(--blue)}
+.page-ref a{color:var(--blue);text-decoration:none}.page-ref a:hover{text-decoration:underline}
+.ap{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
+.ap.in{opacity:1;transform:none}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:64px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+@media(max-width:860px){:root{--col:22px}.mn-r .mn-link{display:none}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="index.html" class="mn-back">← Home</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>ADR Index</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="glossary.html" class="mn-link">Glossary</a>
+    <a href="page-03.html" class="mn-link">TOGAF</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<header class="phdr">
+  <h1 class="ph-h1">Architecture Decision Records<br><em>Every significant decision.</em><br><strong>Every alternative documented.</strong></h1>
+  <p class="ph-sub">All architecture decisions made in the design of The Autonomous Enterprise — core platform decisions, ML design decisions, infrastructure decisions, and module-specific decisions. Each record states the context, the decision, the alternatives considered, and the consequences.</p>
+</header>
+
+<div class="content">
+
+<!-- CORE PLATFORM -->
+<div class="group ap">
+  <div class="group-label">Core Platform</div>
+  <div class="group-title">Foundation decisions — <em>Phase A through Phase D.</em></div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-001</span><span class="adr-title">Salesforce Developer Edition REST API over production Salesforce credentials for integration validation</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase A</span><span class="adr-meta-item"><strong>Context:</strong> ClaraVis Salesforce integration</span></div>
+    <div class="adr-body">The Salesforce integration layer for CCAI Sales Agent, ContractGuard, and RevRec AI must be validated against a real Salesforce environment before production credentials are involved. Developer Edition provides a permanent, free Salesforce org with full API access and standard objects (Account, Opportunity, Contract, Case, Product2, Pricebook). All integration patterns — OAuth 2.0, REST API calls, object creation, Activity logging — are validated in Developer Edition before any production deployment.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Salesforce sandbox (requires existing production org). Rejected: introduces dependency on ClaraVis's Salesforce administration for a portfolio project.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 ADM Phase A</a> · Used by: <a href="page-09-m01.html">M-01 CCAI Sales Agent</a> · <a href="page-09-m02.html">M-02 ContractGuard</a> · <a href="page-09-m03.html">M-03 RevRec AI</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-002</span><span class="adr-title">GCP alongside Salesforce and SAP — augmentation not replacement</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase A</span></div>
+    <div class="adr-body">The AE is the orchestration and intelligence layer that sits above Salesforce and SAP. It never replaces them. Salesforce remains the system of record. SAP remains the ERP. This decision eliminates the most common enterprise AI adoption failure mode: the system migration risk. ClaraVis's existing Salesforce and SAP implementations are not touched, re-platformed, or migrated.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Replace Salesforce CPQ with a custom AE CPQ layer. Rejected: eliminates ClaraVis's existing 15-year Salesforce investment and introduces unacceptable migration risk.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 ADM Phase A</a> · Referenced: <a href="page-08.html">Page 08 GTM — adoption risk</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-003</span><span class="adr-title">Cloud Run over GKE for stateless agent services</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase D</span></div>
+    <div class="adr-body">Cloud Run's per-request billing model, scale-to-zero capability, and request-driven execution are optimal for the AE's agent workloads — short-duration, event-triggered, stateless request handlers. Cloud Run handles the FinRisk Sentinel streaming agent (always-on, min 2 instances), the GreenOps agent (always-on, min 1 instance), the ContractGuard agent, and the RevRec AI agent. GKE is reserved for GKE Autopilot batch ML workloads that require GPU access and longer-running jobs.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> All agents on GKE Standard. Rejected: node pool management overhead, instance-idle billing for low-frequency agents.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 ADM Phase D</a> · Architecture: <a href="page-07.html">Page 07 Infrastructure</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-004</span><span class="adr-title">Firestore for agent state and HITL audit over Cloud Spanner or BigQuery</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase D</span></div>
+    <div class="adr-body">Firestore's document model matches the AE's agent state structure natively — a conversation session, a HITL checkpoint, and a contract analysis result are all naturally document-shaped. Firestore's strong consistency, real-time listeners, and CMEK support make it the correct choice for HITL state that must be written atomically and read immediately by the reviewing human's UI. BigQuery exports of Firestore HITL records provide the long-term audit trail.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Cloud Spanner for relational HITL records. Rejected: HITL data is not relational — it's document-shaped state with nested arrays of reviewer actions.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 Phase D</a> · Used by all HITL checkpoints: <a href="page-04.html">Page 04</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-005</span><span class="adr-title">SHAP TreeExplainer over LIME for the XAI explanation layer</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase D</span></div>
+    <div class="adr-body">SHAP TreeExplainer produces exact, deterministic attributions for tree-based models (XGBoost, Isolation Forest). LIME produces approximations that vary between runs. EU AI Act Article 13 requires reproducible explanations — an auditor who queries the BigQuery SHAP record six months after a classification must see the same values the human reviewer saw at the time of decision. LIME's approximation-based approach is architecturally inconsistent with an immutable audit trail.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> LIME (Local Interpretable Model-agnostic Explanations). Rejected: non-deterministic — fails the EU AI Act Art. 13 immutable audit requirement.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 Phase D</a> · Applied: <a href="page-06.html">Page 06 ML Engineering</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-006</span><span class="adr-title">Pub/Sub as the integration event bus over direct HTTP inter-service calls</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Phase D</span></div>
+    <div class="adr-body">Pub/Sub decouples the AE from Salesforce and SAP outages. A Salesforce maintenance window or SAP batch job does not cascade into AE agent failures — the event remains in the Pub/Sub topic until the AE agent is ready to process it. Pub/Sub also provides the audit trail of event delivery, the schema validation hook for Data Governance (M-08), and the fan-out capability that allows multiple consumers (FinRisk Sentinel, Data Governance, the Strategy Dashboard feed) to receive the same event without coordination.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Direct HTTP calls from Salesforce webhooks to Cloud Run. Rejected: tight coupling — Salesforce webhook failure during AE downtime causes permanent event loss.</div>
+    <div class="page-ref">Documented: <a href="page-03.html">Page 03 Phase D</a> · Used by: <a href="page-09-m08.html">M-08 Data Governance</a> · all three ae- topics</div>
+  </div>
+</div>
+
+<!-- AGENT DESIGN -->
+<div class="group ap">
+  <div class="group-label">Agent Design</div>
+  <div class="group-title">Multi-agent orchestration decisions — <em>Phase Agent Design.</em></div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-007</span><span class="adr-title">Google ADK over LangGraph or CrewAI for multi-agent orchestration</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Agent Design</span></div>
+    <div class="adr-body">ADK provides native integration with CCAI (required for the CCAI Sales Agent voice and web chat channels), Dialogflow CX (conversation routing), Vertex AI (inference endpoints), and Cloud Run (deployment). LangGraph and CrewAI require custom adapters for each of these GCP services. ADK's A2A protocol (ADR-008) is a first-class typed inter-agent communication standard. For a 100% GCP portfolio architecture, native integration eliminates adapter maintenance burden and reduces operational complexity.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> LangGraph (graph-based agent orchestration). Rejected: no native CCAI/Dialogflow CX integration, framework-specific agent communication protocol.</div>
+    <div class="page-ref">Documented: <a href="page-05.html">Page 05 Agent Swarm</a> · Applied: <a href="page-09-m01.html">M-01 CCAI Sales Agent</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-008</span><span class="adr-title">A2A protocol over direct HTTP for inter-agent communication</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Agent Design</span></div>
+    <div class="adr-body">A2A defines a typed message contract between agents. The Orchestrator sends a structured task message and receives a structured response. If a sub-agent's response schema changes, the build fails at A2A schema validation rather than at runtime in a live conversation. A2A also enables agent replaceability — the Orchestrator depends on the contract, not the implementation. Sub-agents can be upgraded, A/B tested, or replaced without changing the Orchestrator.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Direct HTTP calls with untyped JSON. Rejected: schema changes cause runtime failures in production, not build-time failures in development.</div>
+    <div class="page-ref">Documented: <a href="page-05.html">Page 05 Agent Swarm</a> · Applied: <a href="page-09-m01.html">M-01 CCAI Sales Agent</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-009</span><span class="adr-title">Firestore over Redis for agent state and HITL audit trail</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Agent Design</span></div>
+    <div class="adr-body">Redis is appropriate for ephemeral session caching. HITL audit records are not ephemeral — they are immutable compliance documents that must be queryable for 7 years. Firestore provides native CMEK, strong consistency for concurrent HITL reviewer decisions (optimistic locking in FinRisk Sentinel's dual-reviewer HITL-08), real-time listeners for the HITL UI, and native BigQuery export for long-term audit storage.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Redis for agent session state + BigQuery for HITL records (two separate stores). Rejected: operational complexity of two stores for the same data lifecycle.</div>
+    <div class="page-ref">Documented: <a href="page-05.html">Page 05 Agent Swarm</a> · Relied on by all HITL checkpoints</div>
+  </div>
+</div>
+
+<!-- ML DESIGN -->
+<div class="group ap">
+  <div class="group-label">ML Design</div>
+  <div class="group-title">Model architecture decisions — <em>Phase ML Design.</em></div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-010</span><span class="adr-title">XGBoost over neural network for RevRec AI and ContractGuard risk scoring</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> ML Design</span></div>
+    <div class="adr-body">EU AI Act Article 13 requires reproducible explanations. XGBoost's TreeExplainer produces exact, bit-for-bit reproducible SHAP values. Neural network SHAP (DeepExplainer / KernelExplainer) produces approximations that vary between runs — an approximation in an immutable audit trail is an architectural contradiction. XGBoost also performs competitively at the training dataset sizes available (4,800 contracts for RevRec AI, 12,400 labelled clauses for ContractGuard) and is less prone to overfitting than deep models at this scale.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> MLP neural network. Rejected: KernelExplainer SHAP approximations — non-deterministic, violates EU AI Act Art. 13 immutable audit requirement.</div>
+    <div class="page-ref">Documented: <a href="page-06.html">Page 06 ML Engineering</a> · Applied: <a href="page-09-m03.html">M-03 RevRec AI</a> · <a href="page-09-m02.html">M-02 ContractGuard</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-011</span><span class="adr-title">Isolation Forest over autoencoder for anomaly detection (FinRisk Sentinel and Asset IQ)</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> ML Design</span></div>
+    <div class="adr-body">Two reasons: (1) Isolation Forest's decision-tree structure is directly compatible with TreeExplainer — exact SHAP attributions in milliseconds, essential for FinRisk Sentinel's &lt;5-minute alert path. Autoencoder SHAP requires KernelExplainer approximations that are too slow for real-time scoring. (2) Both applications are unsupervised — no labelled anomaly examples exist. Isolation Forest is designed for this scenario (contamination parameter for expected anomaly rate). Autoencoders trained on normal data also work but require careful architecture design to avoid learning the identity function.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Autoencoder-based anomaly detection. Rejected: KernelExplainer SHAP too slow for streaming; architecture complexity for normal-only training data.</div>
+    <div class="page-ref">Documented: <a href="page-06.html">Page 06 ML Engineering</a> · Applied: <a href="page-09-m04.html">M-04 FinRisk Sentinel</a> · <a href="page-09-m05.html">M-05 Asset IQ</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-012</span><span class="adr-title">Vertex AI Pipelines over self-managed Kubeflow Pipelines</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> ML Design</span></div>
+    <div class="adr-body">Vertex AI Pipelines is a managed service — no pipeline orchestrator infrastructure to provision, patch, or scale. It integrates natively with Vertex AI Model Registry (model versioning for FDA change control), ML Metadata store (lineage for EU AI Act Article 11), and Feature Store (training data provenance). The operational overhead of running a Kubeflow Pipelines cluster for a portfolio-scale deployment is not justified by any capability advantage.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Self-managed Kubeflow Pipelines on GKE. Rejected: infrastructure management overhead with no capability advantage at portfolio scale.</div>
+    <div class="page-ref">Documented: <a href="page-06.html">Page 06 ML Engineering</a></div>
+  </div>
+</div>
+
+<!-- INFRASTRUCTURE -->
+<div class="group ap">
+  <div class="group-label">Infrastructure Design</div>
+  <div class="group-title">GCP platform decisions — <em>Phase Infra Design.</em></div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-013</span><span class="adr-title">Shared VPC over separate VPCs per module</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Infra Design</span></div>
+    <div class="adr-body">Separate VPCs per module creates an O(n²) peering mesh with 8 modules that approaches GCP peering limits and is operationally complex. Shared VPC centralises network management in the host project — module SAs cannot modify network topology. Private Service Connect endpoints are provisioned once in the shared VPC and consumed by all modules. Security isolation between modules is maintained at the IAM and VPC-SC layer, not the network boundary layer.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> One VPC per module. Rejected: O(n²) peering mesh, module SAs with network admin rights, 8 separate PSC configurations.</div>
+    <div class="page-ref">Documented: <a href="page-07.html">Page 07 Infrastructure</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-014</span><span class="adr-title">Cloud Armor over third-party WAF (Cloudflare, Imperva)</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Infra Design</span></div>
+    <div class="adr-body">Third-party WAFs route traffic outside the GCP network before it reaches Cloud Load Balancer — any traffic routing outside GCP before the VPC-SC perimeter is a data sovereignty risk requiring legal review under ClaraVis's GDPR obligations. Cloud Armor integrates natively with Cloud Load Balancer and Security Command Center. Cloud Armor Adaptive Protection (ML-based DDoS detection) is included in Cloud Armor Enterprise — comparable capability without the data routing concern.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Cloudflare WAF. Rejected: traffic routing outside GCP network before VPC-SC perimeter — data sovereignty risk under GDPR.</div>
+    <div class="page-ref">Documented: <a href="page-07.html">Page 07 Infrastructure</a></div>
+  </div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-015</span><span class="adr-title">GKE Autopilot over GKE Standard for batch ML workloads</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> Infra Design</span></div>
+    <div class="adr-body">GKE Standard requires node pool management — machine type selection, node lifecycle management, OS patching. Autopilot abstracts all of this — Vertex AI Pipelines submits pod specs, Autopilot provisions the right nodes. Autopilot's per-pod billing is more cost-efficient for intermittent batch workloads than Standard's per-node billing. Autopilot automatically applies GKE hardening (no SSH access, enforced container security context, Workload Identity pre-configured).</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> GKE Standard with managed node pools. Rejected: node management overhead, per-node billing for intermittent batch jobs, manual hardening required.</div>
+    <div class="page-ref">Documented: <a href="page-07.html">Page 07 Infrastructure</a> · Used by: <a href="page-09-m05.html">M-05 Asset IQ</a> · <a href="page-09-m06.html">M-06 GreenOps</a></div>
+  </div>
+</div>
+
+<!-- GTM -->
+<div class="group ap">
+  <div class="group-label">Go-to-Market</div>
+  <div class="group-title">Adoption strategy — <em>Phase GTM Design.</em></div>
+
+  <div class="adr accepted">
+    <div class="adr-header"><span class="adr-id">ADR-016</span><span class="adr-title">Phased adoption (H1/H2/H3) over big-bang full-suite deployment</span></div>
+    <div class="adr-meta"><span class="adr-meta-item"><strong>Status:</strong> <span class="adr-status st-accepted">Accepted</span></span><span class="adr-meta-item"><strong>Phase:</strong> GTM Design</span></div>
+    <div class="adr-body">ClaraVis has a hard regulatory deadline (Q2 2026 EU AI Act review), limited internal change management capacity, two complex legacy system integrations, and 9 stakeholders with different adoption readiness levels. Full suite deployment in a single programme would require all of these to be addressed simultaneously. H1 delivers compliance infrastructure before the review. H2 delivers core business modules. H3 delivers the full suite. Each horizon is independently valuable — ClaraVis can pause after H1 or H2 and retain the value already delivered.</div>
+    <div class="adr-alt"><strong>Alternative considered:</strong> Full AE suite as a single programme. Rejected: EU Act deadline cannot wait; change management load across 9 stakeholders is untenable; no partial value if programme stalls.</div>
+    <div class="page-ref">Documented: <a href="page-08.html">Page 08 GTM Strategy</a></div>
+  </div>
+</div>
+
+<!-- MODULE-SPECIFIC -->
+<div class="group ap">
+  <div class="group-label">Module-Specific Decisions</div>
+  <div class="group-title">Per-module ADRs — <em>each documented on its module page.</em></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-SA01</span><span class="adr-title">Turn-11 escalation boundary for CCAI Sales Agent</span></div>
+      <div class="adr-body" style="margin-bottom:6px">5 turns is insufficient for BANT + CPQ. 20 turns is poor sales experience. 11 is the boundary where BANT is complete, BOM is configured, pricing is presented, and the AE enters at the natural handoff point where technical discussion begins.</div>
+      <div class="page-ref"><a href="page-09-m01.html">M-01 CCAI Sales Agent — ADR-SA01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-SA02</span><span class="adr-title">Salesforce Opportunity created at turn 6, not at HITL-01 escalation</span></div>
+      <div class="adr-body" style="margin-bottom:6px">The AE's first action after reading the briefing is to open Salesforce. If the Opportunity doesn't exist, the AE wastes 30–90 seconds creating it — exactly the administrative task the agent eliminates.</div>
+      <div class="page-ref"><a href="page-09-m01.html">M-01 CCAI Sales Agent — ADR-SA02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-CG01</span><span class="adr-title">Two-pass architecture (Document AI → Gemini) for ContractGuard</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Gemini-only extraction is unstructured, expensive per clause, and breaks on unusual contract formats. Document AI provides deterministic structured extraction; Gemini provides semantic reasoning over the full document. Each pass does what it is optimised for.</div>
+      <div class="page-ref"><a href="page-09-m02.html">M-02 ContractGuard — ADR-CG01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-CG02</span><span class="adr-title">Vertex AI Vector Store over BigQuery vector search for ContractGuard precedents</span></div>
+      <div class="adr-body" style="margin-bottom:6px">BigQuery VECTOR_SEARCH has no ANN index — latency degrades as corpus grows. Vertex AI Vector Store uses ANN and returns top-k in under 100ms. First-class integration with Feature Store and Gemini embedding API.</div>
+      <div class="page-ref"><a href="page-09-m02.html">M-02 ContractGuard — ADR-CG02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-R01</span><span class="adr-title">SAP write requires hitl_id as a mandatory function parameter</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Application-level checks can be bypassed by a bug or future code change. The SAP write guard is in the function signature, not in conditional logic. A developer cannot accidentally remove the HITL requirement without explicitly changing the function signature.</div>
+      <div class="page-ref"><a href="page-09-m03.html">M-03 RevRec AI — ADR-R01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-R02</span><span class="adr-title">HITL-04 required for every RevRec AI classification — no confidence threshold exception</span></div>
+      <div class="adr-body" style="margin-bottom:6px">EU AI Act Annex III does not distinguish by confidence level. Auto-approving high-confidence classifications removes the feedback loop that builds Finance Controller trust and produces training signal from overrides.</div>
+      <div class="page-ref"><a href="page-09-m03.html">M-03 RevRec AI — ADR-R02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-FR01</span><span class="adr-title">Streaming Pub/Sub scoring over scheduled BigQuery batch for FinRisk Sentinel</span></div>
+      <div class="adr-body" style="margin-bottom:6px">A 15-minute batch window is unacceptable for a 1-hour HITL SLA. The streaming architecture detects and alerts within 18 seconds of a payment event. BigQuery SQL cannot call a Vertex AI endpoint synchronously.</div>
+      <div class="page-ref"><a href="page-09-m04.html">M-04 FinRisk Sentinel — ADR-FR01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-FR02</span><span class="adr-title">Dual-reviewer HITL-08 over single-reviewer for high-severity financial alerts</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Separation of duties for financial fraud alerts. EU AI Act Article 14 requires oversight proportionate to the risk. Matches the four-eyes principle already applied to financial authorisations above a threshold at ClaraVis. Optimistic lock handles concurrent decisions correctly.</div>
+      <div class="page-ref"><a href="page-09-m04.html">M-04 FinRisk Sentinel — ADR-FR02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-AQ01</span><span class="adr-title">GKE Autopilot for batch RUL over Cloud Run for Asset IQ</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Cloud Run max timeout 60 minutes — insufficient margin for a 45-minute batch job. RUL job requires GPU (A100) which GKE Autopilot provisions natively. Per-pod billing is optimal for one long infrequent job; Cloud Run per-request billing is optimal for many short frequent requests.</div>
+      <div class="page-ref"><a href="page-09-m05.html">M-05 Asset IQ — ADR-AQ01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-AQ02</span><span class="adr-title">Unified Pub/Sub schema over per-region API adapters for Asset IQ ingestion</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Cross-regional fleet analytics (HITL-07) require a single BigQuery query across all regions — impossible without a common schema. Data Governance (M-08) enforces the unified schema at the ingestion gate. The unified schema makes ADR-AQ02 enforceable at runtime, not just as a design convention.</div>
+      <div class="page-ref"><a href="page-09-m05.html">M-05 Asset IQ — ADR-AQ02</a> · <a href="page-09-m08.html">M-08 Data Governance</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-GO01</span><span class="adr-title">±6 hour deferral window for GreenOps carbon-aware scheduling</span></div>
+      <div class="adr-body" style="margin-bottom:6px">±1h rarely spans a low-carbon trough. ±24h affects model freshness. Analysis of 90 days of europe-west3 Carbon Footprint API data: low-carbon window occurs within 6 hours 73% of the time. 6-hour deferral on a weekly retraining job = 0.4% interval increase — statistically indistinguishable from normal variation.</div>
+      <div class="page-ref"><a href="page-09-m06.html">M-06 GreenOps — ADR-GO01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-GO02</span><span class="adr-title">GCP Carbon Footprint API over third-party APIs (Electricity Maps, WattTime) for GreenOps</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Third-party APIs require outbound internet calls — a VPC-SC network egress path that requires CISO approval. GCP's API is available within the perimeter. Consistent with GCP billing carbon reporting, ensuring internal CSRD reporting consistency.</div>
+      <div class="page-ref"><a href="page-09-m06.html">M-06 GreenOps — ADR-GO02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-DG01</span><span class="adr-title">TFX ExampleValidator over custom JSON schema validation for Data Governance</span></div>
+      <div class="adr-body" style="margin-bottom:6px">TFX is stateful — it detects distributional drift, not just structural violations. Integrates natively with Vertex AI Pipelines ensuring same schema enforced at training and serving. Great Expectations integration produces living data quality documentation satisfying EU AI Act Article 11.</div>
+      <div class="page-ref"><a href="page-09-m08.html">M-08 Data Governance — ADR-DG01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-DG02</span><span class="adr-title">Quarantine-then-review over reject-on-arrival for schema violations in Data Governance</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Sensor data cannot be re-sent — Pub/Sub delivery window is finite. A schema violation often indicates a legitimate upstream system update, not corrupted data. Quarantine preserves the raw record for reprocessing once the mapping is confirmed. Reject-on-arrival causes permanent data loss.</div>
+      <div class="page-ref"><a href="page-09-m08.html">M-08 Data Governance — ADR-DG02</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-SD01</span><span class="adr-title">Looker Studio over custom React dashboard for Strategy Dashboard</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Native BigQuery connector, GCP IAM integration, no separate backend or authentication layer. Correct for the executive audience who consume dashboards in meetings, not in the developer console. Custom React UX investment is better spent on HITL interfaces where UX directly affects operational decisions.</div>
+      <div class="page-ref"><a href="page-09-m07.html">M-07 Strategy Dashboard — ADR-SD01</a></div>
+    </div>
+    <div class="adr accepted" style="margin-bottom:0">
+      <div class="adr-header"><span class="adr-id">ADR-SD02</span><span class="adr-title">Materialised BigQuery views over live queries for Strategy Dashboard</span></div>
+      <div class="adr-body" style="margin-bottom:6px">Live queries compete with operational writes for BigQuery slots. Per-panel refresh cadences (5min to 1h) match actual freshness requirements — fleet panel does not need 5-minute refreshes. Materialised view definitions are the auditable specification of what the dashboard shows.</div>
+      <div class="page-ref"><a href="page-09-m07.html">M-07 Strategy Dashboard — ADR-SD02</a></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2)">© 2026 Siddharthan Rao · <a href="index.html" style="color:rgba(245,240,232,.3);text-decoration:none">Home</a> · <a href="glossary.html" style="color:rgba(245,240,232,.3);text-decoration:none">Glossary</a></div>
+</footer>
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

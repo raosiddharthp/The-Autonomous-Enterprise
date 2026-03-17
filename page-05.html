@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Swarm Architecture — Page 05 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;--ink-4:#2E2F28;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;--gold-dim:rgba(184,150,12,0.14);
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--ink);color:var(--cream);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+
+/* NAV */
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:rgba(14,13,11,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.45);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--gold-lt)}
+.mn-sep{width:1px;height:14px;background:rgba(255,255,255,.08)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.3);letter-spacing:.04em}.mn-crumb strong{color:rgba(245,240,232,.7);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.4);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--gold-lt)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink);background:var(--gold-lt);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--gold)}
+
+/* SECTION NAV */
+.snav{position:sticky;top:52px;z-index:500;background:rgba(14,13,11,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.35);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:rgba(245,240,232,.7)}.sn.act{color:var(--gold-lt);border-bottom-color:var(--gold);font-weight:500}
+
+/* PAGE HEADER */
+.phdr{padding:100px var(--col) 64px;margin-top:88px;position:relative;overflow:hidden;background:var(--ink)}
+.phdr::before{content:'05';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:220px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+/* Subtle grid */
+.phdr-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 20% 50%,black,transparent 70%)}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ph-bc span{color:rgba(245,240,232,.15)}
+.ph-h1{font-family:var(--serif);font-size:clamp(34px,5vw,64px);font-weight:300;color:var(--cream);line-height:1.0;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}
+.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;border:1px solid rgba(255,255,255,.12);color:rgba(245,240,232,.55);letter-spacing:.06em}
+
+/* SECTIONS */
+.sec{padding:64px var(--col)}
+.sec.lt{background:var(--surface);color:var(--text)}
+.sec.lt2{background:var(--white);color:var(--text)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold-lt);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.bl{color:var(--blue)}.s-ey.gr{color:var(--green)}.s-ey.re{color:var(--red)}.s-ey.pu{color:#CE93D8}.s-ey.te{color:var(--teal)}.s-ey.am{color:var(--amber)}
+.sec.lt .s-ey,.sec.lt2 .s-ey{color:var(--blue)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.lt .s-h2,.sec.lt2 .s-h2{color:var(--text)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.lt .s-p,.sec.lt2 .s-p{color:var(--text-2)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* DIAGRAM WRAPPER */
+.dw{background:var(--ink-2);border:1px solid rgba(255,255,255,.07);padding:32px;margin-top:4px}
+.dw.lt-bg{background:var(--white);border:1px solid var(--border)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--cream)}.dw .dw-title::before{background:var(--gold-lt)}
+.dw.lt-bg .dw-title{color:var(--text)}.dw.lt-bg .dw-title::before{background:var(--blue)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:rgba(245,240,232,.35)}.dw.lt-bg .dw-sub{color:var(--text-3)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.dw.lt-bg .dw-legend{border-top-color:var(--border-2)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:rgba(245,240,232,.4)}.dw.lt-bg .dl{color:var(--text-2)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.dl-dash{width:24px;height:0;border-top:2px dashed currentColor;flex-shrink:0;opacity:.6}
+
+/* AGENT SPEC CARDS */
+.agent-spec{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);margin-top:4px;overflow:hidden}
+.as-header{padding:24px 28px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:16px}
+.as-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.as-name{font-family:var(--display);font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.01em}
+.as-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.45);margin-left:auto;max-width:320px;text-align:right;line-height:1.5}
+.as-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.04)}
+.as-panel{background:var(--ink-3);padding:22px 22px}
+.asp-label{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(245,240,232,.3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:12px}
+/* State machine nodes */
+.sm-states{display:flex;flex-direction:column;gap:6px}
+.sm-state{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:3px;font-family:var(--mono);font-size:11px;font-weight:300}
+.ss-idle{background:rgba(255,255,255,.04);color:rgba(245,240,232,.5)}
+.ss-active{background:rgba(184,150,12,.12);color:#D4AC1A;border:1px solid rgba(184,150,12,.2)}
+.ss-hitl{background:rgba(217,48,37,.1);color:#EF9A9A;border:1px solid rgba(217,48,37,.2)}
+.ss-error{background:rgba(176,96,0,.1);color:#FFB74D;border:1px solid rgba(176,96,0,.2)}
+.ss-done{background:rgba(19,115,51,.1);color:#A5D6A7;border:1px solid rgba(19,115,51,.2)}
+.ss-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ss-idle .ss-dot{background:rgba(245,240,232,.2)}
+.ss-active .ss-dot{background:#D4AC1A}
+.ss-hitl .ss-dot{background:#EF9A9A}
+.ss-error .ss-dot{background:#FFB74D}
+.ss-done .ss-dot{background:#A5D6A7}
+.sm-transition{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.25);padding:2px 6px;margin-left:22px;display:block}
+/* Tool manifest */
+.tool-list{display:flex;flex-direction:column;gap:4px}
+.tool-item{padding:6px 10px;background:rgba(255,255,255,.04);border-left:2px solid rgba(255,255,255,.08);font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.6);line-height:1.5;transition:border-color .2s}
+.tool-item:hover{border-left-color:var(--gold)}
+.tool-item strong{display:block;font-weight:500;color:rgba(245,240,232,.85);font-size:10px}
+/* Thresholds + boundary */
+.threshold-grid{display:flex;flex-direction:column;gap:6px}
+.th-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:7px 10px;background:rgba(255,255,255,.03)}
+.th-label{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.5)}
+.th-val{font-family:var(--mono);font-size:11px;font-weight:500}
+.th-auto{color:#A5D6A7}.th-hitl{color:#EF9A9A}.th-cb{color:#FFB74D}
+.boundary-section{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+.boundary-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;font-family:var(--mono);font-size:10px;font-weight:300;line-height:1.5}
+.boundary-row.auto{color:rgba(165,214,167,.7)}.boundary-row.auto::before{content:'AUTO';font-size:8px;font-weight:500;background:rgba(19,115,51,.2);color:#A5D6A7;padding:1px 4px;flex-shrink:0;margin-top:1px}
+.boundary-row.human{color:rgba(239,154,154,.7)}.boundary-row.human::before{content:'HITL';font-size:8px;font-weight:500;background:rgba(217,48,37,.15);color:#EF9A9A;padding:1px 4px;flex-shrink:0;margin-top:1px}
+
+/* CODE BLOCK */
+.code-block{background:var(--ink);border:1px solid rgba(255,255,255,.08);padding:24px;margin-top:4px;overflow-x:auto}
+.code-block pre{font-family:var(--mono);font-size:12px;line-height:1.7;color:rgba(245,240,232,.7)}
+.code-block .ck{color:#CE93D8} /* key */
+.code-block .cv{color:#A5D6A7} /* value string */
+.code-block .cn{color:#90CAF9} /* number */
+.code-block .cc{color:rgba(245,240,232,.3);font-style:italic} /* comment */
+
+/* MEMORY ARCHITECTURE */
+.memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.mem-tier{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:24px 22px}
+.mt-num{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px}
+.mt-name{font-family:var(--display);font-size:18px;font-weight:700;color:var(--cream);letter-spacing:-.01em;margin-bottom:4px}
+.mt-service{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-bottom:14px;letter-spacing:.04em}
+.mt-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.55);line-height:1.7;margin-bottom:14px}
+.mt-schema{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);border-top:1px solid rgba(255,255,255,.06);padding-top:10px;line-height:1.7}
+.mt-schema strong{color:rgba(245,240,232,.55);font-weight:500}
+
+/* GUARDRAILS */
+.guardrail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
+.gr-card{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:24px 22px}
+.gr-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.gr-card.cb .gr-label{color:#FFB74D}
+.gr-card.hd .gr-label{color:#EF9A9A}
+.gr-card.ct .gr-label{color:#A5D6A7}
+.gr-card.fb .gr-label{color:#90CAF9}
+.gr-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--cream);letter-spacing:-.01em;margin-bottom:10px}
+.gr-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.7;margin-bottom:12px}
+.gr-config{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);border-top:1px solid rgba(255,255,255,.06);padding-top:10px;line-height:1.7}
+.gr-config strong{color:rgba(245,240,232,.55);font-weight:500}
+
+/* ADR CARDS */
+.adr-row{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.adr-card{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:20px 22px;border-left:3px solid}
+.adr-card.bl{border-left-color:var(--blue)}.adr-card.gr{border-left-color:var(--green)}.adr-card.am{border-left-color:var(--amber)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr-card.bl .adr-id{color:rgba(100,170,255,.7)}.adr-card.gr .adr-id{color:rgba(165,214,167,.7)}.adr-card.am .adr-id{color:rgba(255,183,77,.7)}
+.adr-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.2;letter-spacing:-.01em}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:rgba(19,115,51,.2);color:#A5D6A7;letter-spacing:.06em}
+
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){
+  :root{--col:22px}
+  .as-body{grid-template-columns:1fr}
+  .memory-grid{grid-template-columns:1fr}
+  .guardrail-grid{grid-template-columns:1fr}
+  .adr-row{grid-template-columns:1fr}
+  .mn-r .mn-link{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-04.html" class="mn-back">← Page 04</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>Page 05 — Agent Swarm Architecture</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="index.html" class="mn-link">Overview</a>
+    <a href="page-04.html" class="mn-link">← Page 04</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<nav class="snav" id="snav">
+  <a href="#topology" class="sn act" data-sec="topology">Swarm Topology</a>
+  <a href="#orchestrator" class="sn" data-sec="orchestrator">Orchestrator</a>
+  <a href="#agents" class="sn" data-sec="agents">Agent Specifications</a>
+  <a href="#a2a" class="sn" data-sec="a2a">A2A Protocol</a>
+  <a href="#memory" class="sn" data-sec="memory">Memory Architecture</a>
+  <a href="#guardrails" class="sn" data-sec="guardrails">Guardrails</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+</nav>
+
+<header class="phdr">
+  <div class="phdr-grid"></div>
+  <div class="ph-bc">The Autonomous Enterprise <span>/</span> Page 05</div>
+  <h1 class="ph-h1">
+    Agent Swarm<br>
+    <em>Architecture</em><br>
+    <strong>— formally specified.</strong>
+  </h1>
+  <p class="ph-sub">The HITL specification from Page 04 is the input. Every checkpoint defined there is implemented here as a formal state machine node — with an entry condition, a presentation contract, a timeout, and an immutable audit record. This is not a diagram of agents. It is an architecture of agents.</p>
+  <div class="ph-tags">
+    <span class="ph-tag">Google ADK</span>
+    <span class="ph-tag">A2A Protocol</span>
+    <span class="ph-tag">MCP Tool Manifest</span>
+    <span class="ph-tag">5 Specialist Agents</span>
+    <span class="ph-tag">11 HITL State Nodes</span>
+    <span class="ph-tag">3-Tier Memory</span>
+  </div>
+</header>
+
+<!-- §01 SWARM TOPOLOGY -->
+<section class="sec ap" id="topology">
+  <div class="s-ey">Swarm Topology</div>
+  <h2 class="s-h2">One orchestrator. Five specialists.<br><em>One shared context.</em></h2>
+  <p class="s-p">The AE agent swarm uses Google ADK for agent definition, A2A protocol for inter-agent communication, and MCP for tool access. The Orchestrator is the single point of task dispatch — it never executes business logic directly. Specialist agents are stateless and idempotent. All state lives in Firestore. All tool calls are audited.</p>
+
+  <div class="dw ap">
+    <div class="dw-title">Agent Swarm — Full Topology</div>
+    <div class="dw-sub">Orchestrator · 5 specialist agents · Tool layer · External systems · A2A communication paths</div>
+    <svg width="100%" viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="a2a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="tool" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Background zones -->
+      <!-- User/HITL zone -->
+      <rect x="10" y="10" width="880" height="60" rx="4" fill="rgba(217,48,37,.05)" stroke="rgba(217,48,37,.15)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="24" y="28" font-size="9" fill="rgba(239,154,154,.4)" font-weight="500" letter-spacing=".06em">PRESENTATION LAYER · HITL APPROVAL UI · HUMAN REVIEWERS</text>
+
+      <!-- Orchestration zone -->
+      <rect x="10" y="80" width="880" height="100" rx="4" fill="rgba(184,150,12,.04)" stroke="rgba(184,150,12,.12)" stroke-width="1"/>
+      <text x="24" y="96" font-size="9" fill="rgba(212,172,26,.4)" font-weight="500" letter-spacing=".06em">ORCHESTRATION LAYER · GOOGLE ADK</text>
+
+      <!-- Agent zone -->
+      <rect x="10" y="190" width="880" height="120" rx="4" fill="rgba(26,115,232,.04)" stroke="rgba(26,115,232,.1)" stroke-width="1"/>
+      <text x="24" y="206" font-size="9" fill="rgba(100,170,255,.4)" font-weight="500" letter-spacing=".06em">SPECIALIST AGENTS · CLOUD RUN · STATELESS · IDEMPOTENT</text>
+
+      <!-- Tool layer -->
+      <rect x="10" y="320" width="880" height="100" rx="4" fill="rgba(19,115,51,.04)" stroke="rgba(19,115,51,.1)" stroke-width="1"/>
+      <text x="24" y="336" font-size="9" fill="rgba(165,214,167,.4)" font-weight="500" letter-spacing=".06em">MCP TOOL LAYER · GCP SERVICES</text>
+
+      <!-- External systems -->
+      <rect x="10" y="430" width="880" height="80" rx="4" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="24" y="446" font-size="9" fill="rgba(245,240,232,.25)" font-weight="500" letter-spacing=".06em">EXTERNAL SYSTEMS</text>
+
+      <!-- ── ORCHESTRATOR ── -->
+      <rect x="350" y="88" width="200" height="72" rx="5" fill="rgba(184,150,12,.2)" stroke="#B8960C" stroke-width="1.5"/>
+      <text x="450" y="114" font-size="11" font-weight="700" fill="#D4AC1A" text-anchor="middle">AE Orchestrator</text>
+      <text x="450" y="128" font-size="9" fill="#B8960C" text-anchor="middle">ADK · A2A · MCP dispatcher</text>
+      <text x="450" y="142" font-size="8" fill="rgba(184,150,12,.5)" text-anchor="middle">SA: orchestrator-sa@ · Cloud Run</text>
+
+      <!-- HITL connection up -->
+      <line x1="450" y1="88" x2="450" y2="70" stroke="rgba(217,48,37,.5)" stroke-width="1.5" marker-end="url(#a2a)" stroke-dasharray="4 3"/>
+      <text x="458" y="82" font-size="8" fill="rgba(239,154,154,.4)">HITL events</text>
+
+      <!-- ── SPECIALIST AGENTS ── -->
+      <!-- CCAI Sales Agent -->
+      <rect x="24" y="210" width="140" height="72" rx="4" fill="rgba(26,115,232,.15)" stroke="#1A73E8" stroke-width="1"/>
+      <text x="94" y="232" font-size="10" font-weight="500" fill="#90CAF9" text-anchor="middle">CCAI Sales</text>
+      <text x="94" y="245" font-size="9" fill="#64B5F6" text-anchor="middle">Agent</text>
+      <text x="94" y="258" font-size="8" fill="rgba(26,115,232,.5)" text-anchor="middle">ADK · Cloud Run</text>
+      <text x="94" y="270" font-size="8" fill="rgba(26,115,232,.4)" text-anchor="middle">SA: ccai-sa@</text>
+
+      <!-- ContractGuard Agent -->
+      <rect x="188" y="210" width="140" height="72" rx="4" fill="rgba(0,123,131,.15)" stroke="#007B83" stroke-width="1"/>
+      <text x="258" y="232" font-size="10" font-weight="500" fill="#80CBC4" text-anchor="middle">ContractGuard</text>
+      <text x="258" y="245" font-size="9" fill="#4DB6AC" text-anchor="middle">Agent</text>
+      <text x="258" y="258" font-size="8" fill="rgba(0,123,131,.5)" text-anchor="middle">ADK · Cloud Run</text>
+      <text x="258" y="270" font-size="8" fill="rgba(0,123,131,.4)" text-anchor="middle">SA: cg-sa@</text>
+
+      <!-- RevRec Agent -->
+      <rect x="380" y="210" width="140" height="72" rx="4" fill="rgba(156,39,176,.15)" stroke="#6200EE" stroke-width="1"/>
+      <text x="450" y="232" font-size="10" font-weight="500" fill="#CE93D8" text-anchor="middle">RevRec AI</text>
+      <text x="450" y="245" font-size="9" fill="#BA68C8" text-anchor="middle">Agent</text>
+      <text x="450" y="258" font-size="8" fill="rgba(156,39,176,.5)" text-anchor="middle">ADK · Cloud Run</text>
+      <text x="450" y="270" font-size="8" fill="rgba(156,39,176,.4)" text-anchor="middle">SA: revrec-sa@</text>
+
+      <!-- Asset IQ Agent -->
+      <rect x="570" y="210" width="140" height="72" rx="4" fill="rgba(19,115,51,.15)" stroke="#137333" stroke-width="1"/>
+      <text x="640" y="232" font-size="10" font-weight="500" fill="#A5D6A7" text-anchor="middle">Asset IQ</text>
+      <text x="640" y="245" font-size="9" fill="#81C784" text-anchor="middle">Agent</text>
+      <text x="640" y="258" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">ADK · Cloud Run</text>
+      <text x="640" y="270" font-size="8" fill="rgba(19,115,51,.4)" text-anchor="middle">SA: assetiq-sa@</text>
+
+      <!-- FinRisk Agent -->
+      <rect x="736" y="210" width="140" height="72" rx="4" fill="rgba(176,96,0,.15)" stroke="#B06000" stroke-width="1"/>
+      <text x="806" y="232" font-size="10" font-weight="500" fill="#FFCC80" text-anchor="middle">FinRisk</text>
+      <text x="806" y="245" font-size="9" fill="#FFB74D" text-anchor="middle">Sentinel</text>
+      <text x="806" y="258" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">ADK · Cloud Run</text>
+      <text x="806" y="270" font-size="8" fill="rgba(176,96,0,.4)" text-anchor="middle">SA: finrisk-sa@</text>
+
+      <!-- Orchestrator → Agents (A2A dispatch) -->
+      <line x1="380" y1="140" x2="94" y2="210" stroke="rgba(184,150,12,.4)" stroke-width="1" marker-end="url(#a2a)"/>
+      <line x1="400" y1="155" x2="258" y2="210" stroke="rgba(184,150,12,.4)" stroke-width="1" marker-end="url(#a2a)"/>
+      <line x1="450" y1="160" x2="450" y2="210" stroke="rgba(184,150,12,.4)" stroke-width="1" marker-end="url(#a2a)"/>
+      <line x1="500" y1="155" x2="640" y2="210" stroke="rgba(184,150,12,.4)" stroke-width="1" marker-end="url(#a2a)"/>
+      <line x1="520" y1="140" x2="806" y2="210" stroke="rgba(184,150,12,.4)" stroke-width="1" marker-end="url(#a2a)"/>
+      <!-- A2A label -->
+      <text x="230" y="192" font-size="8" fill="rgba(184,150,12,.35)" text-anchor="middle">A2A task dispatch</text>
+
+      <!-- ── TOOL LAYER ── -->
+      <!-- Vertex AI -->
+      <rect x="24" y="344" width="130" height="48" rx="3" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="89" y="364" font-size="9" font-weight="500" fill="#CE93D8" text-anchor="middle">Vertex AI</text>
+      <text x="89" y="377" font-size="8" fill="rgba(156,39,176,.5)" text-anchor="middle">Gemini 1.5 Pro · Pipelines</text>
+
+      <!-- Firestore -->
+      <rect x="166" y="344" width="130" height="48" rx="3" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1"/>
+      <text x="231" y="364" font-size="9" font-weight="500" fill="#FFCC80" text-anchor="middle">Firestore</text>
+      <text x="231" y="377" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">State · HITL · Audit</text>
+
+      <!-- BigQuery -->
+      <rect x="308" y="344" width="130" height="48" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="373" y="364" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">BigQuery</text>
+      <text x="373" y="377" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">Audit · Features · ML</text>
+
+      <!-- Pub/Sub -->
+      <rect x="450" y="344" width="130" height="48" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="515" y="364" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">Pub/Sub</text>
+      <text x="515" y="377" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">Event bus · Cross-agent</text>
+
+      <!-- Document AI -->
+      <rect x="592" y="344" width="130" height="48" rx="3" fill="rgba(0,123,131,.12)" stroke="rgba(0,123,131,.3)" stroke-width="1"/>
+      <text x="657" y="364" font-size="9" font-weight="500" fill="#80CBC4" text-anchor="middle">Document AI</text>
+      <text x="657" y="377" font-size="8" fill="rgba(0,123,131,.5)" text-anchor="middle">Contract parsing · GCS</text>
+
+      <!-- Secret Manager -->
+      <rect x="734" y="344" width="140" height="48" rx="3" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.25)" stroke-width="1"/>
+      <text x="804" y="364" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">Secret Manager</text>
+      <text x="804" y="377" font-size="8" fill="rgba(217,48,37,.4)" text-anchor="middle">OAuth tokens · API keys</text>
+
+      <!-- Agent → Tool connections -->
+      <line x1="94" y1="282" x2="89" y2="344" stroke="rgba(26,115,232,.25)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="258" y1="282" x2="231" y2="344" stroke="rgba(0,123,131,.25)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="258" y1="282" x2="657" y2="344" stroke="rgba(0,123,131,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="450" y1="282" x2="373" y2="344" stroke="rgba(156,39,176,.25)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="640" y1="282" x2="515" y2="344" stroke="rgba(19,115,51,.25)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="640" y1="282" x2="89" y2="344" stroke="rgba(19,115,51,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="806" y1="282" x2="373" y2="344" stroke="rgba(176,96,0,.25)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+
+      <!-- ── EXTERNAL SYSTEMS ── -->
+      <rect x="24" y="450" width="140" height="48" rx="3" fill="none" stroke="rgba(26,115,232,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="94" y="470" font-size="9" fill="rgba(100,170,255,.45)" text-anchor="middle">Salesforce</text>
+      <text x="94" y="483" font-size="8" fill="rgba(26,115,232,.3)" text-anchor="middle">Dev Edition · REST API</text>
+
+      <rect x="188" y="450" width="140" height="48" rx="3" fill="none" stroke="rgba(176,96,0,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="258" y="470" font-size="9" fill="rgba(255,183,77,.45)" text-anchor="middle">SAP S/4HANA</text>
+      <text x="258" y="483" font-size="8" fill="rgba(176,96,0,.3)" text-anchor="middle">Mock BigQuery (demo)</text>
+
+      <rect x="352" y="450" width="200" height="48" rx="3" fill="none" stroke="rgba(19,115,51,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="452" y="470" font-size="9" fill="rgba(165,214,167,.45)" text-anchor="middle">6 Regional Asset Systems</text>
+      <text x="452" y="483" font-size="8" fill="rgba(19,115,51,.3)" text-anchor="middle">Pub/Sub ingestion pipeline</text>
+
+      <rect x="572" y="450" width="160" height="48" rx="3" fill="none" stroke="rgba(0,123,131,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="652" y="470" font-size="9" fill="rgba(128,203,196,.45)" text-anchor="middle">Document Store</text>
+      <text x="652" y="483" font-size="8" fill="rgba(0,123,131,.3)" text-anchor="middle">GCS upload → Document AI</text>
+
+      <!-- Tool → External connections -->
+      <line x1="89" y1="392" x2="94" y2="450" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="231" y1="392" x2="258" y2="450" stroke="rgba(176,96,0,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="515" y1="392" x2="452" y2="450" stroke="rgba(19,115,51,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+      <line x1="657" y1="392" x2="652" y2="450" stroke="rgba(0,123,131,.2)" stroke-width="1" marker-end="url(#tool)" stroke-dasharray="3 2"/>
+
+      <!-- Immutable audit rail -->
+      <rect x="10" y="540" width="880" height="20" rx="2" fill="rgba(26,115,232,.06)" stroke="rgba(26,115,232,.1)" stroke-width="1"/>
+      <text x="450" y="554" font-size="9" fill="rgba(100,170,255,.4)" text-anchor="middle" font-weight="500">Every agent action · Every tool call · Every state transition → immutable audit record in Firestore + BigQuery before next state is entered</text>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:rgba(184,150,12,.3);border:1px solid #B8960C"></div>Orchestrator (ADK)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(26,115,232,.3);border:1px solid #1A73E8"></div>Specialist agents</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(19,115,51,.3);border:1px solid #137333"></div>MCP tool layer (GCP)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.15)"></div>External systems</div>
+      <div class="dl"><div class="dl-dash" style="border-top-color:rgba(184,150,12,.5)"></div>A2A task dispatch</div>
+      <div class="dl"><div class="dl-dash" style="border-top-color:rgba(255,255,255,.25)"></div>MCP tool call</div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 ORCHESTRATOR -->
+<section class="sec lt ap" id="orchestrator">
+  <div class="s-ey bl">Orchestrator Agent</div>
+  <h2 class="s-h2">The dispatcher — <em>never the executor.</em></h2>
+  <p class="s-p">The Orchestrator is the only agent that receives external requests. It never executes business logic directly. It decomposes tasks, routes sub-tasks to specialist agents via A2A, tracks task completion across the swarm, handles agent failures via circuit breaker, and maintains the global conversation context. It is the only agent with write access to the Orchestrator state collection in Firestore.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px" class="ap">
+    <div style="background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(212,172,26,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">State Machine</div>
+      <div class="sm-states">
+        <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE — awaiting task dispatch</div>
+        <div class="sm-transition">→ on: inbound A2A task message</div>
+        <div class="sm-state ss-active"><div class="ss-dot"></div>DECOMPOSING — breaking task into sub-tasks</div>
+        <div class="sm-transition">→ on: decomposition complete</div>
+        <div class="sm-state ss-active"><div class="ss-dot"></div>DISPATCHING — sending sub-tasks to agents via A2A</div>
+        <div class="sm-transition">→ on: all dispatches acknowledged</div>
+        <div class="sm-state ss-active"><div class="ss-dot"></div>AWAITING — monitoring specialist agent completions</div>
+        <div class="sm-transition">→ on: all sub-tasks complete / on: HITL pause received</div>
+        <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL PAUSE — waiting for human approval on one or more sub-tasks</div>
+        <div class="sm-transition">→ on: HITL approved / on: HITL rejected → ROLLBACK</div>
+        <div class="sm-state ss-error"><div class="ss-dot"></div>CIRCUIT OPEN — specialist agent failed · fallback active</div>
+        <div class="sm-transition">→ on: retry threshold exceeded</div>
+        <div class="sm-state ss-done"><div class="ss-dot"></div>COMPLETE — all sub-tasks resolved · audit record committed</div>
+      </div>
+    </div>
+    <div style="background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(212,172,26,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">Tool Manifest</div>
+      <div class="tool-list">
+        <div class="tool-item"><strong>a2a.dispatch_task</strong>Send task to specialist agent · returns task_id + ack</div>
+        <div class="tool-item"><strong>a2a.get_task_status</strong>Poll specialist agent for task state · returns current FSM state</div>
+        <div class="tool-item"><strong>a2a.cancel_task</strong>Cancel in-flight task · triggers specialist rollback state</div>
+        <div class="tool-item"><strong>firestore.write_orchestration_state</strong>Persist orchestrator FSM state · atomic write with task context</div>
+        <div class="tool-item"><strong>firestore.write_audit_record</strong>Immutable audit log · action_id · timestamp · agent_id · state</div>
+        <div class="tool-item"><strong>pubsub.publish_event</strong>Broadcast cross-agent event · topic: orchestrator-events</div>
+        <div class="tool-item"><strong>hitl.create_checkpoint</strong>Create HITL state node · links to HITL-spec checkpoint ID</div>
+        <div class="tool-item"><strong>hitl.await_decision</strong>Block orchestrator until HITL resolution · timeout: per spec</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Circuit breaker config -->
+  <div style="background:var(--ink-3);border:1px solid rgba(176,96,0,.2);border-left:3px solid var(--amber);padding:20px 24px;margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,183,77,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Circuit Breaker Configuration</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);margin-bottom:4px">Failure threshold</div><div style="font-family:var(--mono);font-size:14px;font-weight:500;color:#FFB74D">3 failures</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.25)">within 60s window</div></div>
+      <div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);margin-bottom:4px">Open state duration</div><div style="font-family:var(--mono);font-size:14px;font-weight:500;color:#FFB74D">30 seconds</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.25)">before half-open probe</div></div>
+      <div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);margin-bottom:4px">Fallback behaviour</div><div style="font-family:var(--mono);font-size:14px;font-weight:500;color:#FFB74D">HITL escalation</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.25)">route to human immediately</div></div>
+      <div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);margin-bottom:4px">Audit action</div><div style="font-family:var(--mono);font-size:14px;font-weight:500;color:#FFB74D">Always</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.25)">circuit events → Firestore</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 AGENT SPECIFICATIONS -->
+<section class="sec ap" id="agents">
+  <div class="s-ey pu">Agent Specifications</div>
+  <h2 class="s-h2">Five agents. <em>Every state. Every tool. Every boundary.</em></h2>
+  <p class="s-p">Each specialist agent is defined by three things: its state machine (what states it can be in and what triggers each transition), its tool manifest (the exact MCP tools it is permitted to call), and its autonomy boundary (the line between what it does autonomously and what it escalates to a human). These are not descriptions — they are specifications.</p>
+
+  <!-- CCAI Sales Agent -->
+  <div class="agent-spec ap">
+    <div class="as-header">
+      <div class="as-badge" style="background:rgba(26,115,232,.2);color:#90CAF9">Agent 01</div>
+      <div class="as-name">CCAI Sales Agent</div>
+      <div class="as-desc">Multi-turn conversational agent handling inbound MRI inquiries. Manages qualification, configuration, and CPQ initiation autonomously through 11 turns before escalating to a human AE.</div>
+    </div>
+    <div class="as-body">
+      <div class="as-panel">
+        <div class="asp-label">State Machine</div>
+        <div class="sm-states">
+          <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE</div>
+          <div class="sm-transition">→ on: inbound inquiry event (Pub/Sub)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>QUALIFYING — turn 1–4: budget, authority, need, timeline</div>
+          <div class="sm-transition">→ on: qualification complete</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>CONFIGURING — turn 5–8: clinical requirements, MRI model fit, BOM</div>
+          <div class="sm-transition">→ on: BOM validated</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>PRICING — turn 9–11: pricing estimate, delivery timeline, proposal draft</div>
+          <div class="sm-transition">→ on: turn 11 reached OR commercial terms entered</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-01 — generating briefing doc · awaiting AE engagement</div>
+          <div class="sm-transition">→ on: AE confirms engagement</div>
+          <div class="sm-state ss-done"><div class="ss-dot"></div>HANDED OFF — Salesforce Opportunity created · audit record committed</div>
+          <div class="sm-transition">→ on: agent failure at any state</div>
+          <div class="sm-state ss-error"><div class="ss-dot"></div>CIRCUIT OPEN — escalate to VP Sales · preserve conversation state</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Tool Manifest (MCP)</div>
+        <div class="tool-list">
+          <div class="tool-item"><strong>gemini.generate_response</strong>Multi-turn conversation · system prompt: sales qualification playbook</div>
+          <div class="tool-item"><strong>salesforce.get_account</strong>Lookup hospital account by domain · returns account ID + history</div>
+          <div class="tool-item"><strong>salesforce.create_opportunity</strong>Create Opportunity on escalation · stage: Qualification · auto-populates from conversation context</div>
+          <div class="tool-item"><strong>salesforce.create_activity</strong>Log every conversation turn as Activity on the Opportunity</div>
+          <div class="tool-item"><strong>product_catalogue.get_sku</strong>Retrieve MRI model specs, configurations, and pricing tiers</div>
+          <div class="tool-item"><strong>bom.validate_configuration</strong>Run BOM validation against applications engineering rules</div>
+          <div class="tool-item"><strong>document.generate_brief</strong>Generate structured briefing document from conversation context</div>
+          <div class="tool-item"><strong>firestore.write_conversation_state</strong>Persist turn-by-turn conversation state · enables resume after HITL</div>
+          <div class="tool-item"><strong>hitl.create_checkpoint</strong>HITL-01 · present briefing doc to AE · await engagement confirmation</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Autonomy Boundary &amp; Thresholds</div>
+        <div class="threshold-grid">
+          <div class="th-item"><span class="th-label">Qualification confidence threshold</span><span class="th-val th-auto">≥ 0.75 → auto</span></div>
+          <div class="th-item"><span class="th-label">BOM validation required before pricing</span><span class="th-val th-hitl">Always</span></div>
+          <div class="th-item"><span class="th-label">Escalation trigger (turn count)</span><span class="th-val th-hitl">Turn 11</span></div>
+          <div class="th-item"><span class="th-label">Commercial terms detected</span><span class="th-val th-hitl">Immediate HITL</span></div>
+          <div class="th-item"><span class="th-label">Circuit breaker threshold</span><span class="th-val th-cb">3 failures / 60s</span></div>
+          <div class="th-item"><span class="th-label">Conversation state TTL (Firestore)</span><span class="th-val" style="color:rgba(245,240,232,.6)">7 days</span></div>
+        </div>
+        <div class="boundary-section">
+          <div class="boundary-row auto">Qualification questions (turns 1–4)</div>
+          <div class="boundary-row auto">Clinical configuration matching against product catalogue</div>
+          <div class="boundary-row auto">BOM validation and pricing estimate generation</div>
+          <div class="boundary-row auto">Salesforce Opportunity creation and Activity logging</div>
+          <div class="boundary-row auto">Briefing document generation</div>
+          <div class="boundary-row human">Any discussion of commercial terms, discounts, or deal structure</div>
+          <div class="boundary-row human">Escalation to human AE — HITL-01 checkpoint</div>
+          <div class="boundary-row human">Custom clinical configuration outside standard catalogue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ContractGuard Agent -->
+  <div class="agent-spec ap" style="margin-top:4px">
+    <div class="as-header">
+      <div class="as-badge" style="background:rgba(0,123,131,.2);color:#80CBC4">Agent 02</div>
+      <div class="as-name">ContractGuard Agent</div>
+      <div class="as-desc">Document-native contract intelligence agent. Reads full contracts via Gemini 1.5 Pro 1M token context, performs clause-level analysis, risk scores non-standard terms, and routes to Legal HITL before any counter-proposal is drafted.</div>
+    </div>
+    <div class="as-body">
+      <div class="as-panel">
+        <div class="asp-label">State Machine</div>
+        <div class="sm-states">
+          <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE</div>
+          <div class="sm-transition">→ on: contract uploaded to GCS (Pub/Sub trigger)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>INGESTING — Document AI parsing · GCS → structured clause list</div>
+          <div class="sm-transition">→ on: parse complete · clause count &gt; 0</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>ANALYSING — Gemini 1.5 Pro full-document reasoning · clause classification</div>
+          <div class="sm-transition">→ on: analysis complete</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>SCORING — risk model inference · SHAP attribution per flagged clause</div>
+          <div class="sm-transition">→ on: risk scores above threshold detected</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-02 / HITL-03 — Legal review queue · awaiting approval per flagged clause</div>
+          <div class="sm-transition">→ on: all HITL decisions received (approve / revise / escalate)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>DRAFTING — generating counter-proposal based on HITL decisions</div>
+          <div class="sm-transition">→ on: draft complete</div>
+          <div class="sm-state ss-done"><div class="ss-dot"></div>COMPLETE — contract analysis + HITL record + counter-proposal committed</div>
+          <div class="sm-transition">→ on: Document AI parse failure OR Gemini timeout</div>
+          <div class="sm-state ss-error"><div class="ss-dot"></div>CIRCUIT OPEN — fallback to manual Legal review · preserve document state</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Tool Manifest (MCP)</div>
+        <div class="tool-list">
+          <div class="tool-item"><strong>gcs.read_document</strong>Read contract from GCS bucket · CMEK-encrypted · returns raw bytes</div>
+          <div class="tool-item"><strong>document_ai.parse_contract</strong>Extract structured clause list with positions, types, and metadata</div>
+          <div class="tool-item"><strong>gemini.analyse_contract</strong>Full 1M-token context pass · system prompt: clause classification + risk taxonomy</div>
+          <div class="tool-item"><strong>risk_model.score_clause</strong>XGBoost clause risk model · returns risk score + SHAP attribution</div>
+          <div class="tool-item"><strong>vector_store.find_precedents</strong>Find 3 most similar clauses from historical contract corpus · returns similarity scores</div>
+          <div class="tool-item"><strong>gemini.generate_counter</strong>Draft counter-position for flagged clause based on HITL decision and ClaraVis standard terms</div>
+          <div class="tool-item"><strong>salesforce.update_contract</strong>Write analysis results back to Salesforce Contract object · risk summary field</div>
+          <div class="tool-item"><strong>hitl.create_checkpoint</strong>HITL-02 (risk clause) / HITL-03 (governing law) · present clause + SHAP + precedents</div>
+          <div class="tool-item"><strong>firestore.write_clause_analysis</strong>Persist per-clause analysis, risk scores, SHAP values, and HITL decisions</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Autonomy Boundary &amp; Thresholds</div>
+        <div class="threshold-grid">
+          <div class="th-item"><span class="th-label">Clause risk threshold → HITL</span><span class="th-val th-hitl">≥ 0.65</span></div>
+          <div class="th-item"><span class="th-label">Governing law non-standard</span><span class="th-val th-hitl">Always HITL-03</span></div>
+          <div class="th-item"><span class="th-label">Liability cap ratio threshold</span><span class="th-val th-hitl">&gt; 3× contract value</span></div>
+          <div class="th-item"><span class="th-label">Gemini confidence (analysis)</span><span class="th-val th-auto">≥ 0.80 → auto</span></div>
+          <div class="th-item"><span class="th-label">Max contract size (tokens)</span><span class="th-val" style="color:rgba(245,240,232,.6)">900K tokens</span></div>
+          <div class="th-item"><span class="th-label">Circuit breaker threshold</span><span class="th-val th-cb">3 failures / 60s</span></div>
+        </div>
+        <div class="boundary-section">
+          <div class="boundary-row auto">Document AI parsing and clause extraction</div>
+          <div class="boundary-row auto">Standard clause classification (200+ types)</div>
+          <div class="boundary-row auto">Precedent search and similarity scoring</div>
+          <div class="boundary-row auto">Risk scoring below HITL threshold</div>
+          <div class="boundary-row human">Any clause with risk score ≥ 0.65 — HITL-02</div>
+          <div class="boundary-row human">All non-standard governing law clauses — HITL-03</div>
+          <div class="boundary-row human">Counter-proposal generation (requires approved HITL record first)</div>
+          <div class="boundary-row human">Contracts above 900K tokens — manual Legal review</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RevRec Agent -->
+  <div class="agent-spec ap" style="margin-top:4px">
+    <div class="as-header">
+      <div class="as-badge" style="background:rgba(156,39,176,.2);color:#CE93D8">Agent 03</div>
+      <div class="as-name">RevRec AI Agent</div>
+      <div class="as-desc">ASC 606 / IFRS 15 revenue recognition classification agent. Classifies every MRI transaction as sale, lease, or multi-element arrangement. Every classification routes through Finance Controller HITL before posting to SAP. No exceptions.</div>
+    </div>
+    <div class="as-body">
+      <div class="as-panel">
+        <div class="asp-label">State Machine</div>
+        <div class="sm-states">
+          <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE</div>
+          <div class="sm-transition">→ on: contract signed event (Pub/Sub · Salesforce)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>EXTRACTING — pulling contract line items, terms, and pricing from Salesforce</div>
+          <div class="sm-transition">→ on: features extracted and validated</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>CLASSIFYING — ML model inference · ASC 606 rule engine · SHAP computation</div>
+          <div class="sm-transition">→ on: classification complete · confidence ≥ minimum threshold</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-04 — Finance Controller review queue · classification + SHAP + comparables</div>
+          <div class="sm-transition">→ on: HITL approved</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>POSTING — writing classification to Transaction entity · initiating SAP write</div>
+          <div class="sm-transition">→ on: SAP write confirmed</div>
+          <div class="sm-state ss-done"><div class="ss-dot"></div>COMPLETE — Transaction entity tagged · SAP posted · audit record committed</div>
+          <div class="sm-transition">→ on: confidence &lt; minimum threshold</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-09 — low confidence · manual classification requested</div>
+          <div class="sm-transition">→ on: multi-element detected</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-05 — performance obligation split review</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Tool Manifest (MCP)</div>
+        <div class="tool-list">
+          <div class="tool-item"><strong>salesforce.get_contract_details</strong>Retrieve contract terms, line items, pricing, and customer type</div>
+          <div class="tool-item"><strong>feature_store.get_features</strong>Retrieve pre-computed transaction features from Vertex AI Feature Store</div>
+          <div class="tool-item"><strong>asc606_model.classify</strong>Run trained classification model · returns class + confidence + raw feature vector</div>
+          <div class="tool-item"><strong>shap.explain</strong>Compute SHAP values for classification · returns top-5 feature attributions</div>
+          <div class="tool-item"><strong>bigquery.find_comparables</strong>Find 3 most similar historical transactions by feature similarity</div>
+          <div class="tool-item"><strong>hitl.create_checkpoint</strong>HITL-04 (standard) / HITL-05 (multi-element) / HITL-09 (low confidence)</div>
+          <div class="tool-item"><strong>bigquery.write_transaction</strong>Write Transaction entity with recognition type + performance obligation tags</div>
+          <div class="tool-item"><strong>sap.post_journal_entry</strong>Initiate SAP GL posting · requires HITL approval record ID as mandatory parameter</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Autonomy Boundary &amp; Thresholds</div>
+        <div class="threshold-grid">
+          <div class="th-item"><span class="th-label">Minimum classification confidence</span><span class="th-val th-hitl">≥ 0.70 req'd</span></div>
+          <div class="th-item"><span class="th-label">HITL required for all classifications</span><span class="th-val th-hitl">Always</span></div>
+          <div class="th-item"><span class="th-label">SAP write without HITL record</span><span class="th-val th-hitl">Blocked by design</span></div>
+          <div class="th-item"><span class="th-label">Multi-element threshold</span><span class="th-val th-hitl">&gt; 1 perf. obligation</span></div>
+          <div class="th-item"><span class="th-label">SHAP generation</span><span class="th-val th-auto">Every inference</span></div>
+          <div class="th-item"><span class="th-label">Circuit breaker threshold</span><span class="th-val th-cb">2 failures / 60s</span></div>
+        </div>
+        <div class="boundary-section">
+          <div class="boundary-row auto">Feature extraction from Salesforce contract</div>
+          <div class="boundary-row auto">ASC 606 model inference and SHAP computation</div>
+          <div class="boundary-row auto">Comparable transaction lookup and presentation</div>
+          <div class="boundary-row human">Every classification without exception — HITL-04</div>
+          <div class="boundary-row human">SAP GL posting — only after HITL approval record committed</div>
+          <div class="boundary-row human">Multi-element splits — HITL-05</div>
+          <div class="boundary-row human">Low-confidence classifications — HITL-09 manual review</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asset IQ Agent -->
+  <div class="agent-spec ap" style="margin-top:4px">
+    <div class="as-header">
+      <div class="as-badge" style="background:rgba(19,115,51,.2);color:#A5D6A7">Agent 04</div>
+      <div class="as-name">Asset IQ Agent</div>
+      <div class="as-desc">Predictive maintenance intelligence agent. Processes unified asset telemetry from 12,000+ MRI units. Runs two-tier ML: fleet-level RUL prediction and unit-level anomaly detection. Routes below-threshold predictions to Field Service HITL.</div>
+    </div>
+    <div class="as-body">
+      <div class="as-panel">
+        <div class="asp-label">State Machine</div>
+        <div class="sm-states">
+          <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE</div>
+          <div class="sm-transition">→ on: scheduled cadence trigger (daily) OR asset event (Pub/Sub)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>INGESTING — reading asset events from unified Pub/Sub pipeline</div>
+          <div class="sm-transition">→ on: event batch assembled</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>FEATURE ENGINEERING — computing time-series features per unit</div>
+          <div class="sm-transition">→ on: features computed and stored in Feature Store</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>RUL PREDICTION — fleet-level model inference · SHAP per unit</div>
+          <div class="sm-transition">→ on: predictions complete</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>ANOMALY DETECTION — unit-level anomaly scan · cross-regional pattern detection</div>
+          <div class="sm-transition">→ on: predictions above confidence → auto work order / below confidence → HITL</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-06 — low confidence prediction · Field Service Manager review</div>
+          <div class="sm-transition">→ on: fleet anomaly pattern detected (cross-regional)</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-07 — fleet anomaly alert · VP Field Service + FSM review</div>
+          <div class="sm-transition">→ on: all HITL decisions received</div>
+          <div class="sm-state ss-done"><div class="ss-dot"></div>COMPLETE — work orders created · Device entities updated · ISO 13485 DHR written</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Tool Manifest (MCP)</div>
+        <div class="tool-list">
+          <div class="tool-item"><strong>pubsub.subscribe_asset_events</strong>Pull from unified asset telemetry topic · batch by device_id + time window</div>
+          <div class="tool-item"><strong>feature_store.write_features</strong>Store time-series features per device for RUL model and drift monitoring</div>
+          <div class="tool-item"><strong>rul_model.predict</strong>Run RUL gradient boosting model · returns days_to_failure + confidence + SHAP</div>
+          <div class="tool-item"><strong>anomaly_model.detect</strong>Isolation Forest unit-level anomaly · returns anomaly score + contributing sensors</div>
+          <div class="tool-item"><strong>shap.explain_sensors</strong>SHAP for sensor time-series features · top-3 sensor attribution per alert</div>
+          <div class="tool-item"><strong>bigquery.query_fleet_patterns</strong>Cross-regional pattern query · find units with similar anomaly profiles</div>
+          <div class="tool-item"><strong>salesforce.create_work_order</strong>Create preventive maintenance work order on Case object</div>
+          <div class="tool-item"><strong>bigquery.update_device</strong>Write RUL score + last prediction timestamp to Device entity</div>
+          <div class="tool-item"><strong>hitl.create_checkpoint</strong>HITL-06 (low confidence) / HITL-07 (fleet anomaly)</div>
+          <div class="tool-item"><strong>bigquery.write_dhr_event</strong>ISO 13485 Device History Record event · maintenance activity log</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Autonomy Boundary &amp; Thresholds</div>
+        <div class="threshold-grid">
+          <div class="th-item"><span class="th-label">RUL prediction confidence → auto work order</span><span class="th-val th-auto">≥ 0.82</span></div>
+          <div class="th-item"><span class="th-label">RUL prediction confidence → HITL-06</span><span class="th-val th-hitl">&lt; 0.82</span></div>
+          <div class="th-item"><span class="th-label">Fleet anomaly (≥ N units)</span><span class="th-val th-hitl">≥ 3 units → HITL-07</span></div>
+          <div class="th-item"><span class="th-label">Anomaly score threshold</span><span class="th-val th-hitl">≥ 0.75</span></div>
+          <div class="th-item"><span class="th-label">RUL alert horizon</span><span class="th-val" style="color:rgba(245,240,232,.6)">&lt; 14 days</span></div>
+          <div class="th-item"><span class="th-label">Circuit breaker threshold</span><span class="th-val th-cb">3 failures / 120s</span></div>
+        </div>
+        <div class="boundary-section">
+          <div class="boundary-row auto">Feature engineering and Feature Store writes</div>
+          <div class="boundary-row auto">RUL model inference and SHAP computation</div>
+          <div class="boundary-row auto">Work orders for high-confidence (≥ 0.82) predictions</div>
+          <div class="boundary-row auto">Device entity updates (RUL score, last prediction)</div>
+          <div class="boundary-row auto">ISO 13485 DHR event writes</div>
+          <div class="boundary-row human">Low-confidence predictions — HITL-06 (FSM approval)</div>
+          <div class="boundary-row human">Fleet-level anomaly patterns — HITL-07 (VP Field Service)</div>
+          <div class="boundary-row human">Any action that would trigger a potential recall review</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FinRisk Sentinel Agent -->
+  <div class="agent-spec ap" style="margin-top:4px">
+    <div class="as-header">
+      <div class="as-badge" style="background:rgba(176,96,0,.2);color:#FFCC80">Agent 05</div>
+      <div class="as-name">FinRisk Sentinel Agent</div>
+      <div class="as-desc">Real-time financial anomaly detection agent. Monitors the BigQuery financial event stream continuously. Detects unusual payment patterns, revenue posting discrepancies, and warranty reserve movements. Routes high-severity anomalies to CFO + Finance Controller HITL simultaneously.</div>
+    </div>
+    <div class="as-body">
+      <div class="as-panel">
+        <div class="asp-label">State Machine</div>
+        <div class="sm-states">
+          <div class="sm-state ss-idle"><div class="ss-dot"></div>IDLE</div>
+          <div class="sm-transition">→ on: financial event stream (BigQuery streaming insert)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>MONITORING — continuous anomaly scan on incoming financial events</div>
+          <div class="sm-transition">→ on: anomaly score above alert threshold</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>ENRICHING — computing Z-score vs 90-day baseline · SHAP attribution</div>
+          <div class="sm-transition">→ on: severity classified</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>ALERTING — medium severity: Finance Controller notification + context package</div>
+          <div class="sm-transition">→ on: high severity detected</div>
+          <div class="sm-state ss-hitl"><div class="ss-dot"></div>HITL-08 — high severity · CFO + Finance Controller simultaneous HITL</div>
+          <div class="sm-transition">→ on: HITL decision received (acknowledge / false positive / escalate)</div>
+          <div class="sm-state ss-active"><div class="ss-dot"></div>LEARNING — false positive feedback written to baseline update queue</div>
+          <div class="sm-transition">→ on: feedback processed</div>
+          <div class="sm-state ss-done"><div class="ss-dot"></div>RESOLVED — anomaly record committed · decision logged · baseline updated</div>
+          <div class="sm-transition">→ on: BigQuery streaming failure</div>
+          <div class="sm-state ss-error"><div class="ss-dot"></div>CIRCUIT OPEN — alert ops team · switch to batch scan fallback</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Tool Manifest (MCP)</div>
+        <div class="tool-list">
+          <div class="tool-item"><strong>bigquery.stream_financial_events</strong>Subscribe to financial event stream · filter by event_type: payment, posting, reserve</div>
+          <div class="tool-item"><strong>anomaly_model.score_event</strong>Isolation Forest + statistical anomaly scoring · returns anomaly score + contributing features</div>
+          <div class="tool-item"><strong>bigquery.compute_zscore</strong>Compute Z-score vs 90-day rolling baseline for the event type and entity</div>
+          <div class="tool-item"><strong>shap.explain_anomaly</strong>SHAP attribution for anomaly score · top-3 financial features</div>
+          <div class="tool-item"><strong>bigquery.get_entity_context</strong>Retrieve full entity context (account, contract, recent transactions) for the anomaly</div>
+          <div class="tool-item"><strong>notification.send_alert</strong>Send structured alert package to Finance Controller (medium) or CFO + FC (high)</div>
+          <div class="tool-item"><strong>hitl.create_checkpoint</strong>HITL-08 · simultaneous CFO + Finance Controller · 1-hour SLA</div>
+          <div class="tool-item"><strong>bigquery.write_anomaly_record</strong>Persist anomaly event, scores, SHAP, HITL decision, and resolution to audit dataset</div>
+          <div class="tool-item"><strong>pubsub.publish_baseline_update</strong>Publish false positive feedback to baseline model update queue</div>
+        </div>
+      </div>
+      <div class="as-panel">
+        <div class="asp-label">Autonomy Boundary &amp; Thresholds</div>
+        <div class="threshold-grid">
+          <div class="th-item"><span class="th-label">Alert threshold (anomaly score)</span><span class="th-val th-auto">≥ 0.65 → alert</span></div>
+          <div class="th-item"><span class="th-label">HITL threshold (high severity)</span><span class="th-val th-hitl">≥ 0.85</span></div>
+          <div class="th-item"><span class="th-label">Z-score alert threshold</span><span class="th-val th-hitl">≥ 3.0σ</span></div>
+          <div class="th-item"><span class="th-label">HITL SLA (high severity)</span><span class="th-val th-hitl">1 hour</span></div>
+          <div class="th-item"><span class="th-label">Monitoring cadence</span><span class="th-val th-auto">Streaming · sub-5min</span></div>
+          <div class="th-item"><span class="th-label">Circuit breaker threshold</span><span class="th-val th-cb">5 failures / 120s</span></div>
+        </div>
+        <div class="boundary-section">
+          <div class="boundary-row auto">Continuous anomaly scoring on financial event stream</div>
+          <div class="boundary-row auto">Z-score computation and SHAP attribution</div>
+          <div class="boundary-row auto">Medium-severity alerts with context package (no HITL required)</div>
+          <div class="boundary-row auto">False positive feedback processing to baseline queue</div>
+          <div class="boundary-row human">High-severity anomalies (≥ 0.85) — HITL-08 simultaneous CFO + FC</div>
+          <div class="boundary-row human">Any anomaly indicating potential regulatory reporting obligation</div>
+          <div class="boundary-row human">Anomalies in warranty reserve — always HITL regardless of score</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §04 A2A PROTOCOL -->
+<section class="sec lt2 ap" id="a2a">
+  <div class="s-ey bl">A2A Protocol</div>
+  <h2 class="s-h2">How agents communicate — <em>precisely.</em></h2>
+  <p class="s-p">Agent-to-Agent (A2A) is the communication protocol between the Orchestrator and specialist agents. Every message is typed, versioned, and auditable. The sequence below shows a ContractGuard task dispatch and the HITL escalation that follows. The JSON schema below it is the actual message format.</p>
+
+  <!-- Sequence diagram -->
+  <div class="dw lt-bg ap">
+    <div class="dw-title">A2A Sequence — ContractGuard Task: Clause Risk Escalation</div>
+    <div class="dw-sub">Orchestrator dispatches task → ContractGuard analyses → HITL-02 pause → Legal approves → counter-proposal generated</div>
+    <svg width="100%" viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="seq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Lifelines -->
+      <!-- Salesforce -->
+      <rect x="20" y="10" width="110" height="28" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="75" y="28" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Salesforce CLM</text>
+      <line x1="75" y1="38" x2="75" y2="450" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Orchestrator -->
+      <rect x="195" y="10" width="110" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="#B8960C" stroke-width="1.5"/>
+      <text x="250" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Orchestrator</text>
+      <line x1="250" y1="38" x2="250" y2="450" stroke="#B8960C" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <!-- ContractGuard -->
+      <rect x="375" y="10" width="110" height="28" rx="3" fill="rgba(0,123,131,.15)" stroke="#007B83" stroke-width="1"/>
+      <text x="430" y="28" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">ContractGuard</text>
+      <line x1="430" y1="38" x2="430" y2="450" stroke="#007B83" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <!-- HITL / Legal -->
+      <rect x="560" y="10" width="110" height="28" rx="3" fill="rgba(176,96,0,.12)" stroke="#B06000" stroke-width="1"/>
+      <text x="615" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Legal (HITL)</text>
+      <line x1="615" y1="38" x2="615" y2="450" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <!-- Firestore -->
+      <rect x="740" y="10" width="100" height="28" rx="3" fill="rgba(176,96,0,.08)" stroke="rgba(176,96,0,.2)" stroke-width="1"/>
+      <text x="790" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Firestore</text>
+      <line x1="790" y1="38" x2="790" y2="450" stroke="rgba(176,96,0,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Step 1: Contract signed event -->
+      <line x1="75" y1="62" x2="244" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="76" y="50" width="165" height="14" rx="2" fill="white"/>
+      <text x="160" y="60" font-size="8" fill="#1A73E8" text-anchor="middle">contract_signed event (Pub/Sub)</text>
+
+      <!-- Step 2: Orchestrator writes state -->
+      <line x1="250" y1="82" x2="784" y2="82" stroke="#B06000" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="310" y="70" width="175" height="14" rx="2" fill="white"/>
+      <text x="395" y="80" font-size="8" fill="#B06000" text-anchor="middle">write: orchestration_state = DISPATCHING</text>
+
+      <!-- Step 3: A2A dispatch -->
+      <line x1="250" y1="106" x2="424" y2="106" stroke="#B8960C" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="180" y="94" width="248" height="14" rx="2" fill="rgba(184,150,12,.08)"/>
+      <text x="305" y="104" font-size="8" fill="#7A4100" text-anchor="middle">A2A: dispatch_task {task_id, type: CONTRACT_ANALYSIS, payload}</text>
+
+      <!-- Step 4: ACK -->
+      <line x1="430" y1="122" x2="256" y2="122" stroke="#007B83" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="270" y="110" width="160" height="14" rx="2" fill="white"/>
+      <text x="350" y="120" font-size="8" fill="#007B83" text-anchor="middle">A2A: task_ack {task_id, state: INGESTING}</text>
+
+      <!-- Step 5: ContractGuard processes -->
+      <rect x="410" y="134" width="40" height="50" rx="2" fill="rgba(0,123,131,.1)" stroke="#007B83" stroke-width="1"/>
+      <text x="430" y="155" font-size="7" fill="#007B83" text-anchor="middle">Analysis</text>
+      <text x="430" y="165" font-size="7" fill="#007B83" text-anchor="middle">+ Scoring</text>
+
+      <!-- Step 6: HITL checkpoint -->
+      <line x1="430" y1="184" x2="609" y2="184" stroke="#D93025" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="360" y="172" width="248" height="14" rx="2" fill="rgba(217,48,37,.06)"/>
+      <text x="485" y="182" font-size="8" fill="#D93025" text-anchor="middle">HITL-02: {clause_text, risk_score: 0.82, shap, precedents[3]}</text>
+
+      <!-- Step 7: ContractGuard writes HITL pause -->
+      <line x1="430" y1="200" x2="784" y2="200" stroke="#B06000" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="440" y="188" width="200" height="14" rx="2" fill="white"/>
+      <text x="540" y="198" font-size="8" fill="#B06000" text-anchor="middle">write: state = HITL_PAUSE · hitl_id created</text>
+
+      <!-- Step 8: Orchestrator notified -->
+      <line x1="430" y1="220" x2="256" y2="220" stroke="#007B83" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="256" y="208" width="176" height="14" rx="2" fill="white"/>
+      <text x="344" y="218" font-size="8" fill="#007B83" text-anchor="middle">A2A: task_update {state: HITL_PAUSE, hitl_id}</text>
+
+      <!-- HITL pause band -->
+      <rect x="20" y="232" width="820" height="28" rx="2" fill="rgba(217,48,37,.04)" stroke="rgba(217,48,37,.1)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="430" y="250" font-size="9" fill="rgba(217,48,37,.5)" text-anchor="middle" font-weight="500">⏸ HITL PAUSE — Legal reviewer evaluating clause · 24-hour SLA · Agent awaiting decision</text>
+
+      <!-- Step 9: Legal approves -->
+      <line x1="615" y1="268" x2="436" y2="268" stroke="#137333" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="436" y="256" width="180" height="14" rx="2" fill="rgba(19,115,51,.06)"/>
+      <text x="526" y="266" font-size="8" fill="#137333" text-anchor="middle">HITL decision: APPROVE {hitl_id, reason_code, ts}</text>
+
+      <!-- Step 10: Write HITL record -->
+      <line x1="615" y1="284" x2="784" y2="284" stroke="#B06000" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="620" y="272" width="168" height="14" rx="2" fill="white"/>
+      <text x="705" y="282" font-size="8" fill="#B06000" text-anchor="middle">write: hitl_event {decision, approver, ts} immutable</text>
+
+      <!-- Step 11: Counter-proposal -->
+      <rect x="410" y="296" width="40" height="36" rx="2" fill="rgba(0,123,131,.1)" stroke="#007B83" stroke-width="1"/>
+      <text x="430" y="312" font-size="7" fill="#007B83" text-anchor="middle">Draft</text>
+      <text x="430" y="322" font-size="7" fill="#007B83" text-anchor="middle">counter</text>
+
+      <!-- Step 12: Complete -->
+      <line x1="430" y1="332" x2="256" y2="332" stroke="#007B83" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="260" y="320" width="170" height="14" rx="2" fill="rgba(0,123,131,.06)"/>
+      <text x="345" y="330" font-size="8" fill="#007B83" text-anchor="middle">A2A: task_complete {task_id, output_ref}</text>
+
+      <!-- Step 13: Orchestrator writes complete -->
+      <line x1="250" y1="352" x2="784" y2="352" stroke="#B06000" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="310" y="340" width="235" height="14" rx="2" fill="white"/>
+      <text x="427" y="350" font-size="8" fill="#B06000" text-anchor="middle">write: orchestration_state = COMPLETE · full audit trail</text>
+
+      <!-- Step 14: Salesforce updated -->
+      <line x1="250" y1="372" x2="81" y2="372" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="80" y="360" width="172" height="14" rx="2" fill="rgba(26,115,232,.06)"/>
+      <text x="167" y="370" font-size="8" fill="#1A73E8" text-anchor="middle">salesforce.update_contract(risk_summary, hitl_ref)</text>
+
+      <!-- Timeline labels -->
+      <text x="12" y="63" font-size="8" fill="#5F6368" text-anchor="start">t+0</text>
+      <text x="12" y="107" font-size="8" fill="#5F6368" text-anchor="start">t+1s</text>
+      <text x="12" y="185" font-size="8" fill="#D93025" text-anchor="start">t+28m</text>
+      <text x="12" y="269" font-size="8" fill="#137333" text-anchor="start">t+2.5h</text>
+      <text x="12" y="373" font-size="8" fill="#5F6368" text-anchor="start">t+2.5h</text>
+    </svg>
+  </div>
+
+  <!-- A2A Message Schema -->
+  <div class="code-block ap" style="margin-top:4px">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">A2A Message Schema — Task Dispatch (dispatch_task)</div>
+    <pre>{
+  <span class="ck">"a2a_version"</span>: <span class="cv">"1.0"</span>,
+  <span class="ck">"message_type"</span>: <span class="cv">"TASK_DISPATCH"</span>,          <span class="cc">// TASK_DISPATCH | TASK_ACK | TASK_UPDATE | TASK_COMPLETE | TASK_ERROR</span>
+  <span class="ck">"task_id"</span>: <span class="cv">"task_cg_20260315_001a"</span>,       <span class="cc">// globally unique · format: task_{agent}_{date}_{seq}</span>
+  <span class="ck">"correlation_id"</span>: <span class="cv">"orch_20260315_042"</span>,     <span class="cc">// orchestration session ID · links all sub-tasks</span>
+  <span class="ck">"from_agent"</span>: <span class="cv">"orchestrator"</span>,
+  <span class="ck">"to_agent"</span>: <span class="cv">"contractguard"</span>,
+  <span class="ck">"timestamp_utc"</span>: <span class="cv">"2026-03-15T09:14:32Z"</span>,
+  <span class="ck">"task_type"</span>: <span class="cv">"CONTRACT_ANALYSIS"</span>,
+  <span class="ck">"priority"</span>: <span class="cv">"NORMAL"</span>,                      <span class="cc">// NORMAL | HIGH | CRITICAL</span>
+  <span class="ck">"timeout_seconds"</span>: <span class="cn">3600</span>,                  <span class="cc">// 1 hour · circuit breaker triggers at 3 failures</span>
+  <span class="ck">"payload"</span>: {
+    <span class="ck">"contract_id"</span>: <span class="cv">"sfdc_contract_CV2026_0042"</span>,
+    <span class="ck">"gcs_uri"</span>: <span class="cv">"gs://claravis-contracts-eu/2026/0042_uniklinik.pdf"</span>,
+    <span class="ck">"counterparty"</span>: <span class="cv">"Universitätsklinikum München"</span>,
+    <span class="ck">"contract_value_eur"</span>: <span class="cn">2840000</span>,
+    <span class="ck">"analysis_config"</span>: {
+      <span class="ck">"risk_threshold"</span>: <span class="cn">0.65</span>,              <span class="cc">// clauses above this score → HITL-02</span>
+      <span class="ck">"governing_law_check"</span>: <span class="cv">"true"</span>,       <span class="cc">// always trigger HITL-03 if non-standard</span>
+      <span class="ck">"precedent_count"</span>: <span class="cn">3</span>,                <span class="cc">// number of similar precedents to surface in HITL</span>
+      <span class="ck">"generate_counter"</span>: <span class="cv">"post_hitl_approval"</span>
+    }
+  },
+  <span class="ck">"audit"</span>: {
+    <span class="ck">"initiated_by"</span>: <span class="cv">"orchestrator-sa@claravis-ae-prod.iam.gserviceaccount.com"</span>,
+    <span class="ck">"audit_trail_id"</span>: <span class="cv">"audit_20260315_cg_001a"</span>,  <span class="cc">// Firestore document ID · immutable</span>
+    <span class="ck">"parent_hitl_ids"</span>: []                    <span class="cc">// populated when this task is triggered by a HITL decision</span>
+  }
+}</pre>
+  </div>
+
+  <div class="code-block ap" style="margin-top:4px">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">A2A Message Schema — HITL Update (task_update → HITL_PAUSE)</div>
+    <pre>{
+  <span class="ck">"a2a_version"</span>: <span class="cv">"1.0"</span>,
+  <span class="ck">"message_type"</span>: <span class="cv">"TASK_UPDATE"</span>,
+  <span class="ck">"task_id"</span>: <span class="cv">"task_cg_20260315_001a"</span>,
+  <span class="ck">"from_agent"</span>: <span class="cv">"contractguard"</span>,
+  <span class="ck">"to_agent"</span>: <span class="cv">"orchestrator"</span>,
+  <span class="ck">"timestamp_utc"</span>: <span class="cv">"2026-03-15T09:42:18Z"</span>,
+  <span class="ck">"state"</span>: <span class="cv">"HITL_PAUSE"</span>,
+  <span class="ck">"hitl_context"</span>: {
+    <span class="ck">"hitl_spec_id"</span>: <span class="cv">"HITL-02"</span>,                  <span class="cc">// references Page 04 HITL specification</span>
+    <span class="ck">"hitl_event_id"</span>: <span class="cv">"hitl_20260315_cg_007"</span>,      <span class="cc">// Firestore document ID · immutable on creation</span>
+    <span class="ck">"approver_role"</span>: <span class="cv">"GENERAL_COUNSEL"</span>,
+    <span class="ck">"sla_deadline_utc"</span>: <span class="cv">"2026-03-16T09:42:18Z"</span>,  <span class="cc">// 24-hour SLA per HITL-02 spec</span>
+    <span class="ck">"timeout_action"</span>: <span class="cv">"ESCALATE_TO_GC_MANAGER"</span>,
+    <span class="ck">"presented_to_human"</span>: {
+      <span class="ck">"clause_text"</span>: <span class="cv">"Liability limited to 50% of contract value..."</span>,
+      <span class="ck">"risk_score"</span>: <span class="cn">0.82</span>,
+      <span class="ck">"shap_attribution"</span>: [
+        { <span class="ck">"feature"</span>: <span class="cv">"liability_cap_ratio"</span>, <span class="ck">"value"</span>: <span class="cn">0.5</span>, <span class="ck">"contribution"</span>: <span class="cn">+0.31</span> },
+        { <span class="ck">"feature"</span>: <span class="cv">"governing_law_match"</span>, <span class="ck">"value"</span>: <span class="cv">"false"</span>, <span class="ck">"contribution"</span>: <span class="cn">+0.24</span> },
+        { <span class="ck">"feature"</span>: <span class="cv">"indemnification_asymmetry"</span>, <span class="ck">"value"</span>: <span class="cn">0.78</span>, <span class="ck">"contribution"</span>: <span class="cn">+0.18</span> }
+      ],
+      <span class="ck">"precedent_contracts"</span>: [
+        { <span class="ck">"id"</span>: <span class="cv">"sfdc_contract_CV2024_0108"</span>, <span class="ck">"similarity"</span>: <span class="cn">0.91</span>, <span class="ck">"outcome"</span>: <span class="cv">"negotiated_up_to_80pct"</span> },
+        { <span class="ck">"id"</span>: <span class="cv">"sfdc_contract_CV2025_0033"</span>, <span class="ck">"similarity"</span>: <span class="cn">0.87</span>, <span class="ck">"outcome"</span>: <span class="cv">"accepted_with_carve_out"</span> }
+      ],
+      <span class="ck">"decision_options"</span>: [<span class="cv">"APPROVE_AS_IS"</span>, <span class="cv">"REQUEST_REVISION"</span>, <span class="cv">"ESCALATE_EXTERNAL_COUNSEL"</span>]
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<!-- §05 MEMORY ARCHITECTURE -->
+<section class="sec ap" id="memory">
+  <div class="s-ey">Memory Architecture</div>
+  <h2 class="s-h2">Three-tier memory. <em>Each tier with a purpose.</em></h2>
+  <p class="s-p">Agent memory is not a monolith. Short-term memory holds the context for the current task — it is ephemeral and task-scoped. Long-term memory holds the institutional knowledge that makes agents smarter over time — contract precedents, historical decisions, asset failure patterns. The shared context bus is the event stream that keeps all agents aware of what other agents are doing.</p>
+
+  <div class="memory-grid ap">
+    <div class="mem-tier">
+      <div class="mt-num">TIER 01</div>
+      <div class="mt-name">Short-Term Memory</div>
+      <div class="mt-service">Firestore · Task-scoped · TTL: 7 days</div>
+      <div class="mt-desc">The working memory for a single agent task. Stores conversation turns (CCAI Sales), document analysis state (ContractGuard), classification context (RevRec), and sensor batch context (Asset IQ). Every write is atomic and timestamped. State is preserved across HITL pauses — the agent can resume from the exact state it was in when it paused.</div>
+      <div class="mt-schema">
+        <strong>Schema (agent_task_state collection):</strong><br>
+        task_id · agent_id · fsm_state<br>
+        context_payload (JSON) · created_at<br>
+        last_updated_at · hitl_ids[]<br>
+        correlation_id · ttl_expires_at
+      </div>
+    </div>
+    <div class="mem-tier">
+      <div class="mt-num">TIER 02</div>
+      <div class="mt-name">Long-Term Memory</div>
+      <div class="mt-service">Vertex AI Vector Store · Persistent · Embedding: text-embedding-004</div>
+      <div class="mt-desc">The institutional knowledge base. ContractGuard uses it for precedent search — finding the 3 most similar clauses from ClaraVis's historical contract corpus. RevRec AI uses it for comparable transaction lookup. Asset IQ uses it for cross-regional failure pattern matching. Every HITL decision is written back to long-term memory as a labelled example — the agents get smarter with every human review.</div>
+      <div class="mt-schema">
+        <strong>Collections:</strong><br>
+        contract_clauses · transaction_history<br>
+        asset_failure_patterns · hitl_decisions<br>
+        <strong>Embedding model:</strong> text-embedding-004<br>
+        <strong>Similarity metric:</strong> cosine · top-k: 3
+      </div>
+    </div>
+    <div class="mem-tier">
+      <div class="mt-num">TIER 03</div>
+      <div class="mt-name">Shared Context Bus</div>
+      <div class="mt-service">Pub/Sub · Cross-agent · Retention: 7 days</div>
+      <div class="mt-desc">The event stream that keeps all agents aware of what is happening across the swarm. When ContractGuard flags a liability clause, FinRisk Sentinel subscribes to the same event and can adjust its financial anomaly baseline accordingly. When Asset IQ detects a fleet-level failure pattern, RevRec AI can factor that into warranty reserve recognition. The shared bus enables cross-module intelligence without direct agent-to-agent coupling.</div>
+      <div class="mt-schema">
+        <strong>Topics:</strong><br>
+        ae-orchestration-events<br>
+        ae-hitl-events · ae-asset-events<br>
+        ae-contract-events · ae-financial-events<br>
+        <strong>Retention:</strong> 7 days · at-least-once delivery
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §06 GUARDRAILS -->
+<section class="sec lt ap" id="guardrails">
+  <div class="s-ey re">Guardrails &amp; Safety</div>
+  <h2 class="s-h2">What happens when things go wrong — <em>by design.</em></h2>
+  <p class="s-p">A production-grade agent swarm is defined as much by its failure modes as its happy path. Every guardrail below is a design artifact — not a monitoring dashboard added after the fact. The circuit breaker, confidence thresholds, hallucination detection, and fallback behaviours are specified before a line of agent code is written.</p>
+
+  <div class="guardrail-grid ap">
+    <div class="gr-card cb">
+      <div class="gr-label">Guardrail 01</div>
+      <div class="gr-title">Circuit Breaker</div>
+      <div class="gr-desc">Every specialist agent is wrapped in a circuit breaker that the Orchestrator monitors. When a specialist agent fails to respond within its timeout, returns an error state, or produces an output that fails schema validation, the Orchestrator opens the circuit for that agent and routes the task to a HITL fallback — a human performs the function the agent was trying to perform. The circuit closes after a configurable half-open probe period.</div>
+      <div class="gr-config">
+        <strong>States:</strong> CLOSED → OPEN → HALF-OPEN → CLOSED<br>
+        <strong>OPEN trigger:</strong> 3 failures in 60s window (default)<br>
+        <strong>HALF-OPEN probe:</strong> single request after 30s<br>
+        <strong>OPEN action:</strong> route to HITL · preserve task state<br>
+        <strong>Audit:</strong> every circuit state transition → Firestore
+      </div>
+    </div>
+    <div class="gr-card hd">
+      <div class="gr-label">Guardrail 02</div>
+      <div class="gr-title">Hallucination Detection</div>
+      <div class="gr-desc">LLM outputs that inform business decisions are validated against a schema contract before they are acted on. Gemini responses from ContractGuard clause analysis must conform to the ClauseAnalysis JSON schema — responses that fail validation are retried with a temperature reduction (0.7 → 0.3 → 0.1) before escalating to HITL. For RevRec AI, the classification must be one of three valid ASC 606 types — any other output triggers an immediate HITL-09 manual classification request.</div>
+      <div class="gr-config">
+        <strong>Validation:</strong> JSON schema contract per agent output type<br>
+        <strong>Retry strategy:</strong> temperature reduction: 0.7 → 0.3 → 0.1<br>
+        <strong>Max retries:</strong> 3 · then HITL escalation<br>
+        <strong>All retry attempts:</strong> logged to Firestore audit record<br>
+        <strong>Invalid outputs:</strong> never acted on · always HITL
+      </div>
+    </div>
+    <div class="gr-card ct">
+      <div class="gr-label">Guardrail 03</div>
+      <div class="gr-title">Confidence Thresholds</div>
+      <div class="gr-desc">Every ML model inference and LLM analysis in the swarm produces a confidence score. Scores above the configured threshold allow autonomous action. Scores below the threshold pause the agent and route to HITL — the human gets the agent's best work and decides whether to accept it. Thresholds are configured per agent and per action type, not globally. A low-confidence revenue recognition classification is treated differently from a low-confidence qualification assessment.</div>
+      <div class="gr-config">
+        <strong>CCAI Sales:</strong> qualification confidence ≥ 0.75<br>
+        <strong>ContractGuard:</strong> Gemini analysis confidence ≥ 0.80<br>
+        <strong>RevRec AI:</strong> classification confidence ≥ 0.70 (HITL always regardless)<br>
+        <strong>Asset IQ:</strong> RUL confidence ≥ 0.82 for auto work order<br>
+        <strong>FinRisk:</strong> anomaly score ≥ 0.85 for high-severity HITL
+      </div>
+    </div>
+    <div class="gr-card fb">
+      <div class="gr-label">Guardrail 04</div>
+      <div class="gr-title">Fallback &amp; Rollback</div>
+      <div class="gr-desc">Every agent task has a defined rollback path — the set of compensating actions that restore the system to its pre-task state if the task fails or is rejected at HITL. Firestore's transactional writes mean that partial state is never committed. The Orchestrator tracks every state transition and can reconstruct the pre-task state from the Firestore audit record for any task that needs to be rolled back. SAP write operations are the only irreversible action — they require a committed HITL approval record as a mandatory input parameter.</div>
+      <div class="gr-config">
+        <strong>Rollback trigger:</strong> HITL rejection · circuit open · agent timeout<br>
+        <strong>State preservation:</strong> Firestore atomic writes · no partial state<br>
+        <strong>SAP write guard:</strong> HITL approval record ID is a required parameter<br>
+        <strong>Rollback audit:</strong> rollback action written to Firestore before execution<br>
+        <strong>Salesforce rollback:</strong> Opportunity stage reverted · activity log appended
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §07 ADRs -->
+<section class="sec ap" id="adrs">
+  <div class="s-ey pu">Architecture Decision Records</div>
+  <h2 class="s-h2">Three decisions. <em>Every alternative documented.</em></h2>
+  <p class="s-p">ADR-007 through ADR-009 are produced in the agent swarm design phase. Each states the choice, the alternatives that were evaluated, and why this choice was made — the reasoning that a principal engineer or enterprise architect will probe in any serious design review.</p>
+
+  <div class="adr-row ap">
+    <div class="adr-card bl">
+      <div class="adr-id">ADR-007</div>
+      <div class="adr-title">Google ADK over LangGraph or CrewAI</div>
+      <div class="adr-body">ADK selected as the agent orchestration framework. LangGraph provides excellent graph-based state machine support but runs on arbitrary Python infrastructure — it has no native GCP observability, IAM integration, or Vertex AI deployment path. CrewAI is high-level and fast to prototype but does not expose the state machine primitives required for formal HITL checkpoint specification. ADK runs natively on Cloud Run with Vertex AI integration, has first-class Firestore state management, and its A2A protocol is an open standard — not a proprietary message format locked to one vendor's SDK.</div>
+      <div class="adr-status">Accepted · Phase Agent Design</div>
+    </div>
+    <div class="adr-card gr">
+      <div class="adr-id">ADR-008</div>
+      <div class="adr-title">A2A protocol over direct HTTP for inter-agent communication</div>
+      <div class="adr-body">Direct HTTP calls between agents were considered as the simplest integration path. Rejected because: direct HTTP creates tight coupling between agent endpoints, makes circuit breaking the Orchestrator's responsibility rather than a platform concern, and produces no auditable message record. A2A messages are published to Pub/Sub, giving the event bus replay capability, at-least-once delivery guarantees, and a complete message history that is queryable in BigQuery. Every A2A message is also written to the Firestore audit record — direct HTTP calls are not.</div>
+      <div class="adr-status">Accepted · Phase Agent Design</div>
+    </div>
+    <div class="adr-card am">
+      <div class="adr-id">ADR-009</div>
+      <div class="adr-title">Firestore over Redis for agent state and HITL audit</div>
+      <div class="adr-body">Redis was considered for agent short-term memory given its low latency and widespread use for session state. Rejected for two reasons: (1) Redis is an in-memory store — data loss on failure requires a persistence configuration that adds operational complexity. (2) The HITL audit requirement mandates that HITL event records are immutable and durable by design — Redis TTL-based eviction is architecturally incompatible with an immutable audit store. Firestore's transactional writes, native JSON document model, and eu-west3 regional deployment satisfy both the state management and immutable audit requirements in a single managed service.</div>
+      <div class="adr-status">Accepted · Phase Agent Design</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink-2);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>Next in the Portfolio</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Agents specified.<br><strong>The ML layer follows.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">The agent specifications on this page reference ML models by name — asc606_model.classify, rul_model.predict, anomaly_model.score_event. Page 06 designs those models from the ground up: feature engineering, training pipelines, SHAP explanation contracts, Model Cards, MLOps, and drift detection.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="#" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-3);text-decoration:none;border:1px solid transparent;transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#2E2F28';this.style.borderColor='rgba(255,255,255,.08)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#252420';this.style.borderColor='transparent';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 06</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">ML Engineering &amp; MLOps</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Feature Store · Model Cards · SHAP · Vertex AI Pipelines · Drift Detection</div><span style="display:inline-block;margin-top:3px;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:rgba(184,150,12,.15);color:var(--gold-lt);letter-spacing:.07em;text-transform:uppercase">In Design</span></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-04.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-3);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#2E2F28'" onmouseout="this.style.background='#252420'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 04</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← Delivery &amp; Product Design</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">The HITL specification this page implements</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['topology','orchestrator','agents','a2a','memory','guardrails','adrs'];
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
+      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
+      if(link)link.classList.add('act');
+    }
+  });
+},{threshold:.15,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+</script>
+</body>
+</html>

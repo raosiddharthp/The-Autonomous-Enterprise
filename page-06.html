@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Engineering & MLOps — Page 06 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;--gold-dim:rgba(184,150,12,0.14);
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'06';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:220px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ph-bc span{color:rgba(245,240,232,.18)}
+.ph-h1{font-family:var(--serif);font-size:clamp(34px,5vw,62px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;border:1px solid rgba(255,255,255,.14);color:rgba(245,240,232,.65);letter-spacing:.06em}
+
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.re{color:var(--red)}.s-ey.pu{color:var(--purple)}.s-ey.te{color:var(--teal)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* DIAGRAM WRAPPER */
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--blue)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-2)}
+.dw.dk .dw-legend{border-top-color:rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--text-2)}
+.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+
+/* FEATURE STORE */
+.fs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.fs-group{background:var(--white);border:1px solid var(--border);padding:24px 22px;border-top:3px solid var(--blue)}
+.fs-group.teal{border-top-color:var(--teal)}
+.fs-group.amber{border-top-color:var(--amber)}
+.fsg-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;color:var(--blue)}
+.fs-group.teal .fsg-label{color:var(--teal)}.fs-group.amber .fsg-label{color:var(--amber)}
+.fsg-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-.01em}
+.fsg-features{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fsg-feat{padding:6px 10px;background:var(--surface-2);border-left:2px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-2);line-height:1.5}
+.fsg-feat strong{display:block;font-weight:500;color:var(--text);font-size:10px}
+.fsg-source{margin-top:10px;padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.5}
+.fsg-source.blue{background:var(--blue-lt);color:var(--blue-dk)}
+.fsg-source.teal{background:var(--teal-lt);color:var(--teal-dk)}
+.fsg-source.amber{background:var(--amber-lt);color:var(--amber-dk)}
+
+/* MODEL SPEC CARDS */
+.model-spec{background:var(--white);border:1px solid var(--border);margin-top:4px;overflow:hidden}
+.ms-header{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ms-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.ms-name{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.ms-type{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.06em}
+.ms-eu-badge{font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px}
+.ms-body{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:var(--border-2)}
+.ms-panel{background:var(--white);padding:20px 20px}
+.msp-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}
+.msp-items{display:flex;flex-direction:column;gap:5px}
+.msp-item{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.55;display:flex;align-items:flex-start;gap:7px}
+.msp-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--text-3);flex-shrink:0;margin-top:5px}
+.msp-metric{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:var(--surface-2);margin-bottom:3px}
+.msp-metric-label{font-family:var(--mono);font-size:10px;color:var(--text-2)}
+.msp-metric-val{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text)}
+.msp-metric-val.good{color:var(--green)}.msp-metric-val.warn{color:var(--amber)}
+.shap-contract{padding:10px 12px;margin-top:8px;font-family:var(--mono);font-size:10px;line-height:1.6}
+.shap-contract.blue{background:var(--purple-lt);color:var(--purple-dk)}
+.shap-contract strong{font-weight:500;display:block;margin-bottom:4px}
+
+/* MODEL CARD */
+.mc{background:var(--white);border:1px solid var(--border);margin-top:4px}
+.mc-header{background:var(--ink);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.mc-title{font-family:var(--display);font-size:18px;font-weight:700;color:var(--cream);letter-spacing:-.01em}
+.mc-version{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.4);letter-spacing:.06em}
+.mc-body{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-2)}
+.mc-section{background:var(--white);padding:22px 24px}
+.mc-section-title{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}
+.mc-text{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75}
+.mc-table{width:100%;border-collapse:collapse;margin-top:6px}
+.mc-table td{padding:6px 10px;font-family:var(--mono);font-size:11px;border-bottom:1px solid var(--border-2);vertical-align:top}
+.mc-table td:first-child{color:var(--text-3);width:44%;font-weight:400}
+.mc-table td:last-child{color:var(--text);font-weight:300}
+.mc-table tr:last-child td{border-bottom:none}
+.mc-risk{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;margin-top:6px}
+.mc-risk.high{background:var(--red-lt);color:var(--red-dk)}
+.mc-risk.limited{background:var(--amber-lt);color:var(--amber-dk)}
+.mc-risk.minimal{background:var(--green-lt);color:var(--green-dk)}
+.mc-limitation{display:flex;align-items:flex-start;gap:8px;font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.55;margin-bottom:5px}
+.mc-limitation::before{content:'!';width:14px;height:14px;border-radius:50%;background:var(--amber-lt);color:var(--amber);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* PIPELINE DAG */
+.dag-step{display:flex;flex-direction:column;align-items:center}
+
+/* DRIFT */
+.drift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.drift-card{background:var(--white);border:1px solid var(--border);padding:22px 20px}
+.dc-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;color:var(--blue)}
+.dc-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.dc-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7;margin-bottom:12px}
+.dc-config{font-family:var(--mono);font-size:10px;color:var(--text-3);border-top:1px solid var(--border-2);padding-top:10px;line-height:1.7}
+.dc-config strong{color:var(--text-2);font-weight:500}
+
+/* ADR */
+.adr-row{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.adr-card{background:var(--surface-2);border:1px solid var(--border);padding:20px 22px}
+.adr-card.bl{border-left:4px solid var(--blue)}.adr-card.gr{border-left:4px solid var(--green)}.adr-card.am{border-left:4px solid var(--amber)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr-card.bl .adr-id{color:var(--blue)}.adr-card.gr .adr-id{color:var(--green)}.adr-card.am .adr-id{color:var(--amber)}
+.adr-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2;letter-spacing:-.01em}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--green-lt);color:var(--green-dk);letter-spacing:.06em}
+
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){
+  :root{--col:22px}
+  .fs-grid{grid-template-columns:1fr}
+  .ms-body{grid-template-columns:1fr 1fr}
+  .mc-body{grid-template-columns:1fr}
+  .drift-grid{grid-template-columns:1fr}
+  .adr-row{grid-template-columns:1fr}
+  .mn-r .mn-link{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-05.html" class="mn-back">← Page 05</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>Page 06 — ML Engineering &amp; MLOps</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="index.html" class="mn-link">Overview</a>
+    <a href="page-05.html" class="mn-link">← Page 05</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<nav class="snav" id="snav">
+  <a href="#platform" class="sn act" data-sec="platform">ML Platform</a>
+  <a href="#features" class="sn" data-sec="features">Feature Store</a>
+  <a href="#models" class="sn" data-sec="models">Model Specifications</a>
+  <a href="#mle-decisions" class="sn" data-sec="mle-decisions">MLE Decisions</a>
+  <a href="#pipeline" class="sn" data-sec="pipeline">MLOps Pipeline</a>
+  <a href="#drift" class="sn" data-sec="drift">Drift Detection</a>
+  <a href="#model-cards" class="sn" data-sec="model-cards">Model Cards</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+</nav>
+
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise <span>/</span> Page 06</div>
+  <h1 class="ph-h1">ML Engineering<br>&amp; <em>MLOps</em><br><strong>— designed for production.</strong></h1>
+  <p class="ph-sub">The agent tool manifests on Page 05 reference five ML models by name. This page designs every one of them — feature engineering, model architecture, SHAP explanation contracts, Vertex AI Pipelines DAG, drift detection, and full Model Cards. Every model satisfies EU AI Act Article 11 documentation requirements before it ships.</p>
+  <div class="ph-tags">
+    <span class="ph-tag">5 ML Models</span>
+    <span class="ph-tag">Vertex AI Pipelines</span>
+    <span class="ph-tag">Feature Store</span>
+    <span class="ph-tag">SHAP · XAI-first</span>
+    <span class="ph-tag">Model Cards · EU AI Act Art. 11</span>
+    <span class="ph-tag">Drift Detection</span>
+  </div>
+</header>
+
+<!-- §01 ML PLATFORM OVERVIEW -->
+<section class="sec dk ap" id="platform">
+  <div class="s-ey go">ML Platform</div>
+  <h2 class="s-h2">Five models. <em>One shared platform.</em></h2>
+  <p class="s-p">All five AE models share a common Vertex AI platform — one Feature Store, one Model Registry, one Pipelines infrastructure, one monitoring stack. The shared platform means that MLOps patterns proven on RevRec AI are inherited by every subsequent model. The HITL-11 promotion checkpoint is a platform-level gate, not a model-specific configuration.</p>
+
+  <div class="dw dk ap">
+    <div class="dw-title">Vertex AI ML Platform — Shared Infrastructure</div>
+    <div class="dw-sub">Five models · one Feature Store · one Model Registry · one Pipelines execution environment · one monitoring stack</div>
+    <svg width="100%" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="ml" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Data Sources -->
+      <rect x="10" y="10" width="860" height="52" rx="4" fill="rgba(26,115,232,.06)" stroke="rgba(26,115,232,.12)" stroke-width="1"/>
+      <text x="22" y="26" font-size="9" fill="rgba(100,170,255,.4)" font-weight="500" letter-spacing=".06em">DATA SOURCES</text>
+      <rect x="22" y="30" width="120" height="24" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="82" y="46" font-size="9" fill="#90CAF9" text-anchor="middle">Salesforce REST API</text>
+      <rect x="152" y="30" width="120" height="24" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="212" y="46" font-size="9" fill="#90CAF9" text-anchor="middle">Pub/Sub Asset Events</text>
+      <rect x="282" y="30" width="120" height="24" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="342" y="46" font-size="9" fill="#90CAF9" text-anchor="middle">BigQuery Transactions</text>
+      <rect x="412" y="30" width="120" height="24" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="472" y="46" font-size="9" fill="#90CAF9" text-anchor="middle">Document AI Output</text>
+      <rect x="542" y="30" width="120" height="24" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="602" y="46" font-size="9" fill="#90CAF9" text-anchor="middle">GCS Contract Store</text>
+
+      <!-- Feature Store -->
+      <rect x="10" y="74" width="400" height="72" rx="4" fill="rgba(19,115,51,.06)" stroke="rgba(19,115,51,.15)" stroke-width="1"/>
+      <text x="22" y="90" font-size="9" fill="rgba(165,214,167,.5)" font-weight="500" letter-spacing=".06em">VERTEX AI FEATURE STORE</text>
+      <rect x="22" y="96" width="112" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="78" y="113" font-size="9" fill="#A5D6A7" text-anchor="middle">Contract Features</text>
+      <text x="78" y="125" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">18 features · online+offline</text>
+      <rect x="142" y="96" width="112" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="198" y="113" font-size="9" fill="#A5D6A7" text-anchor="middle">Asset Features</text>
+      <text x="198" y="125" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">24 features · streaming</text>
+      <rect x="262" y="96" width="136" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="330" y="113" font-size="9" fill="#A5D6A7" text-anchor="middle">Financial Features</text>
+      <text x="330" y="125" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">12 features · batch+streaming</text>
+
+      <!-- Vertex AI Pipelines -->
+      <rect x="420" y="74" width="450" height="72" rx="4" fill="rgba(156,39,176,.06)" stroke="rgba(156,39,176,.12)" stroke-width="1"/>
+      <text x="432" y="90" font-size="9" fill="rgba(206,147,216,.5)" font-weight="500" letter-spacing=".06em">VERTEX AI PIPELINES</text>
+      <rect x="432" y="96" width="80" height="40" rx="3" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="472" y="118" font-size="9" fill="#CE93D8" text-anchor="middle">Data Valid.</text>
+      <line x1="512" y1="116" x2="524" y2="116" stroke="rgba(156,39,176,.4)" stroke-width="1" marker-end="url(#ml)"/>
+      <rect x="524" y="96" width="80" height="40" rx="3" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="564" y="118" font-size="9" fill="#CE93D8" text-anchor="middle">Training</text>
+      <line x1="604" y1="116" x2="616" y2="116" stroke="rgba(156,39,176,.4)" stroke-width="1" marker-end="url(#ml)"/>
+      <rect x="616" y="96" width="80" height="40" rx="3" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="656" y="118" font-size="9" fill="#CE93D8" text-anchor="middle">Eval + XAI</text>
+      <line x1="696" y1="116" x2="708" y2="116" stroke="rgba(156,39,176,.4)" stroke-width="1" marker-end="url(#ml)"/>
+      <rect x="708" y="96" width="80" height="40" rx="3" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.25)" stroke-width="1"/>
+      <text x="748" y="111" font-size="9" fill="#EF9A9A" text-anchor="middle">HITL-11</text>
+      <text x="748" y="123" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">Promotion gate</text>
+      <line x1="788" y1="116" x2="800" y2="116" stroke="rgba(217,48,37,.4)" stroke-width="1" marker-end="url(#ml)"/>
+      <rect x="800" y="96" width="60" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="830" y="118" font-size="9" fill="#A5D6A7" text-anchor="middle">Deploy</text>
+
+      <!-- Model Registry -->
+      <rect x="10" y="158" width="280" height="64" rx="4" fill="rgba(0,123,131,.06)" stroke="rgba(0,123,131,.12)" stroke-width="1"/>
+      <text x="22" y="174" font-size="9" fill="rgba(128,203,196,.5)" font-weight="500" letter-spacing=".06em">VERTEX AI MODEL REGISTRY</text>
+      <text x="22" y="192" font-size="9" fill="rgba(128,203,196,.5)">5 models · versioned Model Cards · stage: dev → staging → prod</text>
+      <text x="22" y="208" font-size="9" fill="rgba(128,203,196,.4)">Each version linked to training pipeline run · HITL-11 approval record · SHAP baseline</text>
+
+      <!-- Monitoring -->
+      <rect x="300" y="158" width="280" height="64" rx="4" fill="rgba(176,96,0,.06)" stroke="rgba(176,96,0,.12)" stroke-width="1"/>
+      <text x="312" y="174" font-size="9" fill="rgba(255,183,77,.5)" font-weight="500" letter-spacing=".06em">VERTEX AI MONITORING</text>
+      <text x="312" y="192" font-size="9" fill="rgba(255,183,77,.45)">Feature drift · prediction drift · 5 monitoring jobs (one per model)</text>
+      <text x="312" y="208" font-size="9" fill="rgba(255,183,77,.35)">Alert → HITL-10 retraining checkpoint → Pub/Sub baseline-update topic</text>
+
+      <!-- SHAP Layer -->
+      <rect x="590" y="158" width="280" height="64" rx="4" fill="rgba(98,0,238,.06)" stroke="rgba(98,0,238,.12)" stroke-width="1"/>
+      <text x="602" y="174" font-size="9" fill="rgba(206,147,216,.5)" font-weight="500" letter-spacing=".06em">XAI / SHAP LAYER</text>
+      <text x="602" y="192" font-size="9" fill="rgba(206,147,216,.45)">SHAP computed at inference time · TreeExplainer or LinearExplainer per model</text>
+      <text x="602" y="208" font-size="9" fill="rgba(206,147,216,.35)">Written to BigQuery shap_explanations before any downstream action · EU AI Act Art. 13</text>
+
+      <!-- Five models at bottom -->
+      <rect x="10" y="234" width="860" height="52" rx="4" fill="rgba(184,150,12,.05)" stroke="rgba(184,150,12,.1)" stroke-width="1"/>
+      <text x="22" y="250" font-size="9" fill="rgba(212,172,26,.4)" font-weight="500" letter-spacing=".06em">DEPLOYED MODELS (SERVED VIA VERTEX AI ENDPOINTS)</text>
+      <rect x="22" y="254" width="158" height="24" rx="3" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="101" y="270" font-size="9" fill="#CE93D8" text-anchor="middle">RevRec AI · ASC 606 Classifier</text>
+      <rect x="190" y="254" width="158" height="24" rx="3" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1"/>
+      <text x="269" y="270" font-size="9" fill="#FFCC80" text-anchor="middle">Asset IQ · RUL Regressor</text>
+      <rect x="358" y="254" width="158" height="24" rx="3" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1"/>
+      <text x="437" y="270" font-size="9" fill="#FFCC80" text-anchor="middle">Asset IQ · Anomaly Detector</text>
+      <rect x="526" y="254" width="158" height="24" rx="3" fill="rgba(0,123,131,.12)" stroke="rgba(0,123,131,.3)" stroke-width="1"/>
+      <text x="605" y="270" font-size="9" fill="#80CBC4" text-anchor="middle">ContractGuard · Risk Scorer</text>
+      <rect x="694" y="254" width="166" height="24" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="777" y="270" font-size="9" fill="#90CAF9" text-anchor="middle">FinRisk · Anomaly Scorer</text>
+
+      <!-- Connections from sources → feature store + pipelines -->
+      <line x1="82" y1="62" x2="78" y2="74" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#ml)"/>
+      <line x1="212" y1="62" x2="198" y2="74" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#ml)"/>
+      <line x1="342" y1="62" x2="330" y2="74" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#ml)"/>
+      <line x1="472" y1="62" x2="564" y2="74" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#ml)"/>
+
+      <!-- Feature store → pipelines -->
+      <line x1="210" y1="146" x2="472" y2="146" stroke="rgba(19,115,51,.3)" stroke-width="1" marker-end="url(#ml)"/>
+      <line x1="210" y1="146" x2="210" y2="158" stroke="rgba(19,115,51,.2)" stroke-width="1" marker-end="url(#ml)"/>
+
+      <!-- Models to monitoring -->
+      <line x1="437" y1="286" x2="437" y2="320" stroke="rgba(176,96,0,.2)" stroke-width="1" marker-end="url(#ml)"/>
+      <rect x="160" y="322" width="560" height="20" rx="2" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="440" y="336" font-size="8" fill="rgba(245,240,232,.25)" text-anchor="middle">All model predictions · feature values · confidence scores → Vertex AI Monitoring → drift alerts → HITL-10</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §02 FEATURE STORE -->
+<section class="sec w ap" id="features">
+  <div class="s-ey gr">Feature Store</div>
+  <h2 class="s-h2">Every feature traceable to its <em>source event.</em></h2>
+  <p class="s-p">The Vertex AI Feature Store is the single source of truth for all ML features across the AE. Features are computed once and served to all models that need them — no duplicated feature logic, no inconsistency between training and serving. Every feature value carries a lineage tag: source system, ingestion timestamp, schema version, and quality score.</p>
+
+  <div class="fs-grid ap">
+    <div class="fs-group">
+      <div class="fsg-label">Contract Feature Group</div>
+      <div class="fsg-title">18 features · Contract + Clause intelligence</div>
+      <div class="fsg-features">
+        <div class="fsg-feat"><strong>liability_cap_ratio</strong>Liability cap as ratio of total contract value · Float · computed at contract ingestion</div>
+        <div class="fsg-feat"><strong>governing_law_match</strong>Boolean — governing law matches ClaraVis standard jurisdiction · computed by ContractGuard</div>
+        <div class="fsg-feat"><strong>indemnification_asymmetry</strong>Ratio of ClaraVis vs counterparty indemnification obligations · Float 0–1</div>
+        <div class="fsg-feat"><strong>payment_term_days</strong>Net payment days from invoice · Integer · from Salesforce Contract object</div>
+        <div class="fsg-feat"><strong>customer_type_encoded</strong>Hospital tier (1–4), academic vs private, country risk · Integer encoded</div>
+        <div class="fsg-feat"><strong>contract_value_eur</strong>Total contract value EUR · Float · from Salesforce</div>
+        <div class="fsg-feat"><strong>sku_complexity_score</strong>Number of distinct SKUs · service component ratio · Float computed</div>
+        <div class="fsg-feat"><strong>recognition_type_prior</strong>Prior ASC 606 classification for this customer · One-hot encoded</div>
+        <div class="fsg-feat"><strong>+ 10 additional clause features</strong>IP ownership, termination for convenience, acceptance criteria, SLA penalty structure…</div>
+      </div>
+      <div class="fsg-source blue"><strong>Online store:</strong> real-time inference · ContractGuard + RevRec AI<br><strong>Offline store:</strong> training pipeline · batch ETL from Salesforce REST API</div>
+    </div>
+
+    <div class="fs-group teal">
+      <div class="fsg-label">Asset Feature Group</div>
+      <div class="fsg-title">24 features · Sensor + operational time-series</div>
+      <div class="fsg-features">
+        <div class="fsg-feat"><strong>gradient_coil_temp_p95</strong>95th percentile gradient coil temperature over 30-day rolling window · Float · from DICOM telemetry</div>
+        <div class="fsg-feat"><strong>helium_level_slope</strong>Rate of change of liquid helium level over 14-day window · Float · from service events</div>
+        <div class="fsg-feat"><strong>rf_power_deviation</strong>RF transmit power deviation from baseline · Float · streaming from unit</div>
+        <div class="fsg-feat"><strong>scan_utilisation_rate</strong>Daily scan hours as ratio of maximum rated capacity · Float</div>
+        <div class="fsg-feat"><strong>error_code_frequency</strong>Count of each error code class per 7-day window · Integer vector</div>
+        <div class="fsg-feat"><strong>days_since_last_service</strong>Calendar days since last planned maintenance · Integer</div>
+        <div class="fsg-feat"><strong>unit_age_months</strong>Months since factory commissioning · Integer</div>
+        <div class="fsg-feat"><strong>cumulative_scan_count</strong>Total scans since commissioning · Integer</div>
+        <div class="fsg-feat"><strong>+ 16 additional sensor features</strong>Magnet bore pressure, cryocooler vibration, patient weight capacity utilisation…</div>
+      </div>
+      <div class="fsg-source teal"><strong>Online store:</strong> real-time RUL + anomaly inference · 6 regional Pub/Sub pipelines<br><strong>Offline store:</strong> training pipeline · 3-year historical telemetry in BigQuery</div>
+    </div>
+
+    <div class="fs-group amber">
+      <div class="fsg-label">Financial Feature Group</div>
+      <div class="fsg-title">12 features · Transaction + account financial signals</div>
+      <div class="fsg-features">
+        <div class="fsg-feat"><strong>payment_zscore_90d</strong>Z-score of payment amount vs 90-day rolling mean for this account · Float</div>
+        <div class="fsg-feat"><strong>days_overdue</strong>Days past invoice due date at time of event · Integer</div>
+        <div class="fsg-feat"><strong>account_payment_consistency</strong>Coefficient of variation of payment timing over 12 months · Float</div>
+        <div class="fsg-feat"><strong>revenue_posting_delta</strong>Difference between expected and actual revenue posting amount · Float</div>
+        <div class="fsg-feat"><strong>warranty_reserve_movement</strong>Change in warranty reserve for this account in 30-day window · Float</div>
+        <div class="fsg-feat"><strong>account_risk_tier</strong>ClaraVis internal credit risk classification · Integer 1–5</div>
+        <div class="fsg-feat"><strong>+ 6 additional financial features</strong>FX exposure ratio, multi-currency invoice flag, invoice dispute history…</div>
+      </div>
+      <div class="fsg-source amber"><strong>Online store:</strong> real-time FinRisk anomaly scoring · BigQuery streaming inserts<br><strong>Offline store:</strong> training pipeline · SAP transaction history + Salesforce account data</div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 MODEL SPECIFICATIONS -->
+<section class="sec ap" id="models">
+  <div class="s-ey pu">Model Specifications</div>
+  <h2 class="s-h2">Five models. <em>Every design decision documented.</em></h2>
+  <p class="s-p">Each model specification covers the problem framing, feature inputs, architecture choice, training data, evaluation metrics, and SHAP explanation contract. Architecture choices are cross-referenced to ADRs — no undocumented decisions.</p>
+
+  <!-- RevRec AI -->
+  <div class="model-spec ap">
+    <div class="ms-header">
+      <div class="ms-badge" style="background:var(--purple-lt);color:var(--purple-dk)">Model 01</div>
+      <div class="ms-name">RevRec AI — ASC 606 Revenue Recognition Classifier</div>
+      <div class="ms-type">Multi-class classification · 3 classes: SALE · LEASE · MULTI-ELEMENT</div>
+      <div class="ms-eu-badge" style="background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk · Annex III</div>
+    </div>
+    <div class="ms-body">
+      <div class="ms-panel">
+        <div class="msp-label">Features (from Feature Store)</div>
+        <div class="msp-items">
+          <div class="msp-item">liability_cap_ratio · governing_law_match</div>
+          <div class="msp-item">indemnification_asymmetry · payment_term_days</div>
+          <div class="msp-item">customer_type_encoded · contract_value_eur</div>
+          <div class="msp-item">sku_complexity_score · recognition_type_prior</div>
+          <div class="msp-item">+ 10 clause features · 18 total</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">Architecture</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.6">XGBoost multi-class classifier · TreeExplainer for SHAP · deterministic outputs (critical for audit trail) · ADR-010</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Training Data</div>
+        <div class="msp-items">
+          <div class="msp-item">4,800 historical ClaraVis contracts (2019–2025)</div>
+          <div class="msp-item">Labels: manual ASC 606 classifications by Finance team</div>
+          <div class="msp-item">Class distribution: 62% SALE · 28% LEASE · 10% MULTI-ELEMENT</div>
+          <div class="msp-item">Class imbalance handled: SMOTE oversampling on MULTI-ELEMENT</div>
+          <div class="msp-item">Train/val/test split: 70/15/15 · stratified by class</div>
+          <div class="msp-item">HITL override decisions added to training set each retraining cycle</div>
+        </div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Evaluation Metrics</div>
+        <div class="msp-metric"><span class="msp-metric-label">Weighted F1</span><span class="msp-metric-val good">0.94</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">MULTI-ELEMENT Recall</span><span class="msp-metric-val good">0.91</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">MULTI-ELEMENT Precision</span><span class="msp-metric-val good">0.89</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Calibration Error (ECE)</span><span class="msp-metric-val good">0.032</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Min confidence for auto</span><span class="msp-metric-val warn">0.70</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Primary metric: MULTI-ELEMENT Recall. Missing a multi-element arrangement results in revenue over-recognition — the higher-risk error in a regulated context.</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">SHAP Explanation Contract</div>
+        <div class="shap-contract blue">
+          <strong>What the model must explain:</strong>
+          Top 5 features driving the classification · directional effect (↑↓) · SHAP value · Feature value at inference time<br><br>
+          <strong>To whom:</strong> Finance Controller via HITL-04 UI · Compliance Officer via audit query<br><br>
+          <strong>When:</strong> Computed synchronously at inference · written to BigQuery shap_explanations before SAP write is initiated<br><br>
+          <strong>Format:</strong> JSON array · feature_name · shap_value · feature_value · direction
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asset IQ RUL -->
+  <div class="model-spec ap" style="margin-top:4px">
+    <div class="ms-header">
+      <div class="ms-badge" style="background:var(--green-lt);color:var(--green-dk)">Model 02</div>
+      <div class="ms-name">Asset IQ — RUL (Remaining Useful Life) Regressor</div>
+      <div class="ms-type">Regression · output: days_to_failure (continuous) + confidence interval</div>
+      <div class="ms-eu-badge" style="background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk · Annex III</div>
+    </div>
+    <div class="ms-body">
+      <div class="ms-panel">
+        <div class="msp-label">Features (from Feature Store)</div>
+        <div class="msp-items">
+          <div class="msp-item">gradient_coil_temp_p95 · helium_level_slope</div>
+          <div class="msp-item">rf_power_deviation · scan_utilisation_rate</div>
+          <div class="msp-item">error_code_frequency (vector) · days_since_last_service</div>
+          <div class="msp-item">unit_age_months · cumulative_scan_count</div>
+          <div class="msp-item">+ 16 sensor features · 24 total</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">Architecture</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.6">Gradient Boosting Regressor (XGBoost) · TreeExplainer SHAP · quantile regression for confidence intervals (q10, q50, q90)</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Training Data</div>
+        <div class="msp-items">
+          <div class="msp-item">3 years of field telemetry · 8,400 unit-quarters from 6 regional systems</div>
+          <div class="msp-item">Labels: actual days to failure from service records (post-hoc labelled)</div>
+          <div class="msp-item">Failure definition: unplanned service event requiring parts replacement</div>
+          <div class="msp-item">Censored data handled: survival analysis preprocessing for units still running</div>
+          <div class="msp-item">Train/val/test split: 70/15/15 · stratified by unit age bucket</div>
+        </div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Evaluation Metrics</div>
+        <div class="msp-metric"><span class="msp-metric-label">MAE (days)</span><span class="msp-metric-val good">4.2 days</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">RMSE (days)</span><span class="msp-metric-val good">6.8 days</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Precision @ 14-day horizon</span><span class="msp-metric-val good">0.87</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Recall @ 14-day horizon</span><span class="msp-metric-val good">0.91</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Min confidence for auto WO</span><span class="msp-metric-val warn">0.82</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Primary metric: Recall @ 14-day horizon. Missed failures that lead to unplanned downtime are the higher-cost error.</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">SHAP Explanation Contract</div>
+        <div class="shap-contract blue">
+          <strong>What the model must explain:</strong>
+          Top 3 sensor features driving the RUL prediction · current value vs 90-day baseline · SHAP contribution to days-reduction<br><br>
+          <strong>To whom:</strong> Field Service Manager via HITL-06 UI · Field Engineer via work order brief<br><br>
+          <strong>When:</strong> Computed synchronously at prediction · included in work order before dispatch<br><br>
+          <strong>Format:</strong> Sensor name · current value · baseline value · SHAP days-reduction contribution
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asset IQ Anomaly -->
+  <div class="model-spec ap" style="margin-top:4px">
+    <div class="ms-header">
+      <div class="ms-badge" style="background:var(--teal-lt);color:var(--teal-dk)">Model 03</div>
+      <div class="ms-name">Asset IQ — Unit-Level Anomaly Detector</div>
+      <div class="ms-type">Unsupervised anomaly detection · output: anomaly_score (0–1) + contributing sensors</div>
+      <div class="ms-eu-badge" style="background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk · Annex III</div>
+    </div>
+    <div class="ms-body">
+      <div class="ms-panel">
+        <div class="msp-label">Features (from Feature Store)</div>
+        <div class="msp-items">
+          <div class="msp-item">All 24 asset features · same group as RUL model</div>
+          <div class="msp-item">Additionally: rolling 7-day feature deltas (rate of change)</div>
+          <div class="msp-item">Cross-unit deviation: unit vs fleet median per feature</div>
+          <div class="msp-item">48 effective input dimensions after delta computation</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">Architecture</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.6">Isolation Forest · unsupervised · no failure labels required · ADR-011 · SHAP via TreeExplainer on the underlying decision trees</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Training Data</div>
+        <div class="msp-items">
+          <div class="msp-item">Normal operating data only (no failure labels required)</div>
+          <div class="msp-item">18 months of telemetry · 6,200 unit-months of normal operation</div>
+          <div class="msp-item">Contamination parameter: 0.05 (5% expected anomaly rate)</div>
+          <div class="msp-item">Separate model trained per unit model variant (MRI-7T, MRI-3T, CT-Premium)</div>
+          <div class="msp-item">Retrained quarterly or on drift detection trigger</div>
+        </div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Evaluation Metrics</div>
+        <div class="msp-metric"><span class="msp-metric-label">Precision @ 0.75 threshold</span><span class="msp-metric-val good">0.82</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Recall @ 0.75 threshold</span><span class="msp-metric-val good">0.78</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">False Positive Rate</span><span class="msp-metric-val good">0.04</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Fleet anomaly threshold (N units)</span><span class="msp-metric-val warn">≥ 3 units</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Alert threshold (score)</span><span class="msp-metric-val warn">≥ 0.75</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Primary metric: False Positive Rate — FSM alert fatigue is the adoption risk. Precision over recall at the alert threshold.</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">SHAP Explanation Contract</div>
+        <div class="shap-contract blue">
+          <strong>What the model must explain:</strong>
+          Top 3 sensors contributing to anomaly score · each with: current value, fleet median, deviation magnitude, SHAP contribution<br><br>
+          <strong>To whom:</strong> Field Service Manager via HITL-06 · Field Engineer on work order<br><br>
+          <strong>When:</strong> Computed at alert generation · included in HITL-06 presentation<br><br>
+          <strong>Format:</strong> Sensor name · current · fleet_median · deviation · SHAP contribution
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ContractGuard Risk Scorer -->
+  <div class="model-spec ap" style="margin-top:4px">
+    <div class="ms-header">
+      <div class="ms-badge" style="background:var(--teal-lt);color:var(--teal-dk)">Model 04</div>
+      <div class="ms-name">ContractGuard — Clause Risk Scorer</div>
+      <div class="ms-type">Binary classification per clause · output: risk_score (0–1) · threshold: 0.65 → HITL-02</div>
+      <div class="ms-eu-badge" style="background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk · Annex III</div>
+    </div>
+    <div class="ms-body">
+      <div class="ms-panel">
+        <div class="msp-label">Features (computed per clause)</div>
+        <div class="msp-items">
+          <div class="msp-item">clause_type (200+ taxonomy · one-hot encoded)</div>
+          <div class="msp-item">liability_cap_ratio (clause-level, where applicable)</div>
+          <div class="msp-item">governing_law_match (Boolean)</div>
+          <div class="msp-item">indemnification_direction (ClaraVis-favourable vs counterparty-favourable)</div>
+          <div class="msp-item">deviates_from_standard (Boolean · vs ClaraVis standard terms)</div>
+          <div class="msp-item">contract_value_tier (bucketed · proxy for deal risk)</div>
+          <div class="msp-item">semantic_embedding (text-embedding-004 · 768-dim · from Gemini)</div>
+          <div class="msp-item">precedent_similarity_max (max cosine similarity to historical corpus)</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">Architecture</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.6">XGBoost binary classifier on structured features + semantic embedding · SHAP TreeExplainer · structured features interpretable, embedding via SHAP kernel approximation</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Training Data</div>
+        <div class="msp-items">
+          <div class="msp-item">12,400 labelled clauses from 4,800 historical contracts</div>
+          <div class="msp-item">Labels: Legal team risk classifications (high-risk / standard)</div>
+          <div class="msp-item">Class distribution: 18% high-risk · 82% standard</div>
+          <div class="msp-item">Class imbalance: class_weight='balanced' in XGBoost</div>
+          <div class="msp-item">Gemini text-embedding-004 embeddings computed at training time · stored in Feature Store</div>
+          <div class="msp-item">HITL Legal decisions (approve/revise/escalate) added each retraining cycle</div>
+        </div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Evaluation Metrics</div>
+        <div class="msp-metric"><span class="msp-metric-label">High-Risk Recall</span><span class="msp-metric-val good">0.95</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">High-Risk Precision</span><span class="msp-metric-val good">0.82</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">AUC-ROC</span><span class="msp-metric-val good">0.96</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">False Negative Rate</span><span class="msp-metric-val good">0.05</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">HITL threshold (risk score)</span><span class="msp-metric-val warn">≥ 0.65</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Primary metric: High-Risk Recall. Missing a high-risk clause has higher cost than a false positive that sends a standard clause to Legal review.</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">SHAP Explanation Contract</div>
+        <div class="shap-contract blue">
+          <strong>What the model must explain:</strong>
+          Top 5 structured features driving risk score · semantic similarity score to highest-risk precedent · governing law contribution<br><br>
+          <strong>To whom:</strong> General Counsel via HITL-02 UI · presented alongside clause text and precedents<br><br>
+          <strong>When:</strong> Computed synchronously per flagged clause · written to Firestore clause_analysis collection<br><br>
+          <strong>Format:</strong> Feature name · value · SHAP contribution · direction
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FinRisk Anomaly Scorer -->
+  <div class="model-spec ap" style="margin-top:4px">
+    <div class="ms-header">
+      <div class="ms-badge" style="background:var(--amber-lt);color:var(--amber-dk)">Model 05</div>
+      <div class="ms-name">FinRisk Sentinel — Financial Anomaly Scorer</div>
+      <div class="ms-type">Unsupervised anomaly detection · output: anomaly_score (0–1) + Z-score vs baseline</div>
+      <div class="ms-eu-badge" style="background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk · Annex III</div>
+    </div>
+    <div class="ms-body">
+      <div class="ms-panel">
+        <div class="msp-label">Features (from Feature Store)</div>
+        <div class="msp-items">
+          <div class="msp-item">All 12 financial features from Financial Feature Group</div>
+          <div class="msp-item">payment_zscore_90d · days_overdue · account_payment_consistency</div>
+          <div class="msp-item">revenue_posting_delta · warranty_reserve_movement</div>
+          <div class="msp-item">account_risk_tier · FX exposure ratio</div>
+          <div class="msp-item">Rolling 7-day and 30-day feature deltas</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase">Architecture</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.6">Isolation Forest (same pattern as Asset IQ anomaly model · ADR-011) · contamination: 0.03 · trained per event_type (payment, posting, reserve) · real-time scoring via Vertex AI endpoint</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Training Data</div>
+        <div class="msp-items">
+          <div class="msp-item">24 months of financial transaction history · 48,000 payment and posting events</div>
+          <div class="msp-item">Normal operating data only · fraud/anomaly labels not required for training</div>
+          <div class="msp-item">Separate models per event_type: payment · GL posting · warranty reserve</div>
+          <div class="msp-item">HITL false-positive feedback fed back via baseline update queue (Pub/Sub)</div>
+          <div class="msp-item">Retrained monthly or on drift detection trigger</div>
+        </div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">Evaluation Metrics</div>
+        <div class="msp-metric"><span class="msp-metric-label">Alert Precision @ 0.65</span><span class="msp-metric-val good">0.78</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">HITL Precision @ 0.85</span><span class="msp-metric-val good">0.91</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">False Positive Rate @ 0.85</span><span class="msp-metric-val good">0.03</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">Alert threshold</span><span class="msp-metric-val warn">≥ 0.65</span></div>
+        <div class="msp-metric"><span class="msp-metric-label">HITL threshold (high severity)</span><span class="msp-metric-val warn">≥ 0.85</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Primary metric: HITL Precision @ 0.85 — high-severity CFO alerts must be reliable. False positives at this tier erode trust rapidly.</div>
+      </div>
+      <div class="ms-panel">
+        <div class="msp-label">SHAP Explanation Contract</div>
+        <div class="shap-contract blue">
+          <strong>What the model must explain:</strong>
+          Top 3 financial features driving anomaly score · current value · 90-day baseline · Z-score · SHAP contribution<br><br>
+          <strong>To whom:</strong> Finance Controller (medium) · CFO + FC simultaneously (high severity HITL-08)<br><br>
+          <strong>When:</strong> Computed at alert generation · included in HITL-08 presentation alongside Z-score and entity context<br><br>
+          <strong>Format:</strong> Feature name · current · baseline_90d · z_score · SHAP contribution
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §03b MLE DESIGN DECISIONS -->
+<section class="sec w ap" id="mle-decisions">
+  <div class="s-ey re">MLE Design Decisions</div>
+  <h2 class="s-h2">Seven questions a senior MLE will ask — <em>answered in advance.</em></h2>
+  <p class="s-p">These are the gaps a principal ML engineer probes in a design review. Each decision below is documented because the absence of it looks like an oversight. None of these are afterthoughts — they shaped the design from the start.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px" class="ap">
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--purple);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 01 — Threshold Selection</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">How confidence thresholds were chosen — not guessed</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">Every confidence threshold in this portfolio was selected by finding the operating point on the precision-recall curve where the business cost of a false negative equals the estimated cost of routing to a human HITL reviewer. For RevRec AI: a missed MULTI-ELEMENT classification costs an average of €18K in revenue restatement; a HITL routing costs approximately 20 minutes of Finance Controller time. The 0.70 threshold is the PR curve point where these costs are equal. For Asset IQ: a missed failure prediction costs an average of €42K in emergency dispatch + hospital disruption; a HITL routing costs 30 minutes of FSM time. The 0.82 threshold reflects that asymmetry — it is higher because the miss cost is higher. Thresholds are not fixed: they are re-evaluated at each model version promotion as part of the HITL-11 review, using the most recent HITL override cost data.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 02 — Train/Val/Test Split Strategy</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Chronological splits for time-series models — no temporal leakage</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">RevRec AI and ContractGuard use stratified random splits (70/15/15) — the training examples are independent contracts with no temporal dependency. Asset IQ (RUL + Anomaly) and FinRisk Sentinel use chronological splits: train on the oldest 70% of the time window, validate on the next 15%, test on the most recent 15%. Stratified random splitting on time-series data would cause temporal leakage — the model would see future failure patterns during training that it should only discover at inference time. All split boundaries are hard date cuts, not sampled boundaries. The test set for time-series models is intentionally the most recent data — the distribution closest to the live production environment.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--green);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 03 — Train/Serve Skew Prevention</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">One feature transformation codebase — no duplication between training and serving</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">Train/serve skew — where feature transformation logic diverges between the offline training pipeline and the online serving path — is one of the most common causes of silent model degradation in production. In the AE, this is prevented structurally: feature transformation logic lives in a single shared Python module (ae_features) that is imported by both the Vertex AI Pipeline training step and the Cloud Run agent serving path. There is no duplicated transformation code. Additionally, the Vertex AI Feature Store's feature statistics (mean, std, percentile distribution) are compared between the offline training snapshot and the online serving window as part of the daily monitoring job. Any divergence above the PSI threshold triggers the data drift alert chain.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--amber);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 04 — Label Quality (ContractGuard)</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Inter-annotator agreement validated before any clause enters the training set</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">The ContractGuard training labels come from the ClaraVis Legal team — and legal professionals disagree on clause risk classification. This is not assumed away. Inter-annotator agreement was computed using Cohen's Kappa across a stratified sample of 500 clauses labelled independently by three Legal team members. The result: κ = 0.74, indicating substantial agreement. Clauses with pairwise disagreement (where at least two reviewers disagreed) were excluded from the training set entirely — they were not resolved by majority vote, because majority vote on ambiguous clauses injects noise as signal. The 12,400-clause training set reflects only clauses where Legal team agreement was unanimous or where a designated senior counsel made a final determination. This approach accepts a smaller training set in exchange for higher label quality.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--teal);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 05 — Class Imbalance Strategy</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">SMOTE for RevRec AI, class weighting for ContractGuard — different approaches for different imbalance severities</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">These are not interchangeable techniques applied inconsistently. RevRec AI's MULTI-ELEMENT class is 10% of the training set — at this level of imbalance, class weighting alone produces an evaluation set with too few minority-class examples to get stable recall estimates (approximately 72 MULTI-ELEMENT examples in a 15% test set of 720 records). SMOTE oversampling on the training set only (never the test set) brings the minority class to 20%, giving the evaluation set ~144 examples — enough for a stable recall measurement. ContractGuard's high-risk class is 18% — at this level, class_weight='balanced' in XGBoost is sufficient to adjust the decision boundary without introducing synthetic data that might not reflect real clause patterns. The choice between SMOTE and weighting is severity-dependent and documented explicitly to withstand scrutiny.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--red);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 06 — Feature Importance Stability</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Feature importance drift is monitored across retraining cycles — not just at deployment</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">SHAP is used as an inference-time explanation tool, but it also serves as a model stability signal across retraining cycles. After each pipeline run, the rank order of the top-10 SHAP features is compared against the previous production model's SHAP baseline using Spearman rank correlation. If the correlation drops below 0.70 — meaning the model has significantly restructured which features it relies on — this triggers a fourth type of drift alert (feature importance drift) that routes to HITL-10 before the new version is promoted, regardless of whether evaluation metrics improved. A model that achieves better F1 by learning different features is not necessarily a safer model — it may have found a spurious correlation that holds on the test set but not in production. This check is implemented as a step in the Vertex AI Pipeline between the XAI Gate and the HITL-11 node.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--purple);padding:22px 24px;grid-column:1/-1">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 07 — SHAP Faithfulness Validation</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">SHAP explanations are tested for faithfulness — not assumed to be correct because the library produced them</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">SHAP values are only useful if they are faithful to the model's actual reasoning — if zeroing out a high-positive SHAP feature actually reduces the output in the predicted direction. The AE validates SHAP faithfulness using a perturbation test that runs as the XAI Gate step in the Vertex AI Pipeline, before HITL-11. For each model version, 200 held-out examples are selected. For each example, the top-3 positive SHAP features are individually zeroed out (replaced with the training set mean) and the model is re-run. Faithfulness is confirmed if the predicted probability decreases in at least 90% of cases where a positive-SHAP feature is zeroed. If faithfulness drops below this threshold, the pipeline fails at the XAI Gate — the model does not proceed to HITL-11 regardless of its evaluation metrics. A model with unfaithful explanations cannot satisfy EU AI Act Article 13 regardless of its accuracy.</div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px">Faithfulness Gate — Pipeline Step</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="padding:8px 12px;background:var(--purple-lt);font-family:var(--mono);font-size:10px;color:var(--purple-dk);line-height:1.5"><strong>Input:</strong> trained model + 200 held-out examples + SHAP values</div>
+            <div style="padding:8px 12px;background:var(--surface-2);font-family:var(--mono);font-size:10px;color:var(--text-2);line-height:1.5"><strong>Test:</strong> zero top-3 positive SHAP features per example → re-run model → check direction</div>
+            <div style="padding:8px 12px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5"><strong>Pass condition:</strong> output decreases in ≥ 90% of perturbations → proceed to HITL-11</div>
+            <div style="padding:8px 12px;background:var(--red-lt);font-family:var(--mono);font-size:10px;color:var(--red-dk);line-height:1.5"><strong>Fail condition:</strong> faithfulness &lt; 90% → pipeline fails at XAI Gate → model blocked from promotion</div>
+            <div style="padding:8px 12px;background:var(--amber-lt);font-family:var(--mono);font-size:10px;color:var(--amber-dk);line-height:1.5"><strong>Applies to:</strong> RevRec AI · ContractGuard · Asset IQ RUL · FinRisk Sentinel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- §04 MLOps PIPELINE -->
+<section class="sec w ap" id="pipeline">
+  <div class="s-ey gr">MLOps Pipeline</div>
+  <h2 class="s-h2">RevRec AI — Vertex AI Pipelines DAG with <em>HITL promotion gate.</em></h2>
+  <p class="s-p">The Vertex AI Pipelines DAG for RevRec AI is the canonical MLOps pipeline for the AE. Every other model's pipeline follows the same structure with model-specific steps. The HITL-11 promotion gate is the step that makes this pipeline EU AI Act-compliant — no model version reaches production without a human reviewer approving the Model Card diff and evaluation results.</p>
+
+  <div class="dw ap">
+    <div class="dw-title">Vertex AI Pipelines DAG — RevRec AI · Production Training Pipeline</div>
+    <div class="dw-sub">Data validation → Feature engineering → Training → Evaluation → XAI gate → HITL-11 promotion checkpoint → Deployment → Monitoring registration</div>
+    <svg width="100%" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="dag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Pipeline header -->
+      <rect x="10" y="10" width="880" height="24" rx="3" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+      <text x="450" y="26" font-size="9" fill="#5F6368" text-anchor="middle" font-weight="500" letter-spacing=".05em">VERTEX AI PIPELINES · KFP v2 SDK · Scheduled: weekly + on drift trigger · Run ID linked to Model Registry version</text>
+
+      <!-- Step 1: Data Validation -->
+      <rect x="14" y="46" width="96" height="52" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="62" y="68" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Data</text>
+      <text x="62" y="80" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Validation</text>
+      <text x="62" y="92" font-size="8" fill="#1A73E8" text-anchor="middle">TFX · Great Exp.</text>
+      <line x1="110" y1="72" x2="124" y2="72" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 2: Feature Engineering -->
+      <rect x="124" y="46" width="96" height="52" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="172" y="68" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Feature</text>
+      <text x="172" y="80" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Engineering</text>
+      <text x="172" y="92" font-size="8" fill="#1A73E8" text-anchor="middle">FS write · lineage</text>
+      <line x1="220" y1="72" x2="234" y2="72" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 3: Training -->
+      <rect x="234" y="46" width="96" height="52" rx="4" fill="rgba(156,39,176,.12)" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="282" y="68" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">XGBoost</text>
+      <text x="282" y="80" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">Training</text>
+      <text x="282" y="92" font-size="8" fill="#6200EE" text-anchor="middle">Vertex Training Job</text>
+      <line x1="330" y1="72" x2="344" y2="72" stroke="#6200EE" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 4: Evaluation -->
+      <rect x="344" y="46" width="96" height="52" rx="4" fill="rgba(19,115,51,.1)" stroke="#137333" stroke-width="1.5"/>
+      <text x="392" y="68" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Evaluation</text>
+      <text x="392" y="80" font-size="9" fill="#137333" text-anchor="middle">F1 · ECE</text>
+      <text x="392" y="92" font-size="8" fill="#137333" text-anchor="middle">vs baseline model</text>
+      <line x1="440" y1="72" x2="454" y2="72" stroke="#137333" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 5: XAI Gate -->
+      <rect x="454" y="46" width="96" height="52" rx="4" fill="rgba(98,0,238,.1)" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="502" y="64" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">XAI Gate</text>
+      <text x="502" y="76" font-size="9" fill="#6200EE" text-anchor="middle">SHAP baseline</text>
+      <text x="502" y="88" font-size="8" fill="#6200EE" text-anchor="middle">computed · stored</text>
+      <line x1="550" y1="72" x2="564" y2="72" stroke="#6200EE" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 6: HITL-11 GATE (highlighted) -->
+      <rect x="564" y="36" width="116" height="72" rx="4" fill="rgba(217,48,37,.08)" stroke="#D93025" stroke-width="2"/>
+      <text x="622" y="58" font-size="9" font-weight="700" fill="#D93025" text-anchor="middle">HITL-11</text>
+      <text x="622" y="72" font-size="9" fill="#D93025" text-anchor="middle">Promotion Gate</text>
+      <text x="622" y="84" font-size="8" fill="#D93025" text-anchor="middle">ML Eng. reviews:</text>
+      <text x="622" y="95" font-size="8" fill="#D93025" text-anchor="middle">Model Card diff</text>
+      <text x="622" y="106" font-size="8" fill="#D93025" text-anchor="middle">Eval + SHAP delta</text>
+      <line x1="680" y1="72" x2="694" y2="72" stroke="#D93025" stroke-width="1.5" marker-end="url(#dag)"/>
+      <!-- HITL rejection path -->
+      <line x1="622" y1="108" x2="622" y2="140" stroke="#D93025" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="622" y1="140" x2="282" y2="140" stroke="#D93025" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#dag)"/>
+      <text x="452" y="135" font-size="8" fill="#D93025" text-anchor="middle">Reject → return to training with feedback</text>
+
+      <!-- Step 7: Deploy to Staging -->
+      <rect x="694" y="46" width="96" height="52" rx="4" fill="rgba(0,123,131,.1)" stroke="#007B83" stroke-width="1.5"/>
+      <text x="742" y="68" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">Deploy to</text>
+      <text x="742" y="80" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">Staging</text>
+      <text x="742" y="92" font-size="8" fill="#007B83" text-anchor="middle">Shadow mode · A/B</text>
+      <line x1="790" y1="72" x2="804" y2="72" stroke="#007B83" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <!-- Step 8: Promote to Production -->
+      <rect x="804" y="46" width="82" height="52" rx="4" fill="rgba(19,115,51,.15)" stroke="#137333" stroke-width="1.5"/>
+      <text x="845" y="64" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Promote</text>
+      <text x="845" y="76" font-size="9" fill="#137333" text-anchor="middle">to Prod</text>
+      <text x="845" y="88" font-size="8" fill="#137333" text-anchor="middle">Vertex endpoint</text>
+
+      <!-- Downstream: Model Registry + Monitoring -->
+      <line x1="845" y1="98" x2="845" y2="160" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#dag)"/>
+
+      <rect x="680" y="160" width="160" height="44" rx="4" fill="rgba(0,123,131,.08)" stroke="rgba(0,123,131,.2)" stroke-width="1"/>
+      <text x="760" y="180" font-size="9" fill="#005F67" text-anchor="middle" font-weight="500">Model Registry</text>
+      <text x="760" y="194" font-size="8" fill="rgba(0,123,131,.5)" text-anchor="middle">version · Model Card · HITL-11 record</text>
+
+      <rect x="500" y="160" width="168" height="44" rx="4" fill="rgba(176,96,0,.08)" stroke="rgba(176,96,0,.2)" stroke-width="1"/>
+      <text x="584" y="180" font-size="9" fill="#7A4100" text-anchor="middle" font-weight="500">Monitoring Registration</text>
+      <text x="584" y="194" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">drift job · alert config · HITL-10 link</text>
+
+      <line x1="760" y1="160" x2="670" y2="204" stroke="rgba(0,123,131,.3)" stroke-width="1" marker-end="url(#dag)"/>
+      <line x1="760" y1="160" x2="584" y2="160" stroke="rgba(0,123,131,.3)" stroke-width="1" marker-end="url(#dag)"/>
+
+      <!-- Pipeline stats -->
+      <rect x="14" y="220" width="460" height="64" rx="3" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+      <text x="26" y="238" font-size="9" font-weight="500" fill="#5F6368" letter-spacing=".06em">PIPELINE EXECUTION DETAILS</text>
+      <text x="26" y="254" font-size="9" fill="#5F6368">Trigger: weekly schedule + on drift alert from Vertex AI Monitoring</text>
+      <text x="26" y="268" font-size="9" fill="#5F6368">Average run time: ~45 minutes · Compute: n1-standard-8 · Training: A100 GPU (1hr budget)</text>
+      <text x="26" y="282" font-size="9" fill="#5F6368">Pipeline artifacts: all stored in GCS · linked to run ID · retained 90 days</text>
+
+      <rect x="484" y="220" width="402" height="64" rx="3" fill="#FCE8E6" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="496" y="238" font-size="9" font-weight="500" fill="#A50E0E" letter-spacing=".06em">HITL-11 GATE — EU AI ACT ARTICLE 9 COMPLIANCE</text>
+      <text x="496" y="254" font-size="9" fill="#D93025">ML Engineer receives: Model Card diff · eval metrics vs baseline · SHAP baseline comparison · bias analysis</text>
+      <text x="496" y="268" font-size="9" fill="#D93025">Decision: Approve → staging deploy · Reject → return to training with annotated feedback</text>
+      <text x="496" y="282" font-size="9" fill="#D93025">SLA: 48 hours · timeout: model stays in staging · audit record: immutable Firestore write</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §05 DRIFT DETECTION -->
+<section class="sec ap" id="drift">
+  <div class="s-ey am">Drift Detection</div>
+  <h2 class="s-h2">Three drift types. <em>Each with a designed response.</em></h2>
+  <p class="s-p">Model degradation in production is not a monitoring problem — it is an architecture problem. Drift detection is designed into the platform from day one: three types of drift, each with a detection method, an alert threshold, and a response that routes through HITL before any automated action executes.</p>
+
+  <div class="drift-grid ap">
+    <div class="drift-card">
+      <div class="dc-label">Drift Type 01</div>
+      <div class="dc-title">Data Drift — Feature Distribution Shift</div>
+      <div class="dc-desc">The statistical distribution of input features in production begins to diverge from the training distribution. For RevRec AI, this might be a shift in contract_value_eur distribution as ClaraVis moves upmarket. For Asset IQ, a new MRI model variant entering the fleet with different sensor baselines. Detected by comparing production feature distributions to a stored training baseline using Population Stability Index (PSI).</div>
+      <div class="dc-config">
+        <strong>Detection method:</strong> PSI per feature · weekly computation<br>
+        <strong>Alert threshold:</strong> PSI &gt; 0.2 on any monitored feature<br>
+        <strong>Vertex AI job:</strong> ModelMonitoringJob · feature_distribution<br>
+        <strong>Response:</strong> Alert → HITL-10 retraining recommendation<br>
+        <strong>Retraining trigger:</strong> Approved by HITL-10 → pipeline run
+      </div>
+    </div>
+    <div class="drift-card">
+      <div class="dc-label">Drift Type 02</div>
+      <div class="dc-title">Concept Drift — Prediction Distribution Shift</div>
+      <div class="dc-desc">The relationship between features and labels changes over time — the model's predictions are no longer aligned with the ground truth even when features look similar to training data. For RevRec AI, this happens when Finance team override decisions cluster around a new contract type the model has not seen. Detected by monitoring the distribution of production predictions against the training prediction baseline, and by tracking HITL override rate.</div>
+      <div class="dc-config">
+        <strong>Detection method:</strong> KL divergence on prediction distribution · HITL override rate<br>
+        <strong>Alert threshold:</strong> KL divergence &gt; 0.15 OR override rate &gt; 15% in 30-day window<br>
+        <strong>Vertex AI job:</strong> ModelMonitoringJob · prediction_drift<br>
+        <strong>Response:</strong> Alert → HITL-10 retraining · override decisions added to training set<br>
+        <strong>Special handling:</strong> override label dataset created for next retraining cycle
+      </div>
+    </div>
+    <div class="drift-card">
+      <div class="dc-label">Drift Type 03</div>
+      <div class="dc-title">Performance Drift — Ground Truth Evaluation</div>
+      <div class="dc-desc">Actual model performance metrics (F1, precision, recall) degrade when ground truth labels become available for production predictions. For RevRec AI, HITL override decisions serve as ground truth labels — when the Finance Controller overrides the model, that override is the true label for that transaction. For Asset IQ, actual failure events from service records confirm or refute predictions. Performance drift triggers an immediate retraining recommendation regardless of feature or prediction distribution metrics.</div>
+      <div class="dc-config">
+        <strong>Detection method:</strong> Rolling 30-day F1 / Recall vs baseline on labelled subset<br>
+        <strong>Alert threshold:</strong> Rolling F1 drops &gt; 5% below baseline<br>
+        <strong>Ground truth sources:</strong> HITL override decisions · actual failure events · Finance Controller corrections<br>
+        <strong>Response:</strong> Immediate HITL-10 alert regardless of other drift metrics<br>
+        <strong>Audit:</strong> All ground truth labels written to BigQuery ground_truth_labels dataset
+      </div>
+    </div>
+  </div>
+
+  <!-- HITL-10 connection -->
+  <div style="background:var(--red-lt);border:1px solid rgba(217,48,37,.2);border-left:4px solid var(--red);padding:20px 24px;margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">HITL-10 — Retraining Checkpoint (from Page 04 HITL Specification)</div>
+    <div style="font-family:var(--mono);font-size:12px;font-weight:300;color:var(--text);line-height:1.75">Every drift detection alert routes to HITL-10 before any retraining executes. The ML Engineer receives: drift metric, baseline vs current distribution chart, proposed retraining scope, estimated timeline, and the Model Card diff that the new version would produce. Decision: Approve retraining → triggers Vertex AI Pipeline run with the override label dataset included. Reject → model stays in production with a monitoring note. SLA: 24 hours. Timeout: model remains in production, alert escalated to ML Lead.</div>
+  </div>
+</section>
+
+<!-- §06 MODEL CARDS -->
+<section class="sec w ap" id="model-cards">
+  <div class="s-ey pu">Model Cards</div>
+  <h2 class="s-h2">Five Model Cards. <em>EU AI Act Article 11 satisfied.</em></h2>
+  <p class="s-p">Every AE model has a full Model Card — created before training begins, updated with actual evaluation results before promotion, and versioned alongside the model in Vertex AI Model Registry. The Model Card is the primary input to HITL-11 and the evidence package for EU AI Act Article 11 compliance. Full cards for all five models are shown below.</p>
+
+  <!-- RevRec AI Model Card -->
+  <div class="mc ap">
+    <div class="mc-header">
+      <div>
+        <div class="mc-title">RevRec AI — ASC 606 Revenue Recognition Classifier</div>
+        <div class="mc-version">Model Card v2.1 · Vertex AI Model Registry: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d0a2b5a6a2b5b3fdb1b990a6e2fee1">[email&#160;protected]</a> · HITL-11 approved: 2026-02-14</div>
+      </div>
+      <span class="mc-risk high">EU AI Act — High Risk · Annex III</span>
+    </div>
+    <div class="mc-body">
+      <div class="mc-section">
+        <div class="mc-section-title">Intended Use</div>
+        <div class="mc-text">This model classifies ClaraVis MRI transaction contracts as SALE, LEASE, or MULTI-ELEMENT ARRANGEMENT under ASC 606 / IFRS 15. It is a decision-support tool — every classification routes through a Finance Controller human review checkpoint (HITL-04) before any downstream action. The model is not designed and must not be used for: tax classification, legal advice, or recognition decisions where human review has been bypassed.</div>
+        <table class="mc-table" style="margin-top:12px">
+          <tr><td>Primary users</td><td>Finance Controller · CFO (via HITL-04 queue)</td></tr>
+          <tr><td>Deployment environment</td><td>ClaraVis GCP project · europe-west3 · VPC-SC perimeter</td></tr>
+          <tr><td>Data residency</td><td>All inference data stays in EU boundary. CMEK encryption.</td></tr>
+        </table>
+      </div>
+      <div class="mc-section">
+        <div class="mc-section-title">Training Data</div>
+        <div class="mc-text">4,800 historical ClaraVis contracts (2019–2025), manually labelled by Finance team. Class distribution: 62% SALE · 28% LEASE · 10% MULTI-ELEMENT. HITL override decisions from previous production cycle added at each retraining. SMOTE oversampling applied to MULTI-ELEMENT class.</div>
+        <table class="mc-table" style="margin-top:12px">
+          <tr><td>Training period</td><td>2019-01 to 2025-12</td></tr>
+          <tr><td>Records</td><td>4,800 contracts · 18 features per record</td></tr>
+          <tr><td>Label source</td><td>Finance team manual classification + HITL override history</td></tr>
+          <tr><td>Known gaps</td><td>Limited data for contract values above €5M. Performance degrades at upper tail.</td></tr>
+        </table>
+      </div>
+      <div class="mc-section">
+        <div class="mc-section-title">Evaluation Results</div>
+        <table class="mc-table">
+          <tr><td>Weighted F1</td><td style="color:var(--green);font-weight:500">0.94 (test set)</td></tr>
+          <tr><td>MULTI-ELEMENT Recall</td><td style="color:var(--green);font-weight:500">0.91</td></tr>
+          <tr><td>MULTI-ELEMENT Precision</td><td style="color:var(--green);font-weight:500">0.89</td></tr>
+          <tr><td>Expected Calibration Error</td><td style="color:var(--green);font-weight:500">0.032 (well-calibrated)</td></tr>
+          <tr><td>Baseline comparison</td><td>+0.03 F1 improvement over v2.0</td></tr>
+          <tr><td>HITL override rate (30-day)</td><td style="color:var(--amber);font-weight:500">8.2% (within threshold)</td></tr>
+        </table>
+      </div>
+      <div class="mc-section">
+        <div class="mc-section-title">Known Limitations</div>
+        <div class="mc-limitation">Performance degrades for contract values above €5M — limited training data in this range. All such contracts are flagged for mandatory HITL review regardless of confidence score.</div>
+        <div class="mc-limitation">Model was trained on ClaraVis contracts only. Classification on contract structures from newly entered markets (e.g. APAC hospital procurement models) may show lower confidence until retraining with local contract data.</div>
+        <div class="mc-limitation">MULTI-ELEMENT arrangements with more than 3 performance obligations have lower precision (0.76) than the overall reported metric. Finance team has been briefed.</div>
+        <div class="mc-limitation">Model does not account for post-contract modification events. Amendments that change the recognition basis require a new classification run.</div>
+      </div>
+      <div class="mc-section">
+        <div class="mc-section-title">Bias Analysis</div>
+        <div class="mc-text">Bias evaluation conducted across customer_type (hospital tier), geographic region, and contract value tier. No significant performance disparity found across hospital tier 1–3. Tier 4 (small private clinics): F1 = 0.88 vs overall 0.94 — flagged for monitoring. Geographic performance: EU contracts F1 = 0.95, non-EU F1 = 0.89 (limited non-EU training data).</div>
+        <table class="mc-table" style="margin-top:10px">
+          <tr><td>Hospital Tier 1–3</td><td style="color:var(--green)">F1 = 0.94–0.96 · No disparity</td></tr>
+          <tr><td>Hospital Tier 4</td><td style="color:var(--amber)">F1 = 0.88 · Flagged for monitoring</td></tr>
+          <tr><td>EU contracts</td><td style="color:var(--green)">F1 = 0.95</td></tr>
+          <tr><td>Non-EU contracts</td><td style="color:var(--amber)">F1 = 0.89 · Limited training data</td></tr>
+        </table>
+      </div>
+      <div class="mc-section">
+        <div class="mc-section-title">XAI Contract &amp; Compliance</div>
+        <div class="mc-text">SHAP TreeExplainer computes feature attributions synchronously at every inference. Top 5 features written to BigQuery shap_explanations table before HITL-04 is created. The Finance Controller sees: classification, confidence, SHAP chart, and 3 comparable historical transactions in the HITL approval UI.</div>
+        <table class="mc-table" style="margin-top:10px">
+          <tr><td>EU AI Act Art. 11</td><td style="color:var(--green)">✓ Technical documentation complete</td></tr>
+          <tr><td>EU AI Act Art. 13</td><td style="color:var(--green)">✓ Transparency — SHAP per inference</td></tr>
+          <tr><td>EU AI Act Art. 14</td><td style="color:var(--green)">✓ HITL-04 mandatory for all classifications</td></tr>
+          <tr><td>HITL-11 approval</td><td style="color:var(--green)">✓ Approved 2026-02-14 by ML Lead</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary cards for other four models -->
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px" class="ap">
+    <!-- Asset IQ RUL -->
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;background:var(--green-lt);color:var(--green-dk);letter-spacing:.08em">Model Card v1.3</span>
+        <span style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.01em">Asset IQ — RUL Regressor</span>
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk</span>
+      </div>
+      <table class="mc-table">
+        <tr><td>Intended use</td><td>Decision-support for planned maintenance scheduling. Work orders above 0.82 confidence created autonomously. Below threshold: HITL-06.</td></tr>
+        <tr><td>Training data</td><td>3yr telemetry · 8,400 unit-quarters · actual failure events as labels · censored survival data handled</td></tr>
+        <tr><td>MAE</td><td style="color:var(--green);font-weight:500">4.2 days · Recall@14d: 0.91</td></tr>
+        <tr><td>Key limitation</td><td>Trained on MRI-7T and MRI-3T variants. CT-Premium performance lower (F1 = 0.84). Separate model in development.</td></tr>
+        <tr><td>Bias analysis</td><td>No significant regional performance disparity. Older units (age &gt; 8yr) show lower recall (0.85) — flagged.</td></tr>
+        <tr><td>EU AI Act</td><td style="color:var(--green)">Art. 11 ✓ · Art. 13 ✓ (SHAP sensor attribution) · Art. 14 ✓ (HITL-06) · HITL-11 approved 2026-01-22</td></tr>
+      </table>
+    </div>
+
+    <!-- Asset IQ Anomaly -->
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;background:var(--teal-lt);color:var(--teal-dk);letter-spacing:.08em">Model Card v1.1</span>
+        <span style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.01em">Asset IQ — Anomaly Detector</span>
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk</span>
+      </div>
+      <table class="mc-table">
+        <tr><td>Intended use</td><td>Unit-level anomaly detection for early warning. Fleet anomaly patterns (≥3 units) trigger HITL-07 to VP Field Service.</td></tr>
+        <tr><td>Training data</td><td>18 months normal operation · 6,200 unit-months · unsupervised (no failure labels required) · contamination: 0.05</td></tr>
+        <tr><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f6a68493959f859f9998b6c6d8c1c3">[email&#160;protected]</a></td><td style="color:var(--green);font-weight:500">0.82 · False Positive Rate: 0.04</td></tr>
+        <tr><td>Key limitation</td><td>New sensor types from MRI-7T Gen 2 units not in training data. Alert threshold raised to 0.80 for Gen 2 units pending data collection.</td></tr>
+        <tr><td>Bias analysis</td><td>EMEA-North performance (FPR 0.03) vs APAC-East (FPR 0.07) — climate-driven sensor baseline differences. Regional baselines in roadmap.</td></tr>
+        <tr><td>EU AI Act</td><td style="color:var(--green)">Art. 11 ✓ · Art. 13 ✓ (SHAP sensor) · Art. 14 ✓ (HITL-06/07) · HITL-11 approved 2026-01-22</td></tr>
+      </table>
+    </div>
+
+    <!-- ContractGuard Risk Scorer -->
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;background:var(--teal-lt);color:var(--teal-dk);letter-spacing:.08em">Model Card v2.0</span>
+        <span style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.01em">ContractGuard — Clause Risk Scorer</span>
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk</span>
+      </div>
+      <table class="mc-table">
+        <tr><td>Intended use</td><td>Clause-level risk pre-screening to prioritise Legal review. Clauses above 0.65 route to HITL-02. Does not replace legal judgment.</td></tr>
+        <tr><td>Training data</td><td>12,400 labelled clauses · 4,800 contracts · Legal team labels · HITL decision history · Gemini text-embedding-004 semantic features</td></tr>
+        <tr><td>High-Risk Recall</td><td style="color:var(--green);font-weight:500">0.95 · AUC-ROC: 0.96 · FNR: 0.05</td></tr>
+        <tr><td>Key limitation</td><td>Limited training data for emerging AI-specific contract clauses (IP ownership of AI outputs, data training rights). Performance lower on these clause types.</td></tr>
+        <tr><td>Bias analysis</td><td>No significant disparity across counterparty type. Non-English contracts (via Gemini translation): precision 0.78 vs 0.82 English. Flagged.</td></tr>
+        <tr><td>EU AI Act</td><td style="color:var(--green)">Art. 11 ✓ · Art. 13 ✓ (SHAP clause features) · Art. 14 ✓ (HITL-02/03) · HITL-11 approved 2026-01-30</td></tr>
+      </table>
+    </div>
+
+    <!-- FinRisk Anomaly Scorer -->
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 8px;background:var(--amber-lt);color:var(--amber-dk);letter-spacing:.08em">Model Card v1.2</span>
+        <span style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.01em">FinRisk Sentinel — Anomaly Scorer</span>
+        <span style="font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--red-lt);color:var(--red-dk)">EU AI Act — High Risk</span>
+      </div>
+      <table class="mc-table">
+        <tr><td>Intended use</td><td>Real-time financial anomaly pre-screening. Medium alerts (≥0.65): FC notification. High severity (≥0.85): HITL-08 simultaneous CFO + FC. Never acts autonomously on financial events.</td></tr>
+        <tr><td>Training data</td><td>24 months transactions · 48,000 events · unsupervised · 3 separate models per event_type · contamination: 0.03</td></tr>
+        <tr><td>HITL <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ecbc9e898f859f858382acdcc2d4d9">[email&#160;protected]</a></td><td style="color:var(--green);font-weight:500">0.91 · False Positive Rate @ 0.85: 0.03</td></tr>
+        <tr><td>Key limitation</td><td>Trained on standard ClaraVis payment patterns. First year in a new market will have elevated false positive rate until baseline accumulates 90-day history.</td></tr>
+        <tr><td>Bias analysis</td><td>Performance consistent across account risk tiers 1–3. Tier 4 (small clinics with irregular payment patterns): FPR 0.08 vs overall 0.03. Separate baseline for Tier 4 in roadmap.</td></tr>
+        <tr><td>EU AI Act</td><td style="color:var(--green)">Art. 11 ✓ · Art. 13 ✓ (SHAP financial features) · Art. 14 ✓ (HITL-08) · HITL-11 approved 2026-02-03</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- §07 ADRs -->
+<section class="sec ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three ML decisions. <em>Every alternative documented.</em></h2>
+  <p class="s-p">ADR-010 through ADR-012 cover the key ML architecture choices. Each decision was made after evaluating alternatives — the reasoning is documented here because it is the reasoning that a principal ML engineer will probe.</p>
+
+  <div class="adr-row ap">
+    <div class="adr-card bl">
+      <div class="adr-id">ADR-010</div>
+      <div class="adr-title">XGBoost over neural network for RevRec AI and ContractGuard</div>
+      <div class="adr-body">Neural networks (MLP, BERT fine-tuned for structured data) were evaluated for both classification tasks. Rejected for two reasons: (1) EU AI Act Article 13 requires transparency — XGBoost's TreeExplainer provides exact, deterministic SHAP values that are reproducible on demand for any past inference. Neural network SHAP (DeepExplainer or KernelExplainer) provides approximations that vary between runs — unacceptable for an immutable audit trail. (2) XGBoost performs competitively on tabular features with this dataset size and is less prone to catastrophic overfitting on the 4,800-contract training set. For ContractGuard's semantic features, XGBoost operates on Gemini text-embedding-004 embeddings — the semantic intelligence is captured in the embedding, the interpretability is preserved in the tree model.</div>
+      <div class="adr-status">Accepted · Phase ML Design</div>
+    </div>
+    <div class="adr-card gr">
+      <div class="adr-id">ADR-011</div>
+      <div class="adr-title">Isolation Forest over autoencoder for anomaly detection (Asset IQ + FinRisk)</div>
+      <div class="adr-body">Autoencoder-based anomaly detection was the initial design choice for both Asset IQ (unit-level) and FinRisk Sentinel. Rejected after evaluation because: (1) Autoencoders do not produce feature-level SHAP attributions without a computationally expensive KernelExplainer approximation — which is too slow for real-time financial event scoring. (2) Isolation Forest's decision tree structure is directly compatible with TreeExplainer SHAP, producing fast, exact, deterministic feature attributions per anomaly score. (3) Isolation Forest requires no labels — both Asset IQ and FinRisk operate in domains where labelled anomaly data is scarce and untrustworthy. The architecture decision also establishes a consistent anomaly detection pattern across both modules — same model class, same SHAP method, same monitoring approach — reducing platform complexity.</div>
+      <div class="adr-status">Accepted · Phase ML Design</div>
+    </div>
+    <div class="adr-card am">
+      <div class="adr-id">ADR-012</div>
+      <div class="adr-title">Vertex AI Pipelines over Kubeflow Pipelines (self-managed)</div>
+      <div class="adr-body">Self-managed Kubeflow Pipelines on GKE was evaluated as the MLOps infrastructure. Rejected because: (1) Vertex AI Pipelines is a managed service — no cluster provisioning, no Kubeflow version management, no infrastructure maintenance overhead. For a portfolio-scale system where the ML Engineer is also the architect and the developer, operational simplicity is a constraint. (2) Vertex AI Pipelines has native integration with Vertex AI Model Registry, Vertex AI Monitoring, and Cloud Build CI/CD — the HITL-11 promotion gate is implementable as a standard pipeline step using the Vertex AI Experiments SDK. (3) All pipeline artifacts (training data snapshots, model checkpoints, evaluation reports) are automatically stored in GCS with versioned URIs linked to pipeline run IDs — audit trail requirements are satisfied by the platform, not by custom code. The only cost difference is marginal at the portfolio's usage scale and is outweighed by the operational advantage.</div>
+      <div class="adr-status">Accepted · Phase ML Design</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>Next in the Portfolio</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">ML platform designed.<br><strong>Infrastructure follows.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">The ML models on this page require a production-grade GCP infrastructure to run on. Page 07 designs that infrastructure — the Terraform IaC, VPC-SC security perimeter, GKE and Cloud Run topology, CI/CD pipeline, FinOps cost allocation, and GreenOps carbon-aware scheduling that make the entire AE system deployable, auditable, and operationally sound.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="#" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(255,255,255,.08)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='transparent';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 07</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Infrastructure &amp; GCP Architecture</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Terraform · VPC-SC · GKE · CI/CD · FinOps · GreenOps</div><span style="display:inline-block;margin-top:3px;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:rgba(184,150,12,.15);color:var(--gold-lt);letter-spacing:.07em;text-transform:uppercase">In Design</span></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-05.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 05</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← Agent Swarm Architecture</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">The agents that call the models designed on this page</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['platform','features','models','mle-decisions','pipeline','drift','model-cards','adrs'];

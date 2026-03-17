@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RevRec AI — Module 03 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'M03';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ph-bc span{color:rgba(245,240,232,.18)}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
+/* accessible tag colours — dark text on light bg */
+.ph-tag-red{background:#FCE8E6;color:#A50E0E}
+.ph-tag-teal{background:#E4F7F7;color:#005F67}
+.ph-tag-blue{background:#E8F0FE;color:#1557B0}
+.ph-tag-green{background:#E6F4EA;color:#0D5226}
+.ph-tag-amber{background:#FEF3E2;color:#7A4100}
+.ph-tag-purple{background:#EDE7F6;color:#3700B3}
+
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.re{color:var(--red)}.s-ey.pu{color:var(--purple)}.s-ey.te{color:var(--teal)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+
+/* DIAGRAM WRAPPERS */
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--blue)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}
+.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+
+/* REBUTTAL CARDS */
+.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.rb{background:var(--white);border:1px solid var(--border);padding:26px 26px;border-top:3px solid var(--border)}
+.rb.cto{border-top-color:var(--purple)}.rb.cco{border-top-color:var(--red)}
+.rb.fc{border-top-color:var(--teal)}.rb.ea{border-top-color:var(--blue)}
+.rb.ciso{border-top-color:var(--amber)}.rb.cfo{border-top-color:var(--green)}
+.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rb.cto .rb-who{color:var(--purple)}.rb.cco .rb-who{color:var(--red)}
+.rb.fc .rb-who{color:var(--teal)}.rb.ea .rb-who{color:var(--blue)}
+.rb.ciso .rb-who{color:var(--amber)}.rb.cfo .rb-who{color:var(--green)}
+.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
+.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
+.rb-response-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rb-response{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
+.rb-evidence{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
+.rb.cto .rb-evidence{background:var(--purple-lt);color:var(--purple-dk)}
+.rb.cco .rb-evidence{background:var(--red-lt);color:var(--red-dk)}
+.rb.fc .rb-evidence{background:var(--teal-lt);color:var(--teal-dk)}
+.rb.ea .rb-evidence{background:var(--blue-lt);color:var(--blue-dk)}
+.rb.ciso .rb-evidence{background:var(--amber-lt);color:var(--amber-dk)}
+.rb.cfo .rb-evidence{background:var(--green-lt);color:var(--green-dk)}
+
+/* ADR CARDS */
+.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
+.adr.bl{border-left:4px solid var(--blue)}.adr.gr{border-left:4px solid var(--green)}.adr.am{border-left:4px solid var(--amber)}.adr.te{border-left:4px solid var(--teal)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr.bl .adr-id{color:var(--blue)}.adr.gr .adr-id{color:var(--green)}.adr.am .adr-id{color:var(--amber)}.adr.te .adr-id{color:var(--teal)}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
+
+/* DEMO PATHWAY */
+.demo-steps{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.ds{background:var(--white);border:1px solid var(--border);padding:20px 24px;display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
+.ds-num{font-family:var(--display);font-size:28px;font-weight:800;color:var(--border);letter-spacing:-.02em;line-height:1;padding-top:2px}
+.ds.active .ds-num{color:var(--teal)}
+.ds.hitl-step .ds-num{color:var(--red)}
+.ds-content{}
+.ds-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px;color:var(--text-3)}
+.ds.active .ds-label{color:var(--teal)}.ds.hitl-step .ds-label{color:var(--red)}
+.ds-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.ds-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7}
+.ds-say{margin-top:10px;padding:8px 12px;background:var(--surface-2);border-left:2px solid var(--border);font-family:var(--serif);font-size:13px;font-style:italic;color:var(--text-2);line-height:1.6}
+.ds.hitl-step .ds-say{background:var(--red-lt);border-left-color:var(--red);color:var(--red-dk);font-style:normal;font-family:var(--mono);font-size:11px}
+.ds-services{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+/* accessible service pills */
+.ds-svc{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E8F0FE;color:#1557B0}
+
+/* HITL UI MOCKUP */
+.hitl-mockup{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:4px;box-shadow:0 4px 24px rgba(0,0,0,.07)}
+.hm-titlebar{background:var(--ink);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.hm-dot{width:10px;height:10px;border-radius:50%}
+.hm-title{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.5);letter-spacing:.05em;margin-left:4px}
+.hm-body{display:grid;grid-template-columns:1fr 320px;min-height:520px}
+.hm-main{padding:24px;border-right:1px solid var(--border)}
+.hm-sidebar{padding:20px;background:var(--white)}
+.hm-section-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}
+/* Classification result */
+.hm-classification{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--ink);border-radius:4px;margin-bottom:12px}
+.hm-class-value{font-family:var(--display);font-size:18px;font-weight:800;color:#80CBC4;letter-spacing:-.01em}
+.hm-conf-bar-wrap{flex:1}
+.hm-conf-label{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.4);margin-bottom:4px}
+.hm-conf-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;position:relative;overflow:hidden}
+.hm-conf-fill{height:100%;background:#80CBC4;border-radius:3px}
+.hm-conf-val{font-family:var(--mono);font-size:12px;font-weight:500;color:#80CBC4;margin-left:8px;white-space:nowrap}
+/* SHAP chart in mockup */
+.shap-bar-item{display:grid;grid-template-columns:180px 1fr 52px;gap:8px;align-items:center;margin-bottom:8px}
+.shap-feat-name{font-family:var(--mono);font-size:10px;color:var(--text-2);text-align:right;font-weight:300}
+.shap-bar-track{height:14px;background:var(--surface-2);border-radius:2px;position:relative;overflow:visible}
+.shap-bar-pos{height:100%;border-radius:2px;background:#007B83}
+.shap-bar-neg{height:100%;border-radius:2px;background:#D93025}
+.shap-val{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-2)}
+/* Comparable transactions */
+.hm-comp{background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;margin-bottom:6px;border-radius:2px}
+.hm-comp-id{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);margin-bottom:2px}
+.hm-comp-detail{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.5}
+/* Decision buttons */
+.hm-actions{display:flex;gap:8px;margin-top:16px}
+.hm-btn-approve{flex:1;padding:11px 0;background:var(--green);color:var(--white);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:none;border-radius:3px;cursor:default;text-align:center}
+.hm-btn-override{flex:1;padding:11px 0;background:var(--white);color:var(--red-dk);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--red);border-radius:3px;cursor:default;text-align:center}
+.hm-sla{font-family:var(--mono);font-size:10px;color:var(--amber-dk);background:var(--amber-lt);padding:6px 10px;border-radius:2px;margin-top:8px;text-align:center}
+/* contract detail panel */
+.hm-contract-field{margin-bottom:8px}
+.hm-cf-label{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.hm-cf-val{font-family:var(--mono);font-size:11px;color:var(--text);font-weight:300}
+
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){
+  :root{--col:22px}
+  .rebuttal-grid{grid-template-columns:1fr}
+  .hm-body{grid-template-columns:1fr}
+  .mn-r .mn-link{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-09.html" class="mn-back">← Suite Index</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">AE Suite &nbsp;/&nbsp; <strong>M-03 · RevRec AI</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="page-09.html" class="mn-link">← Index</a>
+    <a href="page-06.html" class="mn-link">ML Page</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<nav class="snav" id="snav">
+  <a href="#context" class="sn act" data-sec="context">System Context</a>
+  <a href="#architecture" class="sn" data-sec="architecture">Architecture</a>
+  <a href="#statemachine" class="sn" data-sec="statemachine">State Machine</a>
+  <a href="#dataflow" class="sn" data-sec="dataflow">Data Flow</a>
+  <a href="#hitl" class="sn" data-sec="hitl">HITL-04 UI</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
+  <a href="#demo" class="sn" data-sec="demo">Demo Pathway</a>
+</nav>
+
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise <span>·</span> AE Suite <span>·</span> Module 03</div>
+  <h1 class="ph-h1">RevRec AI<br><em>Revenue Recognition</em><br><strong>— ASC 606 · SHAP · HITL · SAP.</strong></h1>
+  <p class="ph-sub">The most regulated module in the AE Suite. Every transaction classified by XGBoost, explained by SHAP, approved by the Finance Controller, and only then posted to SAP. EU AI Act Article 13 and 14 satisfied in a single workflow — not as compliance features, but as the workflow itself.</p>
+  <div class="ph-tags">
+    <span class="ph-tag ph-tag-red">EU AI Act — High Risk · Annex III</span>
+    <span class="ph-tag ph-tag-teal">ASC 606 · IFRS 15</span>
+    <span class="ph-tag ph-tag-blue">Salesforce + SAP</span>
+    <span class="ph-tag ph-tag-green">XGBoost · SHAP</span>
+    <span class="ph-tag ph-tag-amber">HITL-04 · HITL-05 · HITL-09</span>
+    <span class="ph-tag ph-tag-purple">Financial ART · H2 · PI-3</span>
+  </div>
+</header>
+
+<!-- §01 SYSTEM CONTEXT -->
+<section class="sec w ap" id="context">
+  <div class="s-ey">System Context — C4 Level 1</div>
+  <h2 class="s-h2">What is RevRec AI and <em>who does it talk to?</em></h2>
+  <p class="s-p">The system context establishes the boundary of RevRec AI and its relationship to every external actor and system. Everything inside the boundary is designed and owned by the AE. Everything outside is a dependency with a documented integration pattern.</p>
+
+  <div class="dw ap" role="img" aria-label="System context diagram for RevRec AI showing inputs from Salesforce and the Pub/Sub event bus, outputs to SAP S/4HANA via GL write and to Firestore via HITL audit record, human actor Finance Controller via HITL-04, and regulatory constraint EU AI Act Annex III">
+    <div class="dw-title">RevRec AI — System Context (C4 Level 1)</div>
+    <div class="dw-sub">External actors · external systems · integration patterns · data flows in and out of the RevRec AI boundary</div>
+    <svg width="100%" viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- RevRec AI system boundary -->
+      <rect x="290" y="120" width="280" height="180" rx="8" fill="#E4F7F7" stroke="#007B83" stroke-width="2"/>
+      <text x="430" y="148" font-size="12" font-weight="700" fill="#005F67" text-anchor="middle">RevRec AI</text>
+      <text x="430" y="164" font-size="9" fill="#007B83" text-anchor="middle">Module 03 · Financial Domain</text>
+      <text x="430" y="182" font-size="9" fill="#005F67" text-anchor="middle">XGBoost ASC 606 classifier</text>
+      <text x="430" y="196" font-size="9" fill="#005F67" text-anchor="middle">SHAP explanation engine</text>
+      <text x="430" y="210" font-size="9" fill="#005F67" text-anchor="middle">HITL-04/05/09 state manager</text>
+      <text x="430" y="224" font-size="9" fill="#005F67" text-anchor="middle">SAP write guard</text>
+      <text x="430" y="238" font-size="9" fill="#005F67" text-anchor="middle">Audit trail writer</text>
+      <text x="430" y="256" font-size="8" fill="#007B83" text-anchor="middle">Cloud Run · Vertex AI · Firestore · BigQuery</text>
+      <text x="430" y="270" font-size="8" fill="#007B83" text-anchor="middle">europe-west3 · VPC-SC perimeter</text>
+
+      <!-- Salesforce (input) -->
+      <rect x="30" y="60" width="170" height="80" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="115" y="90" font-size="11" font-weight="700" fill="#1557B0" text-anchor="middle">Salesforce CLM</text>
+      <text x="115" y="104" font-size="9" fill="#1A73E8" text-anchor="middle">Contract signed event</text>
+      <text x="115" y="117" font-size="8" fill="#1557B0" text-anchor="middle">REST API · Developer Edition</text>
+      <text x="115" y="130" font-size="8" fill="#1557B0" text-anchor="middle">System of record</text>
+      <line x1="200" y1="100" x2="290" y2="185" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="208" y="106" width="76" height="24" rx="2" fill="#E8F0FE"/>
+      <text x="246" y="116" font-size="8" fill="#1557B0" text-anchor="middle">contract_signed</text>
+      <text x="246" y="127" font-size="8" fill="#1557B0" text-anchor="middle">Pub/Sub trigger</text>
+
+      <!-- Pub/Sub event bus -->
+      <rect x="30" y="180" width="170" height="64" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="115" y="204" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">Pub/Sub</text>
+      <text x="115" y="218" font-size="9" fill="#137333" text-anchor="middle">ae-q2c-events topic</text>
+      <text x="115" y="231" font-size="8" fill="#0D5226" text-anchor="middle">Event fabric · ADR-006</text>
+      <line x1="200" y1="212" x2="290" y2="210" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="208" y="196" width="76" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="246" y="207" font-size="8" fill="#0D5226" text-anchor="middle">event message</text>
+
+      <!-- Finance Controller (HITL) -->
+      <rect x="30" y="290" width="170" height="80" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="115" y="316" font-size="11" font-weight="700" fill="#7A4100" text-anchor="middle">Finance Controller</text>
+      <text x="115" y="330" font-size="9" fill="#B06000" text-anchor="middle">HITL-04 reviewer</text>
+      <text x="115" y="344" font-size="8" fill="#7A4100" text-anchor="middle">Approves or overrides</text>
+      <text x="115" y="358" font-size="8" fill="#7A4100" text-anchor="middle">every classification</text>
+      <line x1="200" y1="330" x2="290" y2="280" stroke="#B06000" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="208" y="310" width="76" height="14" rx="2" fill="#FEF3E2"/>
+      <text x="246" y="321" font-size="8" fill="#7A4100" text-anchor="middle">HITL decision</text>
+      <!-- Reverse arrow: HITL queue to FC -->
+      <line x1="290" y1="290" x2="200" y2="340" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ctx)"/>
+      <rect x="208" y="332" width="76" height="14" rx="2" fill="white"/>
+      <text x="246" y="343" font-size="8" fill="#B06000" text-anchor="middle">HITL-04 queue</text>
+
+      <!-- SAP (output) -->
+      <rect x="660" y="60" width="170" height="80" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="745" y="90" font-size="11" font-weight="700" fill="#7A4100" text-anchor="middle">SAP S/4HANA</text>
+      <text x="745" y="104" font-size="9" fill="#B06000" text-anchor="middle">GL Journal Entry</text>
+      <text x="745" y="117" font-size="8" fill="#7A4100" text-anchor="middle">Revenue recognition post</text>
+      <text x="745" y="130" font-size="8" fill="#7A4100" text-anchor="middle">Requires HITL record ID</text>
+      <line x1="570" y1="185" x2="660" y2="100" stroke="#B06000" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="577" y="128" width="76" height="24" rx="2" fill="#FEF3E2"/>
+      <text x="615" y="138" font-size="8" fill="#7A4100" text-anchor="middle">GL write</text>
+      <text x="615" y="149" font-size="8" fill="#7A4100" text-anchor="middle">post-HITL-approval</text>
+
+      <!-- Audit output -->
+      <rect x="660" y="180" width="170" height="64" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="745" y="204" font-size="11" font-weight="700" fill="#3700B3" text-anchor="middle">Audit Trail</text>
+      <text x="745" y="218" font-size="9" fill="#6200EE" text-anchor="middle">Firestore + BigQuery</text>
+      <text x="745" y="231" font-size="8" fill="#3700B3" text-anchor="middle">Immutable · CMEK</text>
+      <line x1="570" y1="210" x2="660" y2="212" stroke="#6200EE" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="577" y="200" width="76" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="615" y="211" font-size="8" fill="#3700B3" text-anchor="middle">every state transition</text>
+
+      <!-- EU AI Act regulatory constraint -->
+      <rect x="660" y="290" width="170" height="80" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="745" y="316" font-size="11" font-weight="700" fill="#A50E0E" text-anchor="middle">EU AI Act</text>
+      <text x="745" y="330" font-size="9" fill="#D93025" text-anchor="middle">Annex III · High Risk</text>
+      <text x="745" y="344" font-size="8" fill="#A50E0E" text-anchor="middle">Art. 13 — Transparency</text>
+      <text x="745" y="358" font-size="8" fill="#A50E0E" text-anchor="middle">Art. 14 — Human oversight</text>
+      <!-- Constraint bracket -->
+      <line x1="660" y1="330" x2="570" y2="280" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ctx)"/>
+      <rect x="577" y="310" width="76" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="615" y="321" font-size="8" fill="#A50E0E" text-anchor="middle">compliance constraint</text>
+
+      <!-- Vertex AI (ML inference) -->
+      <rect x="290" y="340" width="280" height="52" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1"/>
+      <text x="430" y="362" font-size="10" font-weight="700" fill="#3700B3" text-anchor="middle">Vertex AI — Model Endpoint</text>
+      <text x="430" y="377" font-size="8" fill="#6200EE" text-anchor="middle">XGBoost inference + SHAP · europe-west3 · Workload Identity auth</text>
+      <line x1="430" y1="300" x2="430" y2="340" stroke="#6200EE" stroke-width="1.5" marker-end="url(#ctx)" stroke-dasharray="3 2"/>
+
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1px solid #1A73E8"></div>Salesforce (input source)</div>
+      <div class="dl"><div class="dl-box" style="background:#E4F7F7;border:2px solid #007B83"></div>RevRec AI (system boundary)</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:1px solid #B06000"></div>SAP (output target) + Finance Controller</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1px solid #6200EE"></div>Audit trail + Vertex AI</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1px dashed #D93025"></div>EU AI Act (regulatory constraint)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 ARCHITECTURE OVERVIEW -->
+<section class="sec dk ap" id="architecture">
+  <div class="s-ey go">Architecture Overview</div>
+  <h2 class="s-h2">Every GCP service. <em>Every data flow. Every control.</em></h2>
+  <p class="s-p">The architecture overview expands the RevRec AI system boundary from the context diagram above into its internal component design. This is the diagram that answers how it works — not what it does.</p>
+
+  <div class="dw dk ap" role="img" aria-label="RevRec AI architecture diagram showing Cloud Run agent receiving contract signed events via Pub/Sub, calling Vertex AI Feature Store for contract features, running XGBoost inference via Vertex AI endpoint, computing SHAP explanation, writing to Firestore HITL state, presenting to Finance Controller via HITL UI, receiving approval, then writing Transaction entity to BigQuery and initiating SAP GL write, with all state transitions written to BigQuery audit dataset">
+    <div class="dw-title">RevRec AI — GCP Architecture (Internal Components)</div>
+    <div class="dw-sub">Cloud Run agent · Feature Store · Vertex AI endpoint · SHAP layer · HITL state · SAP write guard · audit trail</div>
+    <svg width="100%" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="arch" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- VPC-SC boundary -->
+      <rect x="8" y="8" width="882" height="522" rx="8" fill="none" stroke="rgba(217,48,37,.3)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="22" y="26" font-size="9" fill="rgba(239,154,154,.55)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · europe-west3 · CMEK on all storage</text>
+
+      <!-- 1. Pub/Sub trigger -->
+      <rect x="20" y="40" width="130" height="56" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="85" y="64" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">Pub/Sub</text>
+      <text x="85" y="78" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">ae-q2c-events</text>
+      <text x="85" y="90" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">contract_signed msg</text>
+
+      <!-- 2. Cloud Run RevRec Agent -->
+      <rect x="200" y="30" width="180" height="76" rx="4" fill="rgba(0,123,131,.15)" stroke="#007B83" stroke-width="1.5"/>
+      <text x="290" y="56" font-size="11" font-weight="700" fill="#80CBC4" text-anchor="middle">RevRec AI Agent</text>
+      <text x="290" y="70" font-size="8" fill="rgba(0,123,131,.65)" text-anchor="middle">Cloud Run v2 · 2 vCPU · 4Gi</text>
+      <text x="290" y="82" font-size="8" fill="rgba(0,123,131,.55)" text-anchor="middle">SA: revrec-sa@ · WIF auth</text>
+      <text x="290" y="94" font-size="8" fill="rgba(0,123,131,.5)" text-anchor="middle">Scale 0–10 · request-driven</text>
+      <line x1="150" y1="68" x2="200" y2="68" stroke="#137333" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 3. Salesforce read -->
+      <rect x="20" y="140" width="130" height="56" rx="4" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="85" y="162" font-size="10" font-weight="700" fill="#90CAF9" text-anchor="middle">Salesforce</text>
+      <text x="85" y="176" font-size="8" fill="rgba(26,115,232,.6)" text-anchor="middle">Contract details</text>
+      <text x="85" y="188" font-size="8" fill="rgba(26,115,232,.5)" text-anchor="middle">REST API · OAuth 2.0</text>
+      <line x1="150" y1="168" x2="200" y2="68" stroke="rgba(26,115,232,.4)" stroke-width="1" marker-end="url(#arch)" stroke-dasharray="3 2"/>
+
+      <!-- 4. Feature Store -->
+      <rect x="200" y="140" width="180" height="56" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="290" y="162" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">Vertex AI Feature Store</text>
+      <text x="290" y="176" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">Contract feature group</text>
+      <text x="290" y="188" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">18 features · online serving</text>
+      <line x1="290" y1="106" x2="290" y2="140" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 5. Vertex AI Endpoint -->
+      <rect x="440" y="30" width="180" height="76" rx="4" fill="rgba(156,39,176,.12)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="530" y="56" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">Vertex AI Endpoint</text>
+      <text x="530" y="70" font-size="8" fill="rgba(156,39,176,.6)" text-anchor="middle">XGBoost ASC 606 model</text>
+      <text x="530" y="82" font-size="8" fill="rgba(156,39,176,.55)" text-anchor="middle">revrec-ai@v2.1</text>
+      <text x="530" y="94" font-size="8" fill="rgba(156,39,176,.5)" text-anchor="middle">Returns: class · confidence · features</text>
+      <line x1="380" y1="68" x2="440" y2="68" stroke="rgba(0,123,131,.5)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 6. SHAP Explainer -->
+      <rect x="440" y="140" width="180" height="56" rx="4" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.3)" stroke-width="1"/>
+      <text x="530" y="162" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">SHAP TreeExplainer</text>
+      <text x="530" y="176" font-size="8" fill="rgba(98,0,238,.6)" text-anchor="middle">Top-5 feature attribution</text>
+      <text x="530" y="188" font-size="8" fill="rgba(98,0,238,.5)" text-anchor="middle">Deterministic · synchronous</text>
+      <line x1="530" y1="106" x2="530" y2="140" stroke="rgba(156,39,176,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 7. Firestore HITL -->
+      <rect x="680" y="30" width="190" height="76" rx="4" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.3)" stroke-width="1.5"/>
+      <text x="775" y="56" font-size="10" font-weight="700" fill="#EF9A9A" text-anchor="middle">Firestore HITL State</text>
+      <text x="775" y="70" font-size="8" fill="rgba(217,48,37,.6)" text-anchor="middle">HITL-04 checkpoint created</text>
+      <text x="775" y="82" font-size="8" fill="rgba(217,48,37,.55)" text-anchor="middle">Immutable write · CMEK</text>
+      <text x="775" y="94" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">4-hour SLA · timeout → CFO</text>
+      <line x1="620" y1="68" x2="680" y2="68" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 8. BigQuery SHAP write (before HITL) -->
+      <rect x="680" y="140" width="190" height="56" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="775" y="162" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">BigQuery — SHAP Store</text>
+      <text x="775" y="176" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">ae_audit.shap_explanations</text>
+      <text x="775" y="188" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">Written BEFORE HITL created</text>
+      <line x1="620" y1="168" x2="680" y2="168" stroke="rgba(98,0,238,.35)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- Finance Controller (external actor) -->
+      <rect x="680" y="240" width="190" height="56" rx="4" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1"/>
+      <text x="775" y="262" font-size="10" font-weight="700" fill="#FFCC80" text-anchor="middle">Finance Controller</text>
+      <text x="775" y="276" font-size="8" fill="rgba(176,96,0,.6)" text-anchor="middle">HITL Approval UI</text>
+      <text x="775" y="288" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">Approve or override + reason</text>
+      <line x1="775" y1="106" x2="775" y2="240" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <!-- FC decision back to agent -->
+      <line x1="680" y1="268" x2="530" y2="230" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#arch)" stroke-dasharray="4 3"/>
+      <rect x="570" y="244" width="104" height="14" rx="2" fill="rgba(176,96,0,.12)"/>
+      <text x="622" y="255" font-size="8" fill="rgba(176,96,0,.65)" text-anchor="middle">HITL decision received</text>
+
+      <!-- 9. Agent post-approval processing -->
+      <rect x="200" y="340" width="180" height="72" rx="4" fill="rgba(0,123,131,.15)" stroke="#007B83" stroke-width="1.5"/>
+      <text x="290" y="364" font-size="10" font-weight="700" fill="#80CBC4" text-anchor="middle">Post-Approval Processing</text>
+      <text x="290" y="378" font-size="8" fill="rgba(0,123,131,.6)" text-anchor="middle">Transaction entity written</text>
+      <text x="290" y="390" font-size="8" fill="rgba(0,123,131,.55)" text-anchor="middle">Performance obligation tags</text>
+      <text x="290" y="402" font-size="8" fill="rgba(0,123,131,.5)" text-anchor="middle">Salesforce Contract updated</text>
+      <line x1="290" y1="230" x2="290" y2="340" stroke="rgba(0,123,131,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 10. BigQuery Transaction write -->
+      <rect x="440" y="340" width="180" height="56" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="530" y="362" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">BigQuery — Transactions</text>
+      <text x="530" y="376" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">Transaction entity · ASC 606 tags</text>
+      <text x="530" y="388" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">HITL record ID FK · immutable</text>
+      <line x1="380" y1="376" x2="440" y2="376" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- 11. SAP write (guarded) -->
+      <rect x="680" y="340" width="190" height="72" rx="4" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1"/>
+      <text x="775" y="364" font-size="10" font-weight="700" fill="#FFCC80" text-anchor="middle">SAP GL Write</text>
+      <text x="775" y="378" font-size="8" fill="rgba(176,96,0,.6)" text-anchor="middle">Journal entry post</text>
+      <text x="775" y="390" font-size="8" fill="rgba(176,96,0,.55)" text-anchor="middle">Requires: hitl_id parameter</text>
+      <text x="775" y="402" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">Mock BigQuery table in demo</text>
+      <line x1="620" y1="376" x2="680" y2="376" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- SAP WRITE GUARD annotation -->
+      <rect x="685" y="420" width="180" height="28" rx="2" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="775" y="437" font-size="8" fill="rgba(239,154,154,.7)" text-anchor="middle" font-weight="500">SAP write is BLOCKED without hitl_id</text>
+
+      <!-- Audit trail (all transitions) -->
+      <rect x="20" y="340" width="130" height="72" rx="4" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.25)" stroke-width="1"/>
+      <text x="85" y="364" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">Audit Trail</text>
+      <text x="85" y="378" font-size="8" fill="rgba(98,0,238,.6)" text-anchor="middle">Every state transition</text>
+      <text x="85" y="390" font-size="8" fill="rgba(98,0,238,.55)" text-anchor="middle">BigQuery ae_audit</text>
+      <text x="85" y="402" font-size="8" fill="rgba(98,0,238,.5)" text-anchor="middle">Firestore HITL records</text>
+      <line x1="200" y1="376" x2="150" y2="376" stroke="rgba(98,0,238,.35)" stroke-width="1.5" marker-end="url(#arch)"/>
+
+      <!-- Flow step numbers -->
+      <circle cx="168" cy="52" r="9" fill="#1A1916" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="168" y="56" font-size="8" fill="rgba(245,240,232,.6)" text-anchor="middle" font-weight="500">1</text>
+      <circle cx="414" cy="52" r="9" fill="#1A1916" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="414" y="56" font-size="8" fill="rgba(245,240,232,.6)" text-anchor="middle" font-weight="500">2</text>
+      <circle cx="414" cy="152" r="9" fill="#1A1916" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="414" y="156" font-size="8" fill="rgba(245,240,232,.6)" text-anchor="middle" font-weight="500">3</text>
+      <circle cx="654" cy="52" r="9" fill="#1A1916" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="654" y="56" font-size="8" fill="rgba(245,240,232,.6)" text-anchor="middle" font-weight="500">4</text>
+      <circle cx="290" cy="320" r="9" fill="#1A1916" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="290" y="324" font-size="8" fill="rgba(245,240,232,.6)" text-anchor="middle" font-weight="500">5</text>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:rgba(0,123,131,.2);border:1.5px solid #007B83"></div>RevRec AI agent (Cloud Run)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(156,39,176,.15);border:1px solid rgba(156,39,176,.4)"></div>Vertex AI (inference + SHAP)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(19,115,51,.15);border:1px solid rgba(19,115,51,.4)"></div>Data stores (Feature Store · BigQuery)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(217,48,37,.1);border:1.5px solid rgba(217,48,37,.4)"></div>HITL state (Firestore)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(176,96,0,.15);border:1px solid rgba(176,96,0,.4)"></div>Human actor + SAP output</div>
+      <div class="dl"><span style="font-family:var(--mono);font-size:9px;color:rgba(239,154,154,.6)">--- VPC-SC</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 STATE MACHINE -->
+<section class="sec ap" id="statemachine">
+  <div class="s-ey pu">Agent State Machine</div>
+  <h2 class="s-h2">Every state. Every transition. <em>Every HITL pause node.</em></h2>
+  <p class="s-p">The RevRec AI agent's formal finite state machine — the same specification that drives the ADK implementation. HITL states are first-class nodes with defined entry conditions, timeout behaviour, and immutable audit records. The SAP write is physically unreachable without a committed HITL-04 approval record.</p>
+
+  <div class="dw ap" role="img" aria-label="RevRec AI agent state machine showing states: IDLE, EXTRACTING, CLASSIFYING, HITL-04 pause, HITL-05 multi-element pause, HITL-09 low confidence pause, POSTING, COMPLETE, ERROR, and ROLLBACK, with transitions between each state">
+    <div class="dw-title">RevRec AI — Agent Finite State Machine</div>
+    <div class="dw-sub">States · transitions · HITL pause nodes · rollback paths · timeout behaviours · audit record at every transition</div>
+    <svg width="100%" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="fsm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- State node helper positions -->
+      <!-- Row 1: IDLE → EXTRACTING → CLASSIFYING -->
+      <!-- Row 2: HITL-04 (main) -->
+      <!-- Row 3: HITL-05 (multi-element branch) + HITL-09 (low confidence branch) -->
+      <!-- Row 4: POSTING → COMPLETE -->
+      <!-- Side: ERROR + ROLLBACK -->
+
+      <!-- IDLE -->
+      <rect x="20" y="30" width="110" height="44" rx="22" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1.5"/>
+      <text x="75" y="56" font-size="10" font-weight="500" fill="#5F6368" text-anchor="middle">IDLE</text>
+      <text x="75" y="68" font-size="8" fill="#80868B" text-anchor="middle">awaiting event</text>
+      <!-- Start indicator -->
+      <circle cx="10" cy="52" r="6" fill="#202124"/>
+      <line x1="16" y1="52" x2="20" y2="52" stroke="#202124" stroke-width="1.5" marker-end="url(#fsm)"/>
+
+      <!-- IDLE → EXTRACTING -->
+      <line x1="130" y1="52" x2="190" y2="52" stroke="#5F6368" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <rect x="130" y="38" width="60" height="14" rx="2" fill="white"/>
+      <text x="160" y="49" font-size="7" fill="#80868B" text-anchor="middle">contract_signed</text>
+      <text x="160" y="58" font-size="7" fill="#80868B" text-anchor="middle">Pub/Sub event</text>
+
+      <!-- EXTRACTING -->
+      <rect x="190" y="30" width="140" height="44" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="260" y="49" font-size="10" font-weight="500" fill="#1557B0" text-anchor="middle">EXTRACTING</text>
+      <text x="260" y="62" font-size="8" fill="#1A73E8" text-anchor="middle">SFDC contract · Feature Store</text>
+
+      <!-- EXTRACTING → CLASSIFYING -->
+      <line x1="330" y1="52" x2="390" y2="52" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <rect x="330" y="38" width="60" height="14" rx="2" fill="white"/>
+      <text x="360" y="49" font-size="7" fill="#1A73E8" text-anchor="middle">features ready</text>
+
+      <!-- CLASSIFYING -->
+      <rect x="390" y="30" width="160" height="44" rx="4" fill="rgba(156,39,176,.1)" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="470" y="49" font-size="10" font-weight="500" fill="#3700B3" text-anchor="middle">CLASSIFYING</text>
+      <text x="470" y="62" font-size="8" fill="#6200EE" text-anchor="middle">Vertex AI · SHAP · BQ write</text>
+
+      <!-- CLASSIFYING → HITL-04 (main path - all classifications) -->
+      <line x1="550" y1="52" x2="630" y2="52" stroke="#6200EE" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <rect x="555" y="38" width="70" height="14" rx="2" fill="white"/>
+      <text x="590" y="49" font-size="7" fill="#6200EE" text-anchor="middle">always · all classes</text>
+
+      <!-- HITL-04 -->
+      <rect x="630" y="20" width="200" height="64" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="2"/>
+      <text x="730" y="44" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">HITL-04 PAUSE</text>
+      <text x="730" y="57" font-size="8" fill="#D93025" text-anchor="middle">Finance Controller review</text>
+      <text x="730" y="69" font-size="8" fill="#D93025" text-anchor="middle">4h SLA · immutable Firestore write</text>
+      <text x="730" y="78" font-size="7" fill="rgba(217,48,37,.5)" text-anchor="middle">timeout → escalate to CFO</text>
+
+      <!-- CLASSIFYING → HITL-05 (multi-element branch) -->
+      <line x1="470" y1="74" x2="470" y2="120" stroke="#B06000" stroke-width="1.5" marker-end="url(#fsm)" stroke-dasharray="4 3"/>
+      <rect x="480" y="86" width="110" height="14" rx="2" fill="white"/>
+      <text x="535" y="97" font-size="7" fill="#B06000" text-anchor="middle">multi-element detected</text>
+
+      <!-- HITL-05 -->
+      <rect x="350" y="120" width="200" height="56" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="450" y="143" font-size="10" font-weight="700" fill="#7A4100" text-anchor="middle">HITL-05 PAUSE</text>
+      <text x="450" y="156" font-size="8" fill="#B06000" text-anchor="middle">Perf. obligation split review</text>
+      <text x="450" y="167" font-size="7" fill="rgba(176,96,0,.55)" text-anchor="middle">8h SLA · escalates to CFO</text>
+
+      <!-- CLASSIFYING → HITL-09 (low confidence branch) -->
+      <line x1="390" y1="74" x2="260" y2="120" stroke="#80868B" stroke-width="1.5" marker-end="url(#fsm)" stroke-dasharray="4 3"/>
+      <rect x="290" y="86" width="120" height="14" rx="2" fill="white"/>
+      <text x="350" y="97" font-size="7" fill="#80868B" text-anchor="middle">confidence &lt; 0.70</text>
+
+      <!-- HITL-09 -->
+      <rect x="120" y="120" width="200" height="56" rx="4" fill="#F8F9FA" stroke="#80868B" stroke-width="1.5"/>
+      <text x="220" y="143" font-size="10" font-weight="700" fill="#5F6368" text-anchor="middle">HITL-09 PAUSE</text>
+      <text x="220" y="156" font-size="8" fill="#80868B" text-anchor="middle">Manual classification request</text>
+      <text x="220" y="167" font-size="7" fill="rgba(128,134,139,.5)" text-anchor="middle">4h SLA · hold transaction</text>
+
+      <!-- All HITL paths converge to POSTING via HITL approval -->
+      <!-- HITL-04 → POSTING -->
+      <line x1="730" y1="84" x2="730" y2="270" stroke="#D93025" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <rect x="740" y="170" width="80" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="780" y="181" font-size="7" fill="#A50E0E" text-anchor="middle">FC approves →</text>
+      <text x="780" y="191" font-size="7" fill="#A50E0E" text-anchor="middle">HITL record committed</text>
+
+      <!-- HITL-05 → POSTING -->
+      <line x1="550" y1="148" x2="640" y2="270" stroke="#B06000" stroke-width="1.5" marker-end="url(#fsm)"/>
+
+      <!-- HITL-09 → POSTING -->
+      <line x1="320" y1="148" x2="580" y2="270" stroke="#80868B" stroke-width="1.5" marker-end="url(#fsm)"/>
+
+      <!-- POSTING -->
+      <rect x="540" y="270" width="200" height="56" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="640" y="293" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">POSTING</text>
+      <text x="640" y="306" font-size="8" fill="#137333" text-anchor="middle">Transaction entity write</text>
+      <text x="640" y="318" font-size="8" fill="#137333" text-anchor="middle">SAP GL write (hitl_id required)</text>
+
+      <!-- POSTING → COMPLETE -->
+      <line x1="640" y1="326" x2="640" y2="380" stroke="#137333" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <rect x="650" y="344" width="80" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="690" y="355" font-size="7" fill="#0D5226" text-anchor="middle">SAP confirmed</text>
+
+      <!-- COMPLETE -->
+      <rect x="540" y="380" width="200" height="56" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <circle cx="640" cy="460" r="8" fill="#137333"/>
+      <circle cx="640" cy="460" r="12" fill="none" stroke="#137333" stroke-width="2"/>
+      <text x="640" y="403" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">COMPLETE</text>
+      <text x="640" y="416" font-size="8" fill="#137333" text-anchor="middle">All records committed</text>
+      <text x="640" y="428" font-size="8" fill="#137333" text-anchor="middle">Audit trail closed</text>
+      <line x1="640" y1="436" x2="640" y2="448" stroke="#137333" stroke-width="1.5" marker-end="url(#fsm)"/>
+
+      <!-- ERROR state -->
+      <rect x="20" y="270" width="160" height="56" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="100" y="293" font-size="10" font-weight="700" fill="#7A4100" text-anchor="middle">ERROR</text>
+      <text x="100" y="306" font-size="8" fill="#B06000" text-anchor="middle">Agent failure · circuit open</text>
+      <text x="100" y="318" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">HITL fallback triggered</text>
+
+      <!-- EXTRACTING → ERROR -->
+      <line x1="260" y1="74" x2="100" y2="270" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#fsm)"/>
+      <text x="145" y="200" font-size="7" fill="#B06000" text-anchor="middle">timeout/failure</text>
+
+      <!-- ROLLBACK state -->
+      <rect x="20" y="380" width="160" height="44" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="100" y="400" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">ROLLBACK</text>
+      <text x="100" y="414" font-size="8" fill="#D93025" text-anchor="middle">HITL rejected · undo writes</text>
+      <line x1="100" y1="326" x2="100" y2="380" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#fsm)"/>
+      <text x="110" y="360" font-size="7" fill="#D93025" text-anchor="middle">FC rejects →</text>
+
+      <!-- Audit record note -->
+      <rect x="20" y="460" width="880" height="16" rx="2" fill="rgba(98,0,238,.06)" stroke="rgba(98,0,238,.15)" stroke-width="1"/>
+      <text x="450" y="472" font-size="8" fill="rgba(98,0,238,.55)" text-anchor="middle" font-weight="500">Immutable audit record written to Firestore + BigQuery at every state transition · SHAP written before HITL-04 created · SAP write unreachable without committed HITL record</text>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1.5px solid #1A73E8"></div>Data extraction states</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(156,39,176,.1);border:1.5px solid #6200EE"></div>Inference + XAI state</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:2px solid #D93025"></div>HITL-04 pause (required)</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:1.5px solid #B06000"></div>HITL-05/09 pause (conditional)</div>
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:2px solid #137333"></div>Post-approval + Complete</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1.5px solid #D93025"></div>Error / Rollback</div>
+    </div>
+  </div>
+</section>
+
+<!-- §04 DATA FLOW -->
+<section class="sec w ap" id="dataflow">
+  <div class="s-ey gr">Data Flow &amp; Sequence</div>
+  <h2 class="s-h2">One transaction. End to end. <em>Every system. Every message.</em></h2>
+  <p class="s-p">The sequence below shows a single ClaraVis MRI-7T + service contract classification — from the Salesforce contract_signed event through to the SAP GL write confirmation. Times are representative. Every step is audited before the next begins.</p>
+
+  <div class="dw ap" role="img" aria-label="Sequence diagram showing RevRec AI classification flow: Salesforce publishes contract_signed event to Pub/Sub at t+0, RevRec agent receives it, reads contract from Salesforce REST API, fetches 18 features from Feature Store, calls Vertex AI XGBoost endpoint returning MULTI-ELEMENT classification with confidence 0.91, SHAP TreeExplainer computes top 5 features written to BigQuery, HITL-04 created in Firestore, Finance Controller reviews and approves at t+2.4h, SAP GL write executes, complete audit record committed">
+    <div class="dw-title">RevRec AI — Sequence: Contract Classification End to End</div>
+    <div class="dw-sub">ClaraVis AG · MRI-7T + 5yr service · €2.84M · MULTI-ELEMENT classification · Finance Controller approval · SAP post</div>
+    <svg width="100%" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="seq2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Lifelines -->
+      <rect x="10" y="10" width="90" height="28" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="55" y="28" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Salesforce</text>
+      <line x1="55" y1="38" x2="55" y2="488" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <rect x="155" y="10" width="120" height="28" rx="3" fill="#E4F7F7" stroke="#007B83" stroke-width="1.5"/>
+      <text x="215" y="28" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">RevRec AI Agent</text>
+      <line x1="215" y1="38" x2="215" y2="488" stroke="#007B83" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <rect x="330" y="10" width="110" height="28" rx="3" fill="rgba(156,39,176,.1)" stroke="#6200EE" stroke-width="1"/>
+      <text x="385" y="28" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">Vertex AI + SHAP</text>
+      <line x1="385" y1="38" x2="385" y2="488" stroke="#6200EE" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <rect x="500" y="10" width="100" height="28" rx="3" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="550" y="28" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">HITL / Firestore</text>
+      <line x1="550" y1="38" x2="550" y2="488" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <rect x="655" y="10" width="100" height="28" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1"/>
+      <text x="705" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Finance Controller</text>
+      <line x1="705" y1="38" x2="705" y2="488" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <rect x="805" y="10" width="80" height="28" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1"/>
+      <text x="845" y="28" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">SAP</text>
+      <line x1="845" y1="38" x2="845" y2="488" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+
+      <!-- Step 1: Salesforce → Agent (Pub/Sub) -->
+      <line x1="55" y1="62" x2="209" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="60" y="50" width="145" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="132" y="61" font-size="8" fill="#1557B0" text-anchor="middle">contract_signed event (Pub/Sub)</text>
+      <text x="10" y="62" font-size="8" fill="#80868B" text-anchor="end">t+0</text>
+
+      <!-- Step 2: Agent reads contract from SFDC -->
+      <line x1="215" y1="80" x2="61" y2="80" stroke="#1A73E8" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="70" y="68" width="140" height="14" rx="2" fill="white"/>
+      <text x="140" y="79" font-size="8" fill="#1A73E8" text-anchor="middle">GET /contracts/{id} · REST API</text>
+      <text x="10" y="80" font-size="8" fill="#80868B" text-anchor="end">t+1s</text>
+
+      <!-- Step 2b: SFDC returns contract -->
+      <line x1="61" y1="96" x2="209" y2="96" stroke="#1A73E8" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="70" y="84" width="135" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="137" y="95" font-size="8" fill="#1557B0" text-anchor="middle">contract JSON · 18 field values</text>
+
+      <!-- Step 3: Agent fetches features from Feature Store -->
+      <line x1="215" y1="116" x2="379" y2="116" stroke="#137333" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="104" width="154" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="297" y="115" font-size="8" fill="#0D5226" text-anchor="middle">get_online_features(entity_id)</text>
+      <text x="10" y="116" font-size="8" fill="#80868B" text-anchor="end">t+3s</text>
+
+      <!-- FS returns features -->
+      <line x1="379" y1="132" x2="221" y2="132" stroke="#137333" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="225" y="120" width="149" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="299" y="131" font-size="8" fill="#137333" text-anchor="middle">feature_vector[18] returned</text>
+
+      <!-- Step 4: Vertex AI inference -->
+      <line x1="215" y1="152" x2="379" y2="152" stroke="#6200EE" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="140" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="297" y="151" font-size="8" fill="#3700B3" text-anchor="middle">predict(feature_vector)</text>
+      <text x="10" y="152" font-size="8" fill="#80868B" text-anchor="end">t+5s</text>
+
+      <!-- Vertex returns classification -->
+      <line x1="379" y1="168" x2="221" y2="168" stroke="#6200EE" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="225" y="156" width="149" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="299" y="167" font-size="8" fill="#6200EE" text-anchor="middle">MULTI-ELEMENT · conf: 0.91</text>
+
+      <!-- Step 5: SHAP explanation -->
+      <line x1="215" y1="188" x2="379" y2="188" stroke="#6200EE" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="176" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="297" y="187" font-size="8" fill="#3700B3" text-anchor="middle">TreeExplainer.shap_values(x)</text>
+      <text x="10" y="188" font-size="8" fill="#80868B" text-anchor="end">t+6s</text>
+
+      <!-- SHAP returned -->
+      <line x1="379" y1="204" x2="221" y2="204" stroke="#6200EE" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="225" y="192" width="149" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="299" y="203" font-size="8" fill="#6200EE" text-anchor="middle">shap[5] · top features ranked</text>
+
+      <!-- Step 6: Agent writes SHAP to BigQuery BEFORE HITL -->
+      <line x1="215" y1="224" x2="544" y2="224" stroke="#6200EE" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="212" width="319" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="379" y="223" font-size="8" fill="#3700B3" text-anchor="middle">BQ write: shap_explanations (BEFORE HITL) · EU AI Act Art. 13</text>
+      <text x="10" y="224" font-size="8" fill="#80868B" text-anchor="end">t+8s</text>
+
+      <!-- Step 7: Create HITL-04 -->
+      <line x1="215" y1="248" x2="544" y2="248" stroke="#D93025" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="236" width="319" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="379" y="247" font-size="8" fill="#A50E0E" text-anchor="middle">hitl.create_checkpoint(HITL-04, class, shap, comparables)</text>
+      <text x="10" y="248" font-size="8" fill="#80868B" text-anchor="end">t+10s</text>
+
+      <!-- Firestore returns hitl_id -->
+      <line x1="544" y1="264" x2="221" y2="264" stroke="#D93025" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="230" y="252" width="309" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="384" y="263" font-size="8" fill="#D93025" text-anchor="middle">hitl_id: "hitl_20260315_rr_004" · SLA: 4h · state: HITL_PAUSE</text>
+
+      <!-- HITL pause band -->
+      <rect x="10" y="278" width="880" height="26" rx="2" fill="rgba(217,48,37,.04)" stroke="rgba(217,48,37,.12)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="450" y="294" font-size="9" fill="rgba(217,48,37,.5)" text-anchor="middle" font-weight="500">⏸ HITL PAUSE — Finance Controller reviewing · 4-hour SLA · agent waiting</text>
+
+      <!-- Step 8: HITL notification to FC -->
+      <line x1="550" y1="312" x2="699" y2="312" stroke="#B06000" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="555" y="300" width="139" height="14" rx="2" fill="#FEF3E2"/>
+      <text x="624" y="311" font-size="8" fill="#7A4100" text-anchor="middle">HITL-04 queue · classification + SHAP</text>
+      <text x="10" y="312" font-size="8" fill="#80868B" text-anchor="end">t+12s</text>
+
+      <!-- Step 9: FC approves -->
+      <line x1="699" y1="336" x2="556" y2="336" stroke="#137333" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="557" y="324" width="137" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="625" y="335" font-size="8" fill="#0D5226" text-anchor="middle">decision: APPROVE · reason_code: A01</text>
+      <text x="10" y="336" font-size="8" fill="#80868B" text-anchor="end">t+2.4h</text>
+
+      <!-- Step 10: Firestore writes immutable HITL record -->
+      <line x1="550" y1="356" x2="221" y2="356" stroke="#D93025" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="230" y="344" width="314" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="387" y="355" font-size="8" fill="#A50E0E" text-anchor="middle">hitl_event immutable write · decision + approver + ts · state: APPROVED</text>
+
+      <!-- Step 11: SAP GL write -->
+      <line x1="215" y1="376" x2="839" y2="376" stroke="#137333" stroke-width="1.5" marker-end="url(#seq2)"/>
+      <rect x="220" y="364" width="614" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="527" y="375" font-size="8" fill="#0D5226" text-anchor="middle">sap.post_journal_entry(hitl_id="hitl_20260315_rr_004", class=MULTI_ELEMENT, …) · hitl_id is mandatory param</text>
+      <text x="10" y="376" font-size="8" fill="#80868B" text-anchor="end">t+2.4h</text>
+
+      <!-- SAP confirms -->
+      <line x1="839" y1="396" x2="221" y2="396" stroke="#137333" stroke-width="1" marker-end="url(#seq2)" stroke-dasharray="3 2"/>
+      <rect x="225" y="384" width="609" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="529" y="395" font-size="8" fill="#137333" text-anchor="middle">GL posting confirmed · doc_id: SAP-2026-031501 · state: COMPLETE · full audit trail closed</text>
+      <text x="10" y="396" font-size="8" fill="#80868B" text-anchor="end">t+2.4h</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §05 HITL-04 UI -->
+<section class="sec ap" id="hitl">
+  <div class="s-ey te">HITL-04 Presentation</div>
+  <h2 class="s-h2">What the Finance Controller <em>actually sees.</em></h2>
+  <p class="s-p">EU AI Act Article 14 requires that the human reviewer has access to the information needed to make an informed decision. This is the HITL-04 queue interface — the SHAP chart, classification result, comparable transactions, and the approve/override decision with mandatory reason code.</p>
+
+  <!-- SHAP chart standalone -->
+  <div class="dw ap" role="img" aria-label="SHAP explanation bar chart for RevRec AI MULTI-ELEMENT classification showing: sku_complexity_score +0.38 positive contribution, recognition_type_prior +0.29 positive, payment_term_days +0.19 positive, contract_value_eur -0.12 negative, customer_type_encoded +0.08 positive, baseline value 0.31">
+    <div class="dw-title">SHAP Explanation — MULTI-ELEMENT Classification · Contract CV2026-0042</div>
+    <div class="dw-sub">Top 5 features · SHAP value = contribution to MULTI-ELEMENT probability · positive = increases probability · negative = decreases it</div>
+    <svg width="100%" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+
+      <!-- Axis -->
+      <line x1="220" y1="20" x2="220" y2="220" stroke="#DADCE0" stroke-width="1"/>
+      <line x1="220" y1="220" x2="640" y2="220" stroke="#DADCE0" stroke-width="1"/>
+      <!-- Zero line -->
+      <line x1="220" y1="20" x2="220" y2="220" stroke="#202124" stroke-width="1.5"/>
+
+      <!-- Axis labels -->
+      <text x="220" y="240" font-size="9" fill="#80868B" text-anchor="middle">0.00</text>
+      <text x="340" y="240" font-size="9" fill="#80868B" text-anchor="middle">+0.20</text>
+      <text x="460" y="240" font-size="9" fill="#80868B" text-anchor="middle">+0.40</text>
+      <text x="580" y="240" font-size="9" fill="#80868B" text-anchor="middle">+0.60</text>
+      <!-- Negative axis -->
+      <line x1="100" y1="20" x2="220" y2="20" stroke="transparent" stroke-width="1"/>
+      <text x="100" y="240" font-size="9" fill="#80868B" text-anchor="middle">-0.20</text>
+
+      <!-- Feature 1: sku_complexity_score +0.38 -->
+      <text x="215" y="55" font-size="10" fill="#202124" text-anchor="end" font-weight="400">sku_complexity_score</text>
+      <rect x="220" y="40" width="228" height="20" rx="2" fill="#007B83"/>
+      <text x="454" y="54" font-size="9" fill="#005F67" text-anchor="start" font-weight="500">  +0.38</text>
+      <text x="215" y="68" font-size="8" fill="#80868B" text-anchor="end">val: 4 SKUs (high complexity)</text>
+
+      <!-- Feature 2: recognition_type_prior +0.29 -->
+      <text x="215" y="105" font-size="10" fill="#202124" text-anchor="end" font-weight="400">recognition_type_prior</text>
+      <rect x="220" y="90" width="174" height="20" rx="2" fill="#007B83" opacity=".8"/>
+      <text x="400" y="104" font-size="9" fill="#005F67" text-anchor="start" font-weight="500">  +0.29</text>
+      <text x="215" y="118" font-size="8" fill="#80868B" text-anchor="end">val: prev. MULTI-ELEMENT (0.62 hist.)</text>
+
+      <!-- Feature 3: payment_term_days +0.19 -->
+      <text x="215" y="155" font-size="10" fill="#202124" text-anchor="end" font-weight="400">payment_term_days</text>
+      <rect x="220" y="140" width="114" height="20" rx="2" fill="#007B83" opacity=".6"/>
+      <text x="340" y="154" font-size="9" fill="#005F67" text-anchor="start" font-weight="500">  +0.19</text>
+      <text x="215" y="168" font-size="8" fill="#80868B" text-anchor="end">val: 360 days (service period)</text>
+
+      <!-- Feature 4: contract_value_eur -0.12 -->
+      <text x="215" y="205" font-size="10" fill="#202124" text-anchor="end" font-weight="400">contract_value_eur</text>
+      <rect x="148" y="190" width="72" height="20" rx="2" fill="#D93025" opacity=".7"/>
+      <text x="143" y="204" font-size="9" fill="#A50E0E" text-anchor="end" font-weight="500">-0.12  </text>
+      <text x="215" y="218" font-size="8" fill="#80868B" text-anchor="end">val: €2.84M (below typical MULTI-EL threshold)</text>
+
+      <!-- Baseline marker -->
+      <line x1="220" y1="20" x2="220" y2="225" stroke="#202124" stroke-width="2"/>
+      <text x="220" y="15" font-size="8" fill="#202124" text-anchor="middle" font-weight="500">base: 0.31</text>
+
+      <!-- Final probability indicator -->
+      <rect x="490" y="40" width="190" height="60" rx="4" fill="#E4F7F7" stroke="#007B83" stroke-width="1"/>
+      <text x="585" y="60" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">MULTI-ELEMENT</text>
+      <text x="585" y="76" font-size="18" font-weight="800" fill="#007B83" text-anchor="middle">0.91</text>
+      <text x="585" y="92" font-size="8" fill="#007B83" text-anchor="middle">confidence · base 0.31 + SHAP 0.60</text>
+
+      <!-- Y axis label -->
+      <text x="12" y="130" font-size="9" fill="#5F6368" transform="rotate(-90,12,130)" text-anchor="middle">SHAP feature contribution</text>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#007B83"></div>Positive contribution (increases MULTI-ELEMENT probability)</div>
+      <div class="dl"><div class="dl-box" style="background:#D93025"></div>Negative contribution (decreases probability)</div>
+      <div class="dl" style="font-family:var(--mono);font-size:10px;color:var(--text-2)">Base value 0.31 = expected probability with no feature information · SHAP sum + base = final confidence</div>
+    </div>
+  </div>
+
+  <!-- HITL UI Mockup -->
+  <div style="margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px">HITL-04 Approval Interface — Finance Controller Queue</div>
+    <div class="hitl-mockup">
+      <div class="hm-titlebar">
+        <div class="hm-dot" style="background:#FF5F57"></div>
+        <div class="hm-dot" style="background:#FFBD2E"></div>
+        <div class="hm-dot" style="background:#28CA41"></div>
+        <div class="hm-title">RevRec AI — HITL-04 Review Queue · hitl_20260315_rr_004 · SLA: 3h 47m remaining</div>
+      </div>
+      <div class="hm-body">
+        <!-- Main panel -->
+        <div class="hm-main">
+          <div class="hm-section-label">Classification Result</div>
+          <div class="hm-classification">
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.4);margin-bottom:4px;letter-spacing:.06em">ASC 606 CLASSIFICATION</div>
+              <div class="hm-class-value">MULTI-ELEMENT ARRANGEMENT</div>
+              <div style="font-family:var(--mono);font-size:9px;color:rgba(128,203,196,.6);margin-top:4px">2 performance obligations identified</div>
+            </div>
+            <div class="hm-conf-bar-wrap">
+              <div class="hm-conf-label">MODEL CONFIDENCE</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="hm-conf-bar" style="flex:1">
+                  <div class="hm-conf-fill" style="width:91%"></div>
+                </div>
+                <div class="hm-conf-val">0.91</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hm-section-label" style="margin-top:16px">SHAP Feature Attribution — Why MULTI-ELEMENT?</div>
+          <!-- Mini SHAP bars in the mockup -->
+          <div style="padding:12px;background:var(--surface-2);border-radius:4px">
+            <div class="shap-bar-item">
+              <div class="shap-feat-name">sku_complexity_score</div>
+              <div class="shap-bar-track">
+                <div class="shap-bar-pos" style="width:63%"></div>
+              </div>
+              <div class="shap-val" style="color:#007B83">+0.38</div>
+            </div>
+            <div class="shap-bar-item">
+              <div class="shap-feat-name">recognition_type_prior</div>
+              <div class="shap-bar-track">
+                <div class="shap-bar-pos" style="width:48%"></div>
+              </div>
+              <div class="shap-val" style="color:#007B83">+0.29</div>
+            </div>
+            <div class="shap-bar-item">
+              <div class="shap-feat-name">payment_term_days</div>
+              <div class="shap-bar-track">
+                <div class="shap-bar-pos" style="width:32%"></div>
+              </div>
+              <div class="shap-val" style="color:#007B83">+0.19</div>
+            </div>
+            <div class="shap-bar-item">
+              <div class="shap-feat-name">contract_value_eur</div>
+              <div class="shap-bar-track">
+                <div class="shap-bar-neg" style="width:20%;margin-left:auto"></div>
+              </div>
+              <div class="shap-val" style="color:#D93025">-0.12</div>
+            </div>
+            <div class="shap-bar-item">
+              <div class="shap-feat-name">customer_type_encoded</div>
+              <div class="shap-bar-track">
+                <div class="shap-bar-pos" style="width:13%"></div>
+              </div>
+              <div class="shap-val" style="color:#007B83">+0.08</div>
+            </div>
+          </div>
+
+          <div class="hm-section-label" style="margin-top:16px">Comparable Transactions</div>
+          <div class="hm-comp">
+            <div class="hm-comp-id">CV2025-0108 · Hôpital Lariboisière Paris · MRI-7T + 3yr service</div>
+            <div class="hm-comp-detail">€2.1M · MULTI-ELEMENT · similarity: 0.91 · approved by: M. Dupont · 2025-11-14</div>
+          </div>
+          <div class="hm-comp">
+            <div class="hm-comp-id">CV2024-0233 · Charité Berlin · MRI-3T + 5yr service + training</div>
+            <div class="hm-comp-detail">€1.8M · MULTI-ELEMENT · similarity: 0.87 · approved by: K. Bauer · 2024-08-02</div>
+          </div>
+          <div class="hm-comp">
+            <div class="hm-comp-id">CV2025-0044 · AMC Amsterdam · CT-Premium + 2yr service</div>
+            <div class="hm-comp-detail">€1.4M · SALE · similarity: 0.74 · single obligation · different outcome noted</div>
+          </div>
+
+          <div class="hm-actions">
+            <div class="hm-btn-approve">✓ Approve — Post to SAP</div>
+            <div class="hm-btn-override">✗ Override — Enter reason</div>
+          </div>
+          <div class="hm-sla">⏱ SLA expires in 3h 47m · Timeout escalates to CFO · All decisions are immutably recorded</div>
+        </div>
+
+        <!-- Sidebar: contract detail -->
+        <div class="hm-sidebar">
+          <div class="hm-section-label">Contract Detail</div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Contract ID</div>
+            <div class="hm-cf-val">sfdc_contract_CV2026_0042</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Counterparty</div>
+            <div class="hm-cf-val">Universitätsklinikum München</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Contract value</div>
+            <div class="hm-cf-val">€2,840,000</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">SKUs</div>
+            <div class="hm-cf-val">MRI-7T Unit × 1<br>Premium Service 5yr × 1<br>Clinical Training × 1<br>Remote Monitoring × 1</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Payment terms</div>
+            <div class="hm-cf-val">Net 360 · annual instalments</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Signed date</div>
+            <div class="hm-cf-val">2026-03-15</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">Proposed performance obligations</div>
+            <div class="hm-cf-val">1. MRI hardware delivery (pt of time)<br>2. 5yr service + training (over time)</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">HITL checkpoint</div>
+            <div class="hm-cf-val" style="color:#A50E0E;font-weight:500">HITL-04 · Always required</div>
+          </div>
+          <div class="hm-contract-field">
+            <div class="hm-cf-label">SHAP record</div>
+            <div class="hm-cf-val" style="font-size:10px">Written to BigQuery<br>ae_audit.shap_explanations<br>before this queue was created</div>
+          </div>
+          <div style="margin-top:12px;padding:8px 10px;background:#E4F7F7;border-radius:3px;font-family:var(--mono);font-size:10px;color:#005F67;line-height:1.5">
+            <strong style="font-weight:500">EU AI Act Art. 13 ✓</strong><br>
+            Explanation provided to human reviewer before any downstream action.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §06 ADRs -->
+<section class="sec w ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three RevRec AI decisions. <em>Every alternative documented.</em></h2>
+  <p class="s-p">ADR-010 governs the model architecture choice. ADR-R01 and ADR-R02 are module-specific decisions unique to RevRec AI — the SAP write guard pattern and the HITL-always-required policy. These are the decisions an interviewer probes first.</p>
+
+  <div class="adr-col ap">
+    <div class="adr bl">
+      <div class="adr-id">ADR-010 (restated)</div>
+      <div class="adr-title">XGBoost over neural network — deterministic SHAP is a regulatory requirement, not a preference</div>
+      <div class="adr-body">Neural networks were evaluated (MLP, BERT fine-tuned for structured tabular features). Rejected because EU AI Act Article 13 requires that the explanation provided to the Finance Controller is reproducible — if an auditor asks six months later why contract CV2026-0042 was classified as MULTI-ELEMENT, the SHAP values stored in BigQuery must match what the Finance Controller saw at approval time. XGBoost's TreeExplainer produces exact, deterministic SHAP values that are bit-for-bit reproducible given the same model version and input. Neural network SHAP (DeepExplainer / KernelExplainer) produces approximations that vary between runs — storing approximate explanations in an immutable audit trail is architecturally inconsistent. XGBoost also performs competitively on the 4,800-contract training set and is less prone to overfitting at this dataset size.</div>
+      <div class="adr-status">Accepted · Phase ML Design · Page 06 ADR-010</div>
+    </div>
+    <div class="adr te">
+      <div class="adr-id">ADR-R01 — RevRec AI specific</div>
+      <div class="adr-title">SAP GL write requires a committed HITL approval record ID as a mandatory API parameter</div>
+      <div class="adr-body">The alternative design was to implement SAP write authorisation as an application-level check — the agent checks a Firestore document for an approval flag before calling the SAP API. Rejected because application-level checks can be bypassed by a bug, a configuration error, or a future code change that misses the check. The current design makes the SAP write structurally impossible without the HITL approval record: the sap.post_journal_entry() tool requires hitl_id as a typed, non-optional parameter. If the HITL record does not exist in Firestore, the parameter cannot be populated and the SAP call cannot be formed. The constraint is in the function signature, not in conditional logic. This distinction matters for the FDA 21 CFR 820 change control argument — a future developer modifying the SAP integration cannot accidentally remove the HITL requirement without explicitly changing the function signature, which would be caught in PR review.</div>
+      <div class="adr-status">Accepted · Phase Agent Design · RevRec AI module</div>
+    </div>
+    <div class="adr am">
+      <div class="adr-id">ADR-R02 — RevRec AI specific</div>
+      <div class="adr-title">HITL-04 required for every classification without a confidence threshold exception</div>
+      <div class="adr-body">A threshold-based HITL policy was evaluated — classifications above 0.95 confidence could be auto-approved, saving the Finance Controller time on straightforward transactions. Rejected for three reasons. (1) EU AI Act Annex III does not distinguish between high-confidence and low-confidence AI decisions for revenue recognition — the human oversight obligation applies to the decision, not the confidence level. (2) The Finance Controller's trust in the model must be earned through the approval process itself — auto-approving high-confidence classifications removes the feedback loop that builds that trust. Override decisions on low-confidence classifications are the training signal for the next model version. (3) The compliance posture is cleaner and more defensible: "every classification has a human approval record" is a statement that requires no caveats. "Every classification above 0.95 confidence is auto-approved" requires explaining the threshold choice, the threshold-setting methodology, and the monitoring for threshold drift — a significantly larger compliance burden.</div>
+      <div class="adr-status">Accepted · Phase Product Design · Page 04 HITL specification</div>
+    </div>
+  </div>
+</section>
+
+<!-- §07 REBUTTALS -->
+<section class="sec ap" id="rebuttals">
+  <div class="s-ey re">Stakeholder Rebuttals</div>
+  <h2 class="s-h2">Six objections. <em>Each with an architectural answer.</em></h2>
+  <p class="s-p">These are the objections that will be raised in the ClaraVis engagement — and the objections an interviewer will probe. Each rebuttal is grounded in a specific design decision already documented in the portfolio. The answer is never "trust us" — it is always "here is the architectural evidence."</p>
+
+  <div class="rebuttal-grid ap">
+    <div class="rb cto">
+      <div class="rb-who">CTO · S-01</div>
+      <div class="rb-concern">Why does a classification model need to be this complex?</div>
+      <div class="rb-q">"We already have a Finance team that does this manually. Why do we need XGBoost, SHAP, Vertex AI Pipelines, a Feature Store, and a HITL framework just to classify a contract?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The complexity is not in the model — XGBoost is a relatively simple algorithm. The complexity is in the compliance obligations. The EU AI Act requires a documented explanation for every high-risk AI decision. The FDA requires a change control record for every software modification that affects a production AI system. ASC 606 requires a defensible classification basis for every revenue recognition event. Each of those obligations drives a specific architectural component. The SHAP layer satisfies EU AI Act Art. 13. The HITL-11 pipeline gate satisfies FDA change control. The Feature Store lineage satisfies the ASC 606 documentation requirement. Remove any one of those components and a specific regulatory obligation becomes unmet. The architecture is as simple as the regulatory environment allows it to be.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> Architecture Principles P-03 (compliance as write-path constraints) · ADR-010 (XGBoost chosen for SHAP determinism, not arbitrary) · Page 03 ADM Phase D</div>
+    </div>
+
+    <div class="rb cco">
+      <div class="rb-who">CCO · S-02</div>
+      <div class="rb-concern">Will this satisfy the EU AI Act auditor?</div>
+      <div class="rb-q">"When the regulator asks me to demonstrate EU AI Act Annex III compliance for this system, what exactly do I show them? An architecture diagram isn't an audit trail."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The audit evidence package is queryable from BigQuery in under 30 seconds. For any inference: SELECT * FROM ae_audit.shap_explanations WHERE transaction_id = 'X' returns the exact SHAP values presented to the Finance Controller. SELECT * FROM ae_audit.hitl_events WHERE hitl_id = 'Y' returns the approval record — approver identity, decision, reason code, timestamp, and the SHAP explanation ID it references. The SHAP explanation is written to BigQuery before the HITL checkpoint is created — so the audit record cannot be retrospectively amended to match the decision. The Model Cards for the ASC 606 model are versioned in Vertex AI Model Registry alongside the model itself — the model the auditor can inspect is the same model that produced the classifications in the audit trail.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> HITL-04 specification · Page 04 · BigQuery shap_explanations schema · Page 06 Model Card · EU AI Act Art. 11/13/14 compliance checklist · RevRec AI Model Card</div>
+    </div>
+
+    <div class="rb fc">
+      <div class="rb-who">Finance Controller</div>
+      <div class="rb-concern">I don't trust a black-box model to classify revenue</div>
+      <div class="rb-q">"I've been classifying these contracts for twelve years. I know when something is a multi-element arrangement. I'm not going to let an AI decide this and just rubber-stamp it."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">You won't be rubber-stamping it — you'll be reviewing it with more information than you have today. The HITL-04 queue shows you the model's classification, the five contract features that drove it, their direction and magnitude, and three comparable contracts you have personally approved in the past. If the model is wrong, you override it with a reason code and the override becomes a training example for the next model version — making the model learn from your judgment. The model does not replace your expertise. It pre-processes the contract, surfaces the most relevant features, and presents a recommendation. The decision — and the immutable record of it — remains yours. The SAP GL write will not execute without your explicit approval on this specific checkpoint.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> HITL-04 UI mockup above · SHAP chart · comparable transactions · override with reason code · ADR-R02 (HITL required for all classifications)</div>
+    </div>
+
+    <div class="rb ea">
+      <div class="rb-who">Enterprise Architect · S-08</div>
+      <div class="rb-concern">How does this integrate with our Salesforce data model without customising it?</div>
+      <div class="rb-q">"We have a heavily customised Salesforce org. If RevRec AI needs specific fields or objects that don't exist in our standard Contract object, that's a Salesforce project on its own."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">RevRec AI reads from Salesforce using the standard Contract and OpportunityLineItem objects — no custom fields, no custom objects, no Salesforce configuration changes required. The 18 contract features are all derivable from standard Salesforce fields: contract value from Amount, payment terms from PaymentTerms, SKU complexity from OpportunityLineItems count and service ratio. The Feature Store computation logic handles the feature engineering from standard fields. RevRec AI writes back a single Activity record on the Contract object using the standard Activity API — again, no custom fields. The Salesforce Developer Edition integration (ADR-001) was specifically designed and tested against the standard object model to validate this claim before the architecture was frozen.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> ADR-001 (SFDC Developer Edition validation) · Feature Store contract feature group definition · Page 06 · standard object read list · Page 05 agent tool manifest</div>
+    </div>
+
+    <div class="rb ciso">
+      <div class="rb-who">CISO · S-09</div>
+      <div class="rb-concern">Does the SAP write send ClaraVis financial data outside the VPC-SC perimeter?</div>
+      <div class="rb-q">"When RevRec AI posts to SAP, is that financial transaction data leaving our GCP VPC-SC boundary? SAP is on-premise — that data is crossing a network boundary I need to understand and approve."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The SAP write in the portfolio design uses a mock BigQuery table for the demo environment — SAP is on-premise and the production integration would be via a SAP BTP Event Mesh bridge or RFC middleware, both of which are standard enterprise integration patterns documented in ADR-R01. The data flow is directional: RevRec AI sends a classification result and performance obligation tags to SAP — it does not receive or store SAP financial data within the GCP environment. The HITL approval record and audit trail stay entirely within the VPC-SC perimeter in Firestore and BigQuery. The SAP write message carries only the classification output — contract ID, recognition type, performance obligation tags, and the HITL record ID. No sensitive financial transaction data from SAP is pulled into the GCP environment at any point in the RevRec AI workflow.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> Page 07 VPC-SC perimeter diagram · ADR-R01 (SAP write as output-only) · Page 05 agent tool manifest (sap.post_journal_entry parameters) · Page 03 ADR-006 (Pub/Sub event bus for decoupling)</div>
+    </div>
+
+    <div class="rb cfo">
+      <div class="rb-who">CFO · S-03</div>
+      <div class="rb-concern">Why does every single classification need human approval?</div>
+      <div class="rb-q">"If the model is right 94% of the time with confidence above 0.90, why are we paying a Finance Controller to approve thousands of routine transactions? Auto-approve the high-confidence ones and use HITL for the edge cases."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">ADR-R02 documents this decision in full — the short answer is that "every classification has a human approval record" is a cleaner compliance posture than "every classification above threshold X has a human approval record." The threshold choice, the threshold-setting methodology, and the monitoring for threshold drift all become additional compliance obligations. The Finance Controller's actual workload is lower than it sounds: the HITL-04 queue presents the classification with a SHAP chart and comparable transactions — a straightforward approval takes approximately 90 seconds. The volume of contracts ClaraVis signs per month is not so large that this creates an operational bottleneck. And the override decisions — which would not exist under auto-approval — are the highest-value training signal for improving the model over time. The cost of auto-approving high-confidence classifications is not just regulatory: it removes the feedback loop that makes the model better.</div>
+      <div class="rb-evidence"><strong>Evidence in design:</strong> ADR-R02 · HITL-04 UI mockup (90-second approval flow) · Page 06 Model Card (override rate metric as quality signal) · Page 06 concept drift detection (override rate as drift indicator)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §08 DEMO PATHWAY -->
+<section class="sec w ap" id="demo">
+  <div class="s-ey am">Demo Pathway</div>
+  <h2 class="s-h2">Three minutes. One contract. <em>One HITL moment.</em></h2>
+  <p class="s-p">This is the scripted demo pathway for RevRec AI. Use it as a rehearsal script. The scenario: ClaraVis AG signs an MRI-7T + 5-year service contract with University Hospital Munich (€2.84M). The model classifies it as MULTI-ELEMENT. The Finance Controller approves in the HITL queue. SAP posts. Full audit trail committed.</p>
+
+  <div class="demo-steps ap">
+    <div class="ds">
+      <div class="ds-num">00</div>
+      <div class="ds-content">
+        <div class="ds-label">Setup · 30 seconds before</div>
+        <div class="ds-title">Pre-load the Salesforce Developer Edition org</div>
+        <div class="ds-body">Open the Salesforce Developer Edition org. Show the Contract object for ClaraVis AG — Universitätsklinikum München — status: Activated. Show the OpportunityLineItems: MRI-7T unit, Premium Service 5yr, Clinical Training package, Remote Monitoring subscription. This is the contract RevRec AI is about to classify.</div>
+        <div class="ds-services">
+          <span class="ds-svc">Salesforce Developer Edition</span>
+          <span class="ds-svc">Contract object</span>
+          <span class="ds-svc">OpportunityLineItems</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds active">
+      <div class="ds-num">01</div>
+      <div class="ds-content">
+        <div class="ds-label">Trigger · 0:00</div>
+        <div class="ds-title">Change the Contract status to Activated — trigger the classification</div>
+        <div class="ds-body">In Salesforce, move the Contract status to Activated. This fires a Salesforce trigger that publishes a contract_signed event to the ae-q2c-events Pub/Sub topic. Show the Pub/Sub monitoring console — the message appears within 2 seconds.</div>
+        <div class="ds-say">"The moment this contract is activated in Salesforce, RevRec AI is already working. There's no batch job, no manual trigger — the event bus picks it up immediately."</div>
+        <div class="ds-services">
+          <span class="ds-svc">Salesforce REST API</span>
+          <span class="ds-svc">Pub/Sub ae-q2c-events</span>
+          <span class="ds-svc">Cloud Run RevRec agent</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds active">
+      <div class="ds-num">02</div>
+      <div class="ds-content">
+        <div class="ds-label">Inference · 0:15</div>
+        <div class="ds-title">Show the Cloud Run logs — feature extraction, inference, SHAP</div>
+        <div class="ds-body">Open Cloud Run logs for the revrec-ai service. Show the log sequence: "Extracting contract features from Salesforce…", "Fetching 18 features from Feature Store…", "Running XGBoost inference…", "Computing SHAP explanation…", "Writing SHAP to BigQuery shap_explanations BEFORE creating HITL…", "Creating HITL-04 checkpoint…". The entire sequence completes in under 12 seconds.</div>
+        <div class="ds-say">"Notice that SHAP is written to BigQuery before the HITL checkpoint is created — not after. This means the explanation the Finance Controller sees is the same explanation that's in the audit trail. There's no gap between what was explained and what was recorded."</div>
+        <div class="ds-services">
+          <span class="ds-svc">Cloud Run logs</span>
+          <span class="ds-svc">Vertex AI Feature Store</span>
+          <span class="ds-svc">Vertex AI endpoint</span>
+          <span class="ds-svc">SHAP TreeExplainer</span>
+          <span class="ds-svc">BigQuery shap_explanations</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds hitl-step">
+      <div class="ds-num">03</div>
+      <div class="ds-content">
+        <div class="ds-label">HITL-04 · 0:45 — this is the moment</div>
+        <div class="ds-title">Open the Finance Controller's HITL queue — show the approval interface</div>
+        <div class="ds-body">Navigate to the HITL Approval UI. Show the Finance Controller's queue — one item: Contract CV2026-0042. Open it. The interface shows: classification (MULTI-ELEMENT ARRANGEMENT), confidence (0.91), the SHAP bar chart with five features, and three comparable contracts the Finance Controller has approved before.</div>
+        <div class="ds-say" style="font-family:var(--mono);font-size:11px;font-style:normal">"This is what HITL-04 looks like in practice. The Finance Controller sees the model's recommendation, the reasoning behind it in plain feature language, and three contracts they've approved before that are similar. They're not rubber-stamping a black box — they're reviewing a recommendation with context. The approval takes about 90 seconds for a straightforward case. Click Approve."</div>
+        <div class="ds-services">
+          <span class="ds-svc">HITL Approval UI</span>
+          <span class="ds-svc">Firestore HITL state</span>
+          <span class="ds-svc">SHAP chart</span>
+          <span class="ds-svc">Comparable transactions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds active">
+      <div class="ds-num">04</div>
+      <div class="ds-content">
+        <div class="ds-label">SAP Write · 1:30</div>
+        <div class="ds-title">Show the SAP GL write — and the write guard in action</div>
+        <div class="ds-body">After the Finance Controller clicks Approve, show the Cloud Run logs again: "HITL decision received: APPROVE", "Committing immutable HITL record to Firestore…", "hitl_id: hitl_20260315_rr_004 committed", "Initiating SAP GL write with hitl_id parameter…", "SAP GL posting confirmed: doc_id SAP-2026-031501". Navigate to the mock SAP BigQuery table — show the posted entry with the HITL record ID as a foreign key.</div>
+        <div class="ds-say">"The SAP write only executed because a HITL record existed. If I show you the sap.post_journal_entry function signature — hitl_id is a required parameter. You literally cannot call this function without one. The write guard isn't an if-statement — it's the function signature."</div>
+        <div class="ds-services">
+          <span class="ds-svc">Firestore immutable write</span>
+          <span class="ds-svc">SAP mock (BigQuery)</span>
+          <span class="ds-svc">Cloud Run logs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds">
+      <div class="ds-num">05</div>
+      <div class="ds-content">
+        <div class="ds-label">Audit Trail · 2:15</div>
+        <div class="ds-title">Query the complete audit trail in BigQuery</div>
+        <div class="ds-body">Open BigQuery. Run: SELECT s.feature_name, s.shap_value, h.decision, h.approver_id, h.ts FROM ae_audit.shap_explanations s JOIN ae_audit.hitl_events h ON s.transaction_id = h.task_id WHERE s.transaction_id = 'CV2026-0042'. The result shows every SHAP value alongside the human decision and approver identity — the complete EU AI Act Article 13 + 14 evidence package in one query.</div>
+        <div class="ds-say">"When the EU AI Act auditor asks for the evidence package for this classification — this is it. One BigQuery query. Under 30 seconds. The SHAP explanation, the human decision, the approver, and the timestamp. Everything they need to verify that Article 13 and Article 14 were satisfied for this specific transaction."</div>
+        <div class="ds-services">
+          <span class="ds-svc">BigQuery ae_audit</span>
+          <span class="ds-svc">shap_explanations table</span>
+          <span class="ds-svc">hitl_events table</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds">
+      <div class="ds-num">06</div>
+      <div class="ds-content">
+        <div class="ds-label">Optional extension · 2:45</div>
+        <div class="ds-title">Show what happens when the Finance Controller overrides</div>
+        <div class="ds-body">If time permits: trigger a second classification on a simpler contract. In the HITL queue, click Override instead of Approve. Enter reason code "OR-03: Revenue not in current period". Show the override being committed to Firestore. Show the Cloud Run log: "Override decision committed · creating training example for next retraining cycle". Navigate to the BigQuery ground_truth_labels table — the override appears as a labelled training example. Point to the concept drift monitoring section on Page 06 — this override just moved the HITL override rate metric.</div>
+        <div class="ds-say">"An override is not a failure. It's the highest-value signal the model can receive. The Finance Controller just told the model it was wrong, explained why, and that explanation is now a training example. The model improves from every override decision."</div>
+        <div class="ds-services">
+          <span class="ds-svc">HITL override flow</span>
+          <span class="ds-svc">BigQuery ground_truth_labels</span>
+          <span class="ds-svc">Concept drift monitoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>AE Suite Navigation</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Module 03 complete.<br><strong>Return to the suite.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">RevRec AI is the template for every subsequent module page — the same seven sections, the same depth, the same pattern of context → architecture → state machine → data flow → HITL UI → ADRs → rebuttals → demo. The remaining seven modules follow.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="page-09.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(0,123,131,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(0,123,131,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(0,123,131,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--teal);letter-spacing:.07em">PG 09</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Suite Index</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">All 8 modules · dependency matrix · demo pathway index</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-06.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 06</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">ML Engineering &amp; MLOps</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">RevRec AI model card · pipeline · drift detection</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-05.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 05</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Agent Swarm Architecture</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">RevRec AI agent specification · A2A · tool manifest</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['context','architecture','statemachine','dataflow','hitl','adrs','rebuttals','demo'];
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
+      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
+      if(link)link.classList.add('act');
+    }
+  });
+},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+</script>
+</body>
+</html>

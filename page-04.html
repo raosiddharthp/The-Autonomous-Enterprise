@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery & Product Design — Page 04 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;--gold-dim:rgba(184,150,12,0.14);
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'04';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:220px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ph-bc span{color:rgba(245,240,232,.18)}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;border:1px solid rgba(255,255,255,.14);color:rgba(245,240,232,.65);letter-spacing:.06em}
+
+.sec{padding:60px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.pu{color:var(--purple)}.s-ey.te{color:var(--teal)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}.sec.dk .s-ey{color:var(--gold-lt)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* SECTION DIVIDER */
+.page-break{padding:32px var(--col);background:var(--ink-2);display:flex;align-items:center;gap:20px}
+.pb-line{flex:1;height:1px;background:rgba(255,255,255,.08)}
+.pb-label{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ART TOPOLOGY */
+.art-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:4px}
+.art-col{display:flex;flex-direction:column;gap:3px}
+.art-header{padding:18px 20px;text-align:center}
+.art-commercial{background:rgba(26,115,232,.12);border:1px solid rgba(26,115,232,.2)}
+.art-financial{background:rgba(0,123,131,.12);border:1px solid rgba(0,123,131,.2)}
+.art-operations{background:rgba(19,115,51,.12);border:1px solid rgba(19,115,51,.2)}
+.art-platform{background:rgba(176,96,0,.12);border:1px solid rgba(176,96,0,.2)}
+.art-label{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.art-commercial .art-label{color:rgba(100,170,255,.7)}
+.art-financial .art-label{color:rgba(128,203,196,.7)}
+.art-operations .art-label{color:rgba(165,214,167,.7)}
+.art-platform .art-label{color:rgba(255,183,77,.7)}
+.art-name{font-family:var(--display);font-size:15px;font-weight:700}
+.art-commercial .art-name{color:#90CAF9}
+.art-financial .art-name{color:#80CBC4}
+.art-operations .art-name{color:#A5D6A7}
+.art-platform .art-name{color:#FFCC80}
+.art-module{padding:12px 16px;font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.7);line-height:1.5;border-left:2px solid transparent;transition:border-color .2s,background .2s}
+.art-module:hover{background:rgba(255,255,255,.04)}
+.art-commercial .art-module:hover{border-left-color:rgba(26,115,232,.5)}
+.art-financial .art-module:hover{border-left-color:rgba(0,123,131,.5)}
+.art-operations .art-module:hover{border-left-color:rgba(19,115,51,.5)}
+.art-platform .art-module:hover{border-left-color:rgba(176,96,0,.5)}
+.art-module-name{font-weight:500;color:rgba(245,240,232,.9)}
+.art-module-sub{font-size:10px;color:rgba(245,240,232,.4);margin-top:2px}
+.art-horizon{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:1px 6px;margin-top:4px;letter-spacing:.06em}
+.hz-1{background:rgba(26,115,232,.2);color:#90CAF9}
+.hz-2{background:rgba(19,115,51,.2);color:#A5D6A7}
+.hz-3{background:rgba(176,96,0,.2);color:#FFCC80}
+
+/* ENABLER CARDS */
+.enabler-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
+.enabler{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--border);padding:24px 22px;transition:border-top-color .2s}
+.en-hitl{border-top-color:var(--red)}
+.en-xai{border-top-color:var(--purple)}
+.en-data{border-top-color:var(--green)}
+.en-sec{border-top-color:var(--amber)}
+.en-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.en-hitl .en-label{color:var(--red)}.en-xai .en-label{color:var(--purple)}
+.en-data .en-label{color:var(--green)}.en-sec .en-label{color:var(--amber)}
+.en-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.en-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7;margin-bottom:12px}
+.en-depends{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-bottom:6px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.en-arts{display:flex;flex-wrap:wrap;gap:4px}
+.en-art{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
+.en-adr{font-family:var(--mono);font-size:10px;color:var(--blue);margin-top:8px;display:flex;align-items:center;gap:4px}
+.en-adr::before{content:'→';color:var(--blue)}
+
+/* PERSONA CARDS */
+.persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.persona{background:var(--white);border:1px solid var(--border);overflow:hidden;transition:transform .18s}
+.persona:hover{transform:translateY(-2px)}
+.persona-header{padding:28px 24px 20px;position:relative}
+.persona-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;font-weight:800;margin-bottom:14px;letter-spacing:-.02em}
+.persona-name{font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:2px}
+.persona-role{font-family:var(--mono);font-size:11px;color:var(--text-2);margin-bottom:14px}
+.persona-quote{font-family:var(--serif);font-size:14px;font-style:italic;font-weight:300;color:var(--text-2);line-height:1.65;border-left:2px solid var(--gold-dim);padding-left:12px;margin-bottom:0}
+.persona-body{padding:0 24px 24px;border-top:1px solid var(--border-2)}
+.pb-section{padding-top:16px;margin-top:0}
+.pb-lbl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.pb-items{display:flex;flex-direction:column;gap:5px}
+.pb-item{display:flex;align-items:flex-start;gap:8px;font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.55}
+.pb-item.goal::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px}
+.pb-item.frustration::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:5px}
+.pb-item.success::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:5px}
+.pb-modules{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.pb-module{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--blue-lt);color:var(--blue-dk);letter-spacing:.04em}
+
+/* JOURNEY MAP */
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;background:var(--blue);display:block;flex-shrink:0}
+.dw-sub{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-bottom:20px}
+
+/* FRD CARDS */
+.frd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
+.frd{background:var(--white);border:1px solid var(--border);padding:28px 28px;border-top:3px solid var(--blue)}
+.frd-id{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.1em;margin-bottom:6px}
+.frd-module{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 7px;background:var(--blue-lt);color:var(--blue-dk);letter-spacing:.05em;margin-bottom:10px}
+.frd-story{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--text);line-height:1.5;margin-bottom:14px;font-style:italic}
+.frd-story strong{font-style:normal;font-weight:600;color:var(--blue-dk)}
+.frd-section-lbl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;margin-top:12px}
+.frd-criteria{display:flex;flex-direction:column;gap:5px}
+.frd-criterion{display:flex;align-items:flex-start;gap:8px;font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.55}
+.frd-criterion::before{content:'✓';color:var(--green);font-size:10px;flex-shrink:0;margin-top:1px;font-weight:500}
+.frd-trace{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-2)}
+.frd-trace-item{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.5}
+.frd-trace-item strong{color:var(--text-2);font-weight:500;display:block}
+.frd-hitl{margin-top:10px;padding:9px 12px;background:var(--red-lt);border:1px solid rgba(217,48,37,.15);font-family:var(--mono);font-size:10px;color:var(--red-dk);line-height:1.6}
+.frd-hitl strong{font-weight:500}
+.frd-xai{margin-top:6px;padding:9px 12px;background:var(--purple-lt);border:1px solid rgba(98,0,238,.12);font-family:var(--mono);font-size:10px;color:var(--purple-dk);line-height:1.6}
+.frd-xai strong{font-weight:500}
+
+/* HITL SPEC TABLE */
+table.ht{width:100%;border-collapse:collapse}
+table.ht th{background:var(--ink);color:rgba(245,240,232,.45);font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;text-align:left;border-right:1px solid rgba(255,255,255,.06)}
+table.ht th:last-child{border-right:none}
+table.ht td{padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--text);border-bottom:1px solid var(--border-2);border-right:1px solid var(--border-2);vertical-align:top;line-height:1.55;font-weight:300}
+table.ht td:last-child{border-right:none}
+table.ht tr:last-child td{border-bottom:none}
+table.ht tr:hover td{background:var(--surface-2)}
+.ht-module{font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap;color:var(--blue)}
+.ht-trigger{font-size:10px;color:var(--amber-dk)}
+.ht-decision{display:flex;flex-direction:column;gap:3px}
+.ht-opt{font-size:10px;padding:1px 5px;display:inline-block;border-radius:2px;margin-bottom:2px}
+.ht-approve{background:var(--green-lt);color:var(--green-dk)}
+.ht-reject{background:var(--red-lt);color:var(--red-dk)}
+.ht-escalate{background:var(--amber-lt);color:var(--amber-dk)}
+
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){
+  :root{--col:22px}
+  .art-grid{grid-template-columns:1fr 1fr}
+  .enabler-grid{grid-template-columns:1fr 1fr}
+  .persona-grid{grid-template-columns:1fr}
+  .frd-grid{grid-template-columns:1fr}
+  .mn-r .mn-link{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-03.html" class="mn-back">← Page 03</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>Page 04 — Delivery &amp; Product Design</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="index.html" class="mn-link">Overview</a>
+    <a href="page-03.html" class="mn-link">← Page 03</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<nav class="snav" id="snav">
+  <a href="#safe" class="sn act" data-sec="safe">SAFe Overview</a>
+  <a href="#arts" class="sn" data-sec="arts">ART Topology</a>
+  <a href="#enablers" class="sn" data-sec="enablers">Enablers</a>
+  <a href="#personas" class="sn" data-sec="personas">Personas</a>
+  <a href="#journey" class="sn" data-sec="journey">User Journey</a>
+  <a href="#frd" class="sn" data-sec="frd">FRD</a>
+  <a href="#hitl-spec" class="sn" data-sec="hitl-spec">HITL Specification</a>
+</nav>
+
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise <span>/</span> Page 04</div>
+  <h1 class="ph-h1"><strong>Delivery &amp; Product Design</strong><br>SAFe Solution Train · Personas · FRD · HITL Specification</h1>
+  <p class="ph-sub">Two questions answered on one page. How does the AE get delivered across teams — the SAFe delivery governance layer. And what does each team actually build — the product design layer that bridges architecture to implementation.</p>
+  <div class="ph-tags">
+    <span class="ph-tag">SAFe 6.0 · Solution Train</span>
+    <span class="ph-tag">4 Agile Release Trains</span>
+    <span class="ph-tag">5 Buyer Personas</span>
+    <span class="ph-tag">8 Functional Requirements</span>
+    <span class="ph-tag">11 HITL Checkpoints</span>
+  </div>
+</header>
+
+<!-- §01 SAFe OVERVIEW -->
+<section class="sec dk ap" id="safe">
+  <div class="s-ey go">SAFe 6.0 · Solution Train</div>
+  <h2 class="s-h2">TOGAF defines <em>what</em> to build.<br>SAFe defines how teams build it.</h2>
+  <p class="s-p">The TOGAF ADM produced the architecture. The SAFe Solution Train is the delivery governance model that organises the teams that implement it. They are complementary frameworks operating at different altitudes — architecture defines the target state, SAFe defines the cadence, coordination, and cross-team dependency management that gets the enterprise there.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px" class="ap">
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:24px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">TOGAF ADM</div>
+      <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--cream);margin-bottom:8px;letter-spacing:-.01em">Architecture layer</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.7">Defines the target state — what systems, what data model, what technology choices, what principles. Produces Phase D artifacts that become the architecture runway for each ART.</div>
+    </div>
+    <div style="background:rgba(26,115,232,.1);border:1px solid rgba(26,115,232,.2);padding:24px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:#64B5F6;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">SAFe SOLUTION TRAIN</div>
+      <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--cream);margin-bottom:8px;letter-spacing:-.01em">Delivery layer</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.7">Organises four ARTs across the capability domains. Coordinates cross-cutting enablers. Manages dependencies across team boundaries. Aligns delivery cadence to migration horizons from TOGAF Phase F.</div>
+    </div>
+    <div style="background:rgba(19,115,51,.1);border:1px solid rgba(19,115,51,.2);padding:24px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:#81C784;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">ARCHITECTURE RUNWAY</div>
+      <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--cream);margin-bottom:8px;letter-spacing:-.01em">The connection</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.7">TOGAF Phase D artifacts — GCP reference architecture, canonical data model, ADRs — are delivered as architecture runway features in the Platform ART backlog. Each ART pulls from the runway as needed, eliminating architecture-as-blocker.</div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 ART TOPOLOGY -->
+<section class="sec dk ap" id="arts">
+  <div class="s-ey go">ART Topology</div>
+  <h2 class="s-h2">Four Agile Release Trains.<br><em>One Solution Train.</em></h2>
+  <p class="s-p">Each ART owns a capability domain from the Phase B Business Architecture. The Platform ART is the foundation — all other ARTs depend on its shared enablers. Cross-cutting concerns (HITL, XAI, data fabric, security) are explicit features in the Platform ART backlog, not implicit assumptions in each domain ART.</p>
+
+  <div class="art-grid ap">
+    <!-- Commercial ART -->
+    <div class="art-col">
+      <div class="art-header art-commercial">
+        <div class="art-label">Commercial ART</div>
+        <div class="art-name">Quote-to-Cash</div>
+      </div>
+      <div class="art-module" style="background:rgba(26,115,232,.06)">
+        <div class="art-module-name">CCAI Sales Agent</div>
+        <div class="art-module-sub">Qualification · Config · CPQ · Escalation</div>
+        <span class="art-horizon hz-3">Horizon 3</span>
+      </div>
+      <div class="art-module" style="background:rgba(26,115,232,.06)">
+        <div class="art-module-name">ContractGuard</div>
+        <div class="art-module-sub">Clause scoring · Risk · Legal HITL</div>
+        <span class="art-horizon hz-2">Horizon 2</span>
+      </div>
+      <div class="art-module" style="background:rgba(26,115,232,.04);border-top:1px solid rgba(255,255,255,.04)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);line-height:1.5">
+          <span style="color:rgba(100,170,255,.5);font-weight:500">Depends on:</span><br>
+          HITL Framework · Salesforce REST API · Document AI · Gemini 1.5 Pro
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial ART -->
+    <div class="art-col">
+      <div class="art-header art-financial">
+        <div class="art-label">Financial ART</div>
+        <div class="art-name">Revenue &amp; Risk</div>
+      </div>
+      <div class="art-module" style="background:rgba(0,123,131,.06)">
+        <div class="art-module-name">RevRec AI</div>
+        <div class="art-module-sub">ASC 606 · SHAP · Finance HITL · SAP write</div>
+        <span class="art-horizon hz-2">Horizon 2</span>
+      </div>
+      <div class="art-module" style="background:rgba(0,123,131,.06)">
+        <div class="art-module-name">FinRisk Sentinel</div>
+        <div class="art-module-sub">Anomaly detection · Real-time alerts</div>
+        <span class="art-horizon hz-2">Horizon 2</span>
+      </div>
+      <div class="art-module" style="background:rgba(0,123,131,.04);border-top:1px solid rgba(255,255,255,.04)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);line-height:1.5">
+          <span style="color:rgba(128,203,196,.5);font-weight:500">Depends on:</span><br>
+          XAI Layer · HITL Framework · SAP integration · BigQuery
+        </div>
+      </div>
+    </div>
+
+    <!-- Operations ART -->
+    <div class="art-col">
+      <div class="art-header art-operations">
+        <div class="art-label">Operations ART</div>
+        <div class="art-name">Asset &amp; Sustainability</div>
+      </div>
+      <div class="art-module" style="background:rgba(19,115,51,.06)">
+        <div class="art-module-name">Asset IQ</div>
+        <div class="art-module-sub">RUL prediction · Anomaly · Maintenance HITL</div>
+        <span class="art-horizon hz-2">Horizon 2</span>
+      </div>
+      <div class="art-module" style="background:rgba(19,115,51,.06)">
+        <div class="art-module-name">GreenOps Platform</div>
+        <div class="art-module-sub">Carbon-aware scheduling · ESG metrics</div>
+        <span class="art-horizon hz-3">Horizon 3</span>
+      </div>
+      <div class="art-module" style="background:rgba(19,115,51,.04);border-top:1px solid rgba(255,255,255,.04)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);line-height:1.5">
+          <span style="color:rgba(165,214,167,.5);font-weight:500">Depends on:</span><br>
+          Pub/Sub event fabric · Vertex AI Pipelines · Feature Store
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform ART -->
+    <div class="art-col">
+      <div class="art-header art-platform">
+        <div class="art-label">Platform ART ★ Foundation</div>
+        <div class="art-name">Data · Infra · Governance</div>
+      </div>
+      <div class="art-module" style="background:rgba(176,96,0,.06)">
+        <div class="art-module-name">Data Governance</div>
+        <div class="art-module-sub">Quality · Lineage · Schema validation</div>
+        <span class="art-horizon hz-1">Horizon 1</span>
+      </div>
+      <div class="art-module" style="background:rgba(176,96,0,.06)">
+        <div class="art-module-name">Strategy Dashboard</div>
+        <div class="art-module-sub">C-suite unified view · BigQuery-backed</div>
+        <span class="art-horizon hz-3">Horizon 3</span>
+      </div>
+      <div class="art-module" style="background:rgba(176,96,0,.06)">
+        <div class="art-module-name">Shared Enablers</div>
+        <div class="art-module-sub">HITL · XAI · Pub/Sub · VPC-SC · CMEK · IAM</div>
+        <span class="art-horizon hz-1">Horizon 1</span>
+      </div>
+      <div class="art-module" style="background:rgba(176,96,0,.04);border-top:1px solid rgba(255,255,255,.04)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(255,183,77,.5);line-height:1.5;font-weight:500">
+          All other ARTs depend on Platform ART deliverables before they can build.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PI Cadence alignment -->
+  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:20px 24px;margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">PI Cadence — Aligned to TOGAF Phase F Migration Horizons</div>
+    <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:3px">
+      <div style="background:rgba(26,115,232,.15);border:1px solid rgba(26,115,232,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#90CAF9;font-weight:500">PI-1</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Foundation</div></div>
+      <div style="background:rgba(26,115,232,.15);border:1px solid rgba(26,115,232,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#90CAF9;font-weight:500">PI-2</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Compliance</div></div>
+      <div style="background:rgba(19,115,51,.15);border:1px solid rgba(19,115,51,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#A5D6A7;font-weight:500">PI-3</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Core modules</div></div>
+      <div style="background:rgba(19,115,51,.15);border:1px solid rgba(19,115,51,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#A5D6A7;font-weight:500">PI-4</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Asset + RevRec</div></div>
+      <div style="background:rgba(19,115,51,.15);border:1px solid rgba(19,115,51,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#A5D6A7;font-weight:500">PI-5</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">FinRisk + MLOps</div></div>
+      <div style="background:rgba(176,96,0,.15);border:1px solid rgba(176,96,0,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#FFCC80;font-weight:500">PI-6</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Sales Agent</div></div>
+      <div style="background:rgba(176,96,0,.15);border:1px solid rgba(176,96,0,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#FFCC80;font-weight:500">PI-7</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">GreenOps</div></div>
+      <div style="background:rgba(176,96,0,.15);border:1px solid rgba(176,96,0,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#FFCC80;font-weight:500">PI-8</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Dashboard</div></div>
+      <div style="background:rgba(176,96,0,.15);border:1px solid rgba(176,96,0,.2);padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:#FFCC80;font-weight:500">PI-9</div><div style="font-family:var(--mono);font-size:8px;color:rgba(245,240,232,.4);margin-top:3px">Cert. readiness</div></div>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;background:rgba(26,115,232,.3);border:1px solid rgba(26,115,232,.4)"></div><span style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.4)">Horizon 1 — Foundation &amp; Compliance (PI-1–2)</span></div>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;background:rgba(19,115,51,.3);border:1px solid rgba(19,115,51,.4)"></div><span style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.4)">Horizon 2 — Core Modules (PI-3–5)</span></div>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;background:rgba(176,96,0,.3);border:1px solid rgba(176,96,0,.4)"></div><span style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.4)">Horizon 3 — Full Suite (PI-6–9)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 ENABLERS -->
+<section class="sec w ap" id="enablers">
+  <div class="s-ey">Cross-cutting Enablers</div>
+  <h2 class="s-h2">Four enablers every ART depends on — <em>owned by Platform.</em></h2>
+  <p class="s-p">Cross-cutting concerns that span multiple ARTs must be explicitly owned and explicitly governed. In the AE Solution Train, these four enablers live in the Platform ART backlog and are released as shared capabilities before the dependent ARTs can build. This is what makes the Solution Train coherent rather than four independent teams building in parallel and discovering integration problems at the end.</p>
+
+  <div class="enabler-grid ap">
+    <div class="enabler en-hitl">
+      <div class="en-label">Enabler 01</div>
+      <div class="en-title">HITL Framework</div>
+      <div class="en-desc">The Firestore-backed state machine that every agent uses for human oversight checkpoints. Defines the state machine contract, the presentation interface, the decision record schema, and the timeout and escalation behaviour. No agent can implement a HITL checkpoint without this enabler being available.</div>
+      <div class="en-depends">All ARTs depend on this</div>
+      <div class="en-arts">
+        <span class="en-art">Commercial ART</span>
+        <span class="en-art">Financial ART</span>
+        <span class="en-art">Operations ART</span>
+      </div>
+      <div class="en-adr">AR-02 · ADR-004 · EU AI Act Art. 14</div>
+    </div>
+    <div class="enabler en-xai">
+      <div class="en-label">Enabler 02</div>
+      <div class="en-title">XAI Layer</div>
+      <div class="en-desc">The SHAP explanation pipeline that every ML model in the AE uses to produce human-readable feature attributions at inference time. Implements the explanation contract for each model, writes SHAP values to the BigQuery audit dataset before any downstream action executes, and generates the explanation object surfaced in the HITL UI.</div>
+      <div class="en-depends">Financial + Operations ARTs</div>
+      <div class="en-arts">
+        <span class="en-art">Financial ART</span>
+        <span class="en-art">Operations ART</span>
+        <span class="en-art">Commercial ART</span>
+      </div>
+      <div class="en-adr">AR-01 · ADR-005 · EU AI Act Art. 13</div>
+    </div>
+    <div class="enabler en-data">
+      <div class="en-label">Enabler 03</div>
+      <div class="en-title">Data Fabric</div>
+      <div class="en-desc">The BigQuery data fabric, Pub/Sub event bus, and Vertex AI Feature Store that all modules share. Defines the canonical schema for the six shared entities (Contract, Transaction, Device, Asset Event, Agent Action, HITL Event), the event topic structure, and the feature store entity definitions. The shared data model that makes cross-module intelligence possible.</div>
+      <div class="en-depends">All ARTs depend on this</div>
+      <div class="en-arts">
+        <span class="en-art">All ARTs</span>
+        <span class="en-art">All Modules</span>
+      </div>
+      <div class="en-adr">AR-11 · ADR-006 · Phase C Data Model</div>
+    </div>
+    <div class="enabler en-sec">
+      <div class="en-label">Enabler 04</div>
+      <div class="en-title">Security &amp; Compliance</div>
+      <div class="en-desc">VPC-SC perimeter, CMEK key management, IAM policy baseline, and Workload Identity Federation configuration. Provisioned via Terraform before any other ART begins building. No module deploys to production without the security baseline in place. Includes the Organisation Policy constraints that enforce data residency at the infrastructure layer.</div>
+      <div class="en-depends">All ARTs — pre-condition for build</div>
+      <div class="en-arts">
+        <span class="en-art">Platform ART — H1</span>
+      </div>
+      <div class="en-adr">P-06 · P-11 · AR-06 · AR-07</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE BREAK — PRODUCT DESIGN LAYER -->
+<div class="page-break">
+  <div class="pb-line"></div>
+  <div class="pb-label">Product Design Layer — Personas · User Journey · FRD · HITL Specification</div>
+  <div class="pb-line"></div>
+</div>
+
+<!-- §04 PERSONAS -->
+<section class="sec w ap" id="personas">
+  <div class="s-ey gr">Buyer Personas</div>
+  <h2 class="s-h2">Five personas. The same people as the stakeholders — <em>described as users.</em></h2>
+  <p class="s-p">The stakeholder register on Page 02 captured who has sign-off authority. These persona cards capture who actually uses the AE day-to-day — their goals, frustrations, and what success looks like for them. Every user story in the FRD is written for one of these five people.</p>
+
+  <div class="persona-grid ap">
+    <!-- Persona 1: The Architect -->
+    <div class="persona">
+      <div class="persona-header" style="background:linear-gradient(135deg,#EDE7F6,#F3E5F5)">
+        <div class="persona-avatar" style="background:#6200EE;color:white">EA</div>
+        <div class="persona-name">The Architect</div>
+        <div class="persona-role">Enterprise Architect · IT &amp; Digital Transformation · S-08</div>
+        <div class="persona-quote">"I need to know that every design decision has a documented reason — and that I can trace any running component back to an architecture artifact."</div>
+      </div>
+      <div class="persona-body">
+        <div class="pb-section">
+          <div class="pb-lbl">Goals</div>
+          <div class="pb-items">
+            <div class="pb-item goal">Maintain a coherent architecture across Salesforce, SAP, and the AE without creating a third system of record</div>
+            <div class="pb-item goal">Ensure every GCP resource is provisioned via Terraform — no manual console state</div>
+            <div class="pb-item goal">Have a complete ADR index available for every architectural review</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Frustrations</div>
+          <div class="pb-items">
+            <div class="pb-item frustration">Architecture decisions made verbally in sprint planning meetings with no documentation</div>
+            <div class="pb-item frustration">Integration point failures discovered at system test, not at design time</div>
+            <div class="pb-item frustration">Compliance audits that require manual reconstruction of infrastructure state</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Success with the AE</div>
+          <div class="pb-items">
+            <div class="pb-item success">Every ADR is linked from the Architecture Explorer on the portfolio site — accessible in seconds during a review</div>
+            <div class="pb-item success">terraform plan produces a complete infrastructure diff — no undocumented state</div>
+            <div class="pb-item success">The TOGAF Phase D diagrams on Page 03 answer every integration question before it is asked</div>
+          </div>
+        </div>
+        <div class="pb-modules">
+          <span class="pb-module">Architecture Explorer</span>
+          <span class="pb-module">ADR Index</span>
+          <span class="pb-module">Layer 04 Infra</span>
+          <span class="pb-module">TOGAF Page 03</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persona 2: The Compliance Officer -->
+    <div class="persona">
+      <div class="persona-header" style="background:linear-gradient(135deg,#FEF3E2,#FFF8E1)">
+        <div class="persona-avatar" style="background:#B06000;color:white">CO</div>
+        <div class="persona-name">The Compliance Officer</div>
+        <div class="persona-role">Chief Compliance Officer · Legal &amp; Regulatory · S-02</div>
+        <div class="persona-quote">"When an auditor asks me to show them the reasoning behind a revenue recognition decision made last March, I need that answer in under five minutes — not five days."</div>
+      </div>
+      <div class="persona-body">
+        <div class="pb-section">
+          <div class="pb-lbl">Goals</div>
+          <div class="pb-items">
+            <div class="pb-item goal">Bring all three production ML models into EU AI Act Annex III compliance before the Q2 2026 review</div>
+            <div class="pb-item goal">Demonstrate a documented human oversight mechanism for every high-risk AI decision</div>
+            <div class="pb-item goal">Produce a complete audit trail for any AI-informed decision on demand</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Frustrations</div>
+          <div class="pb-items">
+            <div class="pb-item frustration">Production ML models with no explanation capability — a legal liability the team has been avoiding addressing</div>
+            <div class="pb-item frustration">Human review happening informally via email with no timestamped record</div>
+            <div class="pb-item frustration">Compliance audits that require a week of manual evidence gathering</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Success with the AE</div>
+          <div class="pb-items">
+            <div class="pb-item success">A BigQuery query returns the complete SHAP explanation and HITL approval record for any inference in under 30 seconds</div>
+            <div class="pb-item success">The EU AI Act compliance dashboard shows green status across all active models</div>
+            <div class="pb-item success">The next regulatory review uses the AE audit trail as the evidence package — no manual reconstruction</div>
+          </div>
+        </div>
+        <div class="pb-modules">
+          <span class="pb-module">XAI Explanation Viewer</span>
+          <span class="pb-module">HITL Audit Dashboard</span>
+          <span class="pb-module">RevRec AI</span>
+          <span class="pb-module">ContractGuard</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persona 3: The Finance Controller -->
+    <div class="persona">
+      <div class="persona-header" style="background:linear-gradient(135deg,#E4F7F7,#E0F2F1)">
+        <div class="persona-avatar" style="background:#007B83;color:white">FC</div>
+        <div class="persona-name">The Finance Controller</div>
+        <div class="persona-role">Head of Revenue Accounting · Finance · reports to CFO (S-03)</div>
+        <div class="persona-quote">"I'll approve the ML classification — but I need to see exactly which contract terms drove that decision before I let it post to the GL."</div>
+      </div>
+      <div class="persona-body">
+        <div class="pb-section">
+          <div class="pb-lbl">Goals</div>
+          <div class="pb-items">
+            <div class="pb-item goal">Review and approve every ASC 606 classification with full feature attribution before it posts to SAP</div>
+            <div class="pb-item goal">Reduce month-end close from 12 days by eliminating manual classification bottlenecks</div>
+            <div class="pb-item goal">Maintain a complete, immutable record of every revenue recognition decision and the human approval that preceded it</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Frustrations</div>
+          <div class="pb-items">
+            <div class="pb-item frustration">Manual classification of every MRI transaction — error-prone and time-consuming at quarter-end</div>
+            <div class="pb-item frustration">No visibility into which contract terms are driving recognition decisions — the model is a black box</div>
+            <div class="pb-item frustration">Revenue restatements caused by incorrect upfront classification discovered post-close</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Success with the AE</div>
+          <div class="pb-items">
+            <div class="pb-item success">Every classification arrives in the HITL queue with the top 5 contract features highlighted and a confidence score — the approval takes 90 seconds, not 90 minutes</div>
+            <div class="pb-item success">Month-end close accelerated because classifications are done continuously, not in batch at period end</div>
+            <div class="pb-item success">Override decisions are recorded with a mandatory reason code — creating a feedback dataset for model improvement</div>
+          </div>
+        </div>
+        <div class="pb-modules">
+          <span class="pb-module">RevRec AI</span>
+          <span class="pb-module">HITL Approval UI</span>
+          <span class="pb-module">XAI Viewer</span>
+          <span class="pb-module">FinRisk Sentinel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persona 4: The Account Executive -->
+    <div class="persona">
+      <div class="persona-header" style="background:linear-gradient(135deg,#E8F0FE,#E3F2FD)">
+        <div class="persona-avatar" style="background:#1A73E8;color:white">AE</div>
+        <div class="persona-name">The Account Executive</div>
+        <div class="persona-role">Senior Account Executive · Global Sales · reports to VP Sales (S-04)</div>
+        <div class="persona-quote">"By the time our quote reaches the hospital's procurement committee, the competitor has already been evaluated. I need the first response to be same-day."</div>
+      </div>
+      <div class="persona-body">
+        <div class="pb-section">
+          <div class="pb-lbl">Goals</div>
+          <div class="pb-items">
+            <div class="pb-item goal">Receive a complete briefing document from the CCAI agent before entering any commercial conversation — qualification done, configuration validated, pricing estimated</div>
+            <div class="pb-item goal">Close the time-to-first-response gap that currently costs deals to competitors with faster processes</div>
+            <div class="pb-item goal">Know exactly when the agent has reached its autonomy boundary and why it is handing off</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Frustrations</div>
+          <div class="pb-items">
+            <div class="pb-item frustration">Spending the first three calls on qualification and configuration questions that a well-designed system could handle automatically</div>
+            <div class="pb-item frustration">No visibility into where an inbound inquiry is in the qualification pipeline until it lands in their Salesforce queue</div>
+            <div class="pb-item frustration">CPQ configurations that require Applications Engineering review before pricing — a 5-day delay that kills deal momentum</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Success with the AE</div>
+          <div class="pb-items">
+            <div class="pb-item success">The escalation notification from the CCAI agent includes a complete deal brief — hospital profile, clinical requirements, suggested configuration, estimated price range, and the conversation transcript</div>
+            <div class="pb-item success">Configuration validation is done by the agent before escalation — the AE enters the conversation knowing the BOM is clean</div>
+            <div class="pb-item success">The Salesforce Opportunity is already created and staged correctly when the AE first touches it</div>
+          </div>
+        </div>
+        <div class="pb-modules">
+          <span class="pb-module">CCAI Sales Agent</span>
+          <span class="pb-module">Salesforce Integration</span>
+          <span class="pb-module">ContractGuard</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persona 5: The Field Service Manager -->
+    <div class="persona">
+      <div class="persona-header" style="background:linear-gradient(135deg,#E6F4EA,#F1F8E9)">
+        <div class="persona-avatar" style="background:#137333;color:white">FS</div>
+        <div class="persona-name">The Field Service Manager</div>
+        <div class="persona-role">Regional Field Service Manager · Operations · reports to VP Field Service (S-06)</div>
+        <div class="persona-quote">"A failed MRI scanner in a hospital is a patient care emergency and a €180K dispatch. I need 72 hours of warning — not a phone call at 2am."</div>
+      </div>
+      <div class="persona-body">
+        <div class="pb-section">
+          <div class="pb-lbl">Goals</div>
+          <div class="pb-items">
+            <div class="pb-item goal">Receive predictive maintenance alerts with enough lead time to schedule planned interventions — not emergency dispatches</div>
+            <div class="pb-item goal">Understand which sensor features are driving a failure prediction before committing a field engineer to a site visit</div>
+            <div class="pb-item goal">Have a unified view of all units in their region — not six different regional system logins</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Frustrations</div>
+          <div class="pb-items">
+            <div class="pb-item frustration">Reactive maintenance that costs 3.2× more than planned interventions — and disrupts hospital operations</div>
+            <div class="pb-item frustration">No cross-regional visibility — a failure pattern appearing in EMEA-North units has already appeared in APAC units but the two systems never talk</div>
+            <div class="pb-item frustration">Warranty reserve that covers worst-case scenarios because failure probability cannot be modelled</div>
+          </div>
+        </div>
+        <div class="pb-section">
+          <div class="pb-lbl">Success with the AE</div>
+          <div class="pb-items">
+            <div class="pb-item success">Asset IQ surfaces a RUL alert for a Munich hospital unit 96 hours before the predicted failure window — with the top 3 sensor features and a confidence score — enough time to schedule a planned intervention</div>
+            <div class="pb-item success">A pattern detected across 14 units in three regions is surfaced as a fleet-level anomaly in the Asset IQ dashboard before it becomes a recall conversation</div>
+            <div class="pb-item success">Every maintenance work order created by the AE has a SHAP explanation attached — the Field Engineer knows why they are there before they arrive</div>
+          </div>
+        </div>
+        <div class="pb-modules">
+          <span class="pb-module">Asset IQ</span>
+          <span class="pb-module">HITL Approval UI</span>
+          <span class="pb-module">XAI Viewer</span>
+          <span class="pb-module">Strategy Dashboard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §05 USER JOURNEY -->
+<section class="sec ap" id="journey">
+  <div class="s-ey te">User Journey</div>
+  <h2 class="s-h2">One deal. <em>Five personas. End to end.</em></h2>
+  <p class="s-p">An MRI deal for ClaraVis AG — from first hospital inquiry to revenue posted in SAP. Five journey stages. Every persona's touchpoint at each stage. The AE module handling it. The HITL checkpoint where human judgment is required.</p>
+
+  <div class="dw ap">
+    <div class="dw-title">End-to-End Journey — MRI-7T Sale to University Hospital Munich</div>
+    <div class="dw-sub">Five stages · Five personas · AE module at each touchpoint · HITL checkpoints marked</div>
+    <svg width="100%" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="jrr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Stage headers -->
+      <rect x="0" y="0" width="900" height="40" fill="#1A1916"/>
+      <text x="10" y="14" font-size="9" font-weight="500" fill="rgba(245,240,232,.3)" letter-spacing="1">JOURNEY STAGES</text>
+
+      <!-- Stage labels -->
+      <rect x="10" y="18" width="164" height="22" rx="2" fill="rgba(26,115,232,.2)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="92" y="32" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">01 · Inquiry &amp; Qualification</text>
+      <rect x="182" y="18" width="164" height="22" rx="2" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.2)" stroke-width="1"/>
+      <text x="264" y="32" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">02 · Config &amp; CPQ</text>
+      <rect x="354" y="18" width="164" height="22" rx="2" fill="rgba(0,123,131,.15)" stroke="rgba(0,123,131,.2)" stroke-width="1"/>
+      <text x="436" y="32" font-size="9" font-weight="500" fill="#80CBC4" text-anchor="middle">03 · Contract &amp; Legal</text>
+      <rect x="526" y="18" width="164" height="22" rx="2" fill="rgba(176,96,0,.15)" stroke="rgba(176,96,0,.2)" stroke-width="1"/>
+      <text x="608" y="32" font-size="9" font-weight="500" fill="#FFCC80" text-anchor="middle">04 · Revenue Recognition</text>
+      <rect x="698" y="18" width="192" height="22" rx="2" fill="rgba(19,115,51,.15)" stroke="rgba(19,115,51,.2)" stroke-width="1"/>
+      <text x="794" y="32" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">05 · Field &amp; Post-Sale</text>
+
+      <!-- Persona row labels -->
+      <rect x="0" y="40" width="900" height="20" fill="#F8F9FA"/>
+      <text x="10" y="53" font-size="9" font-weight="500" fill="#5F6368" letter-spacing=".06em">PERSONA TOUCHPOINTS</text>
+
+      <!-- Row: Account Executive -->
+      <rect x="0" y="60" width="900" height="64" fill="white"/>
+      <line x1="0" y1="60" x2="900" y2="60" stroke="#DADCE0" stroke-width=".5"/>
+      <text x="8" y="78" font-size="10" font-weight="500" fill="#1A73E8">Account Executive</text>
+      <text x="8" y="91" font-size="9" fill="#5F6368">enters at stage 01→ escalation</text>
+
+      <!-- AE touchpoint Stage 1 -->
+      <rect x="14" y="68" width="152" height="48" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="90" y="84" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Receives briefing</text>
+      <text x="90" y="96" font-size="8" fill="#1A73E8" text-anchor="middle">from CCAI Agent</text>
+      <text x="90" y="108" font-size="8" fill="#1A73E8" text-anchor="middle">after turn 11 escalation</text>
+
+      <!-- AE touchpoint Stage 2 -->
+      <rect x="186" y="68" width="152" height="48" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="262" y="84" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Reviews validated</text>
+      <text x="262" y="96" font-size="8" fill="#1A73E8" text-anchor="middle">CPQ configuration</text>
+      <text x="262" y="108" font-size="8" fill="#1A73E8" text-anchor="middle">Agent-prepared</text>
+
+      <!-- AE touchpoint Stage 3 -->
+      <rect x="358" y="68" width="152" height="48" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="434" y="84" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Commercial terms</text>
+      <text x="434" y="96" font-size="8" fill="#1A73E8" text-anchor="middle">negotiation — human</text>
+      <text x="434" y="108" font-size="8" fill="#1A73E8" text-anchor="middle">judgment required</text>
+
+      <!-- Row: General Counsel -->
+      <rect x="0" y="124" width="900" height="64" fill="#FAFAFA"/>
+      <line x1="0" y1="124" x2="900" y2="124" stroke="#DADCE0" stroke-width=".5"/>
+      <text x="8" y="142" font-size="10" font-weight="500" fill="#B06000">General Counsel</text>
+      <text x="8" y="155" font-size="9" fill="#5F6368">HITL at stage 03</text>
+
+      <!-- Legal HITL Stage 3 -->
+      <rect x="358" y="132" width="152" height="48" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="434" y="148" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">HITL Checkpoint</text>
+      <text x="434" y="160" font-size="8" fill="#B06000" text-anchor="middle">Reviews flagged clauses</text>
+      <text x="434" y="172" font-size="8" fill="#B06000" text-anchor="middle">Approves / escalates</text>
+      <!-- HITL indicator -->
+      <circle cx="500" cy="126" r="5" fill="#B06000"/>
+      <text x="507" y="130" font-size="8" fill="#B06000" font-weight="500">HITL</text>
+
+      <!-- Row: Finance Controller -->
+      <rect x="0" y="188" width="900" height="64" fill="white"/>
+      <line x1="0" y1="188" x2="900" y2="188" stroke="#DADCE0" stroke-width=".5"/>
+      <text x="8" y="206" font-size="10" font-weight="500" fill="#007B83">Finance Controller</text>
+      <text x="8" y="219" font-size="9" fill="#5F6368">HITL at stage 04</text>
+
+      <!-- Finance HITL Stage 4 -->
+      <rect x="530" y="196" width="152" height="48" rx="3" fill="#E4F7F7" stroke="#007B83" stroke-width="1.5"/>
+      <text x="606" y="212" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">HITL Checkpoint</text>
+      <text x="606" y="224" font-size="8" fill="#007B83" text-anchor="middle">Reviews ASC 606 class.</text>
+      <text x="606" y="236" font-size="8" fill="#007B83" text-anchor="middle">+ SHAP explanation</text>
+      <circle cx="672" cy="190" r="5" fill="#007B83"/>
+      <text x="679" y="194" font-size="8" fill="#007B83" font-weight="500">HITL</text>
+
+      <!-- Row: Field Service Manager -->
+      <rect x="0" y="252" width="900" height="64" fill="#FAFAFA"/>
+      <line x1="0" y1="252" x2="900" y2="252" stroke="#DADCE0" stroke-width=".5"/>
+      <text x="8" y="270" font-size="10" font-weight="500" fill="#137333">Field Service Manager</text>
+      <text x="8" y="283" font-size="9" fill="#5F6368">engaged at stage 05</text>
+
+      <rect x="702" y="260" width="184" height="48" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1"/>
+      <text x="794" y="276" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Receives asset onboarding</text>
+      <text x="794" y="288" font-size="8" fill="#137333" text-anchor="middle">RUL baseline established</text>
+      <text x="794" y="300" font-size="8" fill="#137333" text-anchor="middle">DHR record created</text>
+
+      <!-- AE MODULE ROW -->
+      <rect x="0" y="316" width="900" height="20" fill="#1A1916"/>
+      <text x="10" y="329" font-size="9" font-weight="500" fill="rgba(245,240,232,.3)" letter-spacing=".06em">AE MODULE AT EACH STAGE</text>
+
+      <rect x="14" y="340" width="152" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="90" y="357" font-size="9" font-weight="500" fill="#D4AC1A" text-anchor="middle">CCAI Sales Agent</text>
+
+      <rect x="186" y="340" width="152" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="262" y="357" font-size="9" font-weight="500" fill="#D4AC1A" text-anchor="middle">Config Agent + CPQ</text>
+
+      <rect x="358" y="340" width="152" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="434" y="357" font-size="9" font-weight="500" fill="#D4AC1A" text-anchor="middle">ContractGuard</text>
+
+      <rect x="530" y="340" width="152" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="606" y="357" font-size="9" font-weight="500" fill="#D4AC1A" text-anchor="middle">RevRec AI</text>
+
+      <rect x="702" y="340" width="184" height="28" rx="3" fill="rgba(184,150,12,.15)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="794" y="357" font-size="9" font-weight="500" fill="#D4AC1A" text-anchor="middle">Asset IQ + Dashboard</text>
+
+      <!-- Stage flow arrows -->
+      <line x1="166" y1="354" x2="184" y2="354" stroke="#B8960C" stroke-width="1.5" marker-end="url(#jrr)"/>
+      <line x1="338" y1="354" x2="356" y2="354" stroke="#B8960C" stroke-width="1.5" marker-end="url(#jrr)"/>
+      <line x1="510" y1="354" x2="528" y2="354" stroke="#B8960C" stroke-width="1.5" marker-end="url(#jrr)"/>
+      <line x1="682" y1="354" x2="700" y2="354" stroke="#B8960C" stroke-width="1.5" marker-end="url(#jrr)"/>
+
+      <!-- Audit trail bar -->
+      <rect x="14" y="376" width="872" height="24" rx="3" fill="rgba(26,115,232,.08)" stroke="rgba(26,115,232,.15)" stroke-width="1"/>
+      <text x="450" y="391" font-size="9" font-weight="500" fill="#64B5F6" text-anchor="middle">Immutable audit trail written to Firestore + BigQuery at every stage transition — full journey queryable on demand</text>
+
+      <!-- Emotion arc -->
+      <text x="10" y="424" font-size="9" fill="#5F6368" font-weight="500">EMOTION ARC</text>
+      <text x="90" y="450" font-size="22" text-anchor="middle">😐</text>
+      <text x="90" y="466" font-size="8" fill="#5F6368" text-anchor="middle">Waiting</text>
+      <text x="262" y="450" font-size="22" text-anchor="middle">😊</text>
+      <text x="262" y="466" font-size="8" fill="#137333" text-anchor="middle">Fast response</text>
+      <text x="434" y="450" font-size="22" text-anchor="middle">😐</text>
+      <text x="434" y="466" font-size="8" fill="#5F6368" text-anchor="middle">Reviewing</text>
+      <text x="606" y="450" font-size="22" text-anchor="middle">😊</text>
+      <text x="606" y="466" font-size="8" fill="#137333" text-anchor="middle">Confident</text>
+      <text x="794" y="450" font-size="22" text-anchor="middle">😊</text>
+      <text x="794" y="466" font-size="8" fill="#137333" text-anchor="middle">Proactive</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §06 FRD -->
+<section class="sec w ap" id="frd">
+  <div class="s-ey am">Functional Requirements</div>
+  <h2 class="s-h2">Eight user stories. <em>Each traceable to architecture.</em></h2>
+  <p class="s-p">Every user story maps to a Page 02 requirement, a Page 03 ADR, an EU AI Act obligation, and a HITL or XAI specification. These are the handover documents from the architecture engagement to the development teams — precise enough to build from, not so prescriptive they constrain implementation choices.</p>
+
+  <div class="frd-grid ap">
+
+    <div class="frd">
+      <div class="frd-id">FRD-01</div>
+      <div class="frd-module">CCAI Sales Agent</div>
+      <div class="frd-story">As <strong>an Account Executive</strong>, I need the CCAI agent to qualify, configure, and price an inbound MRI inquiry autonomously through the first eleven conversation turns, so that when the deal escalates to me it comes with a complete briefing document and a validated CPQ configuration.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Agent handles qualification (budget, authority, need, timeline) without human intervention for turns 1–8</div>
+        <div class="frd-criterion">BOM validation runs against the product catalogue before any pricing estimate is given</div>
+        <div class="frd-criterion">Escalation triggers a Salesforce Opportunity creation and a briefing document generation in parallel</div>
+        <div class="frd-criterion">The briefing document contains: hospital profile, clinical requirements, suggested SKUs, estimated price range, and full conversation transcript</div>
+        <div class="frd-criterion">Escalation state transition is logged immutably in Firestore before the AE notification is sent</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-07 · BR-01</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-001 (SFDC)</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>Limited risk · Art. 52</div>
+        <div class="frd-trace-item"><strong>ART</strong>Commercial ART · H3</div>
+      </div>
+      <div class="frd-hitl"><strong>HITL:</strong> Turn 11 escalation is a designed HITL state transition. Agent pauses, generates briefing document, notifies AE. No further autonomous action until AE confirms engagement.</div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-02</div>
+      <div class="frd-module">ContractGuard</div>
+      <div class="frd-story">As <strong>the General Counsel</strong>, I need ContractGuard to analyse every inbound contract at clause level, score non-standard terms against a risk model, and present flagged clauses with precedent references before I am asked to review, so that my review time is spent on judgment — not extraction.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Full contract ingested via GCS → Document AI pipeline within 30 minutes of upload</div>
+        <div class="frd-criterion">Every clause classified against 200+ clause type taxonomy</div>
+        <div class="frd-criterion">Non-standard clauses (risk score above threshold) surfaced in HITL queue with: clause text, risk score, top 3 precedent contracts, draft counter-position</div>
+        <div class="frd-criterion">HITL queue shows approve / request revision / escalate to external counsel — each with mandatory reason code</div>
+        <div class="frd-criterion">Complete clause-level analysis and HITL decision record written to audit log before any counter-proposal is drafted</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-05 · AR-02</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-005 (SHAP)</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>High risk · Annex III</div>
+        <div class="frd-trace-item"><strong>ART</strong>Commercial ART · H2</div>
+      </div>
+      <div class="frd-hitl"><strong>HITL:</strong> Every clause with risk score above configured threshold routes to Legal HITL state. Agent waits. 24-hour timeout triggers escalation to General Counsel's manager. No counter-proposal generated without HITL approval on record.</div>
+      <div class="frd-xai"><strong>XAI:</strong> Risk score explanation shows top features driving the classification: clause length deviation, liability cap ratio vs contract value, governing law mismatch, indemnification asymmetry.</div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-03</div>
+      <div class="frd-module">RevRec AI</div>
+      <div class="frd-story">As <strong>the Finance Controller</strong>, I need every MRI transaction to be classified under ASC 606 by the ML model with a full SHAP explanation, and to route through my approval queue before posting to SAP, so that every GL entry has both an ML basis and a documented human approval.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Classification produced within 5 minutes of Salesforce contract signed event via Pub/Sub trigger</div>
+        <div class="frd-criterion">SHAP explanation identifies top 5 contract features with directional effect on the classification</div>
+        <div class="frd-criterion">HITL queue presents: classification result, confidence score, SHAP chart, similar historical transactions, and one-click approve / override with reason code</div>
+        <div class="frd-criterion">SAP GL write executes only after HITL approval record is committed to Firestore</div>
+        <div class="frd-criterion">Performance obligation tags written to Transaction entity at classification time — not retrospectively at period end</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-04 · AR-08</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-005 · ADR-006</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>High risk · Annex III</div>
+        <div class="frd-trace-item"><strong>ART</strong>Financial ART · H2</div>
+      </div>
+      <div class="frd-hitl"><strong>HITL:</strong> All classifications route to Finance Controller HITL — no exceptions. 4-hour SLA. Timeout escalates to CFO. Override creates a labelled training example for the next model version.</div>
+      <div class="frd-xai"><strong>XAI:</strong> SHAP values computed at inference time using TreeExplainer or LinearExplainer per model type. Written to BigQuery shap_explanations table with transaction_id FK before any downstream action.</div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-04</div>
+      <div class="frd-module">Asset IQ</div>
+      <div class="frd-story">As <strong>the Field Service Manager</strong>, I need Asset IQ to predict unit failures with enough lead time to schedule planned interventions, and to explain which sensor readings drove the prediction, so that I can make an informed dispatch decision rather than reacting to failures.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">All 6 regional telemetry systems publish to a unified Pub/Sub topic with validated common schema within Horizon 1</div>
+        <div class="frd-criterion">RUL model produces a prediction and confidence score for every active unit on a configurable cadence (default: daily)</div>
+        <div class="frd-criterion">Predictions below confidence threshold route to FSM HITL queue — agent does not create work orders below threshold without human confirmation</div>
+        <div class="frd-criterion">SHAP explanation identifies top 3 sensor features driving the RUL prediction for every alert</div>
+        <div class="frd-criterion">Fleet-level anomaly detection surfaces cross-regional patterns — not just unit-level signals</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-03 · AR-11</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-006 (Pub/Sub)</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>High risk · Annex III</div>
+        <div class="frd-trace-item"><strong>ART</strong>Operations ART · H2</div>
+      </div>
+      <div class="frd-hitl"><strong>HITL:</strong> Work orders above confidence threshold created autonomously. Below threshold: FSM HITL queue with prediction, confidence score, and SHAP sensor attribution. FSM approves, rejects, or requests on-site verification.</div>
+      <div class="frd-xai"><strong>XAI:</strong> SHAP values computed over sensor time-series features. Top features presented as: feature name, current value, baseline value, directional contribution to RUL reduction.</div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-05</div>
+      <div class="frd-module">FinRisk Sentinel</div>
+      <div class="frd-story">As <strong>the Finance Controller</strong>, I need FinRisk Sentinel to monitor the financial event stream in real time and surface anomalies — unusual payment patterns, revenue posting discrepancies, warranty reserve movements — with context before they compound into material issues.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Streaming anomaly detection operates on BigQuery financial event stream with sub-5-minute latency</div>
+        <div class="frd-criterion">Every anomaly alert includes: event type, magnitude, Z-score vs 90-day baseline, affected entity, and recommended action</div>
+        <div class="frd-criterion">High-severity anomalies (above configured threshold) route to CFO + Finance Controller HITL simultaneously</div>
+        <div class="frd-criterion">SHAP explanation available for every anomaly score above the alert threshold</div>
+        <div class="frd-criterion">False positive feedback from HITL decisions feeds back into the anomaly detection model baseline</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-01 · AR-01</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-005 · ADR-006</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>High risk · Annex III</div>
+        <div class="frd-trace-item"><strong>ART</strong>Financial ART · H2</div>
+      </div>
+      <div class="frd-hitl"><strong>HITL:</strong> High-severity anomalies pause automatic escalation and route to Finance HITL. Controller can acknowledge, investigate, or escalate to CFO. All decisions logged immutably.</div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-06</div>
+      <div class="frd-module">GreenOps Platform</div>
+      <div class="frd-story">As <strong>the CTO</strong>, I need GreenOps to schedule compute-intensive AE workloads to align with low-carbon electricity grid windows and produce auditable ESG metrics for EU CSRD reporting, so that the AE platform itself contributes to ClaraVis's sustainability commitments.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Carbon intensity data from GCP's Carbon Footprint API feeds scheduling decisions for batch ML training jobs</div>
+        <div class="frd-criterion">Carbon savings per workload calculated and written to ESG metrics dataset in BigQuery</div>
+        <div class="frd-criterion">Monthly ESG report generated automatically — Scope 3 emissions for cloud operations, carbon savings from scheduling, and year-on-year trend</div>
+        <div class="frd-criterion">All metrics tagged with the GCP resource label taxonomy for FinOps and ESG cross-referencing</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-08 (CTO)</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>P-12 (FinOps)</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>Minimal risk</div>
+        <div class="frd-trace-item"><strong>ART</strong>Operations ART · H3</div>
+      </div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-07</div>
+      <div class="frd-module">Data Governance</div>
+      <div class="frd-story">As <strong>the Enterprise Architect</strong>, I need every data record entering the AE fabric to be validated against the canonical schema, lineage-tagged with its source system, and quality-scored before it reaches any ML model, so that model predictions are never based on undocumented or unvalidated data.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Schema validation runs on every Pub/Sub message before it is written to BigQuery — malformed records are quarantined, not dropped</div>
+        <div class="frd-criterion">Every record carries a lineage tag: source system, ingestion timestamp, schema version, and quality score</div>
+        <div class="frd-criterion">Quality score below configured threshold triggers a data steward alert — records below threshold are excluded from ML feature pipelines until reviewed</div>
+        <div class="frd-criterion">Data lineage is queryable via BigQuery — trace any feature value back to its source event</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>AR-11 · AR-12</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-006</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>Minimal risk</div>
+        <div class="frd-trace-item"><strong>ART</strong>Platform ART · H1</div>
+      </div>
+    </div>
+
+    <div class="frd">
+      <div class="frd-id">FRD-08</div>
+      <div class="frd-module">Strategy Dashboard</div>
+      <div class="frd-story">As <strong>the CTO and CFO</strong>, I need a single real-time dashboard that unifies pipeline health, fleet status, revenue recognition posture, and EU AI Act compliance status, so that the executive team can make informed decisions without pulling data from four separate systems.</div>
+      <div class="frd-section-lbl">Acceptance Criteria</div>
+      <div class="frd-criteria">
+        <div class="frd-criterion">Dashboard powered by a single BigQuery dataset that aggregates from all 8 AE modules — no module-specific logins required</div>
+        <div class="frd-criterion">EU AI Act compliance status shows green / amber / red per model — based on HITL checkpoint completion rate and SHAP explanation coverage</div>
+        <div class="frd-criterion">Pipeline health panel pulls directly from Salesforce via the AE Pub/Sub integration — reflects real-time Opportunity stage distribution</div>
+        <div class="frd-criterion">Fleet status panel shows RUL distribution across all active units — colour-coded by risk tier</div>
+        <div class="frd-criterion">Dashboard data refreshes on a configurable cadence — default 15 minutes for operational panels, daily for financial panels</div>
+      </div>
+      <div class="frd-trace">
+        <div class="frd-trace-item"><strong>Source Req.</strong>BR-08 · BR-02</div>
+        <div class="frd-trace-item"><strong>ADR Reference</strong>ADR-006</div>
+        <div class="frd-trace-item"><strong>EU AI Act</strong>Minimal risk</div>
+        <div class="frd-trace-item"><strong>ART</strong>Platform ART · H3</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- §07 HITL SPECIFICATION -->
+<section class="sec ap" id="hitl-spec">
+  <div class="s-ey">HITL Specification</div>
+  <h2 class="s-h2">Eleven checkpoints. <em>Every one specified.</em></h2>
+  <p class="s-p">The complete HITL specification for the AE — the artifact that satisfies EU AI Act Article 14 documentation requirements. Every checkpoint with its trigger condition, the agent action that precedes it, what the human reviewer sees, their decision options, the SLA, and the audit record format. This table is the contract between the architecture and the EU AI Act compliance team.</p>
+
+  <div style="overflow-x:auto;margin-top:4px" class="ap">
+    <table class="ht">
+      <thead><tr>
+        <th style="width:60px">ID</th>
+        <th style="width:110px">Module</th>
+        <th style="width:140px">Trigger Condition</th>
+        <th>What Human Sees</th>
+        <th style="width:140px">Decision Options</th>
+        <th style="width:80px">SLA</th>
+        <th style="width:100px">Timeout Action</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>HITL-01</strong></td>
+          <td class="ht-module">CCAI Sales Agent</td>
+          <td class="ht-trigger">Turn 11 reached OR commercial terms entered</td>
+          <td>Deal brief: hospital profile, clinical requirements, validated configuration, estimated price range, conversation transcript</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Engage deal</span>
+              <span class="ht-opt ht-reject">Return to agent</span>
+            </div>
+          </td>
+          <td>4 hours</td>
+          <td>Escalate to VP Sales</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-02</strong></td>
+          <td class="ht-module">ContractGuard</td>
+          <td class="ht-trigger">Clause risk score above Legal threshold (configurable)</td>
+          <td>Clause text, risk score, top 3 similar precedent contracts, draft counter-position, SHAP feature attribution</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Approve as-is</span>
+              <span class="ht-opt ht-reject">Request revision</span>
+              <span class="ht-opt ht-escalate">External counsel</span>
+            </div>
+          </td>
+          <td>24 hours</td>
+          <td>Escalate to GC's manager</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-03</strong></td>
+          <td class="ht-module">ContractGuard</td>
+          <td class="ht-trigger">Governing law non-standard for ClaraVis jurisdiction</td>
+          <td>Governing law clause, jurisdiction risk summary, ClaraVis standard terms comparison</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Accept</span>
+              <span class="ht-opt ht-reject">Counter-propose</span>
+              <span class="ht-opt ht-escalate">Legal review</span>
+            </div>
+          </td>
+          <td>48 hours</td>
+          <td>Pause contract progression</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-04</strong></td>
+          <td class="ht-module">RevRec AI</td>
+          <td class="ht-trigger">All ASC 606 classifications — no threshold exception</td>
+          <td>Classification result, confidence score, SHAP chart (top 5 features), 3 similar historical transactions, one-click approve or override</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Approve → SAP</span>
+              <span class="ht-opt ht-reject">Override + reason</span>
+            </div>
+          </td>
+          <td>4 hours</td>
+          <td>Escalate to CFO</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-05</strong></td>
+          <td class="ht-module">RevRec AI</td>
+          <td class="ht-trigger">Multi-element arrangement detected — split required</td>
+          <td>Proposed performance obligation split, ASC 606 rule applied, SSP references, contract line items</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Approve split</span>
+              <span class="ht-opt ht-reject">Manual split</span>
+            </div>
+          </td>
+          <td>8 hours</td>
+          <td>Escalate to CFO</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-06</strong></td>
+          <td class="ht-module">Asset IQ</td>
+          <td class="ht-trigger">RUL prediction confidence below configured threshold</td>
+          <td>Unit ID, predicted failure window, confidence score, top 3 SHAP sensor features, current sensor readings vs baseline</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Schedule maintenance</span>
+              <span class="ht-opt ht-reject">Dismiss with reason</span>
+              <span class="ht-opt ht-escalate">On-site verify</span>
+            </div>
+          </td>
+          <td>8 hours</td>
+          <td>Auto-schedule preventive</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-07</strong></td>
+          <td class="ht-module">Asset IQ</td>
+          <td class="ht-trigger">Fleet-level anomaly detected (cross-regional pattern)</td>
+          <td>Affected units, pattern description, region distribution, severity score, recommended fleet action</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Fleet alert</span>
+              <span class="ht-opt ht-reject">Isolated incidents</span>
+              <span class="ht-opt ht-escalate">Recall review</span>
+            </div>
+          </td>
+          <td>2 hours</td>
+          <td>Auto-escalate to VP Field</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-08</strong></td>
+          <td class="ht-module">FinRisk Sentinel</td>
+          <td class="ht-trigger">Anomaly score above high-severity threshold</td>
+          <td>Event type, magnitude, Z-score vs 90-day baseline, affected entity, SHAP explanation, recommended action</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Acknowledge + act</span>
+              <span class="ht-opt ht-reject">False positive</span>
+              <span class="ht-opt ht-escalate">CFO escalation</span>
+            </div>
+          </td>
+          <td>1 hour</td>
+          <td>Auto-escalate CFO + audit</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-09</strong></td>
+          <td class="ht-module">RevRec AI</td>
+          <td class="ht-trigger">Model confidence below minimum threshold (any classification)</td>
+          <td>Transaction detail, model confidence score, reason for low confidence, request for manual classification</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Manual classify</span>
+              <span class="ht-opt ht-escalate">Senior review</span>
+            </div>
+          </td>
+          <td>4 hours</td>
+          <td>Hold transaction, alert CFO</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-10</strong></td>
+          <td class="ht-module">ML Platform</td>
+          <td class="ht-trigger">Drift detected above threshold — retraining triggered</td>
+          <td>Drift metric, baseline vs current distribution, proposed retraining scope, estimated timeline, Model Card diff</div></td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Approve retrain</span>
+              <span class="ht-opt ht-reject">Hold and investigate</span>
+              <span class="ht-opt ht-escalate">ML Engineer review</span>
+            </div>
+          </td>
+          <td>24 hours</td>
+          <td>Hold model in production</td>
+        </tr>
+        <tr>
+          <td><strong>HITL-11</strong></td>
+          <td class="ht-module">ML Platform</td>
+          <td class="ht-trigger">New model version ready for production promotion</td>
+          <td>Model Card diff (previous vs new), evaluation metrics comparison, bias analysis results, SHAP baseline comparison</td>
+          <td>
+            <div class="ht-decision">
+              <span class="ht-opt ht-approve">Promote to prod</span>
+              <span class="ht-opt ht-reject">Return to staging</span>
+            </div>
+          </td>
+          <td>48 hours</td>
+          <td>Model stays in staging</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EU AI Act compliance callout -->
+  <div style="background:var(--red-lt);border:1px solid rgba(217,48,37,.2);border-left:4px solid var(--red);padding:20px 24px;margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">EU AI Act Article 14 — Human Oversight Compliance Statement</div>
+    <div style="font-family:var(--mono);font-size:12px;font-weight:300;color:var(--text);line-height:1.75">This HITL specification satisfies EU AI Act Article 14 by defining: (1) the specific conditions under which human oversight is triggered for each high-risk AI system, (2) the information presented to the human reviewer at each checkpoint, (3) the decision options available and the action each triggers, (4) the SLA and escalation path, and (5) the immutable audit record format written to Firestore before any agent proceeds. All eleven checkpoints are implemented as first-class state machine nodes — not process notes or informal review steps.</div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>Next in the Portfolio</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Product design complete.<br><strong>Agent design follows.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">The FRD and HITL specification on this page are the inputs to the Agent Swarm Architecture. Page 05 takes every HITL checkpoint above and expresses it as a formal state machine node in the ADK agent definition — the technical design that implements what was specified here.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="#" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(255,255,255,.08)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='transparent';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 05</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Agent Swarm Architecture</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">ADK · A2A · MCP · State Machines · Tool Manifests · Guardrails</div><span style="display:inline-block;margin-top:3px;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:rgba(184,150,12,.15);color:var(--gold-lt);letter-spacing:.07em;text-transform:uppercase">In Design</span></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-03.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 03</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← TOGAF ADM — Phases A through F</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">The architecture that this delivery model implements</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.05});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['safe','arts','enablers','personas','journey','frd','hitl-spec'];
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
+      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
+      if(link)link.classList.add('act');
+    }
+  });
+},{threshold:.2,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+</script>
+</body>
+</html>

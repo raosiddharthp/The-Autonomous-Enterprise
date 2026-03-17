@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asset IQ — Module 05 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'M05';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
+.ph-tag-red{background:#FCE8E6;color:#A50E0E}
+.ph-tag-green{background:#E6F4EA;color:#0D5226}
+.ph-tag-blue{background:#E8F0FE;color:#1557B0}
+.ph-tag-amber{background:#FEF3E2;color:#7A4100}
+.ph-tag-teal{background:#E4F7F7;color:#005F67}
+.ph-tag-purple{background:#EDE7F6;color:#3700B3}
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.re{color:var(--red)}.s-ey.pu{color:var(--purple)}.s-ey.te{color:var(--teal)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--blue)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+/* REBUTTAL */
+.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.rb{background:var(--white);border:1px solid var(--border);padding:26px 26px;border-top:3px solid var(--border)}
+.rb.cto{border-top-color:var(--purple)}.rb.cco{border-top-color:var(--red)}.rb.fsm{border-top-color:var(--green)}.rb.ea{border-top-color:var(--blue)}.rb.ciso{border-top-color:var(--teal)}.rb.vp{border-top-color:var(--amber)}
+.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rb.cto .rb-who{color:var(--purple)}.rb.cco .rb-who{color:var(--red)}.rb.fsm .rb-who{color:var(--green)}.rb.ea .rb-who{color:var(--blue)}.rb.ciso .rb-who{color:var(--teal)}.rb.vp .rb-who{color:var(--amber)}
+.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
+.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
+.rb-response-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rb-response{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
+.rb-evidence{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
+.rb.cto .rb-evidence{background:var(--purple-lt);color:var(--purple-dk)}.rb.cco .rb-evidence{background:var(--red-lt);color:var(--red-dk)}
+.rb.fsm .rb-evidence{background:var(--green-lt);color:var(--green-dk)}.rb.ea .rb-evidence{background:var(--blue-lt);color:var(--blue-dk)}
+.rb.ciso .rb-evidence{background:var(--teal-lt);color:var(--teal-dk)}.rb.vp .rb-evidence{background:var(--amber-lt);color:var(--amber-dk)}
+/* ADR */
+.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
+.adr.bl{border-left:4px solid var(--blue)}.adr.gr{border-left:4px solid var(--green)}.adr.am{border-left:4px solid var(--amber)}.adr.te{border-left:4px solid var(--teal)}.adr.pu{border-left:4px solid var(--purple)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr.bl .adr-id{color:var(--blue)}.adr.gr .adr-id{color:var(--green)}.adr.am .adr-id{color:var(--amber)}.adr.te .adr-id{color:var(--teal)}.adr.pu .adr-id{color:var(--purple)}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
+/* HITL UI */
+.hitl-mockup{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:4px;box-shadow:0 4px 24px rgba(0,0,0,.07)}
+.hm-titlebar{background:var(--ink);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.hm-dot{width:10px;height:10px;border-radius:50%}
+.hm-title{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.5);letter-spacing:.05em;margin-left:4px}
+.hm-body{display:grid;grid-template-columns:1fr 280px}
+.hm-main{padding:24px;border-right:1px solid var(--border)}
+.hm-sidebar{padding:20px;background:var(--white)}
+.hm-sec-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}
+.rul-result{background:var(--ink);border-radius:4px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:20px}
+.rul-days{font-family:var(--display);font-size:36px;font-weight:800;color:#EF9A9A;line-height:1}
+.rul-label{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.rul-conf-wrap{flex:1}
+.rul-conf-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:4px}
+.rul-conf-fill{height:100%;background:#FFB74D;border-radius:3px}
+.rul-conf-val{font-family:var(--mono);font-size:12px;font-weight:500;color:#FFB74D}
+.rul-below{font-family:var(--mono);font-size:10px;color:#EF9A9A;background:rgba(217,48,37,.1);padding:4px 10px;border-radius:2px;margin-top:4px;display:inline-block}
+.sensor-row{display:grid;grid-template-columns:160px 80px 80px 1fr;gap:8px;align-items:center;margin-bottom:8px;padding:6px 0;border-bottom:1px solid var(--border-2)}
+.sensor-name{font-family:var(--mono);font-size:10px;color:var(--text-2)}
+.sensor-curr{font-family:var(--mono);font-size:10px;font-weight:500}
+.sensor-curr.warn{color:var(--red-dk)}
+.sensor-curr.ok{color:var(--green-dk)}
+.sensor-baseline{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.sensor-shap-bar{height:12px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.sensor-shap-fill{height:100%;border-radius:2px;background:var(--amber)}
+.dhr-box{background:var(--blue-lt);border:1px solid rgba(26,115,232,.2);padding:10px 12px;margin-bottom:10px;font-family:var(--mono);font-size:10px;color:var(--blue-dk);line-height:1.55}
+.hm-actions{display:flex;gap:8px;margin-top:14px}
+.hm-btn-sched{flex:1;padding:10px 0;background:var(--green);color:var(--white);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.hm-btn-dismiss{flex:1;padding:10px 0;background:var(--white);color:var(--text-2);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);text-align:center}
+.hm-btn-verify{padding:10px 14px;background:var(--white);color:var(--amber-dk);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--amber);text-align:center}
+.hm-sla{font-family:var(--mono);font-size:10px;color:var(--amber-dk);background:var(--amber-lt);padding:6px 10px;margin-top:8px;text-align:center}
+.hm-cf-label{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px;margin-top:10px}
+.hm-cf-val{font-family:var(--mono);font-size:11px;color:var(--text);font-weight:300}
+/* DEMO STEPS */
+.demo-steps{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.ds{background:var(--white);border:1px solid var(--border);padding:20px 24px;display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
+.ds-num{font-family:var(--display);font-size:28px;font-weight:800;color:var(--border);line-height:1;padding-top:2px}
+.ds.active .ds-num{color:var(--green)}.ds.hitl-step .ds-num{color:var(--red)}.ds.fleet-step .ds-num{color:var(--amber)}
+.ds-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px;color:var(--text-3)}
+.ds.active .ds-label{color:var(--green)}.ds.hitl-step .ds-label{color:var(--red)}.ds.fleet-step .ds-label{color:var(--amber)}
+.ds-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.ds-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7}
+.ds-say{margin-top:10px;padding:8px 12px;background:var(--surface-2);border-left:2px solid var(--border);font-family:var(--serif);font-size:13px;font-style:italic;color:var(--text-2);line-height:1.6}
+.ds.hitl-step .ds-say,.ds.fleet-step .ds-say{font-style:normal;font-family:var(--mono);font-size:11px}
+.ds.hitl-step .ds-say{background:var(--red-lt);border-left-color:var(--red);color:var(--red-dk)}
+.ds.fleet-step .ds-say{background:var(--amber-lt);border-left-color:var(--amber);color:var(--amber-dk)}
+.ds-services{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.ds-svc{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){:root{--col:22px}.rebuttal-grid{grid-template-columns:1fr}.hm-body{grid-template-columns:1fr}.mn-r .mn-link{display:none}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-09.html" class="mn-back">← Suite Index</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">AE Suite &nbsp;/&nbsp; <strong>M-05 · Asset IQ</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="page-09.html" class="mn-link">← Index</a>
+    <a href="page-09-m03.html" class="mn-link">M-03 RevRec</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+<nav class="snav" id="snav">
+  <a href="#context" class="sn act" data-sec="context">System Context</a>
+  <a href="#architecture" class="sn" data-sec="architecture">Architecture</a>
+  <a href="#statemachine" class="sn" data-sec="statemachine">State Machines</a>
+  <a href="#dataflow" class="sn" data-sec="dataflow">Data Flows</a>
+  <a href="#hitl" class="sn" data-sec="hitl">HITL-06 UI</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
+  <a href="#demo" class="sn" data-sec="demo">Demo Pathway</a>
+</nav>
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise · AE Suite · Module 05</div>
+  <h1 class="ph-h1">Asset IQ<br><em>Predictive Maintenance</em><br><strong>— 12,000 units. Two models. One truth.</strong></h1>
+  <p class="ph-sub">Asset IQ unifies telemetry from 12,000 MRI and CT units across six disconnected regional systems into a single predictive intelligence layer. Two ML tiers: a daily RUL regression predicting failure windows per unit, and a real-time anomaly detector surfacing cross-regional fleet patterns. ISO 13485 Device History Records written at every maintenance event.</p>
+  <div class="ph-tags">
+    <span class="ph-tag ph-tag-red">EU AI Act — High Risk · Annex III</span>
+    <span class="ph-tag ph-tag-green">RUL Regression · Isolation Forest</span>
+    <span class="ph-tag ph-tag-teal">6 Regional Systems · Pub/Sub</span>
+    <span class="ph-tag ph-tag-blue">ISO 13485 · DHR</span>
+    <span class="ph-tag ph-tag-amber">HITL-06 · HITL-07</span>
+    <span class="ph-tag ph-tag-purple">Operations ART · H2 · PI-4</span>
+  </div>
+</header>
+
+<!-- §01 SYSTEM CONTEXT -->
+<section class="sec w ap" id="context">
+  <div class="s-ey">System Context — C4 Level 1</div>
+  <h2 class="s-h2">Six regional systems in. <em>One unified intelligence out.</em></h2>
+  <p class="s-p">Asset IQ's context is defined by its inputs — six regional asset telemetry systems that have never spoken to each other — and its outputs — predictive work orders, fleet anomaly alerts, and ISO 13485 Device History Records. The unified Pub/Sub ingestion pipeline is the H1 foundation that makes Asset IQ possible.</p>
+  <div class="dw ap" role="img" aria-label="System context for Asset IQ showing six regional asset telemetry systems publishing to unified Pub/Sub ingestion pipeline as primary input. Asset IQ boundary containing RUL regression agent and anomaly detection agent. Outputs: Salesforce work orders, BigQuery Device entity updates, ISO 13485 DHR records in BigQuery. Field Service Manager as HITL-06 actor for low-confidence RUL predictions. VP Field Service as HITL-07 actor for fleet anomaly patterns. Vertex AI Feature Store as shared feature source. EU AI Act Annex III as regulatory constraint.">
+    <div class="dw-title">Asset IQ — System Context (C4 Level 1)</div>
+    <div class="dw-sub">Two-tier ML system · six input sources · three output destinations · two HITL actors</div>
+    <svg width="100%" viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Asset IQ boundary -->
+      <rect x="290" y="100" width="280" height="220" rx="8" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="430" y="128" font-size="12" font-weight="700" fill="#0D5226" text-anchor="middle">Asset IQ</text>
+      <text x="430" y="144" font-size="9" fill="#137333" text-anchor="middle">Module 05 · Operations Domain</text>
+      <text x="430" y="162" font-size="9" fill="#0D5226" text-anchor="middle">Tier 1: RUL batch regression</text>
+      <text x="430" y="176" font-size="9" fill="#0D5226" text-anchor="middle">XGBoost · daily · GKE Autopilot</text>
+      <text x="430" y="194" font-size="9" fill="#0D5226" text-anchor="middle">Tier 2: Anomaly detection</text>
+      <text x="430" y="208" font-size="9" fill="#0D5226" text-anchor="middle">Isolation Forest · streaming · Cloud Run</text>
+      <text x="430" y="226" font-size="9" fill="#0D5226" text-anchor="middle">Cross-regional fleet pattern detection</text>
+      <text x="430" y="244" font-size="9" fill="#0D5226" text-anchor="middle">ISO 13485 DHR event writer</text>
+      <text x="430" y="262" font-size="8" fill="#137333" text-anchor="middle">Vertex AI · Pub/Sub · Firestore · BigQuery</text>
+      <text x="430" y="276" font-size="8" fill="#137333" text-anchor="middle">europe-west3 · VPC-SC perimeter</text>
+      <text x="430" y="292" font-size="8" fill="#137333" text-anchor="middle">12,000+ units · 6 regions</text>
+      <text x="430" y="308" font-size="8" fill="#137333" text-anchor="middle">Confidence threshold: ≥ 0.82 auto · &lt; 0.82 HITL</text>
+      <!-- Regional systems input -->
+      <rect x="20" y="40" width="195" height="100" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="117" y="62" font-size="10" font-weight="700" fill="#1557B0" text-anchor="middle">6 Regional Asset Systems</text>
+      <text x="117" y="76" font-size="8" fill="#1A73E8" text-anchor="middle">EMEA-North · EMEA-South</text>
+      <text x="117" y="88" font-size="8" fill="#1A73E8" text-anchor="middle">APAC-East · APAC-West</text>
+      <text x="117" y="100" font-size="8" fill="#1A73E8" text-anchor="middle">AME-North · AME-South</text>
+      <text x="117" y="113" font-size="8" fill="#1557B0" text-anchor="middle">DICOM service events · sensor telemetry</text>
+      <text x="117" y="126" font-size="8" fill="#1557B0" text-anchor="middle">Validated common schema via H1 pipeline</text>
+      <line x1="215" y1="90" x2="290" y2="195" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="220" y="112" width="64" height="24" rx="2" fill="#E8F0FE"/>
+      <text x="252" y="122" font-size="8" fill="#1557B0" text-anchor="middle">Pub/Sub</text>
+      <text x="252" y="133" font-size="8" fill="#1557B0" text-anchor="middle">unified schema</text>
+      <!-- Feature Store -->
+      <rect x="20" y="180" width="195" height="60" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="117" y="204" font-size="11" font-weight="700" fill="#3700B3" text-anchor="middle">Vertex AI Feature Store</text>
+      <text x="117" y="218" font-size="9" fill="#6200EE" text-anchor="middle">24 asset features · online + offline</text>
+      <text x="117" y="231" font-size="8" fill="#3700B3" text-anchor="middle">Feature lineage · quality score</text>
+      <line x1="215" y1="210" x2="290" y2="210" stroke="#6200EE" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <!-- FSM (HITL-06) -->
+      <rect x="20" y="290" width="195" height="68" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="117" y="314" font-size="11" font-weight="700" fill="#7A4100" text-anchor="middle">Field Service Manager</text>
+      <text x="117" y="328" font-size="9" fill="#B06000" text-anchor="middle">HITL-06 · low-confidence RUL</text>
+      <text x="117" y="342" font-size="8" fill="#7A4100" text-anchor="middle">Schedule / Dismiss / Verify</text>
+      <text x="117" y="354" font-size="8" fill="#7A4100" text-anchor="middle">8h SLA · auto-schedule on timeout</text>
+      <line x1="215" y1="324" x2="290" y2="280" stroke="#B06000" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <line x1="290" y1="295" x2="215" y2="340" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ctx)"/>
+      <!-- VP Field Service (HITL-07) -->
+      <rect x="650" y="100" width="185" height="80" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="742" y="126" font-size="11" font-weight="700" fill="#7A4100" text-anchor="middle">VP Field Service</text>
+      <text x="742" y="140" font-size="9" fill="#B06000" text-anchor="middle">HITL-07 · fleet anomaly</text>
+      <text x="742" y="154" font-size="8" fill="#7A4100" text-anchor="middle">≥ 3 units cross-regional pattern</text>
+      <text x="742" y="168" font-size="8" fill="#7A4100" text-anchor="middle">2h SLA · auto-escalate on timeout</text>
+      <line x1="570" y1="195" x2="650" y2="140" stroke="#B06000" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <!-- Salesforce work orders -->
+      <rect x="650" y="220" width="185" height="64" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="742" y="244" font-size="11" font-weight="700" fill="#1557B0" text-anchor="middle">Salesforce Cases</text>
+      <text x="742" y="258" font-size="9" fill="#1A73E8" text-anchor="middle">Preventive maintenance WO</text>
+      <text x="742" y="272" font-size="8" fill="#1557B0" text-anchor="middle">Auto-created ≥ 0.82 conf.</text>
+      <line x1="570" y1="250" x2="650" y2="252" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <!-- BigQuery DHR + Device -->
+      <rect x="650" y="330" width="185" height="72" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="742" y="356" font-size="11" font-weight="700" fill="#A50E0E" text-anchor="middle">BigQuery</text>
+      <text x="742" y="370" font-size="9" fill="#D93025" text-anchor="middle">Device entity · RUL scores</text>
+      <text x="742" y="384" font-size="9" fill="#D93025" text-anchor="middle">ISO 13485 DHR events</text>
+      <text x="742" y="396" font-size="8" fill="#A50E0E" text-anchor="middle">Audit trail · ae_audit dataset</text>
+      <line x1="570" y1="290" x2="742" y2="330" stroke="#D93025" stroke-width="1.5" marker-end="url(#ctx)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:2px solid #137333"></div>Asset IQ boundary (two-tier ML)</div>
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1.5px solid #1A73E8"></div>6 regional systems (input)</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:1.5px solid #B06000"></div>HITL actors (FSM + VP Field)</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1.5px solid #6200EE"></div>Feature Store (shared platform)</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1.5px solid #D93025"></div>BigQuery outputs (Device + DHR)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 ARCHITECTURE -->
+<section class="sec dk ap" id="architecture">
+  <div class="s-ey go">Architecture — Two-Tier ML</div>
+  <h2 class="s-h2">Batch RUL daily. <em>Streaming anomaly always on.</em></h2>
+  <p class="s-p">The two-tier architecture separates workloads by their time characteristics. The RUL regression is a batch job — run once daily across all 12,000 units using GKE Autopilot with GPU access. The anomaly detector is a streaming agent — always running on Cloud Run, processing individual sensor events in near-real time. Neither tier alone is sufficient. Together they cover both scheduled prediction and reactive detection.</p>
+  <div class="dw dk ap" role="img" aria-label="Asset IQ two-tier architecture. Tier 1 batch RUL: Pub/Sub asset events trigger daily GKE Autopilot batch job, reads 24 features from Vertex AI Feature Store offline store, runs XGBoost RUL regression on all 12000 units producing days-to-failure predictions and SHAP sensor attribution, high-confidence predictions above 0.82 create Salesforce work orders automatically, low-confidence route to HITL-06, all predictions write to BigQuery Device entity and ISO 13485 DHR. Tier 2 streaming anomaly: Cloud Run agent subscribes to Pub/Sub sensor events, reads Feature Store online store for real-time features, runs Isolation Forest anomaly scoring per unit, single-unit alerts above 0.75 route to HITL-06, cross-regional fleet patterns of 3 or more units route to HITL-07 VP Field Service, all state written to Firestore and BigQuery audit.">
+    <div class="dw-title">Asset IQ — GCP Architecture · Two-Tier ML</div>
+    <div class="dw-sub">Tier 1: GKE Autopilot batch RUL (daily) · Tier 2: Cloud Run streaming anomaly (always-on) · shared Feature Store + audit trail</div>
+    <svg width="100%" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="arch" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- VPC-SC -->
+      <rect x="8" y="8" width="882" height="506" rx="8" fill="none" stroke="rgba(217,48,37,.3)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="22" y="26" font-size="9" fill="rgba(239,154,154,.55)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · europe-west3</text>
+      <!-- Ingestion layer -->
+      <rect x="20" y="36" width="860" height="64" rx="4" fill="rgba(26,115,232,.05)" stroke="rgba(26,115,232,.1)" stroke-width="1"/>
+      <text x="32" y="54" font-size="9" fill="rgba(100,170,255,.4)" font-weight="500" letter-spacing=".06em">UNIFIED TELEMETRY INGESTION · H1 Foundation</text>
+      <rect x="32" y="60" width="130" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="97" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">EMEA-North</text>
+      <rect x="172" y="60" width="130" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="237" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">EMEA-South</text>
+      <rect x="312" y="60" width="130" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="377" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">APAC-East</text>
+      <rect x="452" y="60" width="130" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="517" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">APAC-West</text>
+      <rect x="592" y="60" width="130" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="657" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">AME-North</text>
+      <rect x="732" y="60" width="138" height="32" rx="3" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="801" y="80" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">AME-South</text>
+      <!-- All → Pub/Sub -->
+      <line x1="97" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <line x1="237" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <line x1="377" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <line x1="517" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <line x1="657" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <line x1="801" y1="92" x2="430" y2="118" stroke="rgba(26,115,232,.2)" stroke-width="1" marker-end="url(#arch)"/>
+      <!-- Pub/Sub bus -->
+      <rect x="310" y="118" width="240" height="40" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="430" y="134" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">Pub/Sub — ae-asset-events</text>
+      <text x="430" y="148" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">Validated common schema · Data Governance gated</text>
+      <!-- TIER 1 ZONE -->
+      <rect x="20" y="172" width="410" height="220" rx="4" fill="rgba(19,115,51,.04)" stroke="rgba(19,115,51,.1)" stroke-width="1"/>
+      <text x="32" y="190" font-size="9" fill="rgba(165,214,167,.5)" font-weight="500" letter-spacing=".06em">TIER 1 · BATCH RUL REGRESSION · Daily · GKE Autopilot</text>
+      <!-- GKE Autopilot batch job -->
+      <rect x="32" y="196" width="180" height="80" rx="4" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1.5"/>
+      <text x="122" y="220" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">GKE Autopilot</text>
+      <text x="122" y="234" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">RUL Batch Job</text>
+      <text x="122" y="246" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">n1-standard-8 · A100 GPU</text>
+      <text x="122" y="258" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">12,000 units/run · ~45min</text>
+      <text x="122" y="270" font-size="8" fill="rgba(19,115,51,.45)" text-anchor="middle">Vertex AI Pipelines triggered</text>
+      <line x1="310" y1="148" x2="122" y2="196" stroke="rgba(19,115,51,.3)" stroke-width="1.5" marker-end="url(#arch)" stroke-dasharray="4 3"/>
+      <!-- Vertex AI RUL endpoint -->
+      <rect x="232" y="196" width="180" height="80" rx="4" fill="rgba(156,39,176,.1)" stroke="rgba(156,39,176,.25)" stroke-width="1"/>
+      <text x="322" y="220" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">Vertex AI Endpoint</text>
+      <text x="322" y="234" font-size="8" fill="rgba(156,39,176,.6)" text-anchor="middle">XGBoost RUL regressor</text>
+      <text x="322" y="246" font-size="8" fill="rgba(156,39,176,.55)" text-anchor="middle">rul-model@v1.3</text>
+      <text x="322" y="258" font-size="8" fill="rgba(156,39,176,.5)" text-anchor="middle">days_to_failure + conf interval</text>
+      <text x="322" y="270" font-size="8" fill="rgba(156,39,176,.45)" text-anchor="middle">SHAP TreeExplainer</text>
+      <line x1="212" y1="236" x2="232" y2="236" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <!-- HITL routing boxes for Tier 1 -->
+      <rect x="32" y="290" width="180" height="48" rx="3" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="122" y="310" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">HITL-06</text>
+      <text x="122" y="323" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">conf &lt; 0.82 → FSM queue</text>
+      <rect x="232" y="290" width="180" height="48" rx="3" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="322" y="310" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">Auto Work Order</text>
+      <text x="322" y="323" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">conf ≥ 0.82 → Salesforce Case</text>
+      <line x1="122" y1="276" x2="122" y2="290" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <line x1="322" y1="276" x2="322" y2="290" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <text x="183" y="284" font-size="7" fill="rgba(217,48,37,.4)">conf &lt; 0.82</text>
+      <text x="262" y="284" font-size="7" fill="rgba(19,115,51,.4)">conf ≥ 0.82</text>
+      <!-- ISO 13485 DHR -->
+      <rect x="32" y="354" width="380" height="28" rx="3" fill="rgba(26,115,232,.08)" stroke="rgba(26,115,232,.15)" stroke-width="1"/>
+      <text x="222" y="372" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">ISO 13485 DHR Event · BigQuery ae_devices.dhr_events · written at every maintenance action</text>
+      <!-- TIER 2 ZONE -->
+      <rect x="450" y="172" width="430" height="220" rx="4" fill="rgba(176,96,0,.04)" stroke="rgba(176,96,0,.1)" stroke-width="1"/>
+      <text x="462" y="190" font-size="9" fill="rgba(255,183,77,.5)" font-weight="500" letter-spacing=".06em">TIER 2 · STREAMING ANOMALY DETECTION · Always-on · Cloud Run</text>
+      <!-- Cloud Run anomaly agent -->
+      <rect x="462" y="196" width="180" height="80" rx="4" fill="rgba(176,96,0,.12)" stroke="rgba(176,96,0,.3)" stroke-width="1.5"/>
+      <text x="552" y="220" font-size="10" font-weight="700" fill="#FFCC80" text-anchor="middle">Anomaly Agent</text>
+      <text x="552" y="234" font-size="8" fill="rgba(176,96,0,.6)" text-anchor="middle">Cloud Run · min 1 instance</text>
+      <text x="552" y="246" font-size="8" fill="rgba(176,96,0,.55)" text-anchor="middle">Pub/Sub subscriber</text>
+      <text x="552" y="258" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">sub-5min event latency</text>
+      <text x="552" y="270" font-size="8" fill="rgba(176,96,0,.45)" text-anchor="middle">SA: assetiq-sa@</text>
+      <line x1="550" y1="158" x2="552" y2="196" stroke="rgba(176,96,0,.3)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <!-- Vertex AI anomaly endpoint -->
+      <rect x="662" y="196" width="200" height="80" rx="4" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="762" y="220" font-size="10" font-weight="700" fill="#FFCC80" text-anchor="middle">Vertex AI Endpoint</text>
+      <text x="762" y="234" font-size="8" fill="rgba(176,96,0,.6)" text-anchor="middle">Isolation Forest per unit type</text>
+      <text x="762" y="246" font-size="8" fill="rgba(176,96,0,.55)" text-anchor="middle">anomaly-model-mri7t@v1.1</text>
+      <text x="762" y="258" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">anomaly_score 0–1 + top-3 sensors</text>
+      <text x="762" y="270" font-size="8" fill="rgba(176,96,0,.45)" text-anchor="middle">SHAP TreeExplainer (Isolation Forest)</text>
+      <line x1="642" y1="236" x2="662" y2="236" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <!-- Fleet pattern detection -->
+      <rect x="462" y="290" width="180" height="48" rx="3" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="552" y="310" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">HITL-07</text>
+      <text x="552" y="323" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">≥ 3 units · VP Field Service</text>
+      <rect x="662" y="290" width="200" height="48" rx="3" fill="rgba(217,48,37,.06)" stroke="rgba(217,48,37,.15)" stroke-width="1"/>
+      <text x="762" y="310" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">HITL-06</text>
+      <text x="762" y="323" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">score ≥ 0.75 single unit · FSM</text>
+      <line x1="552" y1="276" x2="552" y2="290" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <line x1="762" y1="276" x2="762" y2="290" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <text x="484" y="284" font-size="7" fill="rgba(217,48,37,.4)">fleet ≥ 3 units</text>
+      <text x="690" y="284" font-size="7" fill="rgba(217,48,37,.4)">score ≥ 0.75 unit</text>
+      <!-- BigQuery fleet query -->
+      <rect x="462" y="354" width="400" height="28" rx="3" fill="rgba(19,115,51,.06)" stroke="rgba(19,115,51,.12)" stroke-width="1"/>
+      <text x="662" y="372" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">BigQuery fleet pattern query · cross-regional anomaly pattern detection · ae_devices.anomaly_events</text>
+      <!-- Shared: Feature Store pointer -->
+      <rect x="310" y="400" width="280" height="36" rx="4" fill="rgba(98,0,238,.06)" stroke="rgba(98,0,238,.12)" stroke-width="1"/>
+      <text x="450" y="416" font-size="9" font-weight="500" fill="#CE93D8" text-anchor="middle">Vertex AI Feature Store · 24 asset features</text>
+      <text x="450" y="428" font-size="8" fill="rgba(98,0,238,.4)" text-anchor="middle">Tier 1: offline store for batch · Tier 2: online store for streaming</text>
+      <line x1="222" y1="355" x2="380" y2="400" stroke="rgba(98,0,238,.2)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arch)"/>
+      <line x1="552" y1="355" x2="520" y2="400" stroke="rgba(98,0,238,.2)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arch)"/>
+      <!-- Tier 2 trigger from Pub/Sub -->
+      <line x1="550" y1="158" x2="462" y2="174" stroke="rgba(176,96,0,.2)" stroke-width="1" stroke-dasharray="3 2"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:rgba(19,115,51,.2);border:1.5px solid #137333"></div>Tier 1 — GKE batch RUL (daily)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(176,96,0,.2);border:1.5px solid #B06000"></div>Tier 2 — Cloud Run streaming anomaly</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(26,115,232,.15);border:1px solid #1A73E8"></div>Unified ingestion (6 regions)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(217,48,37,.1);border:1px solid rgba(217,48,37,.4)"></div>HITL-06/07 routing</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(98,0,238,.1);border:1px solid rgba(98,0,238,.3)"></div>Shared Feature Store</div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 STATE MACHINES -->
+<section class="sec ap" id="statemachine">
+  <div class="s-ey pu">Agent State Machines — Side by Side</div>
+  <h2 class="s-h2">Two agents. Two state machines. <em>One deployed per compute tier.</em></h2>
+  <p class="s-p">The RUL Batch Agent and the Anomaly Detection Agent are separate ADK deployments on separate compute substrates. Showing them side by side makes the parallel nature of the two-tier architecture immediately visible — different triggers, different processing patterns, different HITL paths, but the same shared platform underneath.</p>
+  <div class="dw ap" role="img" aria-label="Two state machines side by side. Left: RUL Batch Agent states: IDLE triggered by Cloud Scheduler daily, INGESTING reading Pub/Sub batch and Feature Store offline, PREDICTING running XGBoost RUL on all units, SHAP computing sensor attribution, then branching to AUTO-WORK-ORDER for confidence above 0.82 or HITL-06-PAUSE for confidence below 0.82, then DHR-WRITING ISO 13485 records, COMPLETE, and ERROR branch. Right: Anomaly Detection Agent states: IDLE always monitoring Pub/Sub stream, ENRICHING fetching online features per event, SCORING running Isolation Forest with SHAP, branching to FLEET-QUERY for BigQuery cross-regional lookup if score above 0.75, then HITL-07-PAUSE for fleet patterns of 3 or more units or HITL-06-PAUSE for single unit, ALERTING for medium severity, COMPLETE, and ERROR.">
+    <div class="dw-title">Asset IQ — Parallel State Machines · RUL Batch Agent (left) · Anomaly Detection Agent (right)</div>
+    <div class="dw-sub">Same shared platform · different compute substrate · different trigger · different HITL paths</div>
+    <svg width="100%" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="fsm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- DIVIDER -->
+      <line x1="450" y1="10" x2="450" y2="490" stroke="#DADCE0" stroke-width="1" stroke-dasharray="6 4"/>
+      <!-- LEFT HEADER: RUL Batch Agent -->
+      <rect x="20" y="10" width="410" height="30" rx="4" fill="rgba(19,115,51,.08)" stroke="rgba(19,115,51,.15)" stroke-width="1"/>
+      <text x="225" y="29" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">RUL BATCH AGENT · GKE Autopilot · Daily · Cloud Scheduler trigger</text>
+      <!-- RIGHT HEADER: Anomaly Agent -->
+      <rect x="460" y="10" width="420" height="30" rx="4" fill="rgba(176,96,0,.08)" stroke="rgba(176,96,0,.15)" stroke-width="1"/>
+      <text x="670" y="29" font-size="10" font-weight="700" fill="#7A4100" text-anchor="middle">ANOMALY DETECTION AGENT · Cloud Run · Always-on · Pub/Sub subscriber</text>
+      <!-- ══ LEFT FSM ══ -->
+      <!-- IDLE L -->
+      <rect x="140" y="56" width="90" height="36" rx="18" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1.5"/>
+      <text x="185" y="78" font-size="10" font-weight="500" fill="#5F6368" text-anchor="middle">IDLE</text>
+      <circle cx="90" cy="74" r="6" fill="#202124"/>
+      <line x1="96" y1="74" x2="140" y2="74" stroke="#202124" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <text x="118" y="68" font-size="7" fill="#80868B" text-anchor="middle">scheduler</text>
+      <!-- INGESTING L -->
+      <rect x="110" y="110" width="150" height="44" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="185" y="129" font-size="10" font-weight="500" fill="#0D5226" text-anchor="middle">INGESTING</text>
+      <text x="185" y="143" font-size="8" fill="#137333" text-anchor="middle">Pub/Sub batch · Feature Store</text>
+      <line x1="185" y1="92" x2="185" y2="110" stroke="#137333" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- PREDICTING L -->
+      <rect x="110" y="170" width="150" height="44" rx="4" fill="rgba(156,39,176,.1)" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="185" y="189" font-size="10" font-weight="500" fill="#3700B3" text-anchor="middle">PREDICTING</text>
+      <text x="185" y="203" font-size="8" fill="#6200EE" text-anchor="middle">XGBoost RUL · all 12K units</text>
+      <line x1="185" y1="154" x2="185" y2="170" stroke="#6200EE" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- SHAP COMPUTING L -->
+      <rect x="110" y="230" width="150" height="44" rx="4" fill="rgba(156,39,176,.08)" stroke="rgba(156,39,176,.3)" stroke-width="1"/>
+      <text x="185" y="249" font-size="10" font-weight="500" fill="#3700B3" text-anchor="middle">SHAP COMPUTING</text>
+      <text x="185" y="263" font-size="8" fill="#6200EE" text-anchor="middle">Top-3 sensor attr. per alert</text>
+      <line x1="185" y1="214" x2="185" y2="230" stroke="rgba(156,39,176,.4)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- Branch: conf ≥ 0.82 auto -->
+      <line x1="260" y1="252" x2="320" y2="252" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#fsm)" stroke-dasharray="4 3"/>
+      <text x="290" y="246" font-size="7" fill="rgba(19,115,51,.6)">conf ≥ 0.82</text>
+      <rect x="320" y="232" width="110" height="40" rx="3" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="375" y="250" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">AUTO WORK ORDER</text>
+      <text x="375" y="263" font-size="7" fill="rgba(19,115,51,.5)" text-anchor="middle">Salesforce Case created</text>
+      <!-- Branch: conf < 0.82 HITL-06 L -->
+      <line x1="185" y1="274" x2="185" y2="300" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <text x="197" y="290" font-size="7" fill="rgba(217,48,37,.5)">conf &lt; 0.82</text>
+      <rect x="100" y="300" width="170" height="52" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="2"/>
+      <text x="185" y="320" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">HITL-06 PAUSE</text>
+      <text x="185" y="334" font-size="8" fill="#D93025" text-anchor="middle">FSM review · 8h SLA</text>
+      <text x="185" y="345" font-size="7" fill="rgba(217,48,37,.5)" text-anchor="middle">auto-schedule preventive on timeout</text>
+      <!-- DHR WRITING L -->
+      <rect x="110" y="368" width="150" height="36" rx="4" fill="rgba(26,115,232,.1)" stroke="rgba(26,115,232,.25)" stroke-width="1.5"/>
+      <text x="185" y="384" font-size="10" font-weight="500" fill="#1557B0" text-anchor="middle">DHR WRITING</text>
+      <text x="185" y="397" font-size="8" fill="#1A73E8" text-anchor="middle">ISO 13485 · BigQuery</text>
+      <line x1="185" y1="352" x2="185" y2="368" stroke="#D93025" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <line x1="375" y1="272" x2="185" y2="368" stroke="rgba(19,115,51,.3)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#fsm)"/>
+      <!-- COMPLETE L -->
+      <rect x="130" y="420" width="110" height="36" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="185" y="442" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">COMPLETE</text>
+      <line x1="185" y1="404" x2="185" y2="420" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <circle cx="185" cy="476" r="7" fill="#137333"/>
+      <circle cx="185" cy="476" r="11" fill="none" stroke="#137333" stroke-width="2"/>
+      <line x1="185" y1="456" x2="185" y2="465" stroke="#137333" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- ERROR L -->
+      <rect x="20" y="300" width="70" height="36" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="55" y="318" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">ERROR</text>
+      <text x="55" y="330" font-size="7" fill="#B06000" text-anchor="middle">HITL fallback</text>
+      <line x1="110" y1="192" x2="55" y2="300" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#fsm)"/>
+      <!-- ══ RIGHT FSM ══ -->
+      <!-- IDLE R -->
+      <rect x="580" y="56" width="90" height="36" rx="18" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1.5"/>
+      <text x="625" y="78" font-size="10" font-weight="500" fill="#5F6368" text-anchor="middle">IDLE</text>
+      <circle cx="530" cy="74" r="6" fill="#202124"/>
+      <line x1="536" y1="74" x2="580" y2="74" stroke="#202124" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <text x="558" y="68" font-size="7" fill="#80868B" text-anchor="middle">always-on</text>
+      <!-- MONITORING R -->
+      <rect x="550" y="110" width="150" height="44" rx="4" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1.5"/>
+      <text x="625" y="129" font-size="10" font-weight="500" fill="#7A4100" text-anchor="middle">MONITORING</text>
+      <text x="625" y="143" font-size="8" fill="#B06000" text-anchor="middle">Pub/Sub stream · sub-5min</text>
+      <line x1="625" y1="92" x2="625" y2="110" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- ENRICHING R -->
+      <rect x="550" y="170" width="150" height="44" rx="4" fill="rgba(176,96,0,.08)" stroke="rgba(176,96,0,.2)" stroke-width="1"/>
+      <text x="625" y="189" font-size="10" font-weight="500" fill="#7A4100" text-anchor="middle">ENRICHING</text>
+      <text x="625" y="203" font-size="8" fill="#B06000" text-anchor="middle">Feature Store online · Z-score</text>
+      <line x1="625" y1="154" x2="625" y2="170" stroke="rgba(176,96,0,.35)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- SCORING R -->
+      <rect x="550" y="230" width="150" height="44" rx="4" fill="rgba(156,39,176,.1)" stroke="rgba(156,39,176,.25)" stroke-width="1.5"/>
+      <text x="625" y="249" font-size="10" font-weight="500" fill="#3700B3" text-anchor="middle">SCORING</text>
+      <text x="625" y="263" font-size="8" fill="#6200EE" text-anchor="middle">Isolation Forest + SHAP</text>
+      <line x1="625" y1="214" x2="625" y2="230" stroke="rgba(156,39,176,.4)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- FLEET QUERY -->
+      <rect x="730" y="230" width="140" height="44" rx="4" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="800" y="249" font-size="10" font-weight="500" fill="#0D5226" text-anchor="middle">FLEET QUERY</text>
+      <text x="800" y="263" font-size="8" fill="#137333" text-anchor="middle">BQ cross-regional lookup</text>
+      <line x1="700" y1="252" x2="730" y2="252" stroke="rgba(19,115,51,.35)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <text x="715" y="246" font-size="7" fill="rgba(19,115,51,.5)">score ≥ 0.75</text>
+      <!-- HITL-07 fleet -->
+      <rect x="730" y="300" width="140" height="52" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="2"/>
+      <text x="800" y="320" font-size="10" font-weight="700" fill="#7A4100" text-anchor="middle">HITL-07 PAUSE</text>
+      <text x="800" y="334" font-size="8" fill="#B06000" text-anchor="middle">VP Field Service · 2h SLA</text>
+      <text x="800" y="345" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">auto-escalate · recall review path</text>
+      <line x1="800" y1="274" x2="800" y2="300" stroke="#B06000" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <text x="812" y="290" font-size="7" fill="#B06000">≥ 3 units</text>
+      <!-- HITL-06 unit R -->
+      <rect x="550" y="300" width="150" height="52" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="2"/>
+      <text x="625" y="320" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">HITL-06 PAUSE</text>
+      <text x="625" y="334" font-size="8" fill="#D93025" text-anchor="middle">FSM · 8h SLA · anomaly</text>
+      <text x="625" y="345" font-size="7" fill="rgba(217,48,37,.5)" text-anchor="middle">single unit · &lt; 3 cross-regional</text>
+      <line x1="625" y1="274" x2="625" y2="300" stroke="rgba(217,48,37,.4)" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- ALERTING (medium, no HITL) -->
+      <rect x="460" y="300" width="80" height="52" rx="3" fill="#E4F7F7" stroke="#007B83" stroke-width="1"/>
+      <text x="500" y="320" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">ALERTING</text>
+      <text x="500" y="333" font-size="7" fill="#007B83" text-anchor="middle">medium severity</text>
+      <text x="500" y="344" font-size="7" fill="#007B83" text-anchor="middle">no HITL req'd</text>
+      <line x1="550" y1="274" x2="500" y2="300" stroke="#007B83" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#fsm)"/>
+      <text x="516" y="286" font-size="7" fill="#007B83">0.65–0.75</text>
+      <!-- COMPLETE R -->
+      <rect x="575" y="368" width="100" height="36" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="625" y="390" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">COMPLETE</text>
+      <line x1="625" y1="352" x2="625" y2="368" stroke="#D93025" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <line x1="800" y1="352" x2="625" y2="368" stroke="#B06000" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#fsm)"/>
+      <line x1="500" y1="352" x2="625" y2="368" stroke="#007B83" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#fsm)"/>
+      <circle cx="625" cy="440" r="7" fill="#137333"/>
+      <circle cx="625" cy="440" r="11" fill="none" stroke="#137333" stroke-width="2"/>
+      <line x1="625" y1="404" x2="625" y2="429" stroke="#137333" stroke-width="1.5" marker-end="url(#fsm)"/>
+      <!-- ERROR R -->
+      <rect x="840" y="170" width="48" height="36" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="864" y="192" font-size="8" font-weight="500" fill="#7A4100" text-anchor="middle">ERROR</text>
+      <line x1="700" y1="192" x2="840" y2="188" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#fsm)"/>
+      <!-- Audit rail -->
+      <rect x="20" y="478" width="860" height="16" rx="2" fill="rgba(98,0,238,.05)" stroke="rgba(98,0,238,.12)" stroke-width="1"/>
+      <text x="450" y="490" font-size="8" fill="rgba(98,0,238,.5)" text-anchor="middle" font-weight="500">Immutable audit at every transition · SHAP before HITL · Firestore state · BigQuery ae_devices · ISO 13485 DHR</text>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:1.5px solid #137333"></div>RUL batch states</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:2px solid #B06000"></div>HITL-06 (FSM) · HITL-07 (VP Field)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(176,96,0,.12);border:1.5px solid #B06000"></div>Anomaly detection states</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:2px solid #D93025"></div>HITL-06 (unit anomaly)</div>
+      <div class="dl"><div class="dl-box" style="background:#E4F7F7;border:1px solid #007B83"></div>ALERTING (medium, no HITL)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §04 DATA FLOWS -->
+<section class="sec w ap" id="dataflow">
+  <div class="s-ey gr">Data Flows — Two Sequences</div>
+  <h2 class="s-h2">RUL low-confidence prediction. <em>Then fleet anomaly.</em></h2>
+  <p class="s-p">Two sequences. The first shows the daily RUL run finding a low-confidence prediction for the München MRI-7T — the same unit from the ContractGuard and RevRec AI demos, showing portfolio continuity. The second shows the fleet anomaly detection surfacing a cross-regional pattern across four EMEA-North units.</p>
+
+  <!-- Sequence 1: RUL -->
+  <div class="dw ap" role="img" aria-label="Sequence 1: RUL batch prediction. Cloud Scheduler triggers GKE Autopilot batch job daily at 02:00 UTC. Job reads 12000 units from Feature Store offline store, calls Vertex AI RUL endpoint, receives predictions including MRI-7T unit ID MRI-7T-MCH-0042 with 8.4 days RUL and confidence 0.78 below 0.82 threshold. SHAP written to BigQuery before HITL. HITL-06 created in Firestore for FSM with top 3 sensors shown. FSM schedules maintenance work order. Salesforce Case created. ISO 13485 DHR event written. Complete.">
+    <div class="dw-title">Sequence 1 — Daily RUL Batch: Low-Confidence Prediction → HITL-06</div>
+    <div class="dw-sub">MRI-7T unit in Universitätsklinikum München · 8.4 days RUL · confidence 0.78 · below threshold → Field Service Manager queue</div>
+    <svg width="100%" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="s1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Lifelines -->
+      <rect x="10" y="10" width="90" height="28" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1"/>
+      <text x="55" y="28" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Scheduler</text>
+      <line x1="55" y1="38" x2="55" y2="388" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+      <rect x="155" y="10" width="120" height="28" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="215" y="28" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">RUL Batch Agent</text>
+      <line x1="215" y1="38" x2="215" y2="388" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="330" y="10" width="110" height="28" rx="3" fill="rgba(156,39,176,.1)" stroke="#6200EE" stroke-width="1"/>
+      <text x="385" y="28" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">Vertex AI + SHAP</text>
+      <line x1="385" y1="38" x2="385" y2="388" stroke="#6200EE" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="495" y="10" width="90" height="28" rx="3" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="540" y="28" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">HITL / Firestore</text>
+      <line x1="540" y1="38" x2="540" y2="388" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="640" y="10" width="100" height="28" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1"/>
+      <text x="690" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Field Svc Mgr</text>
+      <line x1="690" y1="38" x2="690" y2="388" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="795" y="10" width="90" height="28" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="840" y="28" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Salesforce</text>
+      <line x1="840" y1="38" x2="840" y2="388" stroke="#1A73E8" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <!-- Step 1 -->
+      <line x1="55" y1="62" x2="209" y2="62" stroke="#137333" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="60" y="50" width="145" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="132" y="61" font-size="8" fill="#0D5226" text-anchor="middle">Daily trigger · 02:00 UTC</text>
+      <text x="10" y="62" font-size="8" fill="#80868B" text-anchor="end">t+0</text>
+      <!-- Step 2: fetch features -->
+      <line x1="215" y1="82" x2="379" y2="82" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="70" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="297" y="81" font-size="8" fill="#3700B3" text-anchor="middle">get_offline_features(all_devices)</text>
+      <text x="10" y="82" font-size="8" fill="#80868B" text-anchor="end">t+2min</text>
+      <!-- Step 3: RUL inference -->
+      <line x1="215" y1="106" x2="379" y2="106" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="94" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="297" y="105" font-size="8" fill="#3700B3" text-anchor="middle">batch_predict(12,000 feature vectors)</text>
+      <text x="10" y="106" font-size="8" fill="#80868B" text-anchor="end">t+5min</text>
+      <!-- Returns -->
+      <line x1="379" y1="126" x2="221" y2="126" stroke="#6200EE" stroke-width="1" marker-end="url(#s1)" stroke-dasharray="3 2"/>
+      <rect x="225" y="114" width="149" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="299" y="125" font-size="8" fill="#6200EE" text-anchor="middle">predictions[12,000] · MCH-0042: 8.4d · conf 0.78</text>
+      <text x="10" y="126" font-size="8" fill="#80868B" text-anchor="end">t+47min</text>
+      <!-- Step 4: SHAP -->
+      <line x1="215" y1="150" x2="379" y2="150" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="138" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="297" y="149" font-size="8" fill="#3700B3" text-anchor="middle">shap_values(MCH-0042 features)</text>
+      <text x="10" y="150" font-size="8" fill="#80868B" text-anchor="end">t+48min</text>
+      <!-- Step 5: SHAP to BQ before HITL -->
+      <line x1="215" y1="174" x2="534" y2="174" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="162" width="309" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="374" y="173" font-size="8" fill="#3700B3" text-anchor="middle">BQ write: shap_explanations(MCH-0042) BEFORE HITL · EU AI Act Art. 13</text>
+      <text x="10" y="174" font-size="8" fill="#80868B" text-anchor="end">t+49min</text>
+      <!-- Step 6: HITL-06 -->
+      <line x1="215" y1="198" x2="534" y2="198" stroke="#D93025" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="186" width="309" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="374" y="197" font-size="8" fill="#A50E0E" text-anchor="middle">hitl.create(HITL-06, MCH-0042, rul=8.4d, conf=0.78, shap_top3_sensors)</text>
+      <text x="10" y="198" font-size="8" fill="#80868B" text-anchor="end">t+50min</text>
+      <!-- HITL pause -->
+      <rect x="10" y="210" width="880" height="22" rx="2" fill="rgba(217,48,37,.04)" stroke="rgba(217,48,37,.1)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="450" y="225" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle" font-weight="500">⏸ HITL-06 PAUSE — Field Service Manager reviewing · 8h SLA</text>
+      <!-- Step 7: FSM schedules -->
+      <line x1="684" y1="242" x2="221" y2="242" stroke="#137333" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="225" y="230" width="454" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="452" y="241" font-size="8" fill="#0D5226" text-anchor="middle">HITL-06 decision: SCHEDULE_MAINTENANCE · planned intervention 2026-03-22</text>
+      <text x="10" y="242" font-size="8" fill="#80868B" text-anchor="end">t+2.3h</text>
+      <!-- Step 8: Salesforce Case -->
+      <line x1="215" y1="266" x2="834" y2="266" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="254" width="609" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="524" y="265" font-size="8" fill="#1557B0" text-anchor="middle">salesforce.create_case(type=PREVENTIVE, unit=MCH-0042, due=2026-03-22, shap_ref, hitl_ref)</text>
+      <text x="10" y="266" font-size="8" fill="#80868B" text-anchor="end">t+2.3h</text>
+      <!-- Step 9: DHR -->
+      <line x1="215" y1="290" x2="534" y2="290" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#s1)"/>
+      <rect x="220" y="278" width="309" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="374" y="289" font-size="8" fill="#1557B0" text-anchor="middle">bigquery.write_dhr_event(MCH-0042, type=PREDICTIVE_MAINTENANCE, ISO13485_ref)</text>
+      <text x="10" y="290" font-size="8" fill="#80868B" text-anchor="end">t+2.3h</text>
+      <!-- COMPLETE -->
+      <line x1="534" y1="314" x2="221" y2="314" stroke="#137333" stroke-width="1" marker-end="url(#s1)" stroke-dasharray="3 2"/>
+      <rect x="225" y="302" width="304" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="377" y="313" font-size="8" fill="#0D5226" text-anchor="middle">state: COMPLETE · 11,999 auto WOs + 1 HITL-06 resolved · audit closed</text>
+      <text x="10" y="314" font-size="8" fill="#80868B" text-anchor="end">t+2.4h</text>
+    </svg>
+  </div>
+
+  <!-- Sequence 2: Fleet Anomaly -->
+  <div class="dw ap" style="margin-top:4px" role="img" aria-label="Sequence 2: Fleet anomaly detection. Anomaly agent receives sensor event from EMEA-North unit MRI-7T-DUS-0118. Scores at 0.83, above 0.75 threshold. Queries BigQuery for cross-regional pattern. Finds 4 units with similar anomaly profiles across EMEA-North. Triggers HITL-07 to VP Field Service with fleet context, 4 affected units, similarity scores. VP Field Service decides Fleet Alert. Work orders created for all 4 units. DHR events written.">
+    <div class="dw-title">Sequence 2 — Streaming Anomaly: Cross-Regional Fleet Pattern → HITL-07</div>
+    <div class="dw-sub">Düsseldorf MRI-7T sensor event triggers anomaly · BigQuery fleet query finds 4-unit pattern across EMEA-North · VP Field Service HITL-07</div>
+    <svg width="100%" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="s2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Lifelines -->
+      <rect x="10" y="10" width="110" height="28" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="65" y="28" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">Sensor Event</text>
+      <line x1="65" y1="38" x2="65" y2="348" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+      <rect x="175" y="10" width="120" height="28" rx="3" fill="rgba(176,96,0,.12)" stroke="#B06000" stroke-width="1.5"/>
+      <text x="235" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Anomaly Agent</text>
+      <line x1="235" y1="38" x2="235" y2="348" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="350" y="10" width="110" height="28" rx="3" fill="rgba(156,39,176,.1)" stroke="#6200EE" stroke-width="1"/>
+      <text x="405" y="28" font-size="9" font-weight="500" fill="#3700B3" text-anchor="middle">Vertex AI + SHAP</text>
+      <line x1="405" y1="38" x2="405" y2="348" stroke="#6200EE" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="515" y="10" width="80" height="28" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1"/>
+      <text x="555" y="28" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">BigQuery</text>
+      <line x1="555" y1="38" x2="555" y2="348" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="650" y="10" width="90" height="28" rx="3" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="695" y="28" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">HITL / Firestore</text>
+      <line x1="695" y1="38" x2="695" y2="348" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="795" y="10" width="90" height="28" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1"/>
+      <text x="840" y="28" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">VP Field Svc</text>
+      <line x1="840" y1="38" x2="840" y2="348" stroke="#B06000" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <!-- Steps -->
+      <line x1="65" y1="62" x2="229" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="70" y="50" width="154" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="147" y="61" font-size="8" fill="#1557B0" text-anchor="middle">sensor_event: DUS-0118 · rf_power_deviation spike</text>
+      <text x="10" y="62" font-size="8" fill="#80868B" text-anchor="end">t+0</text>
+      <line x1="235" y1="82" x2="399" y2="82" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="240" y="70" width="154" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="317" y="81" font-size="8" fill="#3700B3" text-anchor="middle">get_online_features(DUS-0118) + anomaly_score()</text>
+      <text x="10" y="82" font-size="8" fill="#80868B" text-anchor="end">t+8s</text>
+      <line x1="399" y1="102" x2="241" y2="102" stroke="#6200EE" stroke-width="1" marker-end="url(#s2)" stroke-dasharray="3 2"/>
+      <rect x="245" y="90" width="149" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="319" y="101" font-size="8" fill="#6200EE" text-anchor="middle">anomaly_score: 0.83 · top-3 sensors · SHAP</text>
+      <text x="10" y="102" font-size="8" fill="#80868B" text-anchor="end">t+10s</text>
+      <!-- SHAP to BQ -->
+      <line x1="235" y1="126" x2="689" y2="126" stroke="#6200EE" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="240" y="114" width="444" height="14" rx="2" fill="#EDE7F6"/>
+      <text x="462" y="125" font-size="8" fill="#3700B3" text-anchor="middle">BQ write: shap_explanations(DUS-0118) BEFORE HITL · EU AI Act Art. 13</text>
+      <text x="10" y="126" font-size="8" fill="#80868B" text-anchor="end">t+12s</text>
+      <!-- Fleet query -->
+      <line x1="235" y1="150" x2="549" y2="150" stroke="#137333" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="240" y="138" width="304" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="392" y="149" font-size="8" fill="#0D5226" text-anchor="middle">bigquery.query_fleet_patterns(sensor=rf_power_deviation, region=EMEA-North)</text>
+      <text x="10" y="150" font-size="8" fill="#80868B" text-anchor="end">t+14s</text>
+      <line x1="549" y1="170" x2="241" y2="170" stroke="#137333" stroke-width="1" marker-end="url(#s2)" stroke-dasharray="3 2"/>
+      <rect x="245" y="158" width="299" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="394" y="169" font-size="8" fill="#137333" text-anchor="middle">4 units matching: DUS-0118(0.83) · DUS-0041(0.79) · HAM-0022(0.76) · CGN-0009(0.75)</text>
+      <text x="10" y="170" font-size="8" fill="#80868B" text-anchor="end">t+16s</text>
+      <!-- HITL-07 -->
+      <line x1="235" y1="194" x2="689" y2="194" stroke="#D93025" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="240" y="182" width="444" height="14" rx="2" fill="#FCE8E6"/>
+      <text x="462" y="193" font-size="8" fill="#A50E0E" text-anchor="middle">hitl.create(HITL-07, 4 units affected, scores, regions, SHAP, recommended: FLEET_ALERT)</text>
+      <text x="10" y="194" font-size="8" fill="#80868B" text-anchor="end">t+18s</text>
+      <!-- HITL pause -->
+      <rect x="10" y="206" width="880" height="22" rx="2" fill="rgba(217,48,37,.04)" stroke="rgba(217,48,37,.1)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="450" y="221" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle" font-weight="500">⏸ HITL-07 PAUSE — VP Field Service reviewing fleet alert · 2h SLA</text>
+      <!-- VP decision -->
+      <line x1="834" y1="238" x2="241" y2="238" stroke="#137333" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="245" y="226" width="584" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="537" y="237" font-size="8" fill="#0D5226" text-anchor="middle">HITL-07 decision: FLEET_ALERT · dispatch engineers to all 4 units · escalate to VP Engineering for recall review</text>
+      <text x="10" y="238" font-size="8" fill="#80868B" text-anchor="end">t+42min</text>
+      <!-- Work orders + DHR -->
+      <line x1="235" y1="262" x2="549" y2="262" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#s2)"/>
+      <rect x="240" y="250" width="304" height="14" rx="2" fill="#E8F0FE"/>
+      <text x="392" y="261" font-size="8" fill="#1557B0" text-anchor="middle">4 × salesforce.create_case(EMERGENCY_MAINTENANCE) + 4 × dhr_event writes</text>
+      <text x="10" y="262" font-size="8" fill="#80868B" text-anchor="end">t+43min</text>
+      <!-- Complete -->
+      <line x1="549" y1="286" x2="241" y2="286" stroke="#137333" stroke-width="1" marker-end="url(#s2)" stroke-dasharray="3 2"/>
+      <rect x="245" y="274" width="299" height="14" rx="2" fill="#E6F4EA"/>
+      <text x="394" y="285" font-size="8" fill="#0D5226" text-anchor="middle">state: COMPLETE · 4 work orders · fleet alert active · audit closed</text>
+      <text x="10" y="286" font-size="8" fill="#80868B" text-anchor="end">t+44min</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §05 HITL-06 UI -->
+<section class="sec ap" id="hitl">
+  <div class="s-ey am">HITL-06 Presentation</div>
+  <h2 class="s-h2">What the Field Service Manager sees — <em>sensor context before the decision.</em></h2>
+  <p class="s-p">HITL-06 differs from RevRec AI and ContractGuard in one important way: the human reviewer is in the field, not in an office. The interface must communicate urgency, sensor context, and decision clarity in a format that works at a glance. Three decisions: schedule a planned intervention, dismiss the alert, or request on-site verification before committing to a work order.</p>
+  <div class="ap">
+    <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px">HITL-06 · Field Service Manager Queue — Unit MRI-7T-MCH-0042 · Universitätsklinikum München</div>
+    <div class="hitl-mockup">
+      <div class="hm-titlebar">
+        <div class="hm-dot" style="background:#FF5F57"></div>
+        <div class="hm-dot" style="background:#FFBD2E"></div>
+        <div class="hm-dot" style="background:#28CA41"></div>
+        <div class="hm-title">Asset IQ — HITL-06 Review · MRI-7T-MCH-0042 · SLA: 5h 47m remaining · conf: 0.78 below threshold</div>
+      </div>
+      <div class="hm-body">
+        <div class="hm-main">
+          <div class="hm-sec-label">RUL Prediction</div>
+          <div class="rul-result">
+            <div>
+              <div class="rul-label">PREDICTED DAYS TO FAILURE</div>
+              <div class="rul-days">8.4</div>
+              <div style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.45);margin-top:4px">days · q10: 4.2d · q90: 14.1d</div>
+            </div>
+            <div class="rul-conf-wrap" style="flex:1">
+              <div class="rul-label">MODEL CONFIDENCE</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="rul-conf-bar" style="flex:1"><div class="rul-conf-fill" style="width:78%"></div></div>
+                <div class="rul-conf-val">0.78</div>
+              </div>
+              <div class="rul-below">Below auto-threshold (0.82) → human review required</div>
+            </div>
+          </div>
+
+          <div class="hm-sec-label">SHAP Sensor Attribution — Top 3 Features Driving Failure Prediction</div>
+          <div style="background:var(--surface-2);border-radius:4px;padding:12px;margin-bottom:12px">
+            <div class="sensor-row">
+              <div class="sensor-name">gradient_coil_temp_p95</div>
+              <div class="sensor-curr warn">73.4°C</div>
+              <div class="sensor-baseline">baseline: 61.2°C</div>
+              <div class="sensor-shap-bar"><div class="sensor-shap-fill" style="width:78%"></div></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--text-3);margin-bottom:8px;padding-left:248px">SHAP: −3.8 days · 19.9% above 90-day baseline</div>
+            <div class="sensor-row">
+              <div class="sensor-name">helium_level_slope</div>
+              <div class="sensor-curr warn">−0.041 L/day</div>
+              <div class="sensor-baseline">baseline: −0.018 L/day</div>
+              <div class="sensor-shap-bar"><div class="sensor-shap-fill" style="width:56%"></div></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--text-3);margin-bottom:8px;padding-left:248px">SHAP: −2.7 days · 2.3× faster depletion than baseline</div>
+            <div class="sensor-row">
+              <div class="sensor-name">rf_power_deviation</div>
+              <div class="sensor-curr warn">+14.2 dB</div>
+              <div class="sensor-baseline">baseline: ±2.1 dB</div>
+              <div class="sensor-shap-bar"><div class="sensor-shap-fill" style="width:34%"></div></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--text-3);padding-left:248px">SHAP: −1.6 days · 6.8× above normal variance</div>
+          </div>
+
+          <div class="hm-sec-label">ISO 13485 Context</div>
+          <div class="dhr-box">
+            <strong style="font-weight:500">Device History Record — MRI-7T-MCH-0042</strong><br>
+            Last planned maintenance: 2025-09-14 · 182 days ago<br>
+            Last unplanned event: None in past 12 months<br>
+            Cumulative scan count: 4,847 · utilisation: 68% of rated capacity<br>
+            Unit age: 38 months · warranty status: Active (expires 2027-01-31)<br>
+            Any work order created will generate an ISO 13485 DHR event in BigQuery ae_devices.dhr_events
+          </div>
+
+          <div class="hm-actions">
+            <div class="hm-btn-sched">✓ Schedule Maintenance</div>
+            <div class="hm-btn-dismiss">✗ Dismiss + Reason</div>
+            <div class="hm-btn-verify">↗ On-site Verify</div>
+          </div>
+          <div class="hm-sla">⏱ SLA: 5h 47m remaining · Timeout → auto-schedule preventive maintenance · Decision immutably recorded</div>
+        </div>
+        <div class="hm-sidebar">
+          <div class="hm-sec-label">Unit Detail</div>
+          <div class="hm-cf-label">Unit ID</div>
+          <div class="hm-cf-val">MRI-7T-MCH-0042</div>
+          <div class="hm-cf-label">Model</div>
+          <div class="hm-cf-val">ClaraVis MRI-7T Gen 1</div>
+          <div class="hm-cf-label">Location</div>
+          <div class="hm-cf-val">Universitätsklinikum München · Radiology Dept B · Ward 4</div>
+          <div class="hm-cf-label">Region</div>
+          <div class="hm-cf-val">EMEA-North</div>
+          <div class="hm-cf-label">Confidence vs threshold</div>
+          <div class="hm-cf-val" style="color:#A50E0E;font-weight:500">0.78 vs 0.82 threshold<br>→ HITL-06 required</div>
+          <div class="hm-cf-label">HITL checkpoint</div>
+          <div class="hm-cf-val">HITL-06 · 8h SLA</div>
+          <div class="hm-cf-label">SHAP record</div>
+          <div class="hm-cf-val" style="font-size:10px">Written to BigQuery before this queue created · EU AI Act Art. 13</div>
+          <div class="hm-cf-label">Similar fleet units</div>
+          <div class="hm-cf-val" style="font-size:10px;color:var(--text-3)">No cross-regional pattern detected for this unit. 3 similar MRI-7T units in EMEA-North flagged separately today.</div>
+          <div style="margin-top:12px;padding:8px 10px;background:#E6F4EA;border-radius:3px;font-family:var(--mono);font-size:10px;color:#0D5226;line-height:1.5">
+            <strong style="font-weight:500">ISO 13485 ✓</strong><br>
+            DHR event created on any decision. Work order includes SHAP ref and HITL record ID.
+          </div>
+          <div style="margin-top:8px;padding:8px 10px;background:var(--amber-lt);border-radius:3px;font-family:var(--mono);font-size:10px;color:var(--amber-dk);line-height:1.5">
+            <strong style="font-weight:500">Note</strong><br>
+            This unit is on active warranty. Emergency dispatch (~€42K) vs planned intervention (~€8K). Decision affects warranty reserve.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §06 ADRs -->
+<section class="sec w ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three Asset IQ decisions. <em>Every alternative documented.</em></h2>
+  <div class="adr-col ap">
+    <div class="adr gr">
+      <div class="adr-id">ADR-011 (restated for Asset IQ)</div>
+      <div class="adr-title">Isolation Forest over autoencoder for unit-level anomaly detection</div>
+      <div class="adr-body">Autoencoder-based anomaly detection was the initial design for Asset IQ's streaming anomaly detector. Rejected for the same core reason as FinRisk Sentinel (ADR-011 on Page 06): autoencoders require KernelExplainer SHAP approximations that are too slow for real-time sensor event scoring — an MRI sensor event arrives every few minutes per unit across 12,000 units and must be scored within the 5-minute SLA. Isolation Forest's decision-tree structure is directly compatible with TreeExplainer, producing exact SHAP attributions in milliseconds. There is an additional asset-specific reason: anomaly detection for MRI units is inherently a "normal vs abnormal" problem without labelled failure examples — the training dataset is normal operating data only. Isolation Forest is designed for exactly this scenario (unsupervised, contamination parameter for expected anomaly rate). Autoencoders trained on normal data also work in principle but require careful architecture design to avoid learning the identity function. Isolation Forest's simplicity and interpretability are advantages, not limitations, for this use case.</div>
+      <div class="adr-status">Accepted · Phase ML Design · Page 06 ADR-011</div>
+    </div>
+    <div class="adr am">
+      <div class="adr-id">ADR-AQ01 — Asset IQ specific</div>
+      <div class="adr-title">GKE Autopilot for batch RUL over Cloud Run — long-running GPU workloads need a different substrate</div>
+      <div class="adr-body">Cloud Run was considered for the RUL batch job alongside the anomaly detection agent, for consistency. Rejected because Cloud Run has a maximum request timeout of 60 minutes — the daily RUL batch job across 12,000 units takes approximately 45 minutes, which is within Cloud Run's limit, but leaves no margin. More importantly, the RUL batch job requires GPU access (A100 for the Gemini embedding computation in the feature engineering step) — Cloud Run GPU support is available but at higher cost and with less scheduling flexibility than GKE Autopilot. GKE Autopilot submits pod specs to match workload requirements and bills per-pod rather than per-instance-time — the correct billing model for an intermittent batch job that runs once daily. Cloud Run's per-request billing model is optimal for the anomaly detection agent (short, frequent requests). GKE Autopilot's per-pod billing model is optimal for the RUL batch job (one long, infrequent job). The compute tier split is a deliberate billing and capability optimisation, not a complexity preference.</div>
+      <div class="adr-status">Accepted · Phase Compute Design · Asset IQ module</div>
+    </div>
+    <div class="adr bl">
+      <div class="adr-id">ADR-AQ02 — Asset IQ specific</div>
+      <div class="adr-title">Unified Pub/Sub schema over per-region API adapters for telemetry ingestion</div>
+      <div class="adr-body">The alternative ingestion design was to build a per-region API adapter for each of the 6 regional systems — each adapter translating the region's native format into the canonical asset feature schema. This is the standard enterprise integration pattern and was the initial design. Rejected in favour of a unified Pub/Sub schema for three reasons: (1) Adapter proliferation — 6 adapters means 6 codebases to maintain, 6 failure modes to monitor, and 6 schema migration paths when a regional system updates its API. A single canonical schema pushes the translation burden to the ingestion point (where it belongs) and makes all downstream consumers — Feature Store, anomaly agent, RUL batch job, BigQuery analytics — schema-agnostic. (2) Cross-regional analytics require a common schema — the fleet anomaly detection (HITL-07) depends on querying across regions in a single BigQuery query. That query is only possible if all regions publish to the same schema. Per-region adapters that produce slightly different schemas (common in practice) break cross-regional analytics without a separate normalisation layer. (3) The Data Governance module (M-08) validates every Pub/Sub message against the canonical schema before it enters the Feature Store — this validation gate is only possible because there is one schema to validate against. The unified schema is the architectural decision that makes Asset IQ's cross-regional intelligence possible.</div>
+      <div class="adr-status">Accepted · Phase Data Design · Asset IQ module</div>
+    </div>
+  </div>
+</section>
+
+<!-- §07 REBUTTALS -->
+<section class="sec ap" id="rebuttals">
+  <div class="s-ey re">Stakeholder Rebuttals</div>
+  <h2 class="s-h2">Six objections. <em>Each with an architectural answer.</em></h2>
+  <div class="rebuttal-grid ap">
+    <div class="rb cto">
+      <div class="rb-who">CTO · S-01</div>
+      <div class="rb-concern">Why two separate ML models instead of one unified model?</div>
+      <div class="rb-q">"You have a RUL regressor for batch and an Isolation Forest for streaming. Why not one model that does both? The operational complexity of two separate Vertex AI endpoints, two monitoring jobs, and two HITL paths seems high."</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The two models have fundamentally different problem formulations that cannot be merged without compromising both. The RUL regressor is a supervised regression model — it requires historical failure labels and produces a continuous prediction (days to failure) with a confidence interval. It is designed for daily batch processing where the full feature history of each unit is available. The Isolation Forest is an unsupervised anomaly detector — it requires no failure labels and produces a binary signal (normal vs abnormal) based on real-time sensor deviation from a learned baseline. It is designed for streaming, event-driven processing where a single sensor reading triggers an immediate response. Merging them would require a semi-supervised model that is harder to train, harder to explain, and harder to monitor. Separation of concerns is the right architectural decision: the RUL model answers "when will this unit fail?" on a planning horizon; the anomaly model answers "is something wrong with this unit right now?" on an operational horizon.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> ADR-AQ01 (different compute substrates) · Page 06 Model 02 (RUL) and Model 03 (Anomaly) — separate model cards, separate evaluation metrics, separate confidence thresholds</div>
+    </div>
+    <div class="rb cco">
+      <div class="rb-who">CCO · S-02</div>
+      <div class="rb-concern">Does the RUL prediction fall under EU AI Act Annex III?</div>
+      <div class="rb-q">"The EU AI Act Annex III covers AI systems used in critical infrastructure. Does a predictive maintenance model for MRI scanners in hospitals qualify? And if so, what are the specific documentation obligations?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">Yes. EU AI Act Annex III Category 2 covers AI systems used in the management and operation of critical infrastructure — including healthcare facilities. An MRI scanner failure in a hospital is a patient safety event. A predictive maintenance model that determines when maintenance interventions occur is directly influencing the operational status of medical critical infrastructure. The documentation obligations are: Article 11 (Technical documentation — satisfied by the Asset IQ Model Card on Page 06), Article 13 (Transparency — satisfied by SHAP sensor attribution per prediction), Article 14 (Human oversight — satisfied by HITL-06 for low-confidence predictions and HITL-07 for fleet anomalies), and Article 15 (Accuracy and robustness — satisfied by the drift detection monitoring and the quarterly full-rebuild validation). The ISO 13485 DHR requirement is separate from EU AI Act — it applies to the Device History Record for the physical MRI unit, not to the AI model itself.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> Page 06 Asset IQ Model Card · HITL-06/07 specification · EU AI Act Annex III Cat. 2 · ISO 13485 DHR integration in state machine</div>
+    </div>
+    <div class="rb fsm">
+      <div class="rb-who">Field Service Manager</div>
+      <div class="rb-concern">What if the model predicts a failure that doesn't happen?</div>
+      <div class="rb-q">"If Asset IQ sends me to a site for a planned intervention and the unit is fine, I've wasted an engineer's day. At €800 per field visit, false positives are expensive. What's the false positive rate and who is accountable when it's wrong?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The false positive question is answered by design: confidence below 0.82 routes to you for a decision — it does not auto-dispatch an engineer. When the model is uncertain, you decide. At 0.82 confidence and above, the precision at the 14-day horizon is 0.87 — meaning 13% of auto-dispatched interventions are for units that would not have failed within 14 days. At approximately €800 per visit versus approximately €42,000 for an emergency dispatch plus hospital disruption costs, the break-even false positive rate is well above 13%. When the model is wrong, the override you enter in HITL-06 becomes a training example that improves the model's precision on that failure mode. Accountability is shared by design: below-threshold predictions require your professional judgment before any action is taken.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> Page 06 Asset IQ RUL Model Card (Precision@14d: 0.87, confidence threshold 0.82) · HITL-06 three-decision interface · override as training signal (concept drift section Page 06)</div>
+    </div>
+    <div class="rb ea">
+      <div class="rb-who">Enterprise Architect · S-08</div>
+      <div class="rb-concern">How do you handle 6 regional systems with different sensor schemas?</div>
+      <div class="rb-q">"The 6 regional asset management systems were built at different times by different vendors. Their sensor data schemas are almost certainly inconsistent. How does Asset IQ produce a unified feature vector from six incompatible data sources?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">ADR-AQ02 is the direct answer to this question. The unified Pub/Sub canonical schema is the architectural decision that resolves schema inconsistency at the ingestion boundary. Each regional system has a lightweight ingestion adapter that translates its native schema to the canonical asset event schema before publishing to Pub/Sub. The Data Governance module (M-08, H1) validates every Pub/Sub message against the canonical schema — malformed records are quarantined before they reach the Feature Store. The canonical schema defines 24 mandatory sensor fields — regional systems that do not produce all 24 fields publish null values for missing sensors, which are imputed at feature engineering time using fleet median values. The RUL model was trained on this imputed feature matrix — it handles missing sensors gracefully without requiring data quality perfection from every regional system on day one.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> ADR-AQ02 (unified schema) · M-08 Data Governance (schema validation gate) · Page 06 Asset IQ Feature Store (24 features, null imputation strategy)</div>
+    </div>
+    <div class="rb ciso">
+      <div class="rb-who">CISO · S-09</div>
+      <div class="rb-concern">Sensor telemetry data — what data classification applies?</div>
+      <div class="rb-q">"The asset telemetry includes scanner operating data from hospitals. Does that constitute health data under GDPR? Or is it purely machine data with no personal data implications?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">The sensor telemetry processed by Asset IQ is machine operational data — coil temperatures, helium levels, RF power deviation, scan utilisation rates. It does not include DICOM patient images, patient identifiers, scan schedules, or any data that can be linked to an individual patient. The data classification is Internal (not Confidential or Restricted) — it is commercially sensitive (ClaraVis's operational performance data) but not personal data under GDPR. The Pub/Sub canonical schema explicitly excludes any patient-linked fields — this is validated by the Data Governance schema at ingestion. The DLP API is not configured for asset telemetry because there is no PII to detect. The EU boundary (europe-west3 VPC-SC) applies to all asset telemetry regardless of data classification — both for data sovereignty and because the Org Policy region constraint applies uniformly across the entire GCP project.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> Page 07 data classification labels (asset telemetry: internal) · Pub/Sub canonical schema (no patient fields) · Page 07 DLP configuration (contracts only, not telemetry)</div>
+    </div>
+    <div class="rb vp">
+      <div class="rb-who">VP Field Service · S-06</div>
+      <div class="rb-concern">Can we use RUL predictions to renegotiate warranty reserves?</div>
+      <div class="rb-q">"We currently hold €40M in warranty reserves because we assume worst-case failure scenarios. If Asset IQ can predict failures with 87% precision at 14 days, can the CFO use those predictions to reduce the reserve? And what's the audit trail if the predictions are wrong?"</div>
+      <div class="rb-response-label">Architectural response</div>
+      <div class="rb-response">This is a financial accounting decision that requires input from the Finance Controller and auditors — Asset IQ provides the data, not the accounting judgment. What Asset IQ can provide: a fleet-level RUL distribution showing the probability of failure within each time window across all 12,000 units, with confidence intervals. This distribution, combined with historical actual failure data and the precision metrics from the Model Card, gives the Finance team a defensible actuarial basis for reserve calculation that is more accurate than worst-case assumptions. The audit trail is already designed for this: every RUL prediction is written to the BigQuery Device entity with confidence interval, SHAP attribution, and the model version that produced it. The HITL decision (human override or approval) is linked to the prediction record. If an auditor asks "what was the fleet failure probability distribution on 31 March 2026?", the answer is a BigQuery query returning 12,000 rows of predictions with confidence intervals — an evidence package that justifies any reserve calculation based on it.</div>
+      <div class="rb-evidence"><strong>Evidence:</strong> BigQuery Device entity (RUL score · confidence interval · model version) · HITL override records (linked to prediction) · Page 06 Asset IQ Model Card (precision metrics for audit defence)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §08 DEMO -->
+<section class="sec w ap" id="demo">
+  <div class="s-ey am">Demo Pathway</div>
+  <h2 class="s-h2">Three minutes. Two scenarios. <em>Same München unit throughout.</em></h2>
+  <p class="s-p">The demo continues the portfolio narrative — the München MRI-7T unit (MCH-0042) appears here after its contract was processed by ContractGuard and its revenue recognised by RevRec AI. Now Asset IQ is monitoring its operational health. Scenario 1: a low-confidence RUL prediction triggers HITL-06. Scenario 2: a fleet anomaly across four EMEA-North units triggers HITL-07.</p>
+  <div class="demo-steps ap">
+    <div class="ds">
+      <div class="ds-num">00</div>
+      <div class="ds-content">
+        <div class="ds-label">Setup · 30s before</div>
+        <div class="ds-title">Open the Asset IQ dashboard — show the fleet status panel</div>
+        <div class="ds-body">Open the Strategy Dashboard (or the Asset IQ module dashboard). Show the fleet status panel: 12,000 units, RUL distribution, colour-coded by risk tier. Point out the red cluster in EMEA-North — 4 units flagged. Navigate to the Cloud Scheduler — show the daily RUL batch job. This establishes the scale of the system before showing the detail.</div>
+        <div class="ds-services"><span class="ds-svc">Asset IQ dashboard</span><span class="ds-svc">Fleet status panel</span><span class="ds-svc">Cloud Scheduler</span></div>
+      </div>
+    </div>
+    <div class="ds active">
+      <div class="ds-num">01</div>
+      <div class="ds-content">
+        <div class="ds-label">Batch RUL Run · 0:00</div>
+        <div class="ds-title">Trigger the daily RUL batch job — watch it run</div>
+        <div class="ds-body">Manually trigger the Cloud Scheduler job (simulating the 02:00 UTC run). Show the GKE Autopilot workload spinning up in the GKE Console — pod allocated, GPU attached. Show the Vertex AI Pipelines run starting. The batch job processes 12,000 units in approximately 45 minutes — for the demo, show a pre-computed run that completed earlier, then jump to the output.</div>
+        <div class="ds-say">"This is running on GKE Autopilot — I didn't provision a node pool, I submitted a pod spec. Autopilot allocated an A100 GPU node, ran the job, and will scale back to zero when it's done. The billing is per pod, not per node — I'm only paying for the 45 minutes the job runs."</div>
+        <div class="ds-services"><span class="ds-svc">GKE Autopilot</span><span class="ds-svc">Vertex AI Pipelines</span><span class="ds-svc">A100 GPU pod</span></div>
+      </div>
+    </div>
+    <div class="ds hitl-step">
+      <div class="ds-num">02</div>
+      <div class="ds-content">
+        <div class="ds-label">HITL-06 · 0:30</div>
+        <div class="ds-title">Open the Field Service Manager HITL-06 queue — MCH-0042</div>
+        <div class="ds-body">Navigate to the HITL Approval UI. Open the FSM queue — one item: MRI-7T-MCH-0042, Universitätsklinikum München, RUL 8.4 days, confidence 0.78. Show the full interface: the RUL prediction with confidence interval, the SHAP sensor attribution (gradient_coil_temp_p95 is the dominant feature), and the ISO 13485 DHR context showing the unit's service history.</div>
+        <div class="ds-say" style="font-family:var(--mono);font-size:11px;color:var(--red-dk);">"Notice the confidence is 0.78 — below the 0.82 auto-dispatch threshold. So the model is saying 'I think this unit needs service in about 8 days, but I'm not confident enough to book the engineer without asking you.' The Field Service Manager sees the sensor context — the coil temperature is 20% above baseline, the helium is depleting 2.3× faster than normal. They click Schedule Maintenance."</div>
+        <div class="ds-services"><span class="ds-svc">HITL-06 UI</span><span class="ds-svc">RUL prediction</span><span class="ds-svc">SHAP sensor attribution</span><span class="ds-svc">ISO 13485 DHR</span></div>
+      </div>
+    </div>
+    <div class="ds active">
+      <div class="ds-num">03</div>
+      <div class="ds-content">
+        <div class="ds-label">Work Order · 1:15</div>
+        <div class="ds-title">Show the Salesforce work order and ISO 13485 DHR event</div>
+        <div class="ds-body">After the FSM approves, show the Salesforce Cases view — a preventive maintenance case has been created for MCH-0042, due 2026-03-22. Open BigQuery — the ae_devices.dhr_events table has a new row: device_id MCH-0042, event_type PREDICTIVE_MAINTENANCE, hitl_ref, shap_ref, ISO13485_standard_ref. This is the Device History Record that satisfies ISO 13485.</div>
+        <div class="ds-say">"Every work order creates a DHR entry — that's the ISO 13485 Device History Record. If ClaraVis ever needs to demonstrate to a regulator that this unit's maintenance history is documented, it's all in BigQuery. The SHAP explanation and the HITL approval record are linked to the DHR entry."</div>
+        <div class="ds-services"><span class="ds-svc">Salesforce Cases</span><span class="ds-svc">BigQuery dhr_events</span><span class="ds-svc">Firestore HITL record</span></div>
+      </div>
+    </div>
+    <div class="ds fleet-step">
+      <div class="ds-num">04</div>
+      <div class="ds-content">
+        <div class="ds-label">Fleet Anomaly · 1:50</div>
+        <div class="ds-title">Trigger a sensor event — watch the fleet anomaly detection</div>
+        <div class="ds-body">Publish a synthetic sensor event to the ae-asset-events Pub/Sub topic simulating the Düsseldorf unit (DUS-0118) reporting an rf_power_deviation spike. Show the Cloud Run anomaly agent logs: "Event received · DUS-0118 · anomaly_score: 0.83", "SHAP computed · top sensor: rf_power_deviation +4.8", "Score above threshold · querying fleet pattern…", "4 units matching in EMEA-North · triggering HITL-07".</div>
+        <div class="ds-say" style="font-family:var(--mono);font-size:11px;color:var(--amber-dk);">"This is the capability that makes Asset IQ different from standard predictive maintenance. One unit triggers an anomaly. The agent immediately checks: is this unit-specific, or is there a pattern across the fleet? It finds 3 other EMEA-North units with similar RF power deviation profiles. Four units, same symptom, same region — that's a fleet alert, not a single unit repair. This goes to VP Field Service, not Field Service Manager."</div>
+        <div class="ds-services"><span class="ds-svc">Pub/Sub synthetic event</span><span class="ds-svc">Cloud Run anomaly agent</span><span class="ds-svc">BigQuery fleet query</span><span class="ds-svc">HITL-07</span></div>
+      </div>
+    </div>
+    <div class="ds hitl-step">
+      <div class="ds-num">05</div>
+      <div class="ds-content">
+        <div class="ds-label">HITL-07 · 2:20</div>
+        <div class="ds-title">Open the VP Field Service HITL-07 queue — fleet alert</div>
+        <div class="ds-body">Navigate to the HITL Approval UI — VP Field Service view. Show HITL-07: 4 affected units listed, anomaly scores, regions, SHAP attribution for each unit (rf_power_deviation dominant across all four), and the recommended action: Fleet Alert + Engineering escalation for potential recall review. VP Field Service clicks Fleet Alert.</div>
+        <div class="ds-say" style="font-family:var(--mono);font-size:11px;color:var(--red-dk);">"HITL-07 has a 2-hour SLA — because a cross-regional fleet pattern is urgent. The 4 units are in active service at hospitals. VP Field Service approves Fleet Alert, which dispatches engineers to all four units simultaneously and escalates to VP Engineering for a potential recall review. Four work orders created, four DHR events written, full fleet alert audit trail in BigQuery."</div>
+        <div class="ds-services"><span class="ds-svc">HITL-07 VP Field Service</span><span class="ds-svc">4x Salesforce Cases</span><span class="ds-svc">4x DHR events</span><span class="ds-svc">Fleet alert audit trail</span></div>
+      </div>
+    </div>
+    <div class="ds">
+      <div class="ds-num">06</div>
+      <div class="ds-content">
+        <div class="ds-label">Audit · 2:50</div>
+        <div class="ds-title">Query the fleet decision audit trail</div>
+        <div class="ds-body">Open BigQuery. Show a query joining ae_audit.shap_explanations, ae_audit.hitl_events, and ae_devices.dhr_events for the four fleet anomaly units. The result: each unit's SHAP sensor attribution, the HITL-07 decision, the VP's approval, and the DHR event — all linked. Same audit pattern as ContractGuard and RevRec AI: one BigQuery query covers the full compliance evidence package.</div>
+        <div class="ds-say">"Three modules into the portfolio demo — ContractGuard, RevRec AI, Asset IQ — and they all produce the same evidence pattern: SHAP before HITL, HITL record immutable, everything queryable from BigQuery. That's not coincidence. That's a shared platform design."</div>
+        <div class="ds-services"><span class="ds-svc">BigQuery ae_audit</span><span class="ds-svc">ae_devices.dhr_events</span><span class="ds-svc">Cross-module audit join</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>AE Suite Navigation</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Three modules complete.<br><strong>Five remain.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">ContractGuard, RevRec AI, and Asset IQ all demonstrate the same audit pattern: SHAP before HITL, immutable records, BigQuery queryable. The shared platform beneath all three modules is what makes the suite coherent.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="page-09.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(19,115,51,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(19,115,51,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(19,115,51,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);letter-spacing:.07em">PG 09</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Suite Index</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">All 8 modules · dependency matrix · demo pathway index</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-09-m03.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--teal);letter-spacing:.07em">M-03</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">RevRec AI — Module 03</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Same München contract · revenue recognition</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-09-m02.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--blue);letter-spacing:.07em">M-02</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">ContractGuard — Module 02</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Same München contract · clause risk analysis</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['context','architecture','statemachine','dataflow','hitl','adrs','rebuttals','demo'];
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
+      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
+      if(link)link.classList.add('act');
+    }
+  });
+},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+</script>
+</body>
+</html>

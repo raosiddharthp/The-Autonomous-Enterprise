@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --teal:#007B83;--teal-lt:#E4F7F7;
+  --purple:#6200EE;--purple-lt:#EDE7F6;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:16px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:52px;position:relative;overflow:hidden}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,56px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.75;max-width:600px}
+.alpha-nav{background:var(--white);border-bottom:1px solid var(--border);padding:12px var(--col);position:sticky;top:52px;z-index:500;display:flex;gap:4px;flex-wrap:wrap}
+.alpha-link{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);text-decoration:none;padding:4px 8px;transition:color .15s,background .15s}
+.alpha-link:hover{color:var(--blue);background:var(--blue-lt)}
+.content{max-width:960px;margin:0 auto;padding:48px var(--col) 80px;display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start}
+.toc{position:sticky;top:100px}
+.toc-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.toc-link{display:block;font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;padding:4px 0;border-left:2px solid transparent;padding-left:10px;transition:color .15s,border-color .15s}
+.toc-link:hover{color:var(--blue);border-left-color:var(--blue)}
+.toc-link.act{color:var(--blue);border-left-color:var(--blue);font-weight:500}
+.main{}
+.section{margin-bottom:48px}
+.section-letter{font-family:var(--display);font-size:48px;font-weight:800;color:var(--border);line-height:1;margin-bottom:16px;letter-spacing:-.03em}
+.term{padding:14px 0;border-bottom:1px solid var(--border-2)}
+.term:last-child{border-bottom:none}
+.term-word{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:4px}
+.term-abbr{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);margin-left:6px;letter-spacing:.06em}
+.term-def{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7}
+.term-ref{font-family:var(--mono);font-size:9px;color:var(--blue);margin-top:4px}
+.term-ref a{color:var(--blue);text-decoration:none}.term-ref a:hover{text-decoration:underline}
+.ap{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.ap.in{opacity:1;transform:none}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+@media(max-width:860px){:root{--col:22px}.content{grid-template-columns:1fr}.toc{display:none}.mn-r .mn-link{display:none}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="index.html" class="mn-back">← Home</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>Glossary</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="adr-index.html" class="mn-link">ADRs</a>
+    <a href="page-09.html" class="mn-link">AE Suite</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<header class="phdr">
+  <h1 class="ph-h1">Glossary<br><em>One sentence per term.</em><br><strong>All terms used in this portfolio.</strong></h1>
+  <p class="ph-sub">Definitions for every technical term, acronym, and product name used across the nine portfolio pages and eight module pages. Terms are defined in the context of their use in this portfolio.</p>
+</header>
+
+<nav class="alpha-nav">
+  <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);padding:4px 8px">Jump:</span>
+  <a class="alpha-link" href="#A">A</a><a class="alpha-link" href="#B">B</a><a class="alpha-link" href="#C">C</a><a class="alpha-link" href="#D">D</a><a class="alpha-link" href="#E">E</a><a class="alpha-link" href="#F">F</a><a class="alpha-link" href="#G">G</a><a class="alpha-link" href="#H">H</a><a class="alpha-link" href="#I">I</a><a class="alpha-link" href="#J">J</a><a class="alpha-link" href="#K">K</a><a class="alpha-link" href="#L">L</a><a class="alpha-link" href="#M">M</a><a class="alpha-link" href="#N">N</a><a class="alpha-link" href="#O">O</a><a class="alpha-link" href="#P">P</a><a class="alpha-link" href="#Q">Q</a><a class="alpha-link" href="#R">R</a><a class="alpha-link" href="#S">S</a><a class="alpha-link" href="#T">T</a><a class="alpha-link" href="#U">U</a><a class="alpha-link" href="#V">V</a><a class="alpha-link" href="#W">W</a><a class="alpha-link" href="#X">X</a><a class="alpha-link" href="#Z">Z</a>
+</nav>
+
+<div class="content">
+<nav class="toc">
+  <div class="toc-label">Sections</div>
+  <a class="toc-link" href="#A">A — ADK, ADR, ASC 606…</a>
+  <a class="toc-link" href="#B">B — BANT, BigQuery…</a>
+  <a class="toc-link" href="#C">C — C4, CCAI, CMEK…</a>
+  <a class="toc-link" href="#D">D — DHR, Document AI…</a>
+  <a class="toc-link" href="#E">E — EU AI Act, ERM…</a>
+  <a class="toc-link" href="#F">F — Feature Store, Firestore…</a>
+  <a class="toc-link" href="#G">G — GKE, GreenOps…</a>
+  <a class="toc-link" href="#H">H — HITL, Horizon…</a>
+  <a class="toc-link" href="#I">I — Isolation Forest, ISO…</a>
+  <a class="toc-link" href="#L">L — Lineage, Looker…</a>
+  <a class="toc-link" href="#M">M — Materialised View, MCP…</a>
+  <a class="toc-link" href="#O">O — Optimistic lock…</a>
+  <a class="toc-link" href="#P">P — Pub/Sub, PI…</a>
+  <a class="toc-link" href="#Q">Q — Quarantine…</a>
+  <a class="toc-link" href="#R">R — RAG, RevRec, RUL…</a>
+  <a class="toc-link" href="#S">S — SAFe, SAP, SHAP…</a>
+  <a class="toc-link" href="#T">T — Terraform, TFX, TOGAF…</a>
+  <a class="toc-link" href="#V">V — Vertex AI, VPC-SC…</a>
+  <a class="toc-link" href="#W">W — Workload Identity…</a>
+  <a class="toc-link" href="#X">X — XGBoost, XAI…</a>
+</nav>
+
+<main class="main">
+
+<div class="section ap" id="A">
+  <div class="section-letter">A</div>
+  <div class="term"><div class="term-word">A2A<span class="term-abbr">Agent-to-Agent Protocol</span></div><div class="term-def">Google's typed inter-agent communication standard in ADK, where each agent publishes a structured task message and receives a structured response, enabling agent replaceability without changing the Orchestrator.</div><div class="term-ref"><a href="page-05.html">Page 05</a> · <a href="adr-index.html#ADR-008">ADR-008</a></div></div>
+  <div class="term"><div class="term-word">ADK<span class="term-abbr">Agent Development Kit</span></div><div class="term-def">Google's native GCP framework for building multi-agent systems, providing first-class integration with CCAI, Dialogflow CX, Vertex AI, and Cloud Run, with A2A as its inter-agent protocol.</div><div class="term-ref"><a href="page-05.html">Page 05</a> · <a href="adr-index.html#ADR-007">ADR-007</a></div></div>
+  <div class="term"><div class="term-word">ADR<span class="term-abbr">Architecture Decision Record</span></div><div class="term-def">A short document capturing a significant architectural decision, the context that required it, the alternatives considered, and the consequences of the choice.</div><div class="term-ref"><a href="adr-index.html">ADR Index</a></div></div>
+  <div class="term"><div class="term-word">ADM<span class="term-abbr">Architecture Development Method</span></div><div class="term-def">TOGAF's iterative framework for enterprise architecture, structured as phases A through H plus a Requirements Management phase, used in this portfolio to structure the ClaraVis architecture work from vision through migration.</div><div class="term-ref"><a href="page-03.html">Page 03</a></div></div>
+  <div class="term"><div class="term-word">ANN<span class="term-abbr">Approximate Nearest Neighbour</span></div><div class="term-def">An indexing algorithm that trades exact nearest-neighbour accuracy for sub-linear query time at scale, used in Vertex AI Vector Store for ContractGuard's clause precedent retrieval.</div><div class="term-ref"><a href="page-09-m02.html">M-02 ContractGuard</a></div></div>
+  <div class="term"><div class="term-word">ART<span class="term-abbr">Agile Release Train</span></div><div class="term-def">A long-lived team of teams in SAFe that delivers a continuous flow of value by operating on a shared PI cadence — the AE portfolio organises its modules across three ARTs: Commercial, Financial, and Operations/Platform.</div><div class="term-ref"><a href="page-04.html">Page 04</a></div></div>
+  <div class="term"><div class="term-word">ASC 606</div><div class="term-def">The FASB revenue recognition standard requiring companies to recognise revenue when (or as) performance obligations are satisfied, which governs how ClaraVis classifies contract revenue as SALE, MULTI-ELEMENT, or SERVICE.</div><div class="term-ref"><a href="page-09-m03.html">M-03 RevRec AI</a></div></div>
+  <div class="term"><div class="term-word">Asset IQ</div><div class="term-def">AE Module 05 — the predictive maintenance module for ClaraVis's 12,000-unit installed fleet, combining RUL regression (GKE Autopilot batch) and anomaly detection (Cloud Run streaming) with HITL-06 and HITL-07 checkpoints.</div><div class="term-ref"><a href="page-09-m05.html">M-05</a></div></div>
+  <div class="term"><div class="term-word">Authorised View</div><div class="term-def">A BigQuery access control pattern where a view in one dataset is granted read access to tables in another dataset, used in the Strategy Dashboard to give Looker Studio read access to materialised views without exposing source operational datasets.</div><div class="term-ref"><a href="page-09-m07.html">M-07 Strategy Dashboard</a></div></div>
+</div>
+
+<div class="section ap" id="B">
+  <div class="section-letter">B</div>
+  <div class="term"><div class="term-word">BANT</div><div class="term-def">Budget / Authority / Need / Timeline — the four qualification signals the CCAI Sales Agent extracts in turns 2–5 to determine whether an inbound prospect is a qualified lead worth escalating to an Account Executive.</div><div class="term-ref"><a href="page-09-m01.html">M-01 CCAI Sales Agent</a></div></div>
+  <div class="term"><div class="term-word">BigQuery</div><div class="term-def">Google Cloud's serverless data warehouse, used in the AE as the canonical audit store (ae_audit), operational datasets per module (ae_devices, ae_financial, etc.), materialized views for the Strategy Dashboard, and the CSRD ESG export.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+  <div class="term"><div class="term-word">BeyondCorp</div><div class="term-def">Google's zero-trust access model, used for developer access to GCP resources without a traditional VPN — access is granted based on device posture and identity rather than network location.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+  <div class="term"><div class="term-word">BOM<span class="term-abbr">Bill of Materials</span></div><div class="term-def">The configured list of products, services, and licence items that the CCAI Sales Agent's CPQ Agent assembles and validates against Salesforce CPQ during the configuration turns (6–9) of a sales conversation.</div><div class="term-ref"><a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">Break-glass SA</div><div class="term-def">A service account with elevated Terraform state access that is normally locked and only usable by a named human with MFA in a declared emergency, providing a recovery path without permanently granting broad access to standard developer accounts.</div><div class="term-ref"><a href="page-07.html">Page 07 Infrastructure</a></div></div>
+</div>
+
+<div class="section ap" id="C">
+  <div class="section-letter">C</div>
+  <div class="term"><div class="term-word">C4 Model</div><div class="term-def">A hierarchical software architecture diagramming approach (Context, Containers, Components, Code) — this portfolio uses C4 Level 1 (System Context) for each module's system context diagram, showing inputs, outputs, and external actors.</div><div class="term-ref">All module §01 sections</div></div>
+  <div class="term"><div class="term-word">CCAI<span class="term-abbr">Contact Center AI</span></div><div class="term-def">Google Cloud's platform for AI-powered customer conversations, providing the web chat and phone entry points for the CCAI Sales Agent (M-01) and handling DTMF/speech recognition for voice channel interactions.</div><div class="term-ref"><a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">CMEK<span class="term-abbr">Customer-Managed Encryption Keys</span></div><div class="term-def">A GCP encryption model where the customer holds encryption keys in Cloud KMS rather than Google, ensuring that Google cannot access the encrypted data even with administrative access to the service.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+  <div class="term"><div class="term-word">Contamination parameter</div><div class="term-def">The Isolation Forest hyperparameter specifying the expected proportion of anomalies in the training data — set to 0.005 (0.5%) for FinRisk Sentinel, calibrating the model to flag approximately 1–3 high-severity payments per month.</div><div class="term-ref"><a href="page-09-m04.html">M-04 FinRisk Sentinel</a></div></div>
+  <div class="term"><div class="term-word">ContractGuard</div><div class="term-def">AE Module 02 — the contract risk analysis module using a two-pass architecture (Document AI structured extraction followed by Gemini 1.5 Pro semantic analysis) to flag clause-level risks and generate counter-position drafts for Legal review.</div><div class="term-ref"><a href="page-09-m02.html">M-02</a></div></div>
+  <div class="term"><div class="term-word">CPQ<span class="term-abbr">Configure, Price, Quote</span></div><div class="term-def">Salesforce's product configuration and pricing engine, used by the CCAI Sales Agent's CPQ Agent to validate product configurations, check pricing rules, and create Opportunities with validated BOMs.</div><div class="term-ref"><a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">CSRD<span class="term-abbr">Corporate Sustainability Reporting Directive</span></div><div class="term-def">EU regulation requiring large companies to report on environmental, social, and governance metrics — GreenOps (M-06) produces Scope 3 Category 11 carbon savings data for ClaraVis's CSRD annual sustainability report.</div><div class="term-ref"><a href="page-09-m06.html">M-06 GreenOps</a></div></div>
+</div>
+
+<div class="section ap" id="D">
+  <div class="section-letter">D</div>
+  <div class="term"><div class="term-word">Data Governance</div><div class="term-def">AE Module 08 — the H1 foundation module that validates all records entering the AE data fabric using TFX ExampleValidator, tags every feature with a traceable lineage, and quarantines records that fail schema or quality checks.</div><div class="term-ref"><a href="page-09-m08.html">M-08</a></div></div>
+  <div class="term"><div class="term-word">DHR<span class="term-abbr">Device History Record</span></div><div class="term-def">An FDA 21 CFR 820.184 regulatory requirement for medical device manufacturers to maintain complete maintenance history for each manufactured unit — Asset IQ writes a DHR event at every maintenance action triggered by a HITL-06 decision.</div><div class="term-ref"><a href="page-09-m05.html">M-05 Asset IQ</a></div></div>
+  <div class="term"><div class="term-word">Dialogflow CX</div><div class="term-def">Google Cloud's conversation design platform for building multi-turn dialogue flows, used by the CCAI Sales Agent for voice channel routing and intent detection across both web chat and phone entry points.</div><div class="term-ref"><a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">Document AI</div><div class="term-def">Google Cloud's document processing service, used as Pass 1 in ContractGuard's two-pass architecture to perform deterministic structured extraction of contract clauses before Gemini's semantic Pass 2.</div><div class="term-ref"><a href="page-09-m02.html">M-02</a></div></div>
+  <div class="term"><div class="term-word">Drift detection</div><div class="term-def">Automated monitoring that flags when a model's input feature distribution or output prediction distribution has shifted significantly from the training baseline, triggering retraining to prevent silent model degradation.</div><div class="term-ref"><a href="page-06.html">Page 06 ML Engineering</a></div></div>
+</div>
+
+<div class="section ap" id="E">
+  <div class="section-letter">E</div>
+  <div class="term"><div class="term-word">EU AI Act</div><div class="term-def">EU Regulation 2024/1689 establishing a risk-based framework for AI systems — Articles 11 (technical documentation), 13 (transparency/explainability), 14 (human oversight), and 15 (robustness) are the four articles with direct architectural consequences in this portfolio.</div><div class="term-ref"><a href="page-03.html">Page 03</a> · all module pages</div></div>
+  <div class="term"><div class="term-word">Embedding</div><div class="term-def">A dense vector representation of text produced by a language model (text-embedding-004 in this portfolio), used in ContractGuard's Vector Store to enable semantic similarity search across the clause precedent corpus.</div><div class="term-ref"><a href="page-09-m02.html">M-02</a></div></div>
+</div>
+
+<div class="section ap" id="F">
+  <div class="section-letter">F</div>
+  <div class="term"><div class="term-word">Feature Store</div><div class="term-def">Vertex AI's managed feature storage service providing online (low-latency per-entity lookup) and offline (batch retrieval for training) feature serving — all AE modules that use ML models read features from the Feature Store, which Data Governance validates before ingestion.</div><div class="term-ref"><a href="page-06.html">Page 06</a> · <a href="page-09-m08.html">M-08</a></div></div>
+  <div class="term"><div class="term-word">FinRisk Sentinel</div><div class="term-def">AE Module 04 — the financial anomaly detection module that scores every incoming payment against a sliding-window rolling baseline using Isolation Forest, routing high-severity alerts to a dual-reviewer HITL-08 with a 1-hour SLA.</div><div class="term-ref"><a href="page-09-m04.html">M-04</a></div></div>
+  <div class="term"><div class="term-word">Firestore</div><div class="term-def">Google Cloud's document database, used in the AE as the agent state store (conversation sessions, BANT scores, BOM drafts) and the immutable HITL audit record store — strong consistency and real-time listeners make it the correct choice for HITL state that must be written atomically and read immediately.</div><div class="term-ref"><a href="adr-index.html">ADR-004 · ADR-009</a></div></div>
+  <div class="term"><div class="term-word">FSM<span class="term-abbr">Field Service Manager</span></div><div class="term-def">The ClaraVis stakeholder responsible for scheduling and dispatching field engineers for asset maintenance — the primary reviewer in Asset IQ's HITL-06 (unit-level maintenance decision) and one of two reviewers in HITL-07 (fleet-level anomaly).</div><div class="term-ref"><a href="page-09-m05.html">M-05</a></div></div>
+</div>
+
+<div class="section ap" id="G">
+  <div class="section-letter">G</div>
+  <div class="term"><div class="term-word">Gemini 1.5 Pro</div><div class="term-def">Google's frontier multimodal language model with a 1 million token context window, used in ContractGuard's Pass 2 for semantic contract analysis and counter-position draft generation, and in the CCAI Sales Agent's Orchestrator for intent detection.</div><div class="term-ref"><a href="page-09-m02.html">M-02</a> · <a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">GKE Autopilot<span class="term-abbr">Google Kubernetes Engine</span></div><div class="term-def">Google's managed Kubernetes service in Autopilot mode — node provisioning, patching, and hardening are fully managed, with per-pod billing optimal for the AE's batch ML workloads (Asset IQ RUL training, ContractGuard Vector Store reindex).</div><div class="term-ref"><a href="page-07.html">Page 07</a> · <a href="adr-index.html">ADR-015</a></div></div>
+  <div class="term"><div class="term-word">GreenOps Platform</div><div class="term-def">AE Module 06 — the carbon-aware scheduling module that defers flexible batch ML jobs to low-carbon grid windows (below 80 gCO₂eq/kWh in europe-west3) within a ±6 hour window, producing per-job carbon savings records for CSRD Scope 3 reporting.</div><div class="term-ref"><a href="page-09-m06.html">M-06</a></div></div>
+</div>
+
+<div class="section ap" id="H">
+  <div class="section-letter">H</div>
+  <div class="term"><div class="term-word">HITL<span class="term-abbr">Human-in-the-Loop</span></div><div class="term-def">A mandatory checkpoint where a qualified human reviewer must approve, override, or escalate an AI-generated decision before any consequential downstream action — the AE has 11 named HITL checkpoints (HITL-01 through HITL-11), each with a specific actor, SLA, and Firestore audit record.</div><div class="term-ref"><a href="page-04.html">Page 04</a> · all module pages</div></div>
+  <div class="term"><div class="term-word">Horizon (H1/H2/H3)</div><div class="term-def">The AE's phased deployment framework: H1 deploys the Data Governance foundation and CCAI Sales Agent pilot; H2 deploys ContractGuard, RevRec AI, Asset IQ, and FinRisk Sentinel; H3 deploys GreenOps and Strategy Dashboard as the full-suite capstone.</div><div class="term-ref"><a href="page-03.html">Page 03</a> · <a href="adr-index.html">ADR-016</a></div></div>
+</div>
+
+<div class="section ap" id="I">
+  <div class="section-letter">I</div>
+  <div class="term"><div class="term-word">Isolation Forest</div><div class="term-def">An unsupervised anomaly detection algorithm that isolates anomalies by randomly partitioning features — anomalies are isolated in fewer partitions than normal observations — used in both FinRisk Sentinel (financial anomaly) and Asset IQ (streaming sensor anomaly) because its tree structure enables exact SHAP attributions.</div><div class="term-ref"><a href="page-09-m04.html">M-04</a> · <a href="page-09-m05.html">M-05</a> · <a href="adr-index.html">ADR-011</a></div></div>
+  <div class="term"><div class="term-word">ISO 13485</div><div class="term-def">The international standard for quality management systems in medical device design and manufacture — Asset IQ writes ISO 13485 DHR events at every maintenance action to maintain ClaraVis's regulatory compliance for its 12,000-unit installed fleet.</div><div class="term-ref"><a href="page-09-m05.html">M-05</a></div></div>
+</div>
+
+<div class="section ap" id="J">
+  <div class="section-letter">J</div>
+  <div class="term"><div class="term-word">Journal entry</div><div class="term-def">An SAP financial posting that records a revenue recognition event in ClaraVis's general ledger — in RevRec AI, the SAP journal entry function requires a hitl_id parameter, making it structurally unreachable without a committed HITL approval record.</div><div class="term-ref"><a href="page-09-m03.html">M-03</a> · <a href="adr-index.html">ADR-R01</a></div></div>
+</div>
+
+<div class="section ap" id="L">
+  <div class="section-letter">L</div>
+  <div class="term"><div class="term-word">Lineage (feature)</div><div class="term-def">The traceable chain from a raw sensor event through Data Governance validation, Feature Store ingestion, Vertex AI inference, and SHAP explanation to the HITL record — every link tagged with source, event_id, schema_version, and quality_score, satisfying EU AI Act Article 11 technical documentation.</div><div class="term-ref"><a href="page-09-m08.html">M-08</a></div></div>
+  <div class="term"><div class="term-word">Looker Studio</div><div class="term-def">Google's browser-based business intelligence tool, used for the Strategy Dashboard (M-07) to render five panels from BigQuery materialised views — chosen over a custom React dashboard because it provides native BigQuery integration and GCP IAM authentication without a separate backend.</div><div class="term-ref"><a href="page-09-m07.html">M-07</a> · <a href="adr-index.html">ADR-SD01</a></div></div>
+</div>
+
+<div class="section ap" id="M">
+  <div class="section-letter">M</div>
+  <div class="term"><div class="term-word">Materialised View</div><div class="term-def">A BigQuery view whose query results are pre-computed and cached on a refresh schedule — the Strategy Dashboard uses five named materialised views (one per panel) with per-panel refresh cadences from 5 minutes to 1 hour, isolating dashboard query load from operational write performance.</div><div class="term-ref"><a href="page-09-m07.html">M-07</a> · <a href="adr-index.html">ADR-SD02</a></div></div>
+  <div class="term"><div class="term-word">MCP<span class="term-abbr">Model Context Protocol</span></div><div class="term-def">Anthropic's open protocol for connecting AI models to external tools and data sources — referenced in the AE agent architecture as the protocol enabling agents to interact with Salesforce, SAP, and GCP services through typed tool definitions.</div><div class="term-ref"><a href="page-05.html">Page 05</a></div></div>
+  <div class="term"><div class="term-word">Model Card</div><div class="term-def">A structured document attached to each model version in Vertex AI Model Registry capturing intended use, training data, evaluation metrics, known limitations, and EU AI Act compliance classification — required by FDA change control for ClaraVis's medical device software models.</div><div class="term-ref"><a href="page-06.html">Page 06</a></div></div>
+  <div class="term"><div class="term-word">MULTI-ELEMENT</div><div class="term-def">One of three ASC 606 revenue classifications produced by RevRec AI, indicating that a contract bundles equipment sale and service obligations requiring allocation of the transaction price across performance obligations before revenue recognition.</div><div class="term-ref"><a href="page-09-m03.html">M-03</a></div></div>
+</div>
+
+<div class="section ap" id="O">
+  <div class="section-letter">O</div>
+  <div class="term"><div class="term-word">Optimistic lock</div><div class="term-def">A concurrency control mechanism in Firestore used by FinRisk Sentinel's HITL-08 dual-reviewer design — the first decision commits at document version 1, and the second write detects the version conflict and closes automatically, preventing double-action without requiring reviewer coordination.</div><div class="term-ref"><a href="page-09-m04.html">M-04</a> · <a href="adr-index.html">ADR-FR02</a></div></div>
+</div>
+
+<div class="section ap" id="P">
+  <div class="section-letter">P</div>
+  <div class="term"><div class="term-word">PI<span class="term-abbr">Program Increment</span></div><div class="term-def">A SAFe timebox (typically 8–12 weeks) during which an ART plans, builds, and validates a significant increment of value — the AE's three ARTs operate on a shared PI cadence across PI-1 through PI-8.</div><div class="term-ref"><a href="page-04.html">Page 04</a></div></div>
+  <div class="term"><div class="term-word">Pub/Sub</div><div class="term-def">Google Cloud's asynchronous message bus, used in the AE as the integration event bus carrying three topic streams: ae-asset-events (telemetry), ae-q2c-events (contract/opportunity), and ae-financial-events (payments/classifications) — chosen over direct HTTP to decouple the AE from Salesforce and SAP outage windows.</div><div class="term-ref"><a href="adr-index.html">ADR-006</a></div></div>
+</div>
+
+<div class="section ap" id="Q">
+  <div class="section-letter">Q</div>
+  <div class="term"><div class="term-word">Quarantine</div><div class="term-def">Data Governance's holding area (ae_quarantine BigQuery dataset) for records that fail TFX schema validation or quality scoring — records are preserved for data steward review and potential reinstatement rather than discarded, preventing irreversible data loss from legitimate upstream schema changes.</div><div class="term-ref"><a href="page-09-m08.html">M-08</a> · <a href="adr-index.html">ADR-DG02</a></div></div>
+</div>
+
+<div class="section ap" id="R">
+  <div class="section-letter">R</div>
+  <div class="term"><div class="term-word">RAG<span class="term-abbr">Retrieval-Augmented Generation</span></div><div class="term-def">A pattern where a language model's response is grounded in documents retrieved from a vector store — used in ContractGuard (precedent clause retrieval) and the CCAI Sales Agent's Knowledge Agent (product catalogue Q&A with a 0.72 confidence threshold before answering).</div><div class="term-ref"><a href="page-09-m02.html">M-02</a> · <a href="page-09-m01.html">M-01</a></div></div>
+  <div class="term"><div class="term-word">RevRec AI</div><div class="term-def">AE Module 03 — the revenue recognition classification module that applies ASC 606 rules to every ClaraVis contract, producing SALE / MULTI-ELEMENT / SERVICE classifications with XGBoost + SHAP, with HITL-04 required for every classification before SAP journal entry.</div><div class="term-ref"><a href="page-09-m03.html">M-03</a></div></div>
+  <div class="term"><div class="term-word">RUL<span class="term-abbr">Remaining Useful Life</span></div><div class="term-def">A regression prediction (in days) of how much operational life a medical imaging unit has before requiring major maintenance, computed daily by Asset IQ's GKE Autopilot batch job across ClaraVis's 12,000-unit fleet.</div><div class="term-ref"><a href="page-09-m05.html">M-05</a></div></div>
+</div>
+
+<div class="section ap" id="S">
+  <div class="section-letter">S</div>
+  <div class="term"><div class="term-word">SAFe<span class="term-abbr">Scaled Agile Framework</span></div><div class="term-def">An enterprise agility framework organising delivery into Agile Release Trains and Program Increments — used in this portfolio to structure the AE's three-horizon delivery plan across Commercial, Financial, and Operations/Platform ARTs.</div><div class="term-ref"><a href="page-04.html">Page 04</a></div></div>
+  <div class="term"><div class="term-word">SAP</div><div class="term-def">ClaraVis's ERP system, used for general ledger journal entries (revenue posting from RevRec AI) — the AE integrates with SAP via a function call that requires a hitl_id parameter, ensuring no SAP write occurs without a committed HITL approval record.</div><div class="term-ref"><a href="page-09-m03.html">M-03</a></div></div>
+  <div class="term"><div class="term-word">SHAP<span class="term-abbr">SHapley Additive exPlanations</span></div><div class="term-def">A game-theory-based XAI method that assigns each feature an exact contribution value to a model's prediction — TreeExplainer produces deterministic SHAP values for tree-based models, written to BigQuery before any HITL checkpoint is created to satisfy EU AI Act Article 13.</div><div class="term-ref"><a href="page-06.html">Page 06</a> · <a href="adr-index.html">ADR-005</a></div></div>
+  <div class="term"><div class="term-word">Sliding window</div><div class="term-def">FinRisk Sentinel's dynamic baseline computation method — rolling 90-day mean, standard deviation, and Z-score are recomputed on every incoming payment event, so the anomaly model scores against an account's current normal behaviour rather than a static historical snapshot.</div><div class="term-ref"><a href="page-09-m04.html">M-04</a> · <a href="adr-index.html">ADR-FR01</a></div></div>
+  <div class="term"><div class="term-word">Strategy Dashboard</div><div class="term-def">AE Module 07 — the C-suite intelligence layer that reads from all seven preceding module datasets via BigQuery materialised views and renders five panels (Pipeline Health, Revenue Recognition, Fleet Intelligence, Financial Risk, Compliance Posture) in Looker Studio.</div><div class="term-ref"><a href="page-09-m07.html">M-07</a></div></div>
+</div>
+
+<div class="section ap" id="T">
+  <div class="section-letter">T</div>
+  <div class="term"><div class="term-word">Terraform</div><div class="term-def">HashiCorp's infrastructure-as-code tool, used to provision all AE GCP infrastructure — module versioning uses git tag pinning and terraform.lock.hcl hash verification, and local terraform apply is prevented in production by restricting developer SA credentials to read-only on prod resources.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+  <div class="term"><div class="term-word">TFX<span class="term-abbr">TensorFlow Extended</span></div><div class="term-def">Google's production ML platform library, specifically TFX ExampleValidator, used in Data Governance (M-08) for schema conformance checking and distributional drift detection — stateful, integrates with Vertex AI Pipelines, and compatible with Great Expectations for EU AI Act Article 11 data documentation.</div><div class="term-ref"><a href="page-09-m08.html">M-08</a> · <a href="adr-index.html">ADR-DG01</a></div></div>
+  <div class="term"><div class="term-word">TOGAF</div><div class="term-def">The Open Group Architecture Framework — an enterprise architecture methodology and certification framework whose Architecture Development Method (ADM) structures Page 03 of this portfolio, producing work products from Architecture Vision (Phase A) through Migration Planning (Phase F).</div><div class="term-ref"><a href="page-03.html">Page 03</a></div></div>
+  <div class="term"><div class="term-word">Train-serve skew</div><div class="term-def">The error that occurs when a model is trained on features computed by one pipeline but served on features computed by a different pipeline — TFX ExampleValidator enforced at both training and serving time prevents this by ensuring the same schema is validated at both stages.</div><div class="term-ref"><a href="page-09-m08.html">M-08</a></div></div>
+</div>
+
+<div class="section ap" id="V">
+  <div class="section-letter">V</div>
+  <div class="term"><div class="term-word">Vertex AI</div><div class="term-def">Google Cloud's unified ML platform, used in the AE for model training and serving (Vertex AI Pipelines), online inference (Vertex AI Endpoints for Isolation Forest and XGBoost), feature management (Feature Store), model versioning (Model Registry), and RAG (Vector Store).</div><div class="term-ref"><a href="page-06.html">Page 06</a></div></div>
+  <div class="term"><div class="term-word">VPC-SC<span class="term-abbr">Virtual Private Cloud Service Controls</span></div><div class="term-def">A GCP security perimeter that restricts which GCP services can exchange data with each other and prevents data exfiltration by blocking API calls to GCP services from outside the defined perimeter — all AE production resources operate within the europe-west3 VPC-SC perimeter.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+</div>
+
+<div class="section ap" id="W">
+  <div class="section-letter">W</div>
+  <div class="term"><div class="term-word">Workload Identity Federation<span class="term-abbr">WIF</span></div><div class="term-def">A GCP authentication mechanism that allows a service running outside GCP (or a GCP service acting as another) to impersonate a GCP service account without a long-lived service account key — all AE agent service accounts use WIF, eliminating key rotation risk and reducing the credential attack surface.</div><div class="term-ref"><a href="page-07.html">Page 07</a></div></div>
+</div>
+
+<div class="section ap" id="X">
+  <div class="section-letter">X</div>
+  <div class="term"><div class="term-word">XAI<span class="term-abbr">Explainable AI</span></div><div class="term-def">The practice of making AI model decisions interpretable to humans — in this portfolio, XAI is implemented via SHAP TreeExplainer for all tree-based models (XGBoost and Isolation Forest), with SHAP values written to BigQuery before every HITL checkpoint to satisfy EU AI Act Article 13.</div><div class="term-ref"><a href="page-06.html">Page 06</a></div></div>
+  <div class="term"><div class="term-word">XGBoost<span class="term-abbr">eXtreme Gradient Boosting</span></div><div class="term-def">A tree-based gradient boosting algorithm chosen for RevRec AI and ContractGuard's risk scoring because its decision-tree structure enables exact, deterministic SHAP attributions via TreeExplainer — required for the immutable EU AI Act Article 13 audit trail.</div><div class="term-ref"><a href="page-09-m03.html">M-03</a> · <a href="page-09-m02.html">M-02</a> · <a href="adr-index.html">ADR-010</a></div></div>
+</div>
+
+<div class="section ap" id="Z">
+  <div class="section-letter">Z</div>
+  <div class="term"><div class="term-word">Z-score</div><div class="term-def">A statistical measure of how many standard deviations a value is from its distribution's mean — used in FinRisk Sentinel alongside the Isolation Forest score to provide a human-readable anomaly context ("85.8σ above 90-day baseline") alongside the model's multi-dimensional signal.</div><div class="term-ref"><a href="page-09-m04.html">M-04</a></div></div>
+</div>
+
+</main>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2)">© 2026 Siddharthan Rao · <a href="adr-index.html" style="color:rgba(245,240,232,.3);text-decoration:none">ADR Index</a> · <a href="changelog.html" style="color:rgba(245,240,232,.3);text-decoration:none">Changelog</a></div>
+</footer>
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const tocLinks=document.querySelectorAll('.toc-link');
+const sections=document.querySelectorAll('.section[id]');
+const sio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){tocLinks.forEach(l=>l.classList.remove('act'));const lnk=document.querySelector(`.toc-link[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('act')}})},{threshold:.2});
+sections.forEach(s=>sio.observe(s));
+</script>
+</body>
+</html>

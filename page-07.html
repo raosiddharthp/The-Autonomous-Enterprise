@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure & GCP Architecture — Page 07 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;--gold-dim:rgba(184,150,12,0.14);
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'07';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:220px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ph-bc span{color:rgba(245,240,232,.18)}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;border:1px solid rgba(255,255,255,.14);color:rgba(245,240,232,.65);letter-spacing:.06em}
+
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.re{color:var(--red)}.s-ey.pu{color:var(--purple)}.s-ey.te{color:var(--teal)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* DIAGRAM WRAPPER */
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--blue)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}
+.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.dl-dash{width:24px;height:0;border-top:2px dashed rgba(255,255,255,.3);flex-shrink:0}
+
+/* PRINCIPLES GRID */
+.principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.pc{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--blue);padding:22px 20px;transition:border-top-color .2s}
+.pc:hover{border-top-color:var(--green)}
+.pc-id{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.1em;margin-bottom:6px}
+.pc-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.pc-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7}
+.pc-ref{font-family:var(--mono);font-size:10px;color:var(--blue);margin-top:8px;display:flex;align-items:center;gap:4px}
+.pc-ref::before{content:'→'}
+
+/* TERRAFORM */
+.tf-layout{display:grid;grid-template-columns:280px 1fr;gap:4px;margin-top:4px}
+.tf-tree{background:var(--ink-2);padding:24px;font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.6);line-height:1.9}
+.tf-tree .dir{color:var(--gold-lt);font-weight:500}
+.tf-tree .file{color:rgba(245,240,232,.45)}
+.tf-tree .comment{color:rgba(245,240,232,.25);font-style:italic}
+.hcl-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:0}
+.hcl-tab{font-family:var(--mono);font-size:10px;font-weight:500;padding:8px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:.06em;color:rgba(245,240,232,.35);transition:color .18s,border-color .18s;user-select:none;text-transform:uppercase}
+.hcl-tab:hover{color:rgba(245,240,232,.6)}
+.hcl-tab.act{color:var(--gold-lt);border-color:var(--gold)}
+.hcl-panel{display:none;background:var(--ink);padding:20px 24px;overflow-x:auto}
+.hcl-panel.show{display:block}
+.hcl-panel pre{font-family:var(--mono);font-size:12px;line-height:1.7;color:rgba(245,240,232,.7)}
+.hk{color:#CE93D8} /* keyword */
+.hs{color:#A5D6A7} /* string */
+.hv{color:#90CAF9} /* variable/ref */
+.hc{color:rgba(245,240,232,.28);font-style:italic} /* comment */
+.ha{color:#FFD54F} /* attribute name */
+.hn{color:#FFCC80} /* number/bool */
+
+/* SECURITY GRID */
+.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.sg{background:var(--white);border:1px solid var(--border);padding:22px 20px}
+.sg-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;color:var(--red)}
+.sg-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.sg-items{display:flex;flex-direction:column;gap:5px}
+.sg-item{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.55;display:flex;align-items:flex-start;gap:7px;padding:5px 8px;background:var(--surface-2)}
+.sg-item::before{content:'✓';color:var(--green);font-size:10px;flex-shrink:0;font-weight:500;margin-top:1px}
+
+/* COMPUTE TABLE */
+table.ct{width:100%;border-collapse:collapse}
+table.ct th{background:var(--surface-2);font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-2);letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);border-right:1px solid var(--border-2)}
+table.ct th:last-child{border-right:none}
+table.ct td{padding:11px 14px;font-family:var(--mono);font-size:11px;color:var(--text);border-bottom:1px solid var(--border-2);border-right:1px solid var(--border-2);vertical-align:top;line-height:1.55;font-weight:300}
+table.ct td:last-child{border-right:none}
+table.ct tr:last-child td{border-bottom:none}
+table.ct tr:hover td{background:var(--surface-2)}
+
+/* CICD */
+.cicd-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:4px}
+.cs{background:var(--white);border:1px solid var(--border);padding:16px 12px;text-align:center;position:relative;transition:background .2s}
+.cs:hover{background:var(--surface-2)}
+.cs::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;color:var(--text-3);z-index:1}
+.cs:last-child::after{display:none}
+.cs-num{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-bottom:6px;letter-spacing:.08em}
+.cs-name{font-family:var(--display);font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.01em;line-height:1.2}
+.cs-tool{font-family:var(--mono);font-size:9px;color:var(--text-3);line-height:1.4}
+.cs.gate{background:var(--red-lt);border-color:rgba(217,48,37,.2)}
+.cs.gate .cs-name{color:var(--red-dk)}
+.cs.gate .cs-num{color:var(--red)}
+
+/* FINOPS */
+.tag-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
+.tag-card{background:var(--white);border:1px solid var(--border);padding:18px 18px}
+.tc-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px}
+.tc-key{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--blue);margin-bottom:4px}
+.tc-values{font-family:var(--mono);font-size:10px;color:var(--text-2);line-height:1.7}
+
+/* SLO TABLE */
+table.slo{width:100%;border-collapse:collapse}
+table.slo th{background:var(--ink);color:rgba(245,240,232,.45);font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;text-align:left;border-right:1px solid rgba(255,255,255,.06)}
+table.slo th:last-child{border-right:none}
+table.slo td{padding:11px 14px;font-family:var(--mono);font-size:11px;color:var(--text);border-bottom:1px solid var(--border-2);border-right:1px solid var(--border-2);vertical-align:top;font-weight:300;line-height:1.5}
+table.slo td:last-child{border-right:none}
+table.slo tr:last-child td{border-bottom:none}
+table.slo tr:hover td{background:var(--surface-2)}
+.slo-good{color:var(--green);font-weight:500}
+.slo-warn{color:var(--amber);font-weight:500}
+
+/* DR GRID */
+.dr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:4px}
+.dr-card{background:var(--white);border:1px solid var(--border);padding:22px 22px}
+.dr-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.dr-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.dr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7;margin-bottom:10px}
+.dr-targets{display:flex;gap:16px;flex-wrap:wrap;padding:10px 12px;background:var(--surface-2)}
+.dr-target{font-family:var(--mono);font-size:11px;color:var(--text-2)}
+.dr-target strong{display:block;font-weight:500;color:var(--text);font-size:13px}
+
+/* CHAOS */
+.chaos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.chaos-card{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);padding:20px 20px}
+.cc-label{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(217,48,37,.6);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.cc-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--cream);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.cc-scenario{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.5);line-height:1.65;margin-bottom:8px}
+.cc-expect{font-family:var(--mono);font-size:10px;color:rgba(165,214,167,.7);line-height:1.5}
+.cc-expect strong{font-weight:500}
+
+/* ADR */
+.adr-row{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.adr-card{background:var(--surface-2);border:1px solid var(--border);padding:20px 22px}
+.adr-card.bl{border-left:4px solid var(--blue)}.adr-card.gr{border-left:4px solid var(--green)}.adr-card.am{border-left:4px solid var(--amber)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr-card.bl .adr-id{color:var(--blue)}.adr-card.gr .adr-id{color:var(--green)}.adr-card.am .adr-id{color:var(--amber)}
+.adr-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2;letter-spacing:-.01em}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:var(--green-lt);color:var(--green-dk);letter-spacing:.06em}
+
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}
+.ft-brand em{font-style:italic;color:var(--gold)}
+
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){
+  :root{--col:22px}
+  .principles-grid{grid-template-columns:1fr 1fr}
+  .tf-layout{grid-template-columns:1fr}
+  .sec-grid{grid-template-columns:1fr}
+  .cicd-steps{grid-template-columns:repeat(4,1fr)}
+  .tag-grid{grid-template-columns:1fr 1fr}
+  .dr-grid{grid-template-columns:1fr}
+  .chaos-grid{grid-template-columns:1fr}
+  .adr-row{grid-template-columns:1fr}
+  .mn-r .mn-link{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-06.html" class="mn-back">← Page 06</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">The Autonomous Enterprise &nbsp;/&nbsp; <strong>Page 07 — Infrastructure &amp; GCP Architecture</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="index.html" class="mn-link">Overview</a>
+    <a href="page-06.html" class="mn-link">← Page 06</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+
+<nav class="snav" id="snav">
+  <a href="#principles" class="sn act" data-sec="principles">Principles</a>
+  <a href="#terraform" class="sn" data-sec="terraform">Terraform IaC</a>
+  <a href="#network" class="sn" data-sec="network">Network</a>
+  <a href="#security" class="sn" data-sec="security">Security</a>
+  <a href="#compute" class="sn" data-sec="compute">Compute</a>
+  <a href="#cicd" class="sn" data-sec="cicd">CI/CD</a>
+  <a href="#operations" class="sn" data-sec="operations">Operations</a>
+  <a href="#infra-decisions" class="sn" data-sec="infra-decisions">Infra Decisions</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+</nav>
+
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise <span>/</span> Page 07</div>
+  <h1 class="ph-h1">Infrastructure &amp;<br><em>GCP Architecture</em><br><strong>— every resource in code.</strong></h1>
+  <p class="ph-sub">The Phase D reference architecture from Page 03 expressed as Terraform resources, security controls, operational procedures, and SLO definitions. Every GCP resource is provisioned by code. Every security control is enforced at the infrastructure layer. Nothing is configured manually.</p>
+  <div class="ph-tags">
+    <span class="ph-tag">Terraform IaC</span>
+    <span class="ph-tag">VPC-SC · BeyondCorp</span>
+    <span class="ph-tag">CMEK · Workload Identity</span>
+    <span class="ph-tag">Cloud Build CI/CD</span>
+    <span class="ph-tag">FinOps · GreenOps</span>
+    <span class="ph-tag">SLO · DR · Chaos Engineering</span>
+  </div>
+</header>
+
+<!-- §01 PRINCIPLES -->
+<section class="sec w ap" id="principles">
+  <div class="s-ey">Infrastructure Design Principles</div>
+  <h2 class="s-h2">Six principles. The rules <em>every resource</em> must satisfy.</h2>
+  <p class="s-p">These principles are derived from the Architecture Principles established in TOGAF Preliminary Phase (Page 03). They are the engineering expression of those principles — specific enough to evaluate any infrastructure decision against.</p>
+
+  <div class="principles-grid ap">
+    <div class="pc">
+      <div class="pc-id">IP-01</div>
+      <div class="pc-title">Every resource is provisioned by Terraform — no manual state</div>
+      <div class="pc-body">Every GCP resource — VPC, subnet, IAM binding, Cloud Run service, Firestore database, BigQuery dataset — is declared in Terraform and provisioned by terraform apply. No manual console changes. If a resource cannot be expressed in Terraform, it is a design gap, not a configuration exception.</div>
+      <div class="pc-ref">P-08 · FDA change control · ISO 27001</div>
+    </div>
+    <div class="pc">
+      <div class="pc-id">IP-02</div>
+      <div class="pc-title">Data residency is enforced by Organisation Policy — not application config</div>
+      <div class="pc-body">All resources are constrained to europe-west3 (Frankfurt) by an Organisation Policy constraint applied at the GCP organisation root. Application code cannot override this. New resources deployed to any other region will fail with a policy violation before they are created.</div>
+      <div class="pc-ref">P-06 · GDPR · C-04</div>
+    </div>
+    <div class="pc">
+      <div class="pc-id">IP-03</div>
+      <div class="pc-title">Zero-trust: no implicit trust based on network location</div>
+      <div class="pc-body">BeyondCorp enforces identity verification at every access request. Service accounts use Workload Identity Federation — no key files exist anywhere in the codebase or the infrastructure state. Every service-to-service call is authenticated. The VPC is a deployment boundary, not a trust boundary.</div>
+      <div class="pc-ref">P-11 · ISO 27001 · AR-07</div>
+    </div>
+    <div class="pc">
+      <div class="pc-id">IP-04</div>
+      <div class="pc-title">ClaraVis holds the encryption keys — Google does not</div>
+      <div class="pc-body">All storage resources (BigQuery, Firestore, GCS, Cloud Run data at rest) use Customer-Managed Encryption Keys via Cloud KMS. ClaraVis holds key custody. Key rotation policy: 90 days. In the event of a contract termination, ClaraVis can revoke key access and all data becomes cryptographically inaccessible.</div>
+      <div class="pc-ref">P-11 · GDPR Art. 17 · ISO 27001</div>
+    </div>
+    <div class="pc">
+      <div class="pc-id">IP-05</div>
+      <div class="pc-title">Cost allocation is tagged from first terraform apply</div>
+      <div class="pc-body">Every resource carries four mandatory labels: module (which AE module), env (dev/staging/prod), cost-centre (ClaraVis internal code), and data-classification (public/internal/confidential/restricted). Labels enforced by a Terraform module-level validation. Resources without required labels fail plan validation before they reach apply.</div>
+      <div class="pc-ref">P-12 · FinOps standard</div>
+    </div>
+    <div class="pc">
+      <div class="pc-id">IP-06</div>
+      <div class="pc-title">Security posture is continuously validated — not point-in-time audited</div>
+      <div class="pc-body">Security Command Center Premium is enabled. Every infrastructure change triggers a security posture scan. Findings above HIGH severity block the Cloud Build deployment pipeline. The security posture dashboard is a live view of the infrastructure state, not a monthly report.</div>
+      <div class="pc-ref">P-11 · ISO 27001 · FDA software validation</div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 TERRAFORM IaC -->
+<section class="sec ap" id="terraform">
+  <div class="s-ey gr">Terraform IaC</div>
+  <h2 class="s-h2">Module structure and <em>production HCL.</em></h2>
+  <p class="s-p">The infrastructure is organised into six Terraform modules. The root module wires them together and passes shared variables. Three HCL snippets below show the most architecturally significant resources — the ones a Google Cloud architect will ask to see first.</p>
+
+  <div class="tf-layout ap">
+    <div class="tf-tree">
+      <div style="color:rgba(245,240,232,.25);font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Repository Structure</div>
+      <div class="dir">infra/terraform/</div>
+      <div style="padding-left:14px">
+        <div class="dir">├── root/</div>
+        <div style="padding-left:14px">
+          <div class="file">│ ├── main.tf <span class="comment">— module composition</span></div>
+          <div class="file">│ ├── variables.tf <span class="comment">— region, project, env</span></div>
+          <div class="file">│ ├── outputs.tf</div>
+          <div class="file">│ └── backend.tf <span class="comment">— GCS state backend</span></div>
+        </div>
+        <div class="dir">├── modules/networking/</div>
+        <div style="padding-left:14px">
+          <div class="file">│ ├── vpc.tf <span class="comment">— shared VPC + subnets</span></div>
+          <div class="file">│ ├── vpc_sc.tf <span class="comment">— VPC-SC perimeter</span></div>
+          <div class="file">│ ├── firewall.tf</div>
+          <div class="file">│ └── cloud_armor.tf</div>
+        </div>
+        <div class="dir">├── modules/security/</div>
+        <div style="padding-left:14px">
+          <div class="file">│ ├── iam.tf <span class="comment">— SA + WIF bindings</span></div>
+          <div class="file">│ ├── kms.tf <span class="comment">— CMEK key rings</span></div>
+          <div class="file">│ ├── secret_manager.tf</div>
+          <div class="file">│ └── org_policy.tf <span class="comment">— region constraint</span></div>
+        </div>
+        <div class="dir">├── modules/compute/</div>
+        <div style="padding-left:14px">
+          <div class="file">│ ├── cloud_run.tf <span class="comment">— agent services</span></div>
+          <div class="file">│ └── gke_autopilot.tf <span class="comment">— batch ML</span></div>
+        </div>
+        <div class="dir">├── modules/data/</div>
+        <div style="padding-left:14px">
+          <div class="file">│ ├── bigquery.tf <span class="comment">— datasets + CMEK</span></div>
+          <div class="file">│ ├── firestore.tf</div>
+          <div class="file">│ ├── pubsub.tf <span class="comment">— topics + subscriptions</span></div>
+          <div class="file">│ └── gcs.tf <span class="comment">— contract store bucket</span></div>
+        </div>
+        <div class="dir">└── modules/monitoring/</div>
+        <div style="padding-left:14px">
+          <div class="file">&nbsp; ├── slo.tf <span class="comment">— SLO definitions</span></div>
+          <div class="file">&nbsp; ├── alerts.tf <span class="comment">— budget + drift alerts</span></div>
+          <div class="file">&nbsp; └── dashboards.tf</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--ink-2);border:1px solid rgba(255,255,255,.07)">
+      <div class="hcl-tabs">
+        <div class="hcl-tab act" onclick="showHcl('vpsc',this)">VPC-SC Perimeter</div>
+        <div class="hcl-tab" onclick="showHcl('wif',this)">Workload Identity</div>
+        <div class="hcl-tab" onclick="showHcl('run',this)">Cloud Run Service</div>
+        <div class="hcl-tab" onclick="showHcl('kms',this)">CMEK Key</div>
+      </div>
+
+      <div class="hcl-panel show" id="hcl-vpsc">
+        <pre><span class="hc"># modules/networking/vpc_sc.tf</span>
+<span class="hc"># VPC Service Controls perimeter — enforces data residency</span>
+<span class="hc"># and prevents exfiltration outside europe-west3</span>
+
+<span class="hk">resource</span> <span class="hs">"google_access_context_manager_service_perimeter"</span> <span class="hs">"claravis_ae"</span> {
+  <span class="ha">parent</span> = <span class="hs">"accessPolicies/<span class="hv">${var.access_policy_id}</span>"</span>
+  <span class="ha">name</span>   = <span class="hs">"accessPolicies/<span class="hv">${var.access_policy_id}</span>/servicePerimeters/claravis_ae_perimeter"</span>
+  <span class="ha">title</span>  = <span class="hs">"ClaraVis AE Production Perimeter"</span>
+
+  <span class="hk">spec</span> {
+    <span class="ha">resources</span> = [<span class="hs">"projects/<span class="hv">${var.project_number}</span>"</span>]
+
+    <span class="ha">restricted_services</span> = [
+      <span class="hs">"bigquery.googleapis.com"</span>,
+      <span class="hs">"firestore.googleapis.com"</span>,
+      <span class="hs">"storage.googleapis.com"</span>,
+      <span class="hs">"aiplatform.googleapis.com"</span>,
+      <span class="hs">"run.googleapis.com"</span>,
+      <span class="hs">"pubsub.googleapis.com"</span>,
+      <span class="hs">"secretmanager.googleapis.com"</span>,
+      <span class="hs">"cloudkms.googleapis.com"</span>,
+    ]
+
+    <span class="hk">access_levels</span> = [
+      <span class="hv">google_access_context_manager_access_level.claravis_corp_devices.name</span>,
+    ]
+
+    <span class="hk">vpc_accessible_services</span> {
+      <span class="ha">enable_restriction</span> = <span class="hn">true</span>
+      <span class="ha">allowed_services</span>   = [<span class="hs">"RESTRICTED-SERVICES"</span>]
+    }
+
+    <span class="hk">ingress_policies</span> {
+      <span class="hk">ingress_from</span> {
+        <span class="ha">identity_type</span> = <span class="hs">"SERVICE_ACCOUNT"</span>
+        <span class="hk">identities</span> = [
+          <span class="hs">"serviceAccount:<span class="hv">${var.orchestrator_sa}</span>"</span>,
+          <span class="hs">"serviceAccount:<span class="hv">${var.cloud_build_sa}</span>"</span>,
+        ]
+      }
+      <span class="hk">ingress_to</span> {
+        <span class="ha">resources</span> = [<span class="hs">"*"</span>]
+        <span class="hk">operations</span> { <span class="ha">service_name</span> = <span class="hs">"*"</span> }
+      }
+    }
+  }
+
+  <span class="ha">use_explicit_dry_run_spec</span> = <span class="hn">false</span>
+}</pre>
+      </div>
+
+      <div class="hcl-panel" id="hcl-wif">
+        <pre><span class="hc"># modules/security/iam.tf</span>
+<span class="hc"># Workload Identity Federation — no service account key files</span>
+<span class="hc"># Cloud Run services authenticate via WIF, not key files</span>
+
+<span class="hk">resource</span> <span class="hs">"google_service_account"</span> <span class="hs">"contractguard_sa"</span> {
+  <span class="ha">project</span>      = <span class="hv">var.project_id</span>
+  <span class="ha">account_id</span>   = <span class="hs">"contractguard-sa"</span>
+  <span class="ha">display_name</span> = <span class="hs">"ContractGuard Agent Service Account"</span>
+  <span class="ha">description</span>  = <span class="hs">"Least-privilege SA for ContractGuard Cloud Run service. No key files created."</span>
+}
+
+<span class="hc"># Workload Identity binding — Cloud Run service → SA</span>
+<span class="hk">resource</span> <span class="hs">"google_service_account_iam_member"</span> <span class="hs">"contractguard_wif"</span> {
+  <span class="ha">service_account_id</span> = <span class="hv">google_service_account.contractguard_sa.name</span>
+  <span class="ha">role</span>               = <span class="hs">"roles/iam.workloadIdentityUser"</span>
+  <span class="ha">member</span>             = <span class="hs">"serviceAccount:<span class="hv">${var.project_id}</span>.svc.id.goog[<span class="hv">${var.namespace}</span>/contractguard]"</span>
+}
+
+<span class="hc"># Minimal permissions — only what ContractGuard needs</span>
+<span class="hk">resource</span> <span class="hs">"google_project_iam_member"</span> <span class="hs">"contractguard_permissions"</span> {
+  <span class="ha">for_each</span> = <span class="hk">toset</span>([
+    <span class="hs">"roles/datastore.user"</span>,           <span class="hc"># Firestore read/write</span>
+    <span class="hs">"roles/bigquery.dataEditor"</span>,       <span class="hc"># BigQuery audit writes</span>
+    <span class="hs">"roles/storage.objectViewer"</span>,      <span class="hc"># GCS contract bucket read</span>
+    <span class="hs">"roles/secretmanager.secretAccessor"</span>, <span class="hc"># Secret Manager read</span>
+    <span class="hs">"roles/aiplatform.user"</span>,           <span class="hc"># Vertex AI endpoint invoke</span>
+    <span class="hs">"roles/cloudkms.cryptoKeyDecrypter"</span>, <span class="hc"># CMEK decrypt (own key ring only)</span>
+  ])
+  <span class="ha">project</span> = <span class="hv">var.project_id</span>
+  <span class="ha">role</span>    = <span class="hv">each.value</span>
+  <span class="ha">member</span>  = <span class="hs">"serviceAccount:<span class="hv">${google_service_account.contractguard_sa.email}</span>"</span>
+}
+
+<span class="hc"># Org policy: deny SA key creation — enforced at org root</span>
+<span class="hk">resource</span> <span class="hs">"google_org_policy_policy"</span> <span class="hs">"deny_sa_key_creation"</span> {
+  <span class="ha">name</span>   = <span class="hs">"organizations/<span class="hv">${var.org_id}</span>/policies/iam.disableServiceAccountKeyCreation"</span>
+  <span class="ha">parent</span> = <span class="hs">"organizations/<span class="hv">${var.org_id}</span>"</span>
+  <span class="hk">spec</span> {
+    <span class="hk">rules</span> { <span class="hk">enforce</span> { <span class="ha">enforce</span> = <span class="hn">true</span> } }
+  }
+}</pre>
+      </div>
+
+      <div class="hcl-panel" id="hcl-run">
+        <pre><span class="hc"># modules/compute/cloud_run.tf</span>
+<span class="hc"># ContractGuard agent service — stateless, VPC-native, CMEK</span>
+
+<span class="hk">resource</span> <span class="hs">"google_cloud_run_v2_service"</span> <span class="hs">"contractguard"</span> {
+  <span class="ha">project</span>  = <span class="hv">var.project_id</span>
+  <span class="ha">location</span> = <span class="hv">var.region</span>   <span class="hc"># europe-west3 — enforced by org policy</span>
+  <span class="ha">name</span>     = <span class="hs">"contractguard-<span class="hv">${var.env}</span>"</span>
+
+  <span class="hk">template</span> {
+    <span class="ha">service_account</span> = <span class="hv">google_service_account.contractguard_sa.email</span>
+
+    <span class="hk">scaling</span> {
+      <span class="ha">min_instance_count</span> = <span class="hn">0</span>   <span class="hc"># scale-to-zero in non-prod</span>
+      <span class="ha">max_instance_count</span> = <span class="hn">10</span>
+    }
+
+    <span class="hk">vpc_access</span> {
+      <span class="ha">connector</span> = <span class="hv">google_vpc_access_connector.ae_connector.id</span>
+      <span class="ha">egress</span>    = <span class="hs">"PRIVATE_RANGES_ONLY"</span>
+    }
+
+    <span class="hk">containers</span> {
+      <span class="ha">image</span> = <span class="hs">"<span class="hv">${var.region}</span>-docker.pkg.dev/<span class="hv">${var.project_id}</span>/ae-agents/contractguard:<span class="hv">${var.image_tag}</span>"</span>
+
+      <span class="hk">resources</span> {
+        <span class="ha">limits</span> = {
+          <span class="ha">cpu</span>    = <span class="hs">"2"</span>
+          <span class="ha">memory</span> = <span class="hs">"4Gi"</span>
+        }
+        <span class="ha">cpu_idle</span>          = <span class="hn">true</span>   <span class="hc"># CPU only allocated during request</span>
+        <span class="ha">startup_cpu_boost</span> = <span class="hn">true</span>
+      }
+
+      <span class="hk">env</span> {
+        <span class="ha">name</span> = <span class="hs">"PROJECT_ID"</span>
+        <span class="ha">value</span> = <span class="hv">var.project_id</span>
+      }
+      <span class="hk">env</span> {
+        <span class="ha">name</span> = <span class="hs">"SFDC_TOKEN_SECRET"</span>
+        <span class="hk">value_source</span> {
+          <span class="hk">secret_key_ref</span> {
+            <span class="ha">secret</span>  = <span class="hv">google_secret_manager_secret.sfdc_oauth_token.secret_id</span>
+            <span class="ha">version</span> = <span class="hs">"latest"</span>
+          }
+        }
+      }
+    }
+
+    <span class="hk">labels</span> = {
+      <span class="ha">module</span>              = <span class="hs">"contractguard"</span>
+      <span class="ha">env</span>                 = <span class="hv">var.env</span>
+      <span class="ha">cost-centre</span>         = <span class="hv">var.cost_centre</span>
+      <span class="ha">data-classification</span> = <span class="hs">"confidential"</span>
+    }
+  }
+
+  <span class="hk">traffic</span> {
+    <span class="ha">type</span>    = <span class="hs">"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"</span>
+    <span class="ha">percent</span> = <span class="hn">100</span>
+  }
+}</pre>
+      </div>
+
+      <div class="hcl-panel" id="hcl-kms">
+        <pre><span class="hc"># modules/security/kms.tf</span>
+<span class="hc"># CMEK key ring and keys — ClaraVis holds custody</span>
+<span class="hc"># Rotation: 90 days. Google cannot access encrypted data.</span>
+
+<span class="hk">resource</span> <span class="hs">"google_kms_key_ring"</span> <span class="hs">"claravis_ae"</span> {
+  <span class="ha">project</span>  = <span class="hv">var.project_id</span>
+  <span class="ha">name</span>     = <span class="hs">"claravis-ae-keyring"</span>
+  <span class="ha">location</span> = <span class="hv">var.region</span>   <span class="hc"># europe-west3 — keys stay in EU</span>
+}
+
+<span class="hk">resource</span> <span class="hs">"google_kms_crypto_key"</span> <span class="hs">"bigquery_cmek"</span> {
+  <span class="ha">name</span>     = <span class="hs">"bigquery-cmek"</span>
+  <span class="ha">key_ring</span> = <span class="hv">google_kms_key_ring.claravis_ae.id</span>
+
+  <span class="hk">rotation_period</span> = <span class="hs">"7776000s"</span>  <span class="hc"># 90 days in seconds</span>
+
+  <span class="hk">version_template</span> {
+    <span class="ha">algorithm</span>        = <span class="hs">"GOOGLE_SYMMETRIC_ENCRYPTION"</span>
+    <span class="ha">protection_level</span> = <span class="hs">"HSM"</span>    <span class="hc"># Hardware Security Module</span>
+  }
+
+  <span class="hk">labels</span> = {
+    <span class="ha">module</span>              = <span class="hs">"platform"</span>
+    <span class="ha">data-classification</span> = <span class="hs">"restricted"</span>
+  }
+}
+
+<span class="hk">resource</span> <span class="hs">"google_kms_crypto_key"</span> <span class="hs">"firestore_cmek"</span> {
+  <span class="ha">name</span>     = <span class="hs">"firestore-cmek"</span>
+  <span class="ha">key_ring</span> = <span class="hv">google_kms_key_ring.claravis_ae.id</span>
+  <span class="hk">rotation_period</span> = <span class="hs">"7776000s"</span>
+  <span class="hk">version_template</span> {
+    <span class="ha">algorithm</span>        = <span class="hs">"GOOGLE_SYMMETRIC_ENCRYPTION"</span>
+    <span class="ha">protection_level</span> = <span class="hs">"HSM"</span>
+  }
+}
+
+<span class="hc"># BigQuery dataset with CMEK</span>
+<span class="hk">resource</span> <span class="hs">"google_bigquery_dataset"</span> <span class="hs">"audit"</span> {
+  <span class="ha">project</span>     = <span class="hv">var.project_id</span>
+  <span class="ha">dataset_id</span>  = <span class="hs">"ae_audit"</span>
+  <span class="ha">location</span>    = <span class="hv">var.region</span>
+  <span class="ha">description</span> = <span class="hs">"Immutable audit trail — all agent actions, HITL events, SHAP explanations"</span>
+
+  <span class="hk">default_encryption_configuration</span> {
+    <span class="ha">kms_key_name</span> = <span class="hv">google_kms_crypto_key.bigquery_cmek.id</span>
+  }
+
+  <span class="hk">labels</span> = {
+    <span class="ha">module</span>              = <span class="hs">"platform"</span>
+    <span class="ha">env</span>                 = <span class="hv">var.env</span>
+    <span class="ha">data-classification</span> = <span class="hs">"restricted"</span>
+    <span class="ha">cost-centre</span>         = <span class="hv">var.cost_centre</span>
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 NETWORK TOPOLOGY -->
+<section class="sec dk ap" id="network">
+  <div class="s-ey go">Network Topology</div>
+  <h2 class="s-h2">Shared VPC. Three subnets. <em>One perimeter.</em></h2>
+  <p class="s-p">The network design follows the GCP shared VPC pattern — a single host project owns the network, service projects host the workloads. Three subnets map to the three compute layers: agents, data/ML, and infrastructure. The VPC-SC perimeter wraps the entire project boundary and prevents data exfiltration regardless of application behaviour.</p>
+
+  <div class="dw dk ap">
+    <div class="dw-title">Network Topology — Shared VPC · VPC-SC · Private Service Connect</div>
+    <div class="dw-sub">europe-west3 (Frankfurt) · all resources · VPC-SC perimeter · BeyondCorp access · Cloud Armor WAF</div>
+    <svg width="100%" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="net" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- VPC-SC outer boundary -->
+      <rect x="10" y="10" width="878" height="474" rx="8" fill="none" stroke="rgba(217,48,37,.3)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="24" y="28" font-size="9" fill="rgba(239,154,154,.5)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · claravis_ae_perimeter · All services restricted · No egress outside europe-west3</text>
+
+      <!-- Shared VPC -->
+      <rect x="20" y="36" width="858" height="440" rx="6" fill="rgba(26,115,232,.03)" stroke="rgba(26,115,232,.1)" stroke-width="1"/>
+      <text x="34" y="52" font-size="9" fill="rgba(100,170,255,.4)" letter-spacing=".06em">SHARED VPC: claravis-ae-vpc · Host Project: claravis-ae-host · Region: europe-west3</text>
+
+      <!-- Cloud Armor + Load Balancer (external entry) -->
+      <rect x="34" y="58" width="160" height="56" rx="4" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="114" y="78" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">Cloud Armor WAF</text>
+      <text x="114" y="91" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">OWASP rules · DDoS</text>
+      <text x="114" y="104" font-size="8" fill="rgba(217,48,37,.4)" text-anchor="middle">Rate limiting · IP allowlist</text>
+
+      <!-- BeyondCorp / IAP -->
+      <rect x="210" y="58" width="160" height="56" rx="4" fill="rgba(26,115,232,.1)" stroke="rgba(26,115,232,.25)" stroke-width="1"/>
+      <text x="290" y="78" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">BeyondCorp / IAP</text>
+      <text x="290" y="91" font-size="8" fill="rgba(26,115,232,.5)" text-anchor="middle">Identity-aware proxy</text>
+      <text x="290" y="104" font-size="8" fill="rgba(26,115,232,.4)" text-anchor="middle">Device trust · MFA enforced</text>
+
+      <!-- Subnet: ae-agents-subnet -->
+      <rect x="34" y="130" width="400" height="120" rx="4" fill="rgba(184,150,12,.05)" stroke="rgba(184,150,12,.15)" stroke-width="1"/>
+      <text x="46" y="146" font-size="9" fill="rgba(212,172,26,.4)" font-weight="500" letter-spacing=".06em">SUBNET: ae-agents-subnet · 10.10.1.0/24 · Private Google Access: enabled</text>
+      <rect x="46" y="152" width="88" height="40" rx="3" fill="rgba(184,150,12,.12)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="90" y="168" font-size="8" font-weight="500" fill="#D4AC1A" text-anchor="middle">CCAI Agent</text>
+      <text x="90" y="180" font-size="7" fill="#B8960C" text-anchor="middle">Cloud Run</text>
+      <rect x="142" y="152" width="88" height="40" rx="3" fill="rgba(184,150,12,.12)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="186" y="168" font-size="8" font-weight="500" fill="#D4AC1A" text-anchor="middle">ContractGuard</text>
+      <text x="186" y="180" font-size="7" fill="#B8960C" text-anchor="middle">Cloud Run</text>
+      <rect x="238" y="152" width="88" height="40" rx="3" fill="rgba(184,150,12,.12)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="282" y="168" font-size="8" font-weight="500" fill="#D4AC1A" text-anchor="middle">RevRec AI</text>
+      <text x="282" y="180" font-size="7" fill="#B8960C" text-anchor="middle">Cloud Run</text>
+      <rect x="334" y="152" width="88" height="40" rx="3" fill="rgba(184,150,12,.12)" stroke="rgba(184,150,12,.3)" stroke-width="1"/>
+      <text x="378" y="168" font-size="8" font-weight="500" fill="#D4AC1A" text-anchor="middle">Asset IQ</text>
+      <text x="378" y="180" font-size="7" fill="#B8960C" text-anchor="middle">Cloud Run</text>
+      <!-- Orchestrator -->
+      <rect x="46" y="202" width="130" height="40" rx="3" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="111" y="218" font-size="8" font-weight="500" fill="#EF9A9A" text-anchor="middle">Orchestrator</text>
+      <text x="111" y="230" font-size="7" fill="rgba(217,48,37,.5)" text-anchor="middle">Cloud Run · A2A</text>
+
+      <!-- Subnet: ae-data-ml-subnet -->
+      <rect x="450" y="130" width="416" height="120" rx="4" fill="rgba(19,115,51,.05)" stroke="rgba(19,115,51,.15)" stroke-width="1"/>
+      <text x="462" y="146" font-size="9" fill="rgba(165,214,167,.4)" font-weight="500" letter-spacing=".06em">SUBNET: ae-data-ml-subnet · 10.10.2.0/24 · Managed services via PSC</text>
+      <rect x="462" y="152" width="90" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="507" y="168" font-size="8" font-weight="500" fill="#A5D6A7" text-anchor="middle">BigQuery</text>
+      <text x="507" y="180" font-size="7" fill="rgba(19,115,51,.5)" text-anchor="middle">CMEK · eu-west3</text>
+      <rect x="560" y="152" width="90" height="40" rx="3" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="605" y="168" font-size="8" font-weight="500" fill="#FFCC80" text-anchor="middle">Firestore</text>
+      <text x="605" y="180" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">CMEK · native mode</text>
+      <rect x="658" y="152" width="90" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="703" y="168" font-size="8" font-weight="500" fill="#A5D6A7" text-anchor="middle">Pub/Sub</text>
+      <text x="703" y="180" font-size="7" fill="rgba(19,115,51,.5)" text-anchor="middle">6 topics · CMEK</text>
+      <rect x="756" y="152" width="100" height="40" rx="3" fill="rgba(156,39,176,.1)" stroke="rgba(156,39,176,.25)" stroke-width="1"/>
+      <text x="806" y="168" font-size="8" font-weight="500" fill="#CE93D8" text-anchor="middle">Vertex AI</text>
+      <text x="806" y="180" font-size="7" fill="rgba(156,39,176,.5)" text-anchor="middle">Pipelines + FS + Endpoints</text>
+      <!-- GKE Autopilot -->
+      <rect x="462" y="202" width="170" height="40" rx="3" fill="rgba(19,115,51,.12)" stroke="rgba(19,115,51,.3)" stroke-width="1"/>
+      <text x="547" y="218" font-size="8" font-weight="500" fill="#A5D6A7" text-anchor="middle">GKE Autopilot</text>
+      <text x="547" y="230" font-size="7" fill="rgba(19,115,51,.5)" text-anchor="middle">Batch ML training workloads</text>
+
+      <!-- Subnet: ae-infra-subnet -->
+      <rect x="34" y="268" width="830" height="88" rx="4" fill="rgba(176,96,0,.04)" stroke="rgba(176,96,0,.12)" stroke-width="1"/>
+      <text x="46" y="284" font-size="9" fill="rgba(255,183,77,.4)" font-weight="500" letter-spacing=".06em">SUBNET: ae-infra-subnet · 10.10.3.0/24 · Management plane</text>
+      <rect x="46" y="292" width="110" height="40" rx="3" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="101" y="308" font-size="8" fill="#FFCC80" text-anchor="middle" font-weight="500">Cloud KMS</text>
+      <text x="101" y="320" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">CMEK key rings · HSM</text>
+      <rect x="164" y="292" width="110" height="40" rx="3" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="219" y="308" font-size="8" fill="#FFCC80" text-anchor="middle" font-weight="500">Secret Manager</text>
+      <text x="219" y="320" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">OAuth tokens · API keys</text>
+      <rect x="282" y="292" width="110" height="40" rx="3" fill="rgba(26,115,232,.1)" stroke="rgba(26,115,232,.25)" stroke-width="1"/>
+      <text x="337" y="308" font-size="8" fill="#90CAF9" text-anchor="middle" font-weight="500">Cloud Monitoring</text>
+      <text x="337" y="320" font-size="7" fill="rgba(26,115,232,.5)" text-anchor="middle">SLO · Alerts · Dashboards</text>
+      <rect x="400" y="292" width="110" height="40" rx="3" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="455" y="308" font-size="8" fill="#EF9A9A" text-anchor="middle" font-weight="500">Sec. Cmd Center</text>
+      <text x="455" y="320" font-size="7" fill="rgba(217,48,37,.4)" text-anchor="middle">Continuous posture scan</text>
+      <rect x="518" y="292" width="110" height="40" rx="3" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="573" y="308" font-size="8" fill="#FFCC80" text-anchor="middle" font-weight="500">Artifact Registry</text>
+      <text x="573" y="320" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">Container images · signed</text>
+      <rect x="636" y="292" width="110" height="40" rx="3" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="691" y="308" font-size="8" fill="#FFCC80" text-anchor="middle" font-weight="500">Cloud Build</text>
+      <text x="691" y="320" font-size="7" fill="rgba(176,96,0,.5)" text-anchor="middle">CI/CD · Terraform runner</text>
+
+      <!-- Private Service Connect -->
+      <rect x="34" y="372" width="830" height="40" rx="3" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="449" y="396" font-size="9" fill="rgba(255,255,255,.3)" text-anchor="middle" font-weight="500">Private Service Connect — All managed service API calls route via internal IP endpoints · no public internet traversal</text>
+
+      <!-- External connections -->
+      <rect x="34" y="426" width="200" height="40" rx="3" fill="none" stroke="rgba(26,115,232,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="134" y="444" font-size="9" fill="rgba(100,170,255,.4)" text-anchor="middle">Salesforce (external)</text>
+      <text x="134" y="456" font-size="8" fill="rgba(26,115,232,.3)" text-anchor="middle">REST API · OAuth 2.0 · via NAT</text>
+      <rect x="248" y="426" width="200" height="40" rx="3" fill="none" stroke="rgba(176,96,0,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="348" y="444" font-size="9" fill="rgba(255,183,77,.4)" text-anchor="middle">SAP S/4HANA (external)</text>
+      <text x="348" y="456" font-size="8" fill="rgba(176,96,0,.3)" text-anchor="middle">Middleware bridge · mock in demo</text>
+
+      <!-- Cross-subnet arrows -->
+      <line x1="210" y1="200" x2="450" y2="200" stroke="rgba(255,255,255,.1)" stroke-width="1" marker-end="url(#net)" stroke-dasharray="3 2"/>
+      <text x="330" y="196" font-size="8" fill="rgba(255,255,255,.2)" text-anchor="middle">VPC-internal · WIF-authenticated</text>
+      <line x1="230" y1="250" x2="230" y2="268" stroke="rgba(255,255,255,.1)" stroke-width="1" marker-end="url(#net)"/>
+      <line x1="650" y1="250" x2="650" y2="268" stroke="rgba(255,255,255,.1)" stroke-width="1" marker-end="url(#net)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:rgba(184,150,12,.3);border:1px solid #B8960C"></div>Agent subnet (ae-agents)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(19,115,51,.3);border:1px solid #137333"></div>Data/ML subnet (ae-data-ml)</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(176,96,0,.3);border:1px solid #B06000"></div>Infra subnet (ae-infra)</div>
+      <div class="dl"><div class="dl-dash"></div>VPC-SC perimeter</div>
+      <div class="dl"><div class="dl-box" style="background:none;border:1px dashed rgba(26,115,232,.4)"></div>External systems</div>
+    </div>
+  </div>
+</section>
+
+<!-- §04 SECURITY -->
+<section class="sec w ap" id="security">
+  <div class="s-ey re">Security Architecture</div>
+  <h2 class="s-h2">Zero-trust enforced at every layer — <em>not just the perimeter.</em></h2>
+  <p class="s-p">The CISO requirement from Page 02 (S-09) is satisfied structurally — not by policy. Every security control below is enforced by infrastructure code, not by operational procedure. A misconfigured application cannot bypass these controls because they are not application-level configurations.</p>
+
+  <div class="sec-grid ap">
+    <div class="sg">
+      <div class="sg-label">Identity &amp; Access</div>
+      <div class="sg-title">Zero-trust IAM — no implicit trust</div>
+      <div class="sg-items">
+        <div class="sg-item">One service account per agent — minimum required permissions only (least privilege)</div>
+        <div class="sg-item">Workload Identity Federation — no service account key files exist anywhere in the codebase</div>
+        <div class="sg-item">Org Policy: iam.disableServiceAccountKeyCreation enforced at organisation root</div>
+        <div class="sg-item">BeyondCorp IAP — all access to management interfaces requires device trust verification + MFA</div>
+        <div class="sg-item">Org Policy: iam.allowedPolicyMemberDomains — only ClaraVis identities can be bound to IAM roles</div>
+        <div class="sg-item">All IAM bindings managed exclusively by Terraform — no console grants</div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sg-label">Data Protection</div>
+      <div class="sg-title">CMEK + VPC-SC — dual-layer data protection</div>
+      <div class="sg-items">
+        <div class="sg-item">CMEK on all storage: BigQuery, Firestore, GCS, Cloud Run — ClaraVis holds key custody via Cloud KMS HSM</div>
+        <div class="sg-item">Key rotation: 90 days — automated via Terraform rotation_period configuration</div>
+        <div class="sg-item">VPC-SC perimeter — all API calls to restricted services must originate from within the perimeter</div>
+        <div class="sg-item">Org Policy: gcp.resourceLocations constrains all resources to europe-west3/europe-west4 only</div>
+        <div class="sg-item">DLP API — automatic PII detection on data entering the GCS contract store bucket</div>
+        <div class="sg-item">All data in transit: TLS 1.3 minimum — enforced by Cloud Load Balancer SSL policy</div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sg-label">Network Security</div>
+      <div class="sg-title">Defence in depth — four network layers</div>
+      <div class="sg-items">
+        <div class="sg-item">Cloud Armor WAF: OWASP CRS rules + rate limiting + IP allowlist for Salesforce egress NAT IP</div>
+        <div class="sg-item">VPC firewall: default-deny-all ingress — only explicitly allowed traffic is permitted</div>
+        <div class="sg-item">Private Google Access: all managed service API calls via internal IP (PSC) — no public internet</div>
+        <div class="sg-item">Cloud NAT: outbound internet access (Salesforce API) via NAT — agents have no public IP</div>
+        <div class="sg-item">Shared VPC: network management centralised in host project — service projects cannot modify network</div>
+        <div class="sg-item">VPC Flow Logs: enabled on all subnets — retained 30 days in Cloud Logging</div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sg-label">Secrets Management</div>
+      <div class="sg-title">Secret Manager — no hardcoded credentials</div>
+      <div class="sg-items">
+        <div class="sg-item">All secrets in Secret Manager — Salesforce OAuth tokens, any third-party API keys</div>
+        <div class="sg-item">Secrets referenced via Cloud Run valueSource.secretKeyRef — never injected as plain env vars in Terraform</div>
+        <div class="sg-item">Secret access via service account IAM binding — secretmanager.secretAccessor role per SA, per secret</div>
+        <div class="sg-item">Secret rotation: Salesforce OAuth tokens rotated every 30 days via Cloud Scheduler + Cloud Functions</div>
+        <div class="sg-item">Pre-commit hook: detect-secrets scanner runs on every git commit — fails on any credential pattern</div>
+        <div class="sg-item">Audit log: every secret access logged to Cloud Audit Logs — alerts on anomalous access patterns</div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sg-label">Posture Management</div>
+      <div class="sg-title">Security Command Center — continuous validation</div>
+      <div class="sg-items">
+        <div class="sg-item">Security Command Center Premium — enabled at organisation level</div>
+        <div class="sg-item">Every Terraform apply triggers a post-deployment posture scan</div>
+        <div class="sg-item">HIGH and CRITICAL findings block the Cloud Build deployment pipeline — ADR-014</div>
+        <div class="sg-item">Container images scanned by Artifact Analysis before deployment — known CVEs blocked</div>
+        <div class="sg-item">Binary Authorization — only images signed by Cloud Build SA are deployable to Cloud Run / GKE</div>
+        <div class="sg-item">Vulnerability scanning: OS and application layer — automated weekly on all running container images</div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sg-label">Audit &amp; Compliance</div>
+      <div class="sg-title">Immutable audit — every action logged</div>
+      <div class="sg-items">
+        <div class="sg-item">Cloud Audit Logs: DATA_READ, DATA_WRITE, ADMIN_ACTIVITY enabled on all services — retained 400 days</div>
+        <div class="sg-item">Audit logs exported to BigQuery via Log Sink — cross-queryable with application audit trail</div>
+        <div class="sg-item">Log bucket: locked (WORM) — audit logs cannot be deleted or modified for 400 days</div>
+        <div class="sg-item">HITL event records in Firestore: immutable by write pattern — no update or delete operations permitted</div>
+        <div class="sg-item">Compliance dashboard: Forseti Security / Config Validator checks Terraform state against CIS GCP Benchmark</div>
+        <div class="sg-item">ISO 27001 evidence: Cloud Audit Logs + Security Command Center findings exportable as compliance evidence package</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §05 COMPUTE -->
+<section class="sec ap" id="compute">
+  <div class="s-ey bl">Compute Architecture</div>
+  <h2 class="s-h2">Cloud Run for agents. GKE Autopilot for <em>batch ML.</em></h2>
+  <p class="s-p">The compute split between Cloud Run and GKE Autopilot is ADR-003 from Page 03 — restated here with the full operational rationale. Cloud Run handles the stateless, request-driven agent workloads. GKE Autopilot handles the batch, long-running ML training jobs that benefit from GPU access and longer execution windows.</p>
+
+  <div style="overflow-x:auto;margin-top:4px" class="ap">
+    <table class="ct">
+      <thead><tr>
+        <th style="width:140px">Service</th>
+        <th style="width:120px">Compute Platform</th>
+        <th style="width:100px">Scaling</th>
+        <th style="width:110px">Resources</th>
+        <th>Justification</th>
+        <th style="width:90px">Cost Model</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="font-weight:500">CCAI Sales Agent</td><td>Cloud Run v2</td><td>0–10 instances · request-driven</td><td>2 vCPU · 4Gi · CPU idle</td><td>Stateless conversational handler. Request duration: 1–8s. Scale-to-zero eliminates idle cost. Session state in Firestore — no affinity required.</td><td>Per-request billing · ~€0.08/1K req</td></tr>
+        <tr><td style="font-weight:500">ContractGuard</td><td>Cloud Run v2</td><td>0–10 instances · request-driven</td><td>4 vCPU · 8Gi · startup boost</td><td>Long-running requests (Gemini 1M token analysis: 30–90s). Startup CPU boost reduces cold start latency. Higher memory for Gemini response buffering.</td><td>Per-request · ~€0.40/analysis</td></tr>
+        <tr><td style="font-weight:500">RevRec AI Agent</td><td>Cloud Run v2</td><td>0–10 instances · request-driven</td><td>2 vCPU · 4Gi</td><td>Stateless classification handler. Request duration: 2–5s (XGBoost inference + SHAP). Scale-to-zero acceptable — RevRec runs on contract signed events, not continuously.</td><td>Per-request · ~€0.12/classification</td></tr>
+        <tr><td style="font-weight:500">Asset IQ Agent</td><td>Cloud Run v2 (inference) + GKE (batch feature eng.)</td><td>0–5 Cloud Run · GKE: scheduled jobs</td><td>2 vCPU · 4Gi (CR) · n2-standard-4 (GKE)</td><td>RUL inference: Cloud Run (request-driven, short). Daily feature engineering over 12,000 units: GKE Autopilot (batch, long-running, benefit from parallelism).</td><td>Mixed: per-request + batch pod billing</td></tr>
+        <tr><td style="font-weight:500">FinRisk Sentinel</td><td>Cloud Run v2 · always-on</td><td>1–5 instances · min 1 (streaming)</td><td>2 vCPU · 4Gi</td><td>Streaming anomaly detection requires a persistent connection to BigQuery streaming inserts. Min 1 instance to eliminate cold start latency on financial event processing.</td><td>Always-on: ~€45/month per instance</td></tr>
+        <tr><td style="font-weight:500">Orchestrator</td><td>Cloud Run v2</td><td>0–20 instances · request-driven</td><td>2 vCPU · 4Gi</td><td>A2A message handler. Short requests (dispatch + state write). Highest instance count — the Orchestrator fans out to multiple agents simultaneously and must not become a bottleneck.</td><td>Per-request · ~€0.06/dispatch</td></tr>
+        <tr><td style="font-weight:500">ML Training (all models)</td><td>GKE Autopilot</td><td>0–N pods · job-scoped</td><td>n1-standard-8 + A100 GPU (training) · n1-standard-4 (evaluation)</td><td>ADR-015. Vertex AI Pipelines submits training jobs to GKE Autopilot. A100 GPU required for Gemini embedding computation (ContractGuard feature engineering). Scale-to-zero between pipeline runs.</td><td>Pod billing · GPU: ~€2.80/hour · billed only during training</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- §06 CI/CD -->
+<section class="sec w ap" id="cicd">
+  <div class="s-ey gr">CI/CD Pipeline</div>
+  <h2 class="s-h2">Seven steps. <em>Three gates.</em> One Cloud Build pipeline.</h2>
+  <p class="s-p">Every code change — agent code, Terraform IaC, ML pipeline definition — passes through the same Cloud Build pipeline. Three gates enforce quality, security, and architectural compliance before anything reaches production. The FDA 21 CFR 820 change control requirement is satisfied by the mandatory Terraform plan review gate and the Binary Authorization signing step.</p>
+
+  <div class="cicd-steps ap">
+    <div class="cs">
+      <div class="cs-num">STEP 01</div>
+      <div class="cs-name">Source Trigger</div>
+      <div class="cs-tool">GitHub webhook · PR merge to main</div>
+    </div>
+    <div class="cs">
+      <div class="cs-num">STEP 02</div>
+      <div class="cs-name">Test Suite</div>
+      <div class="cs-tool">pytest · coverage ≥ 80% · contract tests</div>
+    </div>
+    <div class="cs gate">
+      <div class="cs-num">GATE 01</div>
+      <div class="cs-name">Security Scan</div>
+      <div class="cs-tool">detect-secrets · Trivy CVE · SCC findings</div>
+    </div>
+    <div class="cs">
+      <div class="cs-num">STEP 03</div>
+      <div class="cs-name">Container Build</div>
+      <div class="cs-tool">Docker build · Artifact Registry push</div>
+    </div>
+    <div class="cs gate">
+      <div class="cs-num">GATE 02</div>
+      <div class="cs-name">Terraform Plan</div>
+      <div class="cs-tool">terraform plan · infracost · manual review gate for infra PRs</div>
+    </div>
+    <div class="cs">
+      <div class="cs-num">STEP 04</div>
+      <div class="cs-name">Deploy Staging</div>
+      <div class="cs-tool">terraform apply · Cloud Run staging · integration tests</div>
+    </div>
+    <div class="cs gate">
+      <div class="cs-num">GATE 03</div>
+      <div class="cs-name">Promote Production</div>
+      <div class="cs-tool">Binary Authorization · signed image · manual approval for prod</div>
+    </div>
+  </div>
+
+  <!-- CI/CD diagram -->
+  <div class="dw ap" style="margin-top:4px">
+    <div class="dw-title">Cloud Build Pipeline — Trigger → Test → Build → Gate → Deploy</div>
+    <div class="dw-sub">FDA 21 CFR 820 change control: Terraform plan review (Gate 02) + Binary Authorization signing (Gate 03) create the auditable change record</div>
+    <svg width="100%" viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs>
+        <marker id="cd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- GitHub trigger -->
+      <rect x="10" y="76" width="90" height="48" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="55" y="96" font-size="9" font-weight="500" fill="#1557B0" text-anchor="middle">GitHub</text>
+      <text x="55" y="108" font-size="8" fill="#1A73E8" text-anchor="middle">PR merged</text>
+      <text x="55" y="120" font-size="7" fill="#1A73E8" text-anchor="middle">to main</text>
+      <line x1="100" y1="100" x2="116" y2="100" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- Cloud Build -->
+      <rect x="116" y="64" width="90" height="72" rx="4" fill="rgba(19,115,51,.1)" stroke="#137333" stroke-width="1.5"/>
+      <text x="161" y="88" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Cloud Build</text>
+      <text x="161" y="101" font-size="7" fill="#137333" text-anchor="middle">pytest · coverage</text>
+      <text x="161" y="113" font-size="7" fill="#137333" text-anchor="middle">detect-secrets</text>
+      <text x="161" y="125" font-size="7" fill="#137333" text-anchor="middle">Trivy CVE scan</text>
+      <line x1="206" y1="100" x2="222" y2="100" stroke="#137333" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- SCC Gate -->
+      <rect x="222" y="76" width="90" height="48" rx="4" fill="rgba(217,48,37,.08)" stroke="#D93025" stroke-width="2"/>
+      <text x="267" y="96" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">Gate 01</text>
+      <text x="267" y="108" font-size="8" fill="#D93025" text-anchor="middle">SCC HIGH → block</text>
+      <line x1="312" y1="100" x2="328" y2="100" stroke="#D93025" stroke-width="1.5" marker-end="url(#cd)"/>
+      <!-- Failure path -->
+      <line x1="267" y1="124" x2="267" y2="160" stroke="#D93025" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="267" y1="160" x2="130" y2="160" stroke="#D93025" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#cd)"/>
+      <text x="200" y="173" font-size="8" fill="#D93025" text-anchor="middle">Block PR · notify author</text>
+
+      <!-- Docker build + Artifact Registry -->
+      <rect x="328" y="76" width="90" height="48" rx="4" fill="rgba(176,96,0,.08)" stroke="#B06000" stroke-width="1.5"/>
+      <text x="373" y="93" font-size="9" font-weight="500" fill="#7A4100" text-anchor="middle">Docker Build</text>
+      <text x="373" y="105" font-size="8" fill="#B06000" text-anchor="middle">Push to Artifact</text>
+      <text x="373" y="117" font-size="7" fill="#B06000" text-anchor="middle">Registry · sign</text>
+      <line x1="418" y1="100" x2="434" y2="100" stroke="#B06000" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- Terraform Plan Gate -->
+      <rect x="434" y="76" width="90" height="48" rx="4" fill="rgba(217,48,37,.08)" stroke="#D93025" stroke-width="2"/>
+      <text x="479" y="93" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">Gate 02</text>
+      <text x="479" y="105" font-size="8" fill="#D93025" text-anchor="middle">terraform plan</text>
+      <text x="479" y="117" font-size="7" fill="#D93025" text-anchor="middle">Manual review (infra)</text>
+      <line x1="524" y1="100" x2="540" y2="100" stroke="#D93025" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- Deploy Staging -->
+      <rect x="540" y="76" width="90" height="48" rx="4" fill="rgba(0,123,131,.08)" stroke="#007B83" stroke-width="1.5"/>
+      <text x="585" y="93" font-size="9" font-weight="500" fill="#005F67" text-anchor="middle">Deploy</text>
+      <text x="585" y="105" font-size="8" fill="#007B83" text-anchor="middle">Staging · apply</text>
+      <text x="585" y="117" font-size="7" fill="#007B83" text-anchor="middle">Integration tests</text>
+      <line x1="630" y1="100" x2="646" y2="100" stroke="#007B83" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- Binary Auth Gate -->
+      <rect x="646" y="76" width="90" height="48" rx="4" fill="rgba(217,48,37,.08)" stroke="#D93025" stroke-width="2"/>
+      <text x="691" y="93" font-size="9" font-weight="500" fill="#A50E0E" text-anchor="middle">Gate 03</text>
+      <text x="691" y="105" font-size="8" fill="#D93025" text-anchor="middle">Binary Auth</text>
+      <text x="691" y="117" font-size="7" fill="#D93025" text-anchor="middle">Manual prod approval</text>
+      <line x1="736" y1="100" x2="752" y2="100" stroke="#D93025" stroke-width="1.5" marker-end="url(#cd)"/>
+
+      <!-- Deploy Production -->
+      <rect x="752" y="76" width="130" height="48" rx="4" fill="rgba(19,115,51,.15)" stroke="#137333" stroke-width="2"/>
+      <text x="817" y="96" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Deploy Production</text>
+      <text x="817" y="108" font-size="8" fill="#137333" text-anchor="middle">terraform apply · Cloud Run</text>
+      <text x="817" y="120" font-size="7" fill="#137333" text-anchor="middle">SCC post-deploy scan</text>
+
+      <!-- FDA note -->
+      <rect x="434" y="140" width="448" height="24" rx="3" fill="#FCE8E6" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="658" y="156" font-size="9" fill="#A50E0E" text-anchor="middle" font-weight="500">FDA 21 CFR 820 change control: Gate 02 Terraform plan + Gate 03 manual approval = auditable change record before production deployment</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §07 OPERATIONS -->
+<section class="sec ap" id="operations">
+  <div class="s-ey am">Operations</div>
+  <h2 class="s-h2">SLOs. FinOps. GreenOps. DR. <em>Chaos engineering.</em></h2>
+  <p class="s-p">Operational maturity is not an afterthought in this architecture — it is provisioned in the same Terraform run as the infrastructure. SLO definitions, budget alerts, carbon-aware scheduling, and DR configuration are all infrastructure-as-code artifacts.</p>
+
+  <!-- SLO Table -->
+  <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px" class="ap">SLO / SLI Definitions — per module</div>
+  <div style="overflow-x:auto;margin-bottom:4px" class="ap">
+    <table class="slo">
+      <thead><tr>
+        <th style="width:140px">Module</th>
+        <th style="width:180px">SLI (what is measured)</th>
+        <th style="width:100px">SLO Target</th>
+        <th style="width:100px">Error Budget (30d)</th>
+        <th>Alert Threshold</th>
+        <th style="width:100px">Burn Rate Alert</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="font-weight:500">CCAI Sales Agent</td><td>% requests returning 2xx within 8s</td><td class="slo-good">99.5% availability</td><td>3.6 hours</td><td>P99 latency &gt; 8s for 5 min · error rate &gt; 1% for 10 min</td><td class="slo-warn">14.4× over 1h</td></tr>
+        <tr><td style="font-weight:500">ContractGuard</td><td>% analyses completing without error within 120s</td><td class="slo-good">99.0% availability</td><td>7.2 hours</td><td>Analysis error rate &gt; 2% for 15 min · P95 latency &gt; 90s</td><td class="slo-warn">6× over 6h</td></tr>
+        <tr><td style="font-weight:500">RevRec AI</td><td>% classifications completing + SHAP generated within 10s</td><td class="slo-good">99.9% availability</td><td>43 minutes</td><td>Any classification error · SHAP generation failure · SAP write failure</td><td class="slo-warn">36× over 1h — page immediately</td></tr>
+        <tr><td style="font-weight:500">Asset IQ</td><td>% daily prediction runs completing within 2h window</td><td class="slo-good">99.0% availability</td><td>7.2 hours</td><td>Daily run misses 2h window · prediction error rate &gt; 5%</td><td class="slo-warn">6× over 6h</td></tr>
+        <tr><td style="font-weight:500">FinRisk Sentinel</td><td>% financial events scored within 5 minutes of ingestion</td><td class="slo-good">99.5% availability</td><td>3.6 hours</td><td>Streaming lag &gt; 5 min · anomaly scoring failure rate &gt; 1%</td><td class="slo-warn">14.4× over 1h</td></tr>
+        <tr><td style="font-weight:500">HITL Framework</td><td>% HITL checkpoints created and presented within 60s of trigger</td><td class="slo-good">99.9% availability</td><td>43 minutes</td><td>HITL creation failure · SLA breach rate &gt; 5% across all checkpoints</td><td class="slo-warn">36× over 1h — page immediately</td></tr>
+        <tr><td style="font-weight:500">Audit Trail</td><td>% agent actions with audit record committed within 2s</td><td class="slo-good">99.99% availability</td><td>4 minutes</td><td>Any audit write failure — critical · immediate page</td><td class="slo-warn">Any failure = immediate page</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FinOps + GreenOps -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px" class="ap">
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">FinOps — Cost Allocation</div>
+      <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-.01em">Four mandatory labels. Tagged from day one.</div>
+      <div class="tag-grid" style="grid-template-columns:1fr 1fr;gap:4px">
+        <div class="tag-card">
+          <div class="tc-label">Label</div>
+          <div class="tc-key">module</div>
+          <div class="tc-values">contractguard · revrec-ai · asset-iq · finrisk · ccai-sales · platform · greenops · strategy-dashboard</div>
+        </div>
+        <div class="tag-card">
+          <div class="tc-label">Label</div>
+          <div class="tc-key">env</div>
+          <div class="tc-values">dev · staging · prod</div>
+        </div>
+        <div class="tag-card">
+          <div class="tc-label">Label</div>
+          <div class="tc-key">cost-centre</div>
+          <div class="tc-values">ClaraVis internal code · maps to finance cost centre in SAP</div>
+        </div>
+        <div class="tag-card">
+          <div class="tc-label">Label</div>
+          <div class="tc-key">data-classification</div>
+          <div class="tc-values">public · internal · confidential · restricted</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-lt);font-family:var(--mono);font-size:10px;color:var(--amber-dk);line-height:1.6">
+        <strong>Budget alerts:</strong> 50% · 80% · 100% of monthly budget per module. Alert to ClaraVis finance contact + Cloud Build notification. Resources without required labels fail terraform plan validation.
+      </div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--border);padding:24px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">GreenOps — Carbon-Aware Scheduling</div>
+      <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Compute-intensive workloads scheduled to low-carbon windows.</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:12px">The GreenOps module (Page 04, FRD-06) integrates with the infrastructure layer via Cloud Scheduler and the GCP Carbon Footprint API. ML training jobs submitted to GKE Autopilot via Vertex AI Pipelines are deferred to grid-carbon-optimal windows within a ±6 hour scheduling flexibility window. ESG metrics written to BigQuery for EU CSRD reporting.</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="padding:7px 10px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5">
+          <strong>Scheduling flexibility:</strong> ±6 hours for batch ML training · ±2 hours for daily Asset IQ feature engineering
+        </div>
+        <div style="padding:7px 10px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5">
+          <strong>Carbon intensity source:</strong> GCP Carbon Footprint API · europe-west3 grid signal
+        </div>
+        <div style="padding:7px 10px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5">
+          <strong>ESG output:</strong> Monthly BigQuery report → Looker Studio dashboard → EU CSRD Scope 3 evidence
+        </div>
+        <div style="padding:7px 10px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5">
+          <strong>Hard limit:</strong> RevRec AI and FinRisk Sentinel are never deferred — financial latency SLOs take precedence
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DR -->
+  <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin:24px 0 8px" class="ap">Disaster Recovery — RTO / RPO Targets</div>
+  <div class="dr-grid ap">
+    <div class="dr-card">
+      <div class="dr-label">Tier 1 — Critical (Revenue + Compliance)</div>
+      <div class="dr-title">RevRec AI · HITL Framework · Audit Trail</div>
+      <div class="dr-body">These three components directly affect EU AI Act compliance and financial posting integrity. Any downtime creates a compliance gap. Backed by Cloud Spanner (HITL) in multi-region active-active configuration for the HITL audit store. BigQuery audit dataset replicated to europe-west4 as a secondary region. RevRec AI inference is stateless — Cloud Run redeploys in under 3 minutes.</div>
+      <div class="dr-targets">
+        <div class="dr-target"><strong>RTO</strong> 15 minutes</div>
+        <div class="dr-target"><strong>RPO</strong> 0 (multi-region replication)</div>
+        <div class="dr-target"><strong>Backup</strong> Continuous · Firestore PITR 7 days</div>
+      </div>
+    </div>
+    <div class="dr-card">
+      <div class="dr-label">Tier 2 — Important (Operations)</div>
+      <div class="dr-title">Asset IQ · FinRisk Sentinel · ContractGuard</div>
+      <div class="dr-body">Important operational modules. Downtime creates business impact but not immediate compliance exposure. Asset IQ runs on a daily cadence — a 4-hour RTO is acceptable (next daily run is the recovery). FinRisk Sentinel has a 5-minute streaming SLO — recovery within 1 hour restores monitoring coverage. ContractGuard is document-processing driven — queued documents can be re-processed after recovery.</div>
+      <div class="dr-targets">
+        <div class="dr-target"><strong>RTO</strong> 1–4 hours</div>
+        <div class="dr-target"><strong>RPO</strong> 1 hour (Firestore PITR)</div>
+        <div class="dr-target"><strong>Backup</strong> Hourly exports to GCS</div>
+      </div>
+    </div>
+    <div class="dr-card">
+      <div class="dr-label">Tier 3 — Standard (Sales + Reporting)</div>
+      <div class="dr-title">CCAI Sales Agent · Strategy Dashboard · GreenOps</div>
+      <div class="dr-body">Business-important but not operationally critical. CCAI Sales Agent downtime routes inbound inquiries directly to Account Executives (the pre-AE process). Strategy Dashboard is read-only BigQuery — restores on next Cloud Build deploy. GreenOps scheduling defers to non-carbon-aware schedule during recovery window.</div>
+      <div class="dr-targets">
+        <div class="dr-target"><strong>RTO</strong> 4–8 hours</div>
+        <div class="dr-target"><strong>RPO</strong> 24 hours</div>
+        <div class="dr-target"><strong>Backup</strong> Daily GCS snapshots</div>
+      </div>
+    </div>
+    <div class="dr-card">
+      <div class="dr-label">Infrastructure Recovery</div>
+      <div class="dr-title">Full Environment Rebuild from Terraform State</div>
+      <div class="dr-body">The entire GCP environment is reproducible from the Terraform state file stored in a CMEK-encrypted GCS bucket in a separate GCP project. A full environment rebuild from terraform apply is tested quarterly as part of the chaos engineering programme. Estimated rebuild time: 45 minutes for the full production environment. The Terraform state bucket is the single most critical recovery artifact — it has its own versioning, Object Lock (WORM), and cross-project replication.</div>
+      <div class="dr-targets">
+        <div class="dr-target"><strong>Full rebuild</strong> ~45 minutes</div>
+        <div class="dr-target"><strong>State bucket</strong> WORM + versioning + cross-project replica</div>
+        <div class="dr-target"><strong>Test cadence</strong> Quarterly full rebuild drill</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chaos Engineering -->
+  <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin:24px 0 8px" class="ap">Chaos Engineering — Scheduled Failure Drills</div>
+  <div class="chaos-grid ap">
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 01</div>
+      <div class="cc-title">Specialist agent failure mid-task</div>
+      <div class="cc-scenario">Inject a forced error response from the ContractGuard Cloud Run service after 3 successful clause analyses. The Orchestrator has dispatched a 12-clause contract analysis — 3 succeed, then the agent returns a 500 error.</div>
+      <div class="cc-expect"><strong>Expected:</strong> Orchestrator opens circuit breaker after 3rd failure. Task routes to HITL fallback. Finance Controller receives manual review request with the 3 completed clause analyses and a note that automated analysis failed for clauses 4–12. Partial work preserved in Firestore. No data loss. Circuit half-opens after 30s.</div>
+    </div>
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 02</div>
+      <div class="cc-title">Firestore write failure during HITL creation</div>
+      <div class="cc-scenario">Block Firestore writes for the HITL event collection for 60 seconds during an active RevRec AI classification run. The model has completed inference and SHAP computation — the HITL-04 creation write fails.</div>
+      <div class="cc-expect"><strong>Expected:</strong> RevRec AI agent enters ERROR state. SAP write is never initiated (SAP write requires HITL record ID as mandatory parameter — the write is physically impossible without it). RevRec AI agent retries HITL creation 3 times with exponential backoff. On third failure: task fails, Finance Controller receives manual classification alert. Audit record of the attempted HITL creation is preserved in Cloud Logging even if Firestore write failed.</div>
+    </div>
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 03</div>
+      <div class="cc-title">VPC-SC perimeter breach attempt</div>
+      <div class="cc-scenario">From inside the VPC, attempt to write a BigQuery record to a dataset in a different GCP project outside the VPC-SC perimeter. Simulate a misconfigured application that attempts to exfiltrate data to an external BigQuery project.</div>
+      <div class="cc-expect"><strong>Expected:</strong> VPC-SC perimeter blocks the BigQuery API call with a PERMISSION_DENIED error before it reaches the destination project. The attempted write is logged to Cloud Audit Logs as a VPC-SC violation. Security Command Center generates a HIGH finding. Cloud Build pipeline deployment is blocked until the finding is resolved and acknowledged. No data is exfiltrated.</div>
+    </div>
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 04</div>
+      <div class="cc-title">HITL SLA timeout — escalation path test</div>
+      <div class="cc-scenario">Create a HITL-04 (RevRec AI Finance Controller review) and then simulate the Finance Controller taking no action for 4 hours and 5 minutes — 5 minutes past the 4-hour SLA defined in the HITL specification.</div>
+      <div class="cc-expect"><strong>Expected:</strong> Cloud Scheduler timeout job fires at t+4h. Escalation to CFO triggered automatically. A second HITL checkpoint is created for the CFO with the original classification, SHAP explanation, and a note that the FC SLA was exceeded. The timeout event is written to the Firestore HITL record as an immutable escalation event. EU AI Act compliance record shows the escalation — the SLA breach is documented, not hidden.</div>
+    </div>
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 05</div>
+      <div class="cc-title">CMEK key rotation — zero-downtime verification</div>
+      <div class="cc-scenario">Trigger a manual CMEK key rotation for the BigQuery CMEK key during active RevRec AI classification traffic. Verify that ongoing classifications are not interrupted and that new data written after rotation uses the new key version.</div>
+      <div class="cc-expect"><strong>Expected:</strong> GCP automatically re-encrypts new data with the rotated key. Existing data remains accessible (GCP retains previous key versions). In-flight RevRec AI requests complete successfully. Key rotation event appears in Cloud Audit Logs. Monitoring shows no latency spike or error rate increase during the rotation window. CMEK dashboard shows both old and new key versions active.</div>
+    </div>
+    <div class="chaos-card">
+      <div class="cc-label">Chaos Experiment 06</div>
+      <div class="cc-title">Full environment rebuild from Terraform state</div>
+      <div class="cc-scenario">Quarterly: destroy the entire staging environment (terraform destroy) and rebuild it from scratch (terraform apply) using only the Terraform state file from GCS and the container images from Artifact Registry. Measure total rebuild time and verify all integration tests pass post-rebuild.</div>
+      <div class="cc-expect"><strong>Expected:</strong> Complete environment rebuild in under 45 minutes. All Cloud Run services healthy within 3 minutes of apply completing. Firestore data restored from PITR backup within 10 minutes. All integration tests pass. This experiment validates the DR runbook and the infrastructure-as-code principle — if the environment cannot be rebuilt from code, the IaC is incomplete.</div>
+    </div>
+  </div>
+
+  <!-- On-call -->
+  <div style="background:var(--ink);padding:24px 28px;margin-top:4px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">On-Call Escalation Path</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div style="background:rgba(255,255,255,.04);padding:14px 16px;border-left:2px solid var(--red)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(239,154,154,.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">P0 — Immediate page</div>
+        <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.7);line-height:1.6">Audit trail write failure · RevRec AI HITL creation failure · VPC-SC breach · SCC CRITICAL finding</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:14px 16px;border-left:2px solid var(--amber)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(255,183,77,.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">P1 — Page within 15 min</div>
+        <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.7);line-height:1.6">HITL SLA breach &gt; 2 modules simultaneously · FinRisk streaming lag &gt; 10 min · Circuit breaker open on Orchestrator</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:14px 16px;border-left:2px solid var(--blue)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(100,170,255,.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">P2 — Notify within 1 hour</div>
+        <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.7);line-height:1.6">Error budget burn rate &gt; 14.4× · Asset IQ daily run delayed &gt; 2h · SCC HIGH finding · Model drift alert</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:14px 16px;border-left:2px solid var(--green)">
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(165,214,167,.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">P3 — Next business day</div>
+        <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.7);line-height:1.6">Budget alert at 80% · CCAI Sales Agent elevated latency · GreenOps scheduling missed window · SCC MEDIUM finding</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §07b INFRA DESIGN DECISIONS -->
+<section class="sec ap" id="infra-decisions">
+  <div class="s-ey re">Infrastructure Design Decisions</div>
+  <h2 class="s-h2">Seven questions a senior GCP architect will ask — <em>answered in advance.</em></h2>
+  <p class="s-p">These are the gaps a Google Cloud architect or SRE probes in a design review. Each answer below is documented because the absence of it suggests the design hasn't been thought through to production depth.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px" class="ap">
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--red);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 01 — Terraform State Bucket IAM</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">The state bucket is the highest-value attack target in the infrastructure — it is protected accordingly</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">Write access to the Terraform state file is equivalent to full infrastructure control — an attacker who can write to state can inject arbitrary resources or exfiltrate every secret referenced in outputs. The state bucket IAM has exactly two principals with write access: the Cloud Build SA (for pipeline runs only, scoped to the specific bucket path) and a break-glass admin SA that requires MFA re-authentication for every use and generates a Cloud Audit Log CRITICAL entry on activation. No human principal has direct bucket write access in normal operations. Object versioning is enabled — any state corruption is recoverable to any point within the 90-day retention window. The state bucket lives in a separate GCP project from the workload project, isolated by a distinct VPC-SC perimeter.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 02 — Terraform State Locking</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Concurrent applies are prevented by GCS native locking — no custom lock management required</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">The GCS Terraform backend provides native state locking via object metadata — when a terraform apply begins, it acquires an exclusive lock on the state object. Any concurrent apply attempt fails immediately with a lock error and the conflicting pipeline is halted before it modifies any resources. Cloud Build pipelines that target the same Terraform workspace are serialised via a Cloud Build trigger concurrency limit of 1 — a second trigger fires only after the first completes or fails. Lock acquisition and release events are written to Cloud Audit Logs. In the event of a failed apply that leaves a stale lock (e.g. Cloud Build runner crash), the lock can be force-released only by the break-glass admin SA — not by any pipeline SA.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--green);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 03 — Secret Rotation Without Redeployment</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Rotated secrets are picked up by running services on the next request — no redeployment required</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">All Cloud Run services reference secrets via <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">valueSource.secretKeyRef.version: latest</code> — not a pinned version number. When the Salesforce OAuth token rotation function writes a new secret version to Secret Manager, the next request from any Cloud Run service that calls Secret Manager resolves <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">latest</code> to the new version automatically. No redeployment, no restart, no configuration change. The rotation function (Cloud Scheduler → Cloud Functions → Secret Manager) runs on a 30-day cadence for Salesforce tokens, immediately on demand for any secret flagged by the security posture scan. Each rotation event is logged to Cloud Audit Logs and triggers a Secret Manager rotation notification to the on-call channel. The old secret version is disabled (not deleted) for 7 days after rotation — enabling rollback if the new credential is rejected.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--amber);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 04 — VPC-SC and Salesforce Outbound Traffic</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">VPC-SC restricts GCP managed service APIs — it does not block outbound internet traffic to Salesforce</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">VPC Service Controls operates at the GCP API layer — it restricts cross-project and external calls to services like BigQuery, Firestore, and Vertex AI. It does not intercept or block outbound TCP traffic from Cloud Run to the public internet. Salesforce REST API calls exit the VPC via Cloud NAT (which provides outbound internet access from private Cloud Run instances without assigning public IPs) and reach Salesforce's servers directly. The Salesforce NAT egress IP range is static and pre-registered with Salesforce's IP allowlist. Cloud Armor's WAF policy includes an egress rule that restricts outbound HTTP/S traffic to the Salesforce API hostname only — all other outbound internet traffic from the agent subnet is blocked at the firewall level. This separation is intentional: VPC-SC protects ClaraVis's data within GCP; Cloud Armor + firewall rules protect the outbound channel to Salesforce.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--teal);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 05 — Local Terraform Apply Prevention</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">IAM design prevents any developer from running terraform apply against production — Cloud Build SA is the only principal with apply permissions</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">Developer GCP credentials are granted read-only access to the production project (<code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">roles/viewer</code> + specific read roles for debugging). The IAM roles required to provision or modify infrastructure — <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">roles/compute.admin</code>, <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">roles/iam.securityAdmin</code>, VPC-SC admin — are bound exclusively to the Cloud Build SA. A developer who clones the repo and runs <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">terraform apply</code> locally with their own credentials will receive PERMISSION_DENIED on the first resource that requires elevated roles. This is enforced structurally by IAM — not by policy, convention, or honour system. Developers have full apply access to the dev environment, where a separate SA with equivalent permissions exists. The separation of dev vs prod SA permissions is provisioned in Terraform and enforced by the Org Policy constraint on the prod project folder.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--purple);padding:22px 24px">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 06 — Terraform Module Versioning</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Shared modules are version-pinned — a change to the networking module cannot silently affect the compute module</div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">Each internal Terraform module is tagged in the Git repository using semantic versioning (e.g. <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">networking/v1.3.0</code>). Consuming modules reference a specific tag via the Git source syntax: <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">source = "git::https://github.com/...//modules/networking?ref=v1.3.0"</code>. A module update requires a version tag bump and a PR review before any consuming module can reference the new version. The root module's <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">terraform.lock.hcl</code> file pins provider versions with hash verification — provider upgrades are explicit, reviewable, and auditable. This means the entire dependency graph is reproducible from the lock file alone: given the same lock file and the same tagged module versions, <code style="background:var(--surface-2);padding:1px 4px;font-family:var(--mono);font-size:10px">terraform init</code> always produces an identical provider and module set — a property the quarterly full environment rebuild drill (Chaos Experiment 06) explicitly tests.</div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-left:4px solid var(--red);padding:22px 24px;grid-column:1/-1">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Decision 07 — Binary Authorization Attestation Chain &amp; Break-Glass</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em">Attestation model, signing key custody, and the emergency bypass procedure — specified before the first deployment</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75">The Binary Authorization attestation chain has two paths. The standard path: Cloud Build SA signs each container image digest using a Cloud KMS asymmetric key (EC P-256) during the Gate 03 step. The attestation is stored in Container Analysis and verified by the Binary Authorization policy on every Cloud Run and GKE deployment — unsigned images are rejected at the API layer before the container ever starts. The break-glass path: a secondary attestor SA exists for emergency hotfixes that cannot wait for the full CI/CD pipeline. Access to the break-glass attestor requires MFA re-authentication, generates a Security Command Center CRITICAL finding within 60 seconds of use, and mandates a post-incident review ticket within 24 hours. The break-glass key is a separate Cloud KMS asymmetric key with its own key ring, accessible only to two named security leads. Every break-glass use is logged to an immutable Cloud Audit Log bucket with 7-year retention — satisfying the FDA change control audit trail requirement for emergency software changes.</div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px">Attestation Chain Summary</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="padding:8px 12px;background:var(--blue-lt);font-family:var(--mono);font-size:10px;color:var(--blue-dk);line-height:1.5"><strong>Standard path:</strong> Cloud Build SA → KMS sign (EC P-256) → Container Analysis attestation → Binary Auth policy enforces on deploy</div>
+            <div style="padding:8px 12px;background:var(--surface-2);font-family:var(--mono);font-size:10px;color:var(--text-2);line-height:1.5"><strong>Key custody:</strong> Standard key — Cloud Build SA only. Break-glass key — 2 named security leads, MFA-gated, separate key ring</div>
+            <div style="padding:8px 12px;background:var(--amber-lt);font-family:var(--mono);font-size:10px;color:var(--amber-dk);line-height:1.5"><strong>Break-glass trigger:</strong> SCC CRITICAL finding within 60s · mandatory post-incident review within 24h · immutable audit log 7yr retention</div>
+            <div style="padding:8px 12px;background:var(--green-lt);font-family:var(--mono);font-size:10px;color:var(--green-dk);line-height:1.5"><strong>FDA 21 CFR 820:</strong> Break-glass audit trail satisfies emergency software change control documentation requirement</div>
+            <div style="padding:8px 12px;background:var(--red-lt);font-family:var(--mono);font-size:10px;color:var(--red-dk);line-height:1.5"><strong>Unsigned image policy:</strong> DENY — no exceptions. Images without a valid attestation are rejected at the API layer before scheduling.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- §08 ADRs -->
+<section class="sec w ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three infrastructure decisions. <em>Every alternative documented.</em></h2>
+  <p class="s-p">ADR-013 through ADR-015 cover the key infrastructure architecture choices. Each was made after evaluating the alternatives — the reasoning is documented here because it is the reasoning a Google Cloud architect or SRE will probe.</p>
+
+  <div class="adr-row ap">
+    <div class="adr-card bl">
+      <div class="adr-id">ADR-013</div>
+      <div class="adr-title">Shared VPC over separate VPCs per module</div>
+      <div class="adr-body">Separate VPCs per module (one per AE module) were evaluated as an isolation pattern. Rejected because: (1) VPC peering between 8 module VPCs creates an O(n²) peering mesh that becomes operationally complex and approaches GCP peering limits. (2) Shared VPC centralises network management in the host project — module service accounts cannot modify network topology, which strengthens the security posture. (3) Private Service Connect endpoints are provisioned once in the shared VPC and consumed by all modules — vs. 8 separate PSC configurations. The security isolation between modules is maintained at the IAM and VPC-SC layer, not the network boundary layer. Modules in the same VPC but different subnets cannot communicate without explicit firewall rules — the default-deny-all ingress policy enforces this.</div>
+      <div class="adr-status">Accepted · Phase Infra Design</div>
+    </div>
+    <div class="adr-card gr">
+      <div class="adr-id">ADR-014</div>
+      <div class="adr-title">Cloud Armor over third-party WAF (Cloudflare, Imperva)</div>
+      <div class="adr-body">Third-party WAF solutions were evaluated — Cloudflare and Imperva both offer mature OWASP protection and DDoS mitigation. Rejected because: (1) Third-party WAFs route traffic outside the GCP network before it reaches Cloud Load Balancer — this means traffic traverses a third-party's infrastructure before entering the VPC-SC perimeter. In a ClaraVis data residency context, any traffic routing outside GCP before the perimeter is a data sovereignty risk that requires legal review. (2) Cloud Armor integrates natively with Cloud Load Balancer and Security Command Center — findings from Cloud Armor violations appear in the SCC dashboard alongside infrastructure findings. (3) Cloud Armor's Adaptive Protection (ML-based DDoS detection) is included in the Cloud Armor Enterprise tier — comparable capability to third-party solutions without the data routing concern.</div>
+      <div class="adr-status">Accepted · Phase Infra Design</div>
+    </div>
+    <div class="adr-card am">
+      <div class="adr-id">ADR-015</div>
+      <div class="adr-title">GKE Autopilot over GKE Standard for batch ML workloads</div>
+      <div class="adr-body">GKE Standard was evaluated for the batch ML training workloads submitted by Vertex AI Pipelines. Rejected in favour of GKE Autopilot because: (1) GKE Standard requires node pool management — selecting machine types, managing node lifecycle, patching OS images. Autopilot abstracts all of this — Vertex AI Pipelines submits pod specs, GKE Autopilot provisions the right nodes. (2) Autopilot's per-pod billing model is more cost-efficient for intermittent batch workloads — Standard charges for node runtime regardless of whether pods are scheduled. (3) Autopilot automatically applies GKE hardening (no SSH access, enforced container security context, workload identity pre-configured). For a portfolio-scale deployment where the ML engineer is also the infra engineer, Autopilot's managed approach is the correct tradeoff — operational simplicity over fine-grained control.</div>
+      <div class="adr-status">Accepted · Phase Infra Design</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>Next in the Portfolio</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Infrastructure designed.<br><strong>GTM strategy follows.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">Six design phases complete. Page 08 answers the commercial question: how does the AE reach market? Buyer journey mapping, value proposition by persona, adoption phasing, and commercial model options — the architecture expressed as a go-to-market strategy.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="#" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(255,255,255,.08)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='transparent';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 08</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Go-to-Market Strategy</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Buyer journey · Value proposition · Adoption phasing · Commercial model</div><span style="display:inline-block;margin-top:3px;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:rgba(184,150,12,.15);color:var(--gold-lt);letter-spacing:.07em;text-transform:uppercase">In Design</span></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-06.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.07em">PG 06</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← ML Engineering &amp; MLOps</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">The ML platform this infrastructure runs</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharthan Rao</div>
+</footer>
+
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['principles','terraform','network','security','compute','cicd','operations','infra-decisions','adrs'];
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
+      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
+      if(link)link.classList.add('act');
+    }
+  });
+},{threshold:.15,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+
+function showHcl(id,tab){
+  document.querySelectorAll('.hcl-panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.hcl-tab').forEach(t=>t.classList.remove('act'));
+  document.getElementById('hcl-'+id).classList.add('show');
+  tab.classList.add('act');
+}
+</script>
+</body>
+</html>
