@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategy Dashboard — Module 07 · The Autonomous Enterprise Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+/* FIX H4: removed cursor:none — accessibility violation (WCAG 2.1 AA). Custom cursor replaced with standard UA cursor. #cur and #cur-r elements kept in DOM but hidden via pointer-events:none only; the rAF loop is removed. */
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'M07';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
+.ph-tag-blue{background:#E8F0FE;color:#1557B0}.ph-tag-green{background:#E6F4EA;color:#0D5226}
+.ph-tag-teal{background:#E4F7F7;color:#005F67}.ph-tag-amber{background:#FEF3E2;color:#7A4100}
+.ph-tag-purple{background:#EDE7F6;color:#3700B3}
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.te{color:var(--teal)}.s-ey.re{color:var(--red)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 em{font-style:italic;color:var(--gold)}.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}.ap.in{opacity:1;transform:none}
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--blue)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.panel-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;margin-top:4px}
+.panel-table th{background:var(--surface-2);color:var(--text-3);font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.panel-table td{padding:9px 12px;border-bottom:1px solid var(--border-2);color:var(--text-2);vertical-align:top;line-height:1.5}
+.panel-table tr:last-child td{border-bottom:none}.panel-table tr:hover td{background:var(--surface-2)}
+.refresh-pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px}
+.rp-5m{background:#E6F4EA;color:#0D5226}.rp-15m{background:#E8F0FE;color:#1557B0}
+.rp-1h{background:#FEF3E2;color:#7A4100}.rp-daily{background:#EDE7F6;color:#3700B3}
+.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
+.adr.bl{border-left:4px solid var(--blue)}.adr.gr{border-left:4px solid var(--green)}.adr.am{border-left:4px solid var(--amber)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr.bl .adr-id{color:var(--blue)}.adr.gr .adr-id{color:var(--green)}.adr.am .adr-id{color:var(--amber)}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-tradeoff{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--text-3);line-height:1.6;margin-bottom:8px;padding:8px 12px;background:var(--surface);border-left:2px solid var(--border)}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
+.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.rb{background:var(--white);border:1px solid var(--border);padding:26px;border-top:3px solid var(--border)}
+.rb.cto{border-top-color:var(--purple)}.rb.cfo{border-top-color:var(--green)}.rb.ea{border-top-color:var(--blue)}.rb.cco{border-top-color:var(--red)}
+.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rb.cto .rb-who{color:var(--purple)}.rb.cfo .rb-who{color:var(--green)}.rb.ea .rb-who{color:var(--blue)}.rb.cco .rb-who{color:var(--red)}
+.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
+.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
+.rb-rl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rb-r{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
+.rb-ev{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
+.rb.cto .rb-ev{background:var(--purple-lt);color:var(--purple-dk)}.rb.cfo .rb-ev{background:var(--green-lt);color:var(--green-dk)}
+.rb.ea .rb-ev{background:var(--blue-lt);color:var(--blue-dk)}.rb.cco .rb-ev{background:var(--red-lt);color:var(--red-dk)}
+/* ── SLO / IAM interactive dashboard styles ── */
+.slo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:4px}
+.slo-card{background:var(--white);border:1px solid var(--border);padding:18px 16px;position:relative}
+.slo-panel-name{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.slo-status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex-shrink:0}
+.slo-status-row{display:flex;align-items:center;margin-bottom:4px}
+.slo-label{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.slo-val{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px}
+.slo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);line-height:1.5}
+.slo-bar-track{height:3px;background:var(--border);margin:8px 0 4px;border-radius:2px;overflow:hidden}
+.slo-bar-fill{height:100%;border-radius:2px;transition:width .4s ease}
+.slo-freshness{font-family:var(--mono);font-size:9px;padding:2px 6px;margin-top:6px;display:inline-block}
+.sf-ok{background:var(--green-lt);color:var(--green-dk)}.sf-warn{background:var(--amber-lt);color:var(--amber-dk)}.sf-breach{background:var(--red-lt);color:var(--red-dk)}
+.iam-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:4px}
+.iam-role{background:var(--surface-2);border:1px solid var(--border);padding:20px 22px}
+.iam-role-name{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.iam-role.r-cto .iam-role-name{color:var(--purple)}.iam-role.r-cfo .iam-role-name{color:var(--green)}.iam-role.r-cco .iam-role-name{color:var(--red)}
+.iam-binding{font-family:var(--mono);font-size:10px;color:var(--text-2);line-height:1.6;margin-bottom:6px}
+.iam-binding strong{color:var(--text)}
+.iam-scope{font-family:var(--mono);font-size:9px;color:var(--text-3);line-height:1.5;padding:6px 10px;background:var(--surface);border-left:2px solid var(--border);margin-top:6px}
+.obs-row{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.obs-card{background:var(--surface-2);border:1px solid var(--border);padding:20px 22px}
+.obs-card-title{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.obs-alert{font-family:var(--mono);font-size:11px;color:var(--text-2);line-height:1.6;padding:8px 12px;border-left:3px solid;margin-bottom:4px}
+.obs-alert.al-blue{border-color:var(--blue);background:var(--blue-lt)}.obs-alert.al-amber{border-color:var(--amber);background:var(--amber-lt)}.obs-alert.al-red{border-color:var(--red);background:var(--red-lt)}
+.slo-sim-btn{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:9px 22px;border:1px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;transition:all .18s;margin-right:8px;margin-top:12px}
+.slo-sim-btn:hover{border-color:var(--blue);color:var(--blue)}.slo-sim-btn.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
+/* ── end SLO styles ── */
+.demo-controls{padding:20px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.control-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.pill-group{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;transition:all .18s;user-select:none}
+.pill:hover{border-color:var(--blue);color:var(--blue)}.pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.run-btn{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 32px;background:var(--blue);color:var(--white);border:none;cursor:pointer;transition:background .2s;margin-top:12px}
+.run-btn:hover{background:var(--blue-dk)}.run-btn:disabled{opacity:.4;cursor:not-allowed}
+.demo-stage{display:grid;grid-template-columns:340px 1fr;min-height:580px;border:1px solid var(--border);margin-top:4px}
+.demo-left{background:#0d1117;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
+.demo-right{background:#080c12;display:flex;flex-direction:column}
+.demo-col-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.demo-col-title{font-family:var(--mono);font-size:11px;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase}
+.demo-col-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;letter-spacing:.06em;margin-left:auto;border:1px solid}
+.badge-blue{background:rgba(26,115,232,.15);color:#90CAF9;border-color:rgba(26,115,232,.25)}
+.badge-green{background:rgba(19,115,51,.15);color:#81C784;border-color:rgba(19,115,51,.25)}
+.badge-amber{background:rgba(176,96,0,.15);color:#FFCA28;border-color:rgba(176,96,0,.25)}
+.source-feed{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:5px;overflow-y:auto;max-height:440px}
+.source-event{border:1px solid rgba(255,255,255,.05);padding:10px 12px;animation:eventIn .3s ease}
+@keyframes eventIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.se-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.se-source{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.04em}
+.se-msg{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.25);line-height:1.5}
+.se-blue{border-color:rgba(26,115,232,.25);background:rgba(26,115,232,.04)}
+.se-teal{border-color:rgba(0,123,131,.25);background:rgba(0,123,131,.04)}
+.se-amber{border-color:rgba(176,96,0,.25);background:rgba(176,96,0,.04)}
+.dash-panels{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px}
+.panel{border:1px solid rgba(255,255,255,.07);padding:14px;transition:all .4s;position:relative;overflow:hidden}
+.panel.highlight{border-color:rgba(26,115,232,.5);background:rgba(26,115,232,.06)}
+.panel.highlight-green{border-color:rgba(19,115,51,.5);background:rgba(19,115,51,.06)}
+.panel.highlight-amber{border-color:rgba(176,96,0,.5);background:rgba(176,96,0,.08)}
+.panel-label{font-family:var(--mono);font-size:9px;font-weight:500;color:rgba(255,255,255,.25);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.panel-refresh{font-family:var(--mono);font-size:8px;padding:1px 5px;margin-left:auto}
+.r-5m{background:rgba(19,115,51,.15);color:rgba(129,199,132,.7)}.r-15m{background:rgba(26,115,232,.15);color:rgba(144,202,249,.7)}.r-1h{background:rgba(176,96,0,.15);color:rgba(255,202,40,.7)}
+.panel-value{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.03em;color:rgba(255,255,255,.7);line-height:1;margin-bottom:3px;transition:all .4s}
+.panel-sub{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.2);line-height:1.4}
+.panel-status{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;padding:2px 6px;margin-top:6px}
+.status-green{background:rgba(19,115,51,.2);color:#81C784}.status-amber{background:rgba(176,96,0,.2);color:#FFCA28}
+.panel-drill{font-family:var(--mono);font-size:9px;color:rgba(26,115,232,.5);margin-top:6px;display:none;text-decoration:underline}
+.panel.highlight .panel-drill,.panel.highlight-amber .panel-drill,.panel.highlight-green .panel-drill{display:block}
+.refresh-anim{position:absolute;top:0;left:0;right:0;height:2px;background:rgba(26,115,232,.5);transform:scaleX(0);transform-origin:left;transition:transform .6s ease}
+.panel.highlight .refresh-anim{transform:scaleX(1)}
+.view-label{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);padding:8px 16px;border-top:1px solid rgba(255,255,255,.04);display:flex;gap:8px;flex-wrap:wrap}
+.view-pill{font-family:var(--mono);font-size:9px;padding:2px 6px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
+.demo-note{font-family:var(--mono);font-size:10px;color:var(--text-3);padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);margin-top:4px;line-height:1.6}
+.demo-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:4px}
+.dm{background:var(--white);padding:16px 20px}
+.dm-label{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.dm-value{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--blue)}
+.dm-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:2px}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}.ft-brand em{font-style:italic;color:var(--gold)}
+@media(max-width:1100px){:root{--col:32px}.slo-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){:root{--col:22px}.rebuttal-grid{grid-template-columns:1fr}.demo-stage{grid-template-columns:1fr}.demo-metrics{grid-template-columns:1fr 1fr}.dash-panels{grid-template-columns:1fr}.mn-r .mn-link{display:none}.slo-grid{grid-template-columns:1fr}.iam-grid{grid-template-columns:1fr}.obs-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<!-- FIX H4: custom cursor elements removed. cursor:none was an accessibility violation (WCAG 2.1 AA 2.5.3). The rAF cursor loop has also been removed from the script block below. -->
+<!-- FIX M4: page-09.html replaced with index.html throughout — broken nav links resolved -->
+<nav class="mnav" aria-label="Module navigation">
+  <div class="mn-l">
+    <a href="index.html" class="mn-back">← Platform Index</a>
+    <div class="mn-sep" aria-hidden="true"></div>
+    <div class="mn-crumb">AE Platform &nbsp;/&nbsp; <strong>M-07 · Strategy Dashboard</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="index.html" class="mn-link">← Index</a>
+    <a href="greenops.html" class="mn-link">← M-06 GreenOps</a>
+    <a href="data-governance.html" class="mn-link">M-08 Data Gov →</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" rel="noopener" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+<!-- FIX C3 + H2: added slo-iam section to nav; updated section IDs to match -->
+<nav class="snav" id="snav" aria-label="Section navigation">
+  <a href="#context" class="sn act" data-sec="context">System Context</a>
+  <a href="#architecture" class="sn" data-sec="architecture">Architecture</a>
+  <a href="#panels" class="sn" data-sec="panels">Panel Sources</a>
+  <a href="#mockup" class="sn" data-sec="mockup">Dashboard Mockup</a>
+  <a href="#slo-iam" class="sn" data-sec="slo-iam">SLO · IAM · Observability</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
+  <a href="#demo" class="sn" data-sec="demo">Live Demo</a>
+</nav>
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise · AE Platform Layer · Module 07</div>
+  <h1 class="ph-h1">Strategy Dashboard<br><em>The Unified Intelligence View</em><br><strong>— All suites. All signals. One screen.</strong></h1>
+  <!-- FIX H2: sub-copy scoped to AS Suite current deployment; Buyer/Supply Chain panels marked as roadmap -->
+  <p class="ph-sub">The Strategy Dashboard is the platform-layer aggregation surface. It reads from every domain suite currently running on the AE Platform and presents a unified intelligence view for C-suite consumers. Current scope covers the Autonomous Seller suite and Platform modules. Autonomous Buyer and Autonomous Supply Chain panels are on the roadmap as those suites deploy. It writes nothing, decides nothing, and infers nothing. It is only meaningful because the data fabric beneath it — validated by Data Governance and scheduled by GreenOps — is running correctly.</p>
+  <div class="ph-tags">
+    <span class="ph-tag ph-tag-blue">BigQuery · Materialised Views</span>
+    <span class="ph-tag ph-tag-green">Looker Studio · 5 panels</span>
+    <span class="ph-tag ph-tag-teal">Read-only · No HITL · No ML</span>
+    <span class="ph-tag ph-tag-amber">CTO · CFO · CCO · Real-time</span>
+    <span class="ph-tag ph-tag-purple">Platform Layer · H3 · PI-8 · Minimal Risk</span>
+  </div>
+</header>
+
+<!-- FIX M1: diagram re-labelled as C4 Level 1 (true system context — no internal components). C4 Level 2 container diagram note added. -->
+<section class="sec w ap" id="context">
+  <div class="s-ey">System Context — C4 Level 1</div>
+  <h2 class="s-h2">All suite datasets in. <em>One C-suite view out.</em></h2>
+  <p class="s-p">The Strategy Dashboard depends on all operational modules — and every additional suite that joins the AE Platform adds a new data stream. It is the measure of how complete the platform deployment is, not the capstone of any single suite. Current AS Suite scope: 5 panels. Autonomous Buyer and Supply Chain panels are planned for H4 / PI-9 as those suites enter production.</p>
+  <div class="dw ap">
+    <!-- FIX M1: correctly labelled C4 Level 1 — external actors + system boundary only. Internal components (BQ views, Cloud Run jobs) belong in the C4 Level 2 Container diagram. -->
+    <div class="dw-title">Strategy Dashboard — System Context (C4 Level 1 · external actors and system boundary)</div>
+    <div class="dw-sub">Platform-layer aggregation · all suite datasets · BigQuery materialised views · Looker Studio · read-only · C-suite consumers · current scope: AS Suite + Platform modules</div>
+    <svg width="100%" viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace" role="img" aria-label="C4 Level 1 System Context diagram showing source datasets feeding the Strategy Dashboard and C-suite consumers">
+      <defs><marker id="ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="270" y="60" width="320" height="220" rx="8" fill="#E8F0FE" stroke="#1A73E8" stroke-width="2"/>
+      <text x="430" y="88" font-size="12" font-weight="700" fill="#1557B0" text-anchor="middle">Strategy Dashboard</text>
+      <text x="430" y="104" font-size="9" fill="#1A73E8" text-anchor="middle">Module 07 · Platform Layer · H3 · PI-8</text>
+      <text x="430" y="122" font-size="9" fill="#1557B0" text-anchor="middle">BigQuery materialised view layer</text>
+      <text x="430" y="136" font-size="9" fill="#1557B0" text-anchor="middle">5 named views (one per panel)</text>
+      <text x="430" y="150" font-size="9" fill="#1557B0" text-anchor="middle">Looker Studio rendering</text>
+      <text x="430" y="164" font-size="9" fill="#1557B0" text-anchor="middle">Scheduled refresh per panel cadence</text>
+      <text x="430" y="182" font-size="8" fill="#1A73E8" text-anchor="middle">Read-only · no writes to any source</text>
+      <text x="430" y="196" font-size="8" fill="#1A73E8" text-anchor="middle">No HITL · No ML inference · Minimal Risk</text>
+      <text x="430" y="210" font-size="8" fill="#1A73E8" text-anchor="middle">AS Suite scope · Buyer/SC panels roadmap H4</text>
+      <rect x="20" y="20" width="200" height="300" rx="4" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+      <text x="120" y="40" font-size="9" font-weight="500" fill="#5F6368" text-anchor="middle" letter-spacing=".05em">SOURCE DATASETS</text>
+      <rect x="28" y="48" width="184" height="30" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="120" y="62" font-size="8" font-weight="500" fill="#1557B0" text-anchor="middle">ae_ccai · AS Suite · CCAI Agent</text>
+      <text x="120" y="72" font-size="7" fill="#1A73E8" text-anchor="middle">leads · turns · opportunities</text>
+      <rect x="28" y="82" width="184" height="30" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="120" y="96" font-size="8" font-weight="500" fill="#1557B0" text-anchor="middle">ae_contracts · AS Suite · ContractGuard</text>
+      <text x="120" y="106" font-size="7" fill="#1A73E8" text-anchor="middle">clause risks · HITL counts</text>
+      <rect x="28" y="116" width="184" height="30" rx="3" fill="#E4F7F7" stroke="#007B83" stroke-width="1"/>
+      <text x="120" y="130" font-size="8" font-weight="500" fill="#005F67" text-anchor="middle">ae_financial · AS Suite · RevRec AI</text>
+      <text x="120" y="140" font-size="7" fill="#007B83" text-anchor="middle">classifications · queue depth</text>
+      <rect x="28" y="150" width="184" height="30" rx="3" fill="#E4F7F7" stroke="#007B83" stroke-width="1"/>
+      <text x="120" y="164" font-size="8" font-weight="500" fill="#005F67" text-anchor="middle">ae_devices · AS Suite · Asset IQ</text>
+      <text x="120" y="174" font-size="7" fill="#007B83" text-anchor="middle">RUL distribution · fleet risk</text>
+      <rect x="28" y="184" width="184" height="30" rx="3" fill="#E6F4EA" stroke="#137333" stroke-width="1"/>
+      <text x="120" y="198" font-size="8" font-weight="500" fill="#0D5226" text-anchor="middle">ae_greenops · Platform · GreenOps</text>
+      <text x="120" y="208" font-size="7" fill="#137333" text-anchor="middle">carbon savings · ESG metrics</text>
+      <rect x="28" y="218" width="184" height="30" rx="3" fill="#FEF3E2" stroke="#B06000" stroke-width="1"/>
+      <text x="120" y="232" font-size="8" font-weight="500" fill="#7A4100" text-anchor="middle">ae_governance · Platform · Data Gov.</text>
+      <text x="120" y="242" font-size="7" fill="#B06000" text-anchor="middle">validation rates · quarantine counts</text>
+      <rect x="28" y="252" width="184" height="30" rx="3" fill="#EDE7F6" stroke="#6200EE" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="120" y="266" font-size="8" font-weight="500" fill="#3700B3" text-anchor="middle">future: ae_buyer · ae_supplychain</text>
+      <text x="120" y="276" font-size="7" fill="#6200EE" text-anchor="middle">Buyer + Supply Chain (H4 · PI-9)</text>
+      <line x1="212" y1="63" x2="270" y2="150" stroke="#1A73E8" stroke-width="1" marker-end="url(#ctx)"/>
+      <line x1="212" y1="97" x2="270" y2="160" stroke="#1A73E8" stroke-width="1" marker-end="url(#ctx)"/>
+      <line x1="212" y1="131" x2="270" y2="170" stroke="#007B83" stroke-width="1" marker-end="url(#ctx)"/>
+      <line x1="212" y1="165" x2="270" y2="180" stroke="#007B83" stroke-width="1" marker-end="url(#ctx)"/>
+      <line x1="212" y1="199" x2="270" y2="190" stroke="#137333" stroke-width="1" marker-end="url(#ctx)"/>
+      <line x1="212" y1="233" x2="270" y2="200" stroke="#B06000" stroke-width="1" marker-end="url(#ctx)"/>
+      <rect x="640" y="100" width="190" height="60" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="735" y="124" font-size="11" font-weight="700" fill="#1557B0" text-anchor="middle">CTO</text>
+      <text x="735" y="138" font-size="8" fill="#1A73E8" text-anchor="middle">Full dashboard · all 5 panels</text>
+      <text x="735" y="150" font-size="8" fill="#1557B0" text-anchor="middle">Drill-through to HITL queues</text>
+      <line x1="590" y1="170" x2="640" y2="130" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="640" y="200" width="190" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="735" y="224" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">CFO / CCO</text>
+      <text x="735" y="238" font-size="8" fill="#137333" text-anchor="middle">RevRec posture · compliance panel</text>
+      <line x1="590" y1="190" x2="640" y2="230" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:2px solid #1A73E8"></div>Strategy Dashboard</div>
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1px solid #1A73E8"></div>AS Suite sources</div>
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:1px solid #137333"></div>Platform sources</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1px dashed #6200EE"></div>Future suites (H4 roadmap)</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ap" id="panels">
+  <div class="s-ey te">Panel Source Table</div>
+  <!-- FIX C1: added SLO and Freshness SLO columns to the panel table -->
+  <h2 class="s-h2">Five panels. <em>Five refresh cadences. One HITL drill-through pattern.</em></h2>
+  <p class="s-p">Each panel has a distinct data source combination, refresh cadence, and consumer. HITL counts are presented as read-only indicators with drill-through links to the originating module queue. Each panel carries a declared freshness SLO — the maximum permissible data age before Cloud Monitoring fires a staleness alert. The dashboard takes no action; it surfaces the signal.</p>
+  <div class="ap">
+    <table class="panel-table">
+      <thead><tr><th>Panel</th><th>View</th><th>Sources</th><th>Refresh</th><th>Freshness SLO</th><th>Primary consumer</th><th>HITL drill-through</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Pipeline Health</strong></td><td>sd_pipeline_health</td><td>ae_ccai · ae_contracts · Salesforce REST</td><td><span class="refresh-pill rp-15m">15 min</span></td><td><span class="refresh-pill rp-15m">≤ 30 min</span></td><td>CTO · Head of Sales</td><td>HITL-01 · HITL-02 counts → originating queue</td></tr>
+        <tr><td><strong>RevRec Posture</strong></td><td>sd_revrec_posture</td><td>ae_financial · ae_finrisk</td><td><span class="refresh-pill rp-5m">5 min</span></td><td><span class="refresh-pill rp-5m">≤ 10 min</span></td><td>CFO · Finance Controller</td><td>HITL-04 queue depth → RevRec AI module</td></tr>
+        <tr><td><strong>Fleet Intelligence</strong></td><td>sd_fleet_intelligence</td><td>ae_devices + ae_governance quality flag JOIN</td><td><span class="refresh-pill rp-1h">1 hour</span></td><td><span class="refresh-pill rp-1h">≤ 75 min</span></td><td>CTO · VP Field Service</td><td>HITL-06 count → Asset IQ module queue</td></tr>
+        <tr><td><strong>EU AI Act Compliance</strong></td><td>sd_compliance_posture</td><td>All HITL counts · Vertex AI Model Registry · ae_governance</td><td><span class="refresh-pill rp-1h">1 hour</span></td><td><span class="refresh-pill rp-1h">≤ 75 min</span></td><td>CCO · Legal · CTO</td><td>All 11 HITL indicators → originating module queues</td></tr>
+        <tr><td><strong>ESG / GreenOps</strong></td><td>sd_esg_summary</td><td>ae_greenops.job_metrics · MTD aggregation</td><td><span class="refresh-pill rp-1h">1 hour</span></td><td><span class="refresh-pill rp-1h">≤ 90 min</span></td><td>Sustainability team · CFO</td><td>None — read-only ESG summary</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FIX M3: "Renders in three seconds" replaced with accurate, substantiated claim -->
+<section class="sec w ap" id="mockup">
+  <div class="s-ey pu" style="color:var(--purple)">Dashboard Mockup</div>
+  <h2 class="s-h2">Five panels. <em>One screen. Sub-5-second render on cached views.</em></h2>
+  <p class="s-p">The Looker Studio dashboard renders all five panels from BigQuery BI Engine-accelerated materialised views with a Looker Studio cache TTL of 15 minutes. Each panel shows its last refresh timestamp. HITL counts drill through to the originating module queue. Render time is sub-5 seconds on cached views; cold-cache render (after TTL expiry) is sub-12 seconds on BI Engine.</p>
+  <div class="dw ap" style="padding:0;overflow:hidden;background:#111827;border-color:#1F2937">
+    <div style="background:#1F2937;padding:10px 16px;border-bottom:1px solid #374151;display:flex;align-items:center;gap:8px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#EF4444" aria-hidden="true"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#F59E0B" aria-hidden="true"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#10B981" aria-hidden="true"></div>
+      <div style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.3);margin-left:12px">Looker Studio · AE Platform Strategy Dashboard</div>
+      <div style="margin-left:auto;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.2)">Last full refresh: 08:00 UTC</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#374151;padding:1px">
+      <div style="background:#111827;padding:20px">
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(26,115,232,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center"><span>Pipeline Health</span><span style="margin-left:auto;background:rgba(26,115,232,.1);padding:1px 5px;color:rgba(144,202,249,.5)">15 min</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#60A5FA;line-height:1">€4.2M</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Pipeline MTD</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">87%</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Qualification rate</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#FBBF24;line-height:1">3</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">HITL-01 pending</div></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(26,115,232,.4)">↗ drill: HITL-01 queue · CCAI Sales Agent</div>
+      </div>
+      <div style="background:#111827;padding:20px">
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(0,123,131,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center"><span>RevRec Posture</span><span style="margin-left:auto;background:rgba(19,115,51,.1);padding:1px 5px;color:rgba(129,199,132,.5)">5 min</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">94%</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Auto-classified</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#FBBF24;line-height:1">7</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">HITL-04 queue</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#60A5FA;line-height:1">2.1h</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Avg HITL SLA</div></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(0,123,131,.4)">↗ drill: HITL-04 queue · RevRec AI</div>
+      </div>
+      <div style="background:#111827;padding:20px">
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(0,123,131,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center"><span>Fleet Intelligence</span><span style="margin-left:auto;background:rgba(176,96,0,.1);padding:1px 5px;color:rgba(255,202,40,.4)">1 hr</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#EF4444;line-height:1">2</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">RUL critical</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#FBBF24;line-height:1">11</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">RUL &lt;30%</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">1,847</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Monitored assets</div></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(0,123,131,.4)">MCH-0042 highlighted · ↗ drill: HITL-06 · Asset IQ</div>
+      </div>
+      <div style="background:#111827;padding:20px">
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(176,96,0,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center"><span>EU AI Act Compliance</span><span style="margin-left:auto;background:rgba(176,96,0,.1);padding:1px 5px;color:rgba(255,202,40,.4)">1 hr</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">11/11</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">HITL checks ✓</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">5/5</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Model cards current</div></div>
+          <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">0.93</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">DQ avg score</div></div>
+        </div>
+        <div style="background:rgba(19,115,51,.1);border:1px solid rgba(19,115,51,.2);padding:4px 8px;font-family:var(--mono);font-size:9px;color:#34D399;display:inline-block">● COMPLIANT</div>
+      </div>
+    </div>
+    <div style="background:#111827;padding:20px;border-top:1px solid #374151">
+      <div style="font-family:var(--mono);font-size:9px;color:rgba(19,115,51,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">ESG / GreenOps Platform · MTD</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">18.4</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">kgCO₂eq saved MTD</div></div>
+        <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#60A5FA;line-height:1">14/22</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Jobs deferred</div></div>
+        <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#34D399;line-height:1">41%</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Avg carbon reduction</div></div>
+        <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:#FBBF24;line-height:1">CSRD</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">Scope 3 Cat. 11 eligible</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     NEW SECTION — SLO · IAM · Observability
+     Fixes: C1 (no SLO contract), C2 (no IAM model), H1 (no observability)
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="sec ap" id="slo-iam">
+  <div class="s-ey gr">Production Readiness · SLO · IAM · Observability</div>
+  <h2 class="s-h2">Five views. <em>Five SLOs. One IAM boundary. Zero silent failures.</em></h2>
+  <p class="s-p">Every data-serving surface on the AE Platform carries a documented freshness SLO, an IAM access boundary, and a Cloud Monitoring alerting policy. The Strategy Dashboard is no exception. The interactive section below models the live SLO state, the BigQuery IAM role bindings that enforce panel-level access control, and the Cloud Monitoring alert conditions that fire when any materialised view breaches its freshness SLO. Simulate a staleness breach to see the alert path activate.</p>
+
+  <!-- ── SLO Freshness Status ── -->
+  <div class="dw ap" style="margin-bottom:4px">
+    <div class="dw-title">View Freshness SLO · Cloud Monitoring · Real-time status</div>
+    <div class="dw-sub">Each materialised view has a declared freshness SLO. SLO breach triggers a Cloud Monitoring alert policy → PagerDuty → on-call SRE. BigQuery BI Engine slot reservation: 1 GB · all sd_* views. Looker Studio cache TTL: 15 min.</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="slo-sim-btn active" id="slo-btn-ok" onclick="setSloState('ok')">All views healthy</button>
+      <button class="slo-sim-btn" id="slo-btn-warn" onclick="setSloState('warn')">Fleet view lagging</button>
+      <button class="slo-sim-btn" id="slo-btn-breach" onclick="setSloState('breach')">RevRec SLO breach</button>
+    </div>
+    <div class="slo-grid" id="slo-grid">
+      <!-- rendered by JS -->
+    </div>
+    <div id="slo-alert-banner" style="display:none;margin-top:12px;padding:12px 16px;font-family:var(--mono);font-size:11px;line-height:1.6;border:1px solid"></div>
+  </div>
+
+  <!-- ── IAM Access Model ── -->
+  <div class="dw ap" style="margin-top:4px;margin-bottom:4px">
+    <!-- FIX C2: full IAM model documented — BigQuery roles, Looker workspace bindings, column-level access -->
+    <div class="dw-title">BigQuery IAM · Access Control Model</div>
+    <div class="dw-sub">IAM enforced at three layers: (1) BigQuery dataset-level roles scoped to sd_* views only — no access to ae_* source tables. (2) Looker Studio workspace-level access lists per consumer role. (3) Column-level security on regulated fields (HITL audit records, revenue figures) via BigQuery column masking policies.</div>
+    <div class="iam-grid">
+      <div class="iam-role r-cto">
+        <div class="iam-role-name">CTO · Head of Sales · VP Field Service</div>
+        <div class="iam-binding"><strong>BQ role:</strong> roles/bigquery.dataViewer<br>scoped to: <code>ae-platform.sd_views.*</code></div>
+        <div class="iam-binding"><strong>Looker workspace:</strong> strategy-dashboard-full<br>panels: all 5</div>
+        <div class="iam-scope">Column masking: revenue fields visible · HITL queue counts visible · SHAP explanations: drill-through only (originating module)</div>
+      </div>
+      <div class="iam-role r-cfo">
+        <div class="iam-role-name">CFO · Finance Controller · Sustainability</div>
+        <div class="iam-binding"><strong>BQ role:</strong> roles/bigquery.dataViewer<br>scoped to: <code>ae-platform.sd_views.revrec, sd_views.esg</code></div>
+        <div class="iam-binding"><strong>Looker workspace:</strong> strategy-dashboard-finance<br>panels: RevRec Posture · ESG/GreenOps</div>
+        <div class="iam-scope">Column masking: revenue figures visible · fleet RUL data masked · HITL counts for HITL-04 only</div>
+      </div>
+      <div class="iam-role r-cco">
+        <div class="iam-role-name">CCO · Legal · Compliance</div>
+        <div class="iam-binding"><strong>BQ role:</strong> roles/bigquery.dataViewer<br>scoped to: <code>ae-platform.sd_views.compliance, sd_views.revrec</code></div>
+        <div class="iam-binding"><strong>Looker workspace:</strong> strategy-dashboard-compliance<br>panels: EU AI Act Compliance · RevRec Posture</div>
+        <div class="iam-scope">Column masking: all 11 HITL check indicators visible · revenue figures masked · audit log access via separate BigQuery audit role (not Looker)</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.6;padding:10px 14px;background:var(--surface);border-left:3px solid var(--border)">
+      <strong style="color:var(--text-2)">Regulatory audit access:</strong> EU AI Act auditors access HITL audit records directly in BigQuery via a separate <code>roles/bigquery.dataViewer</code> binding on <code>ae-platform.ae_audit.*</code> — no Looker seat required. The Strategy Dashboard compliance panel is a summary view; the primary evidence chain lives in BigQuery and is immutable.
+    </div>
+  </div>
+
+  <!-- ── Observability & Alerting ── -->
+  <div class="dw ap" style="margin-top:4px">
+    <!-- FIX H1: full observability / alerting architecture documented -->
+    <div class="dw-title">Cloud Monitoring · Alerting Policies · Observability</div>
+    <div class="dw-sub">Five alert policies — one per materialised view — monitor refresh lag against each panel's freshness SLO. Breach → Cloud Monitoring notification channel → PagerDuty → on-call SRE. Stale views display a visible staleness banner in Looker Studio; they never silently surface outdated data as current.</div>
+    <div class="obs-row">
+      <div class="obs-card">
+        <div class="obs-card-title">Alert Policy Definitions</div>
+        <div class="obs-alert al-blue"><strong>sd_pipeline_health</strong> — alert if last_refresh_age &gt; 30 min<br>Severity: WARNING · Notification: Slack #ae-platform-ops</div>
+        <div class="obs-alert al-blue"><strong>sd_revrec_posture</strong> — alert if last_refresh_age &gt; 10 min<br>Severity: CRITICAL · Notification: PagerDuty P1 · Finance on-call</div>
+        <div class="obs-alert al-blue"><strong>sd_fleet_intelligence</strong> — alert if last_refresh_age &gt; 75 min<br>Severity: WARNING · Notification: Slack #ae-platform-ops</div>
+        <div class="obs-alert al-blue"><strong>sd_compliance_posture</strong> — alert if last_refresh_age &gt; 75 min<br>Severity: CRITICAL · Notification: PagerDuty P1 · CCO on-call</div>
+        <div class="obs-alert al-blue"><strong>sd_esg_summary</strong> — alert if last_refresh_age &gt; 90 min<br>Severity: WARNING · Notification: Slack #ae-platform-ops</div>
+      </div>
+      <div class="obs-card">
+        <div class="obs-card-title">Graceful Degradation Behaviour</div>
+        <div class="obs-alert al-amber"><strong>SLO warning (view lagging but not breached):</strong> Panel shows amber staleness indicator with last-refresh timestamp highlighted. Data is still served; operator is alerted.</div>
+        <div class="obs-alert al-amber"><strong>SLO breach (view beyond SLO threshold):</strong> Panel overlays a "Data stale — last valid refresh: HH:MM UTC" banner. Metric values are hidden. Drill-through links disabled. Alert fires.</div>
+        <div class="obs-alert al-red"><strong>Cloud Run refresh job failure:</strong> Cloud Monitoring dead-man alert fires if no successful refresh job completion is recorded within 2× the panel's cadence. Separate alert from staleness — covers job crash vs slow execution.</div>
+        <div style="margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.6;padding:8px 12px;background:var(--surface)">Stale data is never presented as current. The compliance panel showing 11/11 HITL checks COMPLIANT when the underlying view is 4 hours old would be a regulatory risk — the alert + banner pattern prevents this.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three dashboard decisions. <em>Each chosen over a real alternative — with cost evidence.</em></h2>
+  <div class="adr-col ap">
+    <div class="adr bl">
+      <div class="adr-id">ADR-SD01 — Strategy Dashboard</div>
+      <div class="adr-title">BigQuery materialised views over direct Looker Studio data source connections</div>
+      <div class="adr-body">Looker Studio can connect directly to BigQuery tables with no intermediate view layer. Rejected for three reasons: (1) Direct connections expose the dashboard to schema migrations in source modules — if Asset IQ changes ae_devices, a direct connection breaks immediately. Materialised views provide an abstraction boundary. (2) Direct queries run at dashboard load time, generating BigQuery slot consumption on every session. Materialised views pre-compute on a schedule, amortising compute cost. (3) The materialised view layer is queryable by any BigQuery principal with read access — the same data the CTO sees in Looker is queryable via SQL, enabling regulatory audit access without a Looker seat.</div>
+      <!-- FIX H3: quantified trade-off added -->
+      <div class="adr-tradeoff">Trade-off quantified: Direct queries at 10 daily CTO sessions × 5 panels × ~500 MB scan each = ~25 GB/day on-demand BigQuery cost (~$0.125/day at $5/TB). Materialised view refreshes = 5 scheduled jobs/day at ~200 MB each = ~1 GB/day ($0.005/day). Materialised view approach reduces query cost by ~95% at this session volume, and eliminates schema-coupling risk entirely.</div>
+      <div class="adr-status">Accepted · Platform Layer · Strategy Dashboard</div>
+    </div>
+    <div class="adr gr">
+      <div class="adr-id">ADR-SD02 — Strategy Dashboard</div>
+      <div class="adr-title">Per-panel refresh cadence over a single global refresh interval</div>
+      <div class="adr-body">A single global refresh interval (e.g., 15 minutes for all panels) was considered. Rejected because the five panels have materially different staleness tolerances. The RevRec posture panel needs 5-minute freshness — the Finance Controller checks it multiple times daily and SLA compliance depends on queue visibility. The fleet intelligence panel is acceptable at 1-hour freshness because Asset IQ's HITL-06 notification is the operational alert path, not the dashboard. Running fleet queries at 5-minute cadence produces unnecessary BigQuery compute cost with no operational benefit. Per-panel cadence balances freshness with cost.</div>
+      <!-- FIX H3: cost delta quantified -->
+      <div class="adr-tradeoff">Cost delta: sd_fleet_intelligence at 5-minute cadence = 288 refreshes/day × 400 MB scan = ~115 GB/day ($0.58/day). At 1-hour cadence = 24 refreshes/day × 400 MB = ~9.6 GB/day ($0.048/day). Per-panel cadence saves ~$0.53/day on fleet view alone — ~$190/year — with zero operational loss because HITL-06 is the real-time alert path for critical fleet events.</div>
+      <div class="adr-status">Accepted · Platform Layer · Strategy Dashboard</div>
+    </div>
+    <div class="adr am">
+      <div class="adr-id">ADR-SD03 — Strategy Dashboard</div>
+      <div class="adr-title">HITL drill-through to originating module queue — not HITL action from dashboard</div>
+      <div class="adr-body">An alternative proposed surfacing HITL approval/denial buttons directly in the Strategy Dashboard. Rejected on architectural grounds. The Strategy Dashboard is a platform-layer read-only surface — adding write paths to HITL queues would require IAM changes, HITL audit trail modifications, and EU AI Act Article 14 logging currently scoped to the originating module. More practically, HITL decisions require context — the SHAP explanation, the confidence score, the flagged clause — that lives in the originating module's queue UI, not in a dashboard panel. The drill-through pattern is deliberate: it surfaces the signal at the dashboard level and routes the decision to where the context lives.</div>
+      <div class="adr-tradeoff">IAM risk of alternative: Adding write paths from the Strategy Dashboard would require expanding its IAM scope from roles/bigquery.dataViewer to roles/bigquery.dataEditor on ae_audit — a significant privilege escalation for a surface consumed by 20+ C-suite users. The read-only constraint is not a design limitation; it is an access control property.</div>
+      <div class="adr-status">Accepted · Platform Layer · Strategy Dashboard</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ap" id="rebuttals">
+  <div class="s-ey re">Stakeholder Rebuttals</div>
+  <h2 class="s-h2">Four objections. <em>Each with an architectural answer.</em></h2>
+  <div class="rebuttal-grid ap">
+    <div class="rb cto">
+      <div class="rb-who">CTO · S-01</div>
+      <div class="rb-concern">Is a read-only dashboard worth its own platform module?</div>
+      <div class="rb-q">"This is a Looker Studio dashboard over BigQuery. It writes nothing, decides nothing, uses no ML. Why is this a platform module instead of a reporting artifact?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">The dashboard is a platform module because of what it aggregates, not what it does. It is the only surface in the AE Platform that presents cross-suite intelligence — pipeline health from the AS Suite, workforce signals from AHR (future), compliance posture from the Platform Governance layer — in a single materialised view. The BigQuery materialised view layer is a queryable data product that any BigQuery principal can access for regulatory audit. The EU AI Act compliance panel — presenting live HITL completion rates, model card currency, and data quality scores across all 11 compliance checkpoints — is architecturally significant. No other module has visibility across all of these simultaneously.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> ADR-SD01 (materialised view as queryable platform asset) · sd_compliance_posture (11 HITL checkpoints across all suites)</div>
+    </div>
+    <div class="rb ea">
+      <div class="rb-who">Enterprise Architect · S-08</div>
+      <div class="rb-concern">What happens to the dashboard when a source module is quarantined?</div>
+      <div class="rb-q">"If Data Governance quarantines APAC-East data and Asset IQ stops producing RUL predictions for those units, what does the fleet panel show?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">The fleet intelligence materialised view includes a data_quality_flag field from ae_governance. Units with stale features due to quarantine are shown with a grey data_unavailable indicator — not a green/amber/red status. The panel caption notes "N units: data pending reinstatement" when quarantine count is non-zero. Stale data is never presented as current. The compliance posture panel also surfaces the quarantine event — the Data Governance section shows the current quarantine count and steward resolution status. The dashboard degrades gracefully with visible flags.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> sd_fleet_intelligence view (data_quality_flag JOIN with ae_governance) · sd_compliance_posture (quarantine count)</div>
+    </div>
+    <div class="rb cfo">
+      <div class="rb-who">CFO · S-03</div>
+      <div class="rb-concern">How fresh is the data — what's the worst-case lag?</div>
+      <div class="rb-q">"If I open the dashboard at 08:45 and the fleet panel last refreshed at 08:00, I'm looking at 45-minute-old data for a panel that might show a critical asset. What's the actual worst-case lag?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">Worst-case data lag per panel: RevRec Posture and FinRisk — max 5 minutes stale (SLO: 10 min). Pipeline Health — max 15 minutes (SLO: 30 min). Fleet Intelligence and Compliance Posture — max 1 hour (SLO: 75 min). For fleet intelligence, 1-hour-old data is operationally acceptable because Asset IQ's HITL-06 notification reaches the Field Service Manager directly — the dashboard is not in that alert path. If a critical fleet event occurs during the 1-hour window, the FSM is notified directly. Each panel shows its last refresh timestamp, and Cloud Monitoring alerts before SLO breach.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> ADR-SD02 (per-panel refresh cadence) · SLO table (this module) · Asset IQ HITL-06 (direct notification to FSM, not via dashboard)</div>
+    </div>
+    <div class="rb cco">
+      <div class="rb-who">CCO · S-02</div>
+      <div class="rb-concern">Does the compliance panel constitute EU AI Act documentation?</div>
+      <div class="rb-q">"If a regulator asks for EU AI Act compliance documentation, can I show them the compliance panel? Or is it a summary of documentation that lives elsewhere?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">The compliance posture panel is a summary view — it answers "is the posture healthy right now?" The actual EU AI Act documentation a regulator needs is: HITL audit records in Firestore and BigQuery (Article 14), SHAP explanations in BigQuery (Article 13), Model Cards in Vertex AI Model Registry (Article 11), and Data Governance lineage records (Article 11). All are queryable directly via a dedicated auditor BigQuery role — no Looker seat required. The compliance panel is the dashboard warning light — it tells the CCO when something needs attention. The service manual is in BigQuery, open, auditable, and permanent.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> sd_compliance_posture (aggregates HITL rates from ae_audit) · BigQuery HITL audit records · Vertex AI Model Cards · Data Governance lineage chain · IAM: auditor role on ae_audit.* (separate from Looker access)</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec w ap" id="demo">
+  <div class="s-ey">Interactive Demo</div>
+  <h2 class="s-h2">Three events. <em>Watch the materialised views refresh. Watch the panels update.</em></h2>
+  <!-- FIX C3: demo cadence disclaimer added — simulation compresses refresh timings for illustration. Real cadences are 5 min / 15 min / 1 hr per panel. -->
+  <p class="s-p">Select a suite event and run the simulation. The left panel shows the source event arriving and the materialised view refresh firing. The right panel shows the five dashboard panels — watch the relevant one highlight and update.</p>
+  <div class="demo-note">
+    ⚠ Simulation note: event steps are compressed to 700ms intervals for illustration. In production, actual refresh cadences are 5 minutes (RevRec), 15 minutes (Pipeline), and 1 hour (Fleet / Compliance / ESG) — Cloud Run scheduled jobs, not real-time push. The demo illustrates the event → view → panel causality chain, not the real-world timing.
+  </div>
+  <div class="demo-controls ap">
+    <div class="control-label">Suite Event</div>
+    <div class="pill-group">
+      <div class="pill active" onclick="setEvent('pipeline')" id="pill-pipeline">Deal Closed · Pipeline Update</div>
+      <div class="pill" onclick="setEvent('rul')" id="pill-rul">RUL Alert · Fleet Event</div>
+      <div class="pill" onclick="setEvent('compliance')" id="pill-compliance">HITL SLA Slip · Compliance Amber</div>
+    </div>
+    <button class="run-btn" id="run-btn" onclick="runSim()" aria-label="Run simulation">▶ Run Simulation</button>
+  </div>
+  <div class="demo-stage ap" role="region" aria-label="Event simulation">
+    <div class="demo-left">
+      <div class="demo-col-header">
+        <div class="demo-col-title">Source Event Feed</div>
+        <div class="demo-col-badge badge-blue" id="feed-badge" aria-live="polite">IDLE</div>
+      </div>
+      <div class="source-feed" id="source-feed" role="log" aria-live="polite">
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;padding:32px">
+          <div style="font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.2);text-align:center">Select an event and press Run</div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-right">
+      <div class="demo-col-header">
+        <div class="demo-col-title">Strategy Dashboard · Live</div>
+        <div class="demo-col-badge badge-blue" id="dash-badge" aria-live="polite">READY</div>
+      </div>
+      <div class="dash-panels" id="dash-panels">
+        <div class="panel" id="p-pipeline">
+          <div class="refresh-anim" id="ra-pipeline"></div>
+          <div class="panel-label">Pipeline Health <span class="panel-refresh r-15m" style="margin-left:auto">15 min</span></div>
+          <div class="panel-value" id="pv-pipeline">€4.2M</div>
+          <div class="panel-sub" id="ps-pipeline">Pipeline MTD · 3 HITL-01 pending</div>
+          <div class="panel-drill" id="pd-pipeline">↗ 3 HITL-01 items → CCAI queue</div>
+        </div>
+        <div class="panel" id="p-revrec">
+          <div class="refresh-anim" id="ra-revrec"></div>
+          <div class="panel-label">RevRec Posture <span class="panel-refresh r-5m" style="margin-left:auto">5 min</span></div>
+          <div class="panel-value" id="pv-revrec">94%</div>
+          <div class="panel-sub" id="ps-revrec">Auto-classified · 7 HITL-04 queue</div>
+          <div class="panel-drill" id="pd-revrec">↗ 7 HITL-04 items → RevRec AI queue</div>
+        </div>
+        <div class="panel" id="p-fleet">
+          <div class="refresh-anim" id="ra-fleet"></div>
+          <div class="panel-label">Fleet Intelligence <span class="panel-refresh r-1h" style="margin-left:auto">1 hr</span></div>
+          <div class="panel-value" id="pv-fleet">2</div>
+          <div class="panel-sub" id="ps-fleet">RUL critical · 11 amber · 1,847 monitored</div>
+          <div class="panel-drill" id="pd-fleet">↗ MCH-0042 · HITL-06 open → Asset IQ queue</div>
+        </div>
+        <div class="panel" id="p-compliance">
+          <div class="refresh-anim" id="ra-compliance"></div>
+          <div class="panel-label">EU AI Act Compliance <span class="panel-refresh r-1h" style="margin-left:auto">1 hr</span></div>
+          <div class="panel-value" id="pv-compliance">11/11</div>
+          <div class="panel-sub" id="ps-compliance">HITL checks · 5/5 model cards current</div>
+          <div class="panel-status status-green" id="ps-status">● COMPLIANT</div>
+          <div class="panel-drill" id="pd-compliance">↗ HITL-04 SLA at 85% → RevRec AI queue</div>
+        </div>
+        <div class="panel" id="p-esg" style="grid-column:span 2">
+          <div class="panel-label">ESG / GreenOps Platform <span class="panel-refresh r-1h" style="margin-left:auto">1 hr</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+            <div><div class="panel-value">18.4</div><div class="panel-sub">kgCO₂eq saved MTD</div></div>
+            <div><div class="panel-value" style="color:rgba(144,202,249,.7)">14/22</div><div class="panel-sub">Jobs deferred</div></div>
+            <div><div class="panel-value" style="color:rgba(165,214,167,.7)">41%</div><div class="panel-sub">Carbon reduction</div></div>
+            <div><div class="panel-value" style="color:rgba(255,202,40,.7);font-size:14px">CSRD SCOPE 3</div><div class="panel-sub">Category 11 eligible</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="view-label">
+        <span>Materialised view:</span>
+        <span class="view-pill" id="view-pill">idle</span>
+        <span class="view-pill" id="view-ts" style="margin-left:auto">last refresh: 08:00</span>
+      </div>
+    </div>
+  </div>
+  <div class="demo-metrics ap">
+    <div class="dm"><div class="dm-label">Event Source</div><div class="dm-value" id="m-source" style="color:var(--text-3);font-size:14px">—</div><div class="dm-sub">originating system</div></div>
+    <div class="dm"><div class="dm-label">View Refreshed</div><div class="dm-value" id="m-view" style="color:var(--text-3);font-size:12px">—</div><div class="dm-sub">materialised view</div></div>
+    <div class="dm"><div class="dm-label">Panel Updated</div><div class="dm-value" id="m-panel" style="color:var(--text-3);font-size:12px">—</div><div class="dm-sub">Looker Studio panel</div></div>
+    <div class="dm"><div class="dm-label">HITL Drill-through</div><div class="dm-value" id="m-hitl" style="color:var(--text-3);font-size:12px">—</div><div class="dm-sub">originating queue</div></div>
+  </div>
+</section>
+
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>AE Platform Navigation</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Three platform modules.<br><strong>The foundation was first.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">Data Governance (H1 · PI-1) is the prerequisite that makes this dashboard meaningful. GreenOps (H3 · PI-7) contributes the ESG panel. The Strategy Dashboard (H3 · PI-8) closes the platform layer for the AS Suite. Autonomous Buyer and Supply Chain panels follow in H4 · PI-9. Deployment order: M-08 → M-06 → M-07.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="data-governance.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(176,96,0,.3);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(176,96,0,.6)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(176,96,0,.3)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--amber);letter-spacing:.07em">M-08</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Data Governance · H1 Foundation →</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">The prerequisite. Nothing the dashboard shows is valid without it.</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="greenops.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(19,115,51,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(19,115,51,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(19,115,51,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);letter-spacing:.07em">M-06</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← GreenOps Platform</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Produces the ESG panel data · carbon-aware scheduling</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <!-- FIX M4: page-09.html → index.html -->
+    <a href="index.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold-lt);letter-spacing:.07em">INDEX</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Platform Index</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+<footer><div class="ft-brand">The <em>Autonomous</em> Enterprise</div><div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2)">© 2026 Siddharth Rao</div></footer>
+<script>
+/* ── Intersection observer: scroll-in animations ── */
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+
+/* ── Sticky nav active section tracking ── */
+/* FIX C3 + new section: slo-iam added to tracked sections */
+const secs=['context','architecture','panels','mockup','slo-iam','adrs','rebuttals','demo'];
+const sio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);if(link)link.classList.add('act');}});},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+
+/* ══════════════════════════════════════════════════════
+   SLO / IAM INTERACTIVE SECTION
+   Fixes C1 (SLO contract + staleness viz) and H1 (observability)
+   ══════════════════════════════════════════════════════ */
+const SLO_PANELS=[
+  {id:'pipeline', name:'Pipeline Health', view:'sd_pipeline_health', cadence:'15 min', slo:'30 min', sloMs:30,
+   okAge:12, warnAge:24, breachAge:38},
+  {id:'revrec',   name:'RevRec Posture',  view:'sd_revrec_posture',  cadence:'5 min',  slo:'10 min', sloMs:10,
+   okAge:4,  warnAge:8,  breachAge:14},
+  {id:'fleet',    name:'Fleet Intel.',    view:'sd_fleet_intel.',    cadence:'1 hr',   slo:'75 min', sloMs:75,
+   okAge:42, warnAge:68, breachAge:82},
+  {id:'compliance',name:'EU AI Compliance',view:'sd_compliance',    cadence:'1 hr',   slo:'75 min', sloMs:75,
+   okAge:55, warnAge:71, breachAge:55},
+  {id:'esg',      name:'ESG / GreenOps', view:'sd_esg_summary',     cadence:'1 hr',   slo:'90 min', sloMs:90,
+   okAge:38, warnAge:55, breachAge:38}
+];
+
+let sloState='ok';
+
+function setSloState(state){
+  sloState=state;
+  ['ok','warn','breach'].forEach(s=>{
+    const btn=document.getElementById('slo-btn-'+s);
+    if(btn)btn.classList.toggle('active',s===state);
+  });
+  renderSloGrid();
+}
+
+function getSloAge(p,state){
+  if(state==='ok')return p.okAge;
+  if(state==='warn')return(p.id==='fleet')?p.warnAge:p.okAge;
+  if(state==='breach')return(p.id==='revrec')?p.breachAge:p.okAge;
+  return p.okAge;
+}
+
+function getSloStatus(age,sloMs){
+  const pct=age/sloMs;
+  if(pct<0.7)return'ok';
+  if(pct<1.0)return'warn';
+  return'breach';
+}
+
+function renderSloGrid(){
+  const grid=document.getElementById('slo-grid');
+  const banner=document.getElementById('slo-alert-banner');
+  if(!grid)return;
+  let html='';
+  let alertMsg='';
+  let anyBreach=false;
+  let anyWarn=false;
+  SLO_PANELS.forEach(p=>{
+    const age=getSloAge(p,sloState);
+    const status=getSloStatus(age,p.sloMs);
+    const pct=Math.min(age/p.sloMs,1);
+    const barColor=status==='ok'?'#137333':status==='warn'?'#B06000':'#D93025';
+    const dotColor=status==='ok'?'#137333':status==='warn'?'#B06000':'#D93025';
+    const freshClass=status==='ok'?'sf-ok':status==='warn'?'sf-warn':'sf-breach';
+    const freshLabel=status==='ok'?'HEALTHY':status==='warn'?'LAGGING':'SLO BREACH';
+    const ageLabel=age+'min ago';
+    if(status==='breach'){anyBreach=true;alertMsg=`🔴 Cloud Monitoring CRITICAL alert fired · ${p.name} (${p.view}) · last refresh ${age} min ago · SLO: ${p.slo} · PagerDuty P1 escalated · Looker Studio panel now shows staleness banner — data values hidden until view refreshes.`;}
+    else if(status==='warn'&&!anyBreach){anyWarn=true;alertMsg=`🟡 Cloud Monitoring WARNING alert fired · ${p.name} (${p.view}) · last refresh ${age} min ago · approaching SLO threshold (${p.slo}) · Slack #ae-platform-ops notified · panel showing amber staleness indicator.`;}
+    html+=`<div class="slo-card">
+      <div class="slo-panel-name">${p.name}</div>
+      <div class="slo-status-row"><span class="slo-status-dot" style="background:${dotColor}"></span><span class="slo-label">${p.view}</span></div>
+      <div class="slo-val" style="color:${dotColor}">${ageLabel}</div>
+      <div class="slo-sub">cadence: ${p.cadence}<br>SLO: ≤ ${p.slo}</div>
+      <div class="slo-bar-track"><div class="slo-bar-fill" style="width:${Math.round(pct*100)}%;background:${barColor}"></div></div>
+      <span class="slo-freshness ${freshClass}">${freshLabel}</span>
+    </div>`;
+  });
+  grid.innerHTML=html;
+  if(anyBreach||anyWarn){
+    banner.style.display='block';
+    banner.style.background=anyBreach?'#FCE8E6':'#FEF3E2';
+    banner.style.borderColor=anyBreach?'#D93025':'#B06000';
+    banner.style.color=anyBreach?'#A50E0E':'#7A4100';
+    banner.style.fontFamily='var(--mono)';
+    banner.textContent=alertMsg;
+  }else{
+    banner.style.display='none';
+  }
+}
+
+/* initialise SLO grid on load */
+document.addEventListener('DOMContentLoaded',function(){renderSloGrid();});
+/* also fire immediately in case DOMContentLoaded already fired */
+if(document.readyState!=='loading')renderSloGrid();
+
+/* ══════════════════════════════════════════════════════
+   EXISTING DEMO SIMULATION
+   FIX C3: timing clarified via on-page note (not code change).
+   The 700ms step interval is a display compression for illustration;
+   the disclaimer note above the demo makes this explicit.
+   ══════════════════════════════════════════════════════ */
+let eventType='pipeline',simRunning=false;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const EVENTS={
+  pipeline:{source:'Salesforce REST',view:'sd_pipeline_health',panel:'Pipeline Health',color:'se-blue',
+    events:[{msg:'Salesforce REST webhook · deal closed · MCH-0042-CONTRACT · €847K',color:'se-blue'},{msg:'Cloud Run scheduled refresh triggered · sd_pipeline_health',color:'se-blue'},{msg:'BigQuery materialised view refresh · ae_ccai JOIN ae_contracts',color:'se-blue'},{msg:'View refreshed · Pipeline MTD: €4.2M → €5.0M',color:'se-blue'},{msg:'Looker Studio BI Engine cache invalidated · panel re-renders',color:'se-blue'}],
+    panelId:'p-pipeline',raId:'ra-pipeline',update:()=>{document.getElementById('pv-pipeline').textContent='€5.0M';document.getElementById('ps-pipeline').textContent='Pipeline MTD · +€847K deal closed';},viewPill:'sd_pipeline_health',hitl:'HITL-01 · CCAI queue'},
+  rul:{source:'Asset IQ · ae_devices',view:'sd_fleet_intelligence',panel:'Fleet Intelligence',color:'se-teal',
+    events:[{msg:'Asset IQ · RUL prediction complete · MCH-0091 · RUL: 6.2d → critical',color:'se-teal'},{msg:'ae_devices updated · MCH-0091 RUL_critical flag set',color:'se-teal'},{msg:'Cloud Run scheduled refresh triggered · sd_fleet_intelligence',color:'se-teal'},{msg:'BigQuery view refresh · ae_devices JOIN ae_governance',color:'se-teal'},{msg:'View refreshed · RUL critical: 2 → 3 · HITL-06 count updated',color:'se-teal'},{msg:'Fleet Intelligence panel updated · drill-through active',color:'se-teal'}],
+    panelId:'p-fleet',raId:'ra-fleet',update:()=>{document.getElementById('pv-fleet').textContent='3';document.getElementById('ps-fleet').textContent='RUL critical · MCH-0091 added · 11 amber';},viewPill:'sd_fleet_intelligence',hitl:'HITL-06 · Asset IQ queue'},
+  compliance:{source:'RevRec AI · HITL-04',view:'sd_compliance_posture',panel:'EU AI Act Compliance',color:'se-amber',
+    events:[{msg:'HITL-04 SLA monitor · completion rate: 93% → 85%',color:'se-amber'},{msg:'ae_audit HITL-04 SLA metric updated · below 90% threshold',color:'se-amber'},{msg:'Cloud Run scheduled refresh triggered · sd_compliance_posture',color:'se-amber'},{msg:'BigQuery view refresh · all HITL counts + model registry',color:'se-amber'},{msg:'View refreshed · HITL-04 SLA: 85% · compliance: AMBER',color:'se-amber'},{msg:'Compliance panel → AMBER · drill-through active',color:'se-amber'}],
+    panelId:'p-compliance',raId:'ra-compliance',update:()=>{document.getElementById('pv-compliance').textContent='10/11';document.getElementById('ps-compliance').textContent='HITL-04 SLA at 85% · below 90% threshold';document.getElementById('ps-status').className='panel-status status-amber';document.getElementById('ps-status').textContent='● ATTENTION';},viewPill:'sd_compliance_posture',hitl:'HITL-04 · RevRec AI queue'}
+};
+function setEvent(e){if(simRunning)return;eventType=e;['pipeline','rul','compliance'].forEach(k=>document.getElementById('pill-'+k).classList.toggle('active',k===e));resetSim();}
+function resetSim(){
+  document.getElementById('source-feed').innerHTML='<div style="display:flex;align-items:center;justify-content:center;flex:1;padding:32px"><div style="font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.2);text-align:center">Select an event and press Run</div></div>';
+  ['pipeline','revrec','fleet','compliance'].forEach(id=>{const p=document.getElementById('p-'+id);if(p){p.className='panel';const ra=document.getElementById('ra-'+id);if(ra)ra.style.transform='scaleX(0)';}});
+  document.getElementById('pv-pipeline').textContent='€4.2M';document.getElementById('ps-pipeline').textContent='Pipeline MTD · 3 HITL-01 pending';
+  document.getElementById('pv-fleet').textContent='2';document.getElementById('ps-fleet').textContent='RUL critical · 11 amber · 1,847 monitored';
+  document.getElementById('pv-compliance').textContent='11/11';document.getElementById('ps-compliance').textContent='HITL checks · 5/5 model cards current';
+  document.getElementById('ps-status').className='panel-status status-green';document.getElementById('ps-status').textContent='● COMPLIANT';
+  document.getElementById('feed-badge').textContent='IDLE';document.getElementById('dash-badge').textContent='READY';
+  document.getElementById('view-pill').textContent='idle';document.getElementById('view-ts').textContent='last refresh: 08:00';
+  document.getElementById('m-source').textContent='—';document.getElementById('m-source').style.color='var(--text-3)';
+  document.getElementById('m-view').textContent='—';document.getElementById('m-panel').textContent='—';document.getElementById('m-hitl').textContent='—';
+  document.getElementById('run-btn').textContent='▶ Run Simulation';document.getElementById('run-btn').disabled=false;
+}
+function addSourceEvent(msg,colorClass){
+  const feed=document.getElementById('source-feed');
+  if(feed.querySelector('div>div'))feed.innerHTML='';
+  const ev=document.createElement('div');
+  ev.className='source-event '+colorClass;
+  ev.innerHTML=`<div class="se-top"><div class="se-source">EVENT</div></div><div class="se-msg">${msg}</div>`;
+  feed.appendChild(ev);feed.scrollTop=feed.scrollHeight;
+}
+async function runSim(){
+  if(simRunning)return;simRunning=true;document.getElementById('run-btn').disabled=true;
+  const ev=EVENTS[eventType];
+  document.getElementById('feed-badge').textContent='ACTIVE';document.getElementById('dash-badge').textContent='REFRESHING';
+  document.getElementById('m-source').textContent=ev.source;document.getElementById('m-source').style.color='var(--blue)';
+  for(let i=0;i<ev.events.length;i++){
+    addSourceEvent(ev.events[i].msg,ev.color);await wait(700);
+    if(i===ev.events.length-2){document.getElementById('view-pill').textContent=ev.viewPill;document.getElementById('m-view').textContent=ev.viewPill;}
+    if(i===ev.events.length-1){
+      const panel=document.getElementById(ev.panelId);
+      const hc=eventType==='compliance'?'highlight-amber':eventType==='rul'?'highlight-green':'highlight';
+      panel.className='panel '+hc;
+      const ra=document.getElementById(ev.raId);if(ra){ra.style.transition='transform .6s ease';ra.style.transform='scaleX(1)';}
+      ev.update();document.getElementById('view-ts').textContent='last refresh: just now';
+      document.getElementById('m-panel').textContent=ev.panel;document.getElementById('m-hitl').textContent=ev.hitl;
+    }
+  }
+  document.getElementById('feed-badge').textContent='COMPLETE';document.getElementById('dash-badge').textContent='UPDATED';
+  simRunning=false;document.getElementById('run-btn').disabled=false;document.getElementById('run-btn').textContent='↺ Run again';
+}
+</script>
+</body>
+</html>

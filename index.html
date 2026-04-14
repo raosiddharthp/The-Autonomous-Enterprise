@@ -3,1200 +3,1012 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Autonomous Enterprise</title>
+<title>The Autonomous Enterprise — AI Architecture Portfolio · Siddharthan Rao</title>
+<meta name="description" content="A portfolio-grade AI Solutions Architecture built on Google Cloud. Four intelligent pillars. Five C-Suite governance dashboards. EU AI Act compliant.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET ─── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-
-/* ─── TOKENS ─── */
+html{scroll-behavior:smooth}
 :root{
-  --ink:       #0E0D0B;
-  --ink-2:     #1A1916;
-  --ink-3:     #252420;
-  --cream:     #F5F0E8;
-  --cream-2:   #EDE8DC;
-  --cream-3:   #E3DDD0;
-  --gold:      #B8960C;
-  --gold-lt:   #D4AC1A;
-  --gold-pale: #F0D875;
-  --gold-dim:  rgba(184,150,12,0.18);
-  --white:     #FDFAF4;
-  --rule:      rgba(14,13,11,0.10);
-  --rule-lt:   rgba(14,13,11,0.05);
-  --text:      #1A1916;
-  --text-2:    #4A4840;
-  --text-3:    #7A7668;
-  --mono:      'IBM Plex Mono', monospace;
-  --display:   'Syne', sans-serif;
-  --serif:     'Cormorant Garamond', Georgia, serif;
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
 }
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
 
-/* ─── BASE ─── */
-body{
-  font-family:var(--display);
-  background:var(--cream);
-  color:var(--text);
-  overflow-x:hidden;
-  cursor:none;
-}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover,button:hover) #cur{width:13px;height:13px}
+body:has(a:hover,button:hover) #cur-r{width:44px;height:44px;opacity:.18}
 
-/* ─── GRAIN OVERLAY ─── */
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
-  opacity:0.032;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
-}
+/* ── Nav ── */
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-brand{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.01em}
+.mn-brand span{color:var(--gold)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-tag{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
 
-/* ─── CURSOR ─── */
-#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;mix-blend-mode:multiply}
-#cur-ring{position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;opacity:.4}
-body:has(a:hover) #cur,body:has(button:hover) #cur{width:14px;height:14px}
-body:has(a:hover) #cur-ring,body:has(button:hover) #cur-ring{width:48px;height:48px;opacity:.2}
+/* ── Hero ── */
+.hero{min-height:100vh;background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--col) 80px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;pointer-events:none}
+.hero-grid svg{width:100%;height:100%;opacity:.035}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:rgba(245,240,232,.25)}
+.hero-h1{font-family:var(--serif);font-size:clamp(44px,7vw,88px);font-weight:300;color:var(--cream);line-height:.97;letter-spacing:-.02em;margin-bottom:28px}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-h1 strong{font-weight:600;display:block}
+.hero-sub{font-family:var(--mono);font-size:14px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.8;max-width:560px;margin-bottom:44px}
+.hero-stats{display:flex;gap:0;margin-bottom:52px;border-top:1px solid rgba(255,255,255,.07);padding-top:32px;flex-wrap:wrap}
+.hero-stat{padding-right:40px;margin-right:40px;border-right:1px solid rgba(255,255,255,.07)}
+.hero-stat:last-child{border-right:none;margin-right:0;padding-right:0}
+.hs-n{font-family:var(--serif);font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--cream);line-height:1}
+.hs-n em{color:var(--gold);font-style:normal}
+.hs-l{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.08em;text-transform:uppercase;margin-top:5px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink);background:var(--gold-lt);text-decoration:none;padding:13px 28px;letter-spacing:.08em;text-transform:uppercase;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:#EBC920;transform:translateY(-1px)}
+.btn-ghost{font-family:var(--mono);font-size:11px;font-weight:400;color:rgba(245,240,232,.5);border:1px solid rgba(255,255,255,.12);text-decoration:none;padding:13px 28px;letter-spacing:.08em;text-transform:uppercase;transition:color .2s,border-color .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{color:var(--cream);border-color:rgba(255,255,255,.3)}
+.hero-scroll{position:absolute;bottom:32px;right:var(--col);font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.2);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;writing-mode:vertical-rl}
+.hero-scroll::after{content:'';width:1px;height:40px;background:rgba(245,240,232,.12);display:block;animation:scl 2.2s ease-in-out infinite}
+@keyframes scl{0%,100%{opacity:.15;transform:scaleY(.3)}50%{opacity:.5;transform:scaleY(1)}}
 
-/* ─── NAV ─── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:24px 56px;
-  transition:background .5s,border-color .5s,backdrop-filter .5s;
-  border-bottom:1px solid transparent;
-}
-nav.stuck{
-  background:rgba(245,240,232,.88);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-color:var(--rule);
-}
-.nav-wordmark{
-  font-family:var(--mono);font-size:12px;font-weight:500;
-  color:var(--text);text-decoration:none;letter-spacing:.06em;
-  display:flex;align-items:center;gap:10px;
-}
-.nav-wordmark-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
-.nav-right{display:flex;align-items:center;gap:36px}
-.nav-link{
-  font-family:var(--mono);font-size:11px;color:var(--text-3);
-  text-decoration:none;letter-spacing:.08em;text-transform:uppercase;
-  transition:color .2s;
-}
-.nav-link:hover{color:var(--gold)}
-.nav-btn{
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  color:var(--cream);background:var(--ink);
-  text-decoration:none;padding:9px 20px;letter-spacing:.08em;
-  text-transform:uppercase;transition:background .2s;border:none;cursor:pointer;
-}
-.nav-btn:hover{background:var(--gold)}
+/* ── Shared Section ── */
+.sec{padding:80px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:80px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.go{color:var(--gold-lt)}.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-ey.gr{color:var(--green)}.s-ey.te{color:var(--teal)}.s-ey.am{color:var(--amber)}.s-ey.pu{color:var(--purple)}.s-ey.re{color:var(--red)}
+.s-h2{font-family:var(--serif);font-size:clamp(28px,3.5vw,46px);font-weight:300;color:var(--text);line-height:1.05;margin-bottom:12px}
+.s-h2 em{font-style:italic;color:var(--gold)}.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.9;max-width:640px;margin-bottom:40px}
+.sec.dk .s-p{color:rgba(245,240,232,.45)}
+.ap{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}.ap.in{opacity:1;transform:none}
 
-/* ─── HERO ─── */
-.hero{
-  min-height:100vh;display:grid;
-  grid-template-rows:1fr auto;
-  padding:0 56px;
-  position:relative;overflow:hidden;
-}
+/* ── Credentials Strip ── */
+.creds{background:var(--surface);border-top:1px solid var(--border-2);border-bottom:1px solid var(--border-2);padding:28px var(--col);display:flex;align-items:center;gap:32px;overflow-x:auto;scrollbar-width:none}
+.creds::-webkit-scrollbar{display:none}
+.cred{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.06em;white-space:nowrap;padding:6px 14px;border:1px solid var(--border-2);background:var(--white)}
+.cred-sep{width:1px;height:16px;background:var(--border);flex-shrink:0}
+.cred-label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;margin-right:4px}
 
-/* Gold vertical rule left-side accent */
-.hero-rule{
-  position:absolute;left:56px;top:0;bottom:0;
-  width:1px;background:linear-gradient(to bottom,transparent,var(--gold) 30%,var(--gold) 70%,transparent);
-  opacity:.3;
-}
+/* ── Architecture Diagram Section ── */
+.arch-diagram{background:var(--ink);padding:80px var(--col)}
+.arch-diagram-wrap{margin-top:48px;background:var(--ink-2);border:1px solid rgba(255,255,255,.06);padding:40px;max-width:960px}
 
-/* Fine grid */
-.hero-grid{
-  position:absolute;inset:0;pointer-events:none;
-  background-image:
-    linear-gradient(var(--rule-lt) 1px,transparent 1px),
-    linear-gradient(90deg,var(--rule-lt) 1px,transparent 1px);
-  background-size:72px 72px;
-  mask-image:radial-gradient(ellipse 90% 80% at 30% 60%,black 0%,transparent 70%);
-}
+/* SVG diagram tokens for dark bg */
+.arch-diagram-wrap svg{--t:rgba(245,240,232,.7);--s:rgba(245,240,232,.35);--bg2:rgba(255,255,255,.04);--b:rgba(255,255,255,.1);--p:#8AB4F8;--font-sans:'IBM Plex Mono',monospace}
 
-.hero-content{
-  align-self:end;
-  padding:120px 0 60px 80px;
-  display:grid;
-  grid-template-columns:1fr 380px;
-  gap:0 80px;
-  align-items:end;
-}
-.hero-left{}
-.hero-kicker{
-  font-family:var(--mono);font-size:11px;font-weight:400;
-  color:var(--gold);letter-spacing:.15em;text-transform:uppercase;
-  margin-bottom:28px;display:flex;align-items:center;gap:14px;
-  opacity:0;animation:rise .8s .1s forwards;
-}
-.hero-kicker-line{width:28px;height:1px;background:var(--gold)}
+/* ── Governance Band ── */
+.gov-band{background:var(--ink-2);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);padding:72px var(--col)}
+.gov-label{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.gov-label::before{content:'';display:block;width:24px;height:1px;background:var(--gold);opacity:.5}
+.gov-eyebrow{margin-bottom:36px}
+.gov-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:10px}
+.gov-h2 em{font-style:italic;color:var(--gold)}
+.gov-sub{font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.35);line-height:1.8;max-width:520px;margin-bottom:40px}
+.gov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.gov-card{background:var(--ink-2);padding:28px 22px 24px;transition:background .2s;cursor:pointer;text-decoration:none;display:block;position:relative;overflow:hidden}
+.gov-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0;transition:opacity .25s}
+.gov-card:hover{background:#201F1C}.gov-card:hover::before{opacity:1}
+.gov-card.finrisk::before{background:var(--red)}
+.gov-card.govdata::before{background:var(--blue)}
+.gov-card.compliance::before{background:var(--purple)}
+.gov-card.strategy::before{background:var(--gold-lt)}
+.gov-card.greenops::before{background:var(--green)}
+.gc-badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 8px;letter-spacing:.06em;margin-bottom:14px}
+.gc-badge.red{background:#FCE8E6;color:#A50E0E}.gc-badge.blue{background:#E8F0FE;color:#1557B0}
+.gc-badge.purple{background:#EDE7F6;color:#3700B3}.gc-badge.gold{background:#FEF3E2;color:#7A4100}.gc-badge.green{background:#E6F4EA;color:#0D5226}
+.gc-icon{width:32px;height:32px;margin-bottom:14px;display:flex;align-items:center;justify-content:center}
+.gc-icon svg{width:18px;height:18px}
+.gc-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);letter-spacing:.01em;margin-bottom:5px}
+.gc-sub{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.28);line-height:1.65;letter-spacing:.02em;margin-bottom:14px}
+.gc-sources{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.18);letter-spacing:.04em;line-height:1.7;margin-bottom:16px}
+.gc-link{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.2);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:5px;transition:color .2s}
+.gov-card:hover .gc-link{color:rgba(245,240,232,.55)}
 
-.hero-h1{
-  font-family:var(--serif);font-size:clamp(52px,7.5vw,96px);
-  font-weight:300;line-height:1.0;letter-spacing:-.01em;
-  color:var(--ink);
-  opacity:0;animation:rise 1s .3s forwards;
-}
-.hero-h1 strong{
-  font-weight:600;display:block;
-}
-.hero-h1 em{
-  font-style:italic;font-weight:300;color:var(--gold);
-}
+/* ── Pillars ── */
+.pillars{padding:80px var(--col);background:var(--surface)}
+.pillar-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:64px;align-items:end}
+.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border-2)}
+.pillar-card{background:var(--white);padding:44px 38px;position:relative;overflow:hidden;text-decoration:none;display:block;transition:background .2s}
+.pillar-card:hover{background:var(--surface)}
+.pc-num{position:absolute;top:28px;right:28px;font-family:var(--serif);font-size:80px;font-weight:300;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;user-select:none}
+.pc-domain{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.pc-domain::before{content:'';width:14px;height:1px;display:block}
+.pillar-card.q2c .pc-domain{color:var(--blue)}.pillar-card.q2c .pc-domain::before{background:var(--blue)}
+.pillar-card.p2p .pc-domain{color:var(--purple)}.pillar-card.p2p .pc-domain::before{background:var(--purple)}
+.pillar-card.sc .pc-domain{color:var(--teal)}.pillar-card.sc .pc-domain::before{background:var(--teal)}
+.pillar-card.fin .pc-domain{color:var(--green)}.pillar-card.fin .pc-domain::before{background:var(--green)}
+.pc-title{font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);font-weight:300;color:var(--text);line-height:1.05;margin-bottom:10px}
+.pc-title em{font-style:italic;color:var(--gold)}
+.pc-desc{font-family:var(--mono);font-size:12px;font-weight:300;color:var(--text-2);line-height:1.85;margin-bottom:22px;max-width:340px}
+.pc-modules{display:flex;flex-direction:column;gap:0;margin-bottom:24px;border:1px solid var(--border-2)}
+.pc-module-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border-2);text-decoration:none;transition:background .15s}
+.pc-module-row:last-child{border-bottom:none}
+.pc-module-row:hover{background:var(--surface-2)}
+.pm-label{font-family:var(--mono);font-size:10px;color:var(--text-2);letter-spacing:.03em}
+.pm-arrow{font-family:var(--mono);font-size:10px;color:var(--text-3);transition:color .15s,transform .15s;display:inline-block}
+.pc-module-row:hover .pm-arrow{transform:translate(2px,-1px)}
+.pillar-card.q2c .pc-module-row:hover .pm-arrow{color:var(--blue)}
+.pillar-card.p2p .pc-module-row:hover .pm-arrow{color:var(--purple)}
+.pillar-card.sc .pc-module-row:hover .pm-arrow{color:var(--teal)}
+.pillar-card.fin .pc-module-row:hover .pm-arrow{color:var(--green)}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-2);padding-top:18px}
+.pc-ext{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.pillar-card.q2c:hover .pc-ext{color:var(--blue)}.pillar-card.p2p:hover .pc-ext{color:var(--purple)}
+.pillar-card.sc:hover .pc-ext{color:var(--teal)}.pillar-card.fin:hover .pc-ext{color:var(--green)}
+.pc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.pc-tag{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.04em;padding:2px 7px;background:var(--surface-2);border:1px solid var(--border-2)}
 
-.hero-thesis{
-  margin-top:40px;
-  font-family:var(--serif);font-size:20px;font-weight:300;
-  font-style:italic;color:var(--text-2);line-height:1.7;
-  border-left:2px solid var(--gold-dim);
-  padding-left:20px;max-width:560px;
-  opacity:0;animation:rise .9s .6s forwards;
-}
+/* ── Four Layer Stack ── */
+.arch-block{padding:80px var(--col);background:var(--ink)}
+.arch-stack{margin-top:48px;display:flex;flex-direction:column;gap:2px}
+.arch-layer{display:grid;grid-template-columns:220px 1fr;gap:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:background .2s}
+.arch-layer:hover{background:rgba(255,255,255,.05)}
+.al-label{padding:28px;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;justify-content:center}
+.al-num{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.2);letter-spacing:.1em;margin-bottom:8px}
+.al-name{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);line-height:1.3}
+.al-desc{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.3);margin-top:4px;line-height:1.5}
+.al-chips{padding:28px;display:flex;flex-wrap:wrap;gap:6px;align-content:center}
+.al-chip{font-family:var(--mono);font-size:10px;padding:4px 12px;letter-spacing:.04em;border:1px solid}
+.al-chip.blue{color:#8AB4F8;border-color:rgba(138,180,248,.2);background:rgba(138,180,248,.06)}
+.al-chip.green{color:#81C995;border-color:rgba(129,201,149,.2);background:rgba(129,201,149,.06)}
+.al-chip.amber{color:#FDD663;border-color:rgba(253,214,99,.2);background:rgba(253,214,99,.06)}
+.al-chip.teal{color:#78D9EC;border-color:rgba(120,217,236,.2);background:rgba(120,217,236,.06)}
+.al-chip.purple{color:#C58AF9;border-color:rgba(197,138,249,.2);background:rgba(197,138,249,.06)}
+.al-chip.gold{color:#D4AC1A;border-color:rgba(212,172,26,.2);background:rgba(212,172,26,.06)}
+.al-arrow{display:flex;align-items:center;justify-content:center;padding:6px;color:rgba(245,240,232,.1);font-family:var(--mono);font-size:11px}
 
-.hero-right{
-  padding-bottom:8px;
-  opacity:0;animation:rise .9s .8s forwards;
-}
-.hero-counter-block{
-  display:flex;flex-direction:column;gap:28px;
-  padding-left:32px;
-  border-left:1px solid var(--rule);
-}
-.hero-counter{
-}
-.hero-counter-num{
-  font-family:var(--display);font-size:48px;font-weight:800;
-  color:var(--ink);line-height:1;letter-spacing:-.03em;
-}
-.hero-counter-num sup{font-size:22px;font-weight:500;vertical-align:super}
-.hero-counter-label{
-  font-family:var(--mono);font-size:10px;color:var(--text-3);
-  letter-spacing:.1em;text-transform:uppercase;margin-top:4px;
-}
-.hero-counter-desc{
-  font-family:var(--mono);font-size:11px;color:var(--text-2);
-  line-height:1.6;margin-top:6px;font-weight:300;max-width:260px;
-}
+/* ── Principles ── */
+.principles{padding:80px var(--col);background:var(--white)}
+.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border:1px solid var(--border)}
+.pr-card{padding:34px 26px;border-right:1px solid var(--border)}
+.pr-card:last-child{border-right:none}
+.pr-n{font-family:var(--serif);font-size:48px;font-weight:300;color:rgba(0,0,0,.06);line-height:1;margin-bottom:14px}
+.pr-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--text);letter-spacing:.01em;margin-bottom:7px}
+.pr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.8}
 
-/* Hero bottom bar */
-.hero-bottom{
-  align-self:end;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:28px 0 28px 80px;
-  border-top:1px solid var(--rule);
-  opacity:0;animation:rise .8s 1.1s forwards;
-}
-.hero-scroll{
-  display:flex;align-items:center;gap:12px;
-  font-family:var(--mono);font-size:10px;color:var(--text-3);
-  letter-spacing:.1em;text-transform:uppercase;
-}
-.hero-scroll-line{
-  width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);
-  animation:pulse 2.2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.6)}}
-.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
-.hero-tag{
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  color:var(--text-3);border:1px solid var(--rule);
-  padding:5px 12px;letter-spacing:.06em;text-transform:uppercase;
-}
+/* ── Anchor Client ── */
+.client-block{padding:80px var(--col);background:var(--surface)}
+.client-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.client-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:32px}
+.kpi{background:var(--white);padding:22px 18px}
+.kpi-val{font-family:var(--serif);font-size:clamp(20px,2.2vw,28px);font-weight:300;color:var(--text);line-height:1;margin-bottom:4px}
+.kpi-val em{font-style:italic;color:var(--red)}
+.kpi-label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.05em;line-height:1.5}
+.client-right{border-left:1px solid var(--border-2);padding-left:60px}
+.pain-item{margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border-2)}
+.pain-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.pain-num{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.pain-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+.pain-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75}
+.pain-resolve{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;display:flex;align-items:center;gap:6px}
+.pain-resolve::before{content:'→'}
 
-/* ─── SECTION UTILITY ─── */
-.s-divider{
-  display:flex;align-items:center;gap:16px;
-  padding:0 56px;margin:96px 0 48px;
-}
-.s-num{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;flex-shrink:0}
-.s-line{flex:1;height:1px;background:var(--rule)}
-.s-label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;flex-shrink:0}
+/* ── Portfolio Nav ── */
+.portfolio-nav{padding:80px var(--col);background:var(--ink)}
+.pn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin-top:48px}
+.pn-card{background:var(--ink-2);padding:30px 26px;text-decoration:none;display:block;transition:background .2s;position:relative}
+.pn-card:hover{background:#201F1C}
+.pn-index{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.18);letter-spacing:.1em;margin-bottom:12px}
+.pn-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);margin-bottom:5px}
+.pn-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.28);line-height:1.7}
+.pn-arrow{position:absolute;top:26px;right:26px;font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.12);transition:color .2s,transform .2s}
+.pn-card:hover .pn-arrow{color:var(--gold-lt);transform:translate(2px,-2px)}
+.pn-divider{grid-column:1/-1;padding:24px 0 8px;font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.18);letter-spacing:.12em;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.04)}
 
-.s-heading{
-  font-family:var(--serif);font-size:clamp(34px,4.5vw,56px);
-  font-weight:300;line-height:1.1;letter-spacing:-.01em;color:var(--ink);
-}
-.s-heading strong{font-weight:600}
-.s-heading em{font-style:italic;color:var(--gold)}
-.s-sub{
-  font-family:var(--mono);font-size:13px;font-weight:300;
-  color:var(--text-2);line-height:1.8;max-width:540px;margin-top:16px;
-}
+/* ── Footer ── */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.05);padding:48px var(--col)}
+.ft-inner{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;align-items:start}
+.ft-brand{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--cream);line-height:1}
+.ft-brand em{font-style:italic;color:var(--gold)}
+.ft-sub{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.22);margin-top:8px;line-height:1.75;max-width:240px}
+.ft-col-head{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.22);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.ft-links{display:flex;flex-direction:column;gap:9px}
+.ft-link{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.28);text-decoration:none;letter-spacing:.03em;transition:color .2s}.ft-link:hover{color:var(--gold-lt)}
+.ft-copy{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.14);margin-top:48px;padding-top:28px;border-top:1px solid rgba(255,255,255,.04)}
 
-/* Appear on scroll */
-.ap{opacity:0;transform:translateY(18px);transition:opacity .75s ease,transform .75s ease}
-.ap.in{opacity:1;transform:none}
-.ap-d1{transition-delay:.1s}
-.ap-d2{transition-delay:.2s}
-.ap-d3{transition-delay:.3s}
-.ap-d4{transition-delay:.4s}
-
-/* ─── SECTION 1 — WHY NOW ─── */
-.why-section{padding:0 56px}
-.why-intro{
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;
-  margin-bottom:64px;align-items:start;
-}
-.why-pull{
-  font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);
-  font-weight:300;font-style:italic;line-height:1.5;
-  color:var(--ink);
-}
-.why-pull strong{font-style:normal;font-weight:600}
-.why-body-col{
-  font-family:var(--mono);font-size:13px;font-weight:300;
-  color:var(--text-2);line-height:1.9;
-}
-.why-body-col p+p{margin-top:16px}
-
-.forces-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border:1px solid var(--rule);
-}
-.force{
-  padding:36px 28px;border-right:1px solid var(--rule);
-  transition:background .25s;position:relative;overflow:hidden;
-}
-.force:last-child{border-right:none}
-.force::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--gold);transform:scaleX(0);transform-origin:left;
-  transition:transform .4s ease;
-}
-.force:hover{background:var(--white)}
-.force:hover::after{transform:scaleX(1)}
-.force-num{
-  font-family:var(--mono);font-size:10px;color:var(--gold);
-  letter-spacing:.12em;margin-bottom:20px;display:block;
-}
-.force-title{
-  font-family:var(--display);font-size:16px;font-weight:700;
-  color:var(--ink);letter-spacing:-.01em;margin-bottom:12px;line-height:1.2;
-}
-.force-body{
-  font-family:var(--mono);font-size:11px;font-weight:300;
-  color:var(--text-2);line-height:1.7;
-}
-.force-year{
-  display:inline-block;margin-top:16px;
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  color:var(--gold);letter-spacing:.08em;
-  border-bottom:1px solid var(--gold-dim);padding-bottom:2px;
-}
-
-/* ─── SECTION 2 — CLARAVIS PROBLEM ─── */
-.problem-section{padding:0 56px}
-.problem-banner{
-  background:var(--ink);position:relative;overflow:hidden;
-  display:grid;grid-template-columns:1fr 1fr;
-}
-/* Decorative large text watermark */
-.problem-banner::before{
-  content:'CLARAVIS';position:absolute;
-  right:-20px;top:50%;transform:translateY(-50%);
-  font-family:var(--display);font-size:160px;font-weight:800;
-  color:rgba(255,255,255,.03);letter-spacing:-.05em;
-  pointer-events:none;user-select:none;line-height:1;white-space:nowrap;
-}
-.problem-left{
-  padding:64px 56px;border-right:1px solid rgba(255,255,255,.06);
-}
-.problem-eyebrow{
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;
-  margin-bottom:20px;
-}
-.problem-client-name{
-  font-family:var(--serif);font-size:clamp(32px,3.5vw,48px);
-  font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:8px;
-}
-.problem-client-name strong{font-weight:600}
-.problem-tagline{
-  font-family:var(--mono);font-size:12px;font-weight:300;
-  color:rgba(245,240,232,.45);margin-bottom:40px;line-height:1.6;
-}
-.problem-metrics{
-  display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:rgba(255,255,255,.06);
-}
-.pm{background:var(--ink-2);padding:20px 22px}
-.pm-val{
-  font-family:var(--display);font-size:28px;font-weight:800;
-  color:var(--cream);letter-spacing:-.02em;line-height:1;
-}
-.pm-val sup{font-size:14px;font-weight:500;vertical-align:super}
-.pm-label{
-  font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.4);
-  letter-spacing:.08em;text-transform:uppercase;margin-top:5px;
-}
-
-.problem-right{
-  padding:64px 56px;display:flex;flex-direction:column;gap:32px;
-}
-.pain-card{
-  border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:28px;
-}
-.pain-card:last-child{border-bottom:none;padding-bottom:0}
-.pain-header{
-  display:flex;align-items:flex-start;gap:16px;margin-bottom:12px;
-}
-.pain-index{
-  font-family:var(--mono);font-size:10px;color:var(--gold);
-  letter-spacing:.1em;flex-shrink:0;margin-top:3px;
-}
-.pain-title{
-  font-family:var(--display);font-size:16px;font-weight:700;
-  color:var(--cream);letter-spacing:-.01em;
-}
-.pain-body{
-  font-family:var(--mono);font-size:12px;font-weight:300;
-  color:rgba(245,240,232,.55);line-height:1.8;padding-left:42px;
-}
-.pain-stat{
-  display:inline-flex;align-items:center;gap:8px;
-  margin-top:12px;margin-left:42px;
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  color:var(--gold-pale);
-}
-.pain-stat::before{content:'→';color:var(--gold)}
-
-/* ─── SECTION 3 — DESIGN PHILOSOPHY ─── */
-.philosophy-section{padding:0 56px}
-.philosophy-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:4px;margin-top:4px;
-}
-.principle{
-  background:var(--cream-2);padding:48px 44px;
-  position:relative;overflow:hidden;
-  transition:background .25s;
-}
-.principle:hover{background:var(--white)}
-.principle-accent{
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:var(--gold);transform:scaleX(0);transform-origin:left;
-  transition:transform .4s ease;
-}
-.principle:hover .principle-accent{transform:scaleX(1)}
-.principle-bg-glyph{
-  position:absolute;right:20px;bottom:-10px;
-  font-family:var(--serif);font-size:120px;font-weight:600;
-  color:var(--rule-lt);line-height:1;pointer-events:none;
-  user-select:none;font-style:italic;letter-spacing:-.02em;
-}
-.principle-num{
-  font-family:var(--mono);font-size:10px;color:var(--gold);
-  letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;display:block;
-}
-.principle-title{
-  font-family:var(--display);font-size:22px;font-weight:700;
-  color:var(--ink);letter-spacing:-.02em;margin-bottom:16px;line-height:1.15;
-}
-.principle-body{
-  font-family:var(--mono);font-size:12px;font-weight:300;
-  color:var(--text-2);line-height:1.8;
-}
-.principle-proof{
-  margin-top:20px;padding:14px 18px;
-  background:var(--gold-dim);
-  font-family:var(--mono);font-size:11px;color:var(--text);
-  line-height:1.6;font-weight:400;
-}
-.principle-proof strong{font-weight:500;color:var(--ink)}
-
-/* ─── SECTION 4 — THREE LAYERS ─── */
-.layers-section{padding:0 56px}
-.layers-intro{
-  display:grid;grid-template-columns:1fr 420px;
-  gap:80px;align-items:center;margin-bottom:56px;
-}
-.layers-visual{
-  display:flex;flex-direction:column;gap:3px;
-}
-.layer-bar{
-  position:relative;overflow:hidden;
-  display:grid;grid-template-columns:220px 1fr;
-  transition:transform .3s ease;cursor:default;
-}
-.layer-bar:hover{transform:translateX(8px)}
-.layer-bar-left{
-  padding:28px 32px;display:flex;flex-direction:column;justify-content:center;
-}
-.layer-bar-right{
-  padding:28px 32px;display:flex;align-items:center;
-  border-left:1px solid rgba(255,255,255,.07);
-}
-.lb-l1 .layer-bar-left,.lb-l1 .layer-bar-right{background:var(--ink)}
-.lb-l2 .layer-bar-left,.lb-l2 .layer-bar-right{background:var(--ink-2)}
-.lb-l3 .layer-bar-left,.lb-l3 .layer-bar-right{background:var(--ink-3)}
-.layer-bar-num{
-  font-family:var(--mono);font-size:10px;color:var(--gold-lt);
-  letter-spacing:.12em;margin-bottom:6px;
-}
-.layer-bar-name{
-  font-family:var(--display);font-size:18px;font-weight:700;
-  color:var(--cream);letter-spacing:-.01em;
-}
-.layer-bar-chips{display:flex;flex-wrap:wrap;gap:6px}
-.layer-chip{
-  font-family:var(--mono);font-size:10px;font-weight:400;
-  padding:4px 10px;border:1px solid rgba(255,255,255,.1);
-  color:rgba(245,240,232,.6);letter-spacing:.04em;
-  transition:border-color .2s,color .2s;
-}
-.layer-bar:hover .layer-chip{border-color:var(--gold);color:rgba(245,240,232,.9)}
-
-/* Connector arrows between layers */
-.layer-connector{
-  text-align:center;padding:3px 0;
-  font-family:var(--mono);font-size:10px;color:var(--text-3);
-  letter-spacing:.06em;
-}
-
-/* ─── SECTION 5 — WHAT THIS IS NOT ─── */
-.not-section{
-  padding:80px 56px;
-  background:var(--ink);margin-top:96px;
-}
-.not-header{
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;
-  padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.06);
-  margin-bottom:56px;
-}
-.not-heading{
-  font-family:var(--serif);font-size:clamp(34px,4vw,52px);
-  font-weight:300;color:var(--cream);line-height:1.1;
-}
-.not-heading em{font-style:italic;color:var(--gold)}
-.not-body{
-  font-family:var(--mono);font-size:13px;font-weight:300;
-  color:rgba(245,240,232,.5);line-height:1.9;align-self:center;
-}
-.not-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-  background:rgba(255,255,255,.04);
-}
-.not-item{
-  background:var(--ink-2);padding:32px 30px;
-  transition:background .2s;
-}
-.not-item:hover{background:var(--ink-3)}
-.not-item-label{
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;
-  display:flex;align-items:center;gap:10px;
-}
-.not-x{
-  width:16px;height:16px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:700;flex-shrink:0;
-}
-.not-x.red{background:rgba(200,60,60,.15);color:#e05050}
-.not-x.green{background:rgba(30,180,120,.12);color:#2db880}
-.not-item-title{
-  font-family:var(--display);font-size:17px;font-weight:700;
-  color:var(--cream);margin-bottom:10px;letter-spacing:-.01em;line-height:1.2;
-}
-.not-item-body{
-  font-family:var(--mono);font-size:11px;font-weight:300;
-  color:rgba(245,240,232,.5);line-height:1.7;
-}
-
-/* ─── SECTION 6 — COMPLIANCE + GOVERNANCE ─── */
-.compliance-section{padding:0 56px}
-.compliance-table{
-  border:1px solid var(--rule);
-  margin-top:4px;
-}
-.ct-row{
-  display:grid;grid-template-columns:220px 1fr 160px;
-  border-bottom:1px solid var(--rule);
-  transition:background .2s;
-}
-.ct-row:last-child{border-bottom:none}
-.ct-row:hover{background:var(--white)}
-.ct-row.header{background:var(--ink)}
-.ct-cell{
-  padding:18px 24px;
-  font-family:var(--mono);font-size:12px;font-weight:300;
-  color:var(--text-2);line-height:1.5;
-  border-right:1px solid var(--rule);
-}
-.ct-cell:last-child{border-right:none}
-.ct-row.header .ct-cell{
-  font-size:10px;font-weight:500;color:rgba(245,240,232,.5);
-  letter-spacing:.1em;text-transform:uppercase;
-}
-.ct-cell strong{font-weight:500;color:var(--text)}
-.ct-badge{
-  display:inline-block;padding:2px 8px;
-  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;
-}
-.ct-badge.high{background:rgba(200,60,60,.08);color:#c03030}
-.ct-badge.med{background:rgba(184,150,12,.1);color:var(--gold)}
-.ct-badge.native{background:rgba(26,180,120,.1);color:#1aa870}
-
-/* ─── NAV BRIDGE TO NEXT PAGE ─── */
-.next-section{
-  padding:96px 56px;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
-}
-.next-left .next-label{
-  font-family:var(--mono);font-size:10px;color:var(--gold);
-  letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;
-}
-.next-left .next-heading{
-  font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);
-  font-weight:300;color:var(--ink);line-height:1.15;
-}
-.next-left .next-heading strong{font-weight:600}
-.next-left .next-body{
-  font-family:var(--mono);font-size:12px;font-weight:300;
-  color:var(--text-2);line-height:1.8;margin-top:20px;max-width:420px;
-}
-.next-pages{display:flex;flex-direction:column;gap:4px}
-.next-page-link{
-  display:grid;grid-template-columns:48px 1fr 24px;
-  align-items:center;gap:16px;
-  padding:20px 24px;background:var(--cream-2);
-  text-decoration:none;transition:background .2s,transform .2s;
-  border:1px solid transparent;
-}
-.next-page-link:hover{background:var(--white);border-color:var(--rule);transform:translateX(4px)}
-.npl-num{
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  color:var(--gold);letter-spacing:.08em;
-}
-.npl-title{
-  font-family:var(--display);font-size:14px;font-weight:600;
-  color:var(--ink);letter-spacing:-.01em;
-}
-.npl-sub{
-  font-family:var(--mono);font-size:10px;font-weight:300;
-  color:var(--text-3);margin-top:2px;
-}
-.npl-arrow{
-  font-family:var(--mono);font-size:14px;color:var(--text-3);
-  transition:color .2s,transform .2s;
-}
-.next-page-link:hover .npl-arrow{color:var(--gold);transform:translateX(3px)}
-.npl-status{
-  display:inline-block;
-  font-family:var(--mono);font-size:9px;font-weight:500;
-  padding:2px 7px;letter-spacing:.07em;text-transform:uppercase;
-  margin-top:4px;
-}
-.npl-status.design{background:rgba(184,150,12,.12);color:var(--gold)}
-.npl-status.soon{background:var(--rule-lt);color:var(--text-3)}
-
-/* ─── FOOTER ─── */
-footer{
-  background:var(--ink-2);
-  padding:48px 56px 36px;
-  border-top:1px solid rgba(255,255,255,.04);
-}
-.footer-inner{
-  display:flex;justify-content:space-between;align-items:flex-start;
-  flex-wrap:wrap;gap:32px;padding-bottom:32px;
-  border-bottom:1px solid rgba(255,255,255,.04);
-  margin-bottom:24px;
-}
-.footer-brand{
-  font-family:var(--serif);font-size:22px;font-weight:300;
-  color:var(--cream);letter-spacing:-.01em;
-}
-.footer-brand em{font-style:italic;color:var(--gold)}
-.footer-note{
-  font-family:var(--mono);font-size:11px;font-weight:300;
-  color:rgba(245,240,232,.3);line-height:1.7;max-width:360px;
-}
-.footer-links{display:flex;gap:28px;flex-wrap:wrap}
-.footer-link{
-  font-family:var(--mono);font-size:11px;
-  color:rgba(245,240,232,.4);text-decoration:none;
-  letter-spacing:.07em;text-transform:uppercase;transition:color .2s;
-}
-.footer-link:hover{color:var(--gold-lt)}
-.footer-copy{
-  font-family:var(--mono);font-size:11px;
-  color:rgba(245,240,232,.2);letter-spacing:.04em;
-}
-
-/* ─── KEYFRAMES ─── */
-@keyframes rise{
-  from{opacity:0;transform:translateY(22px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:1024px){
-  nav{padding:20px 28px}
-  .hero-content{grid-template-columns:1fr;padding:120px 0 56px 40px;gap:48px}
-  .hero-right{display:none}
-  .hero-bottom{padding:24px 0 24px 40px}
-  .s-divider,.why-section,.problem-section,.philosophy-section,
-  .layers-section,.compliance-section,.next-section{padding-left:28px;padding-right:28px}
-  .not-section{padding:56px 28px}
-  footer{padding:40px 28px 28px}
-  .hero-rule{left:28px}
-}
-@media(max-width:768px){
-  .why-intro{grid-template-columns:1fr}
-  .forces-grid{grid-template-columns:1fr 1fr}
-  .problem-banner{grid-template-columns:1fr}
-  .philosophy-grid{grid-template-columns:1fr}
-  .layers-intro{grid-template-columns:1fr}
-  .not-header{grid-template-columns:1fr}
-  .not-grid{grid-template-columns:1fr}
-  .ct-row{grid-template-columns:140px 1fr}
-  .ct-row .ct-cell:last-child{display:none}
-  .next-section{grid-template-columns:1fr}
-  .layer-bar{grid-template-columns:1fr}
-  .layer-bar-right{display:none}
-  .nav-right .nav-link{display:none}
+@media(max-width:900px){
+  :root{--col:24px}
+  .gov-grid{grid-template-columns:repeat(2,1fr)}
+  .pillar-grid,.pillar-intro{grid-template-columns:1fr;gap:32px}
+  .arch-layer{grid-template-columns:1fr}
+  .al-label{border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}
+  .pr-grid{grid-template-columns:repeat(2,1fr)}
+  .pr-card:nth-child(2){border-right:none}
+  .pr-card:nth-child(3){border-top:1px solid var(--border)}
+  .pr-card:nth-child(4){border-right:none;border-top:1px solid var(--border)}
+  .client-inner{grid-template-columns:1fr}
+  .client-right{border-left:none;padding-left:0;border-top:1px solid var(--border-2);padding-top:36px}
+  .pn-grid{grid-template-columns:1fr}
+  .ft-inner{grid-template-columns:1fr 1fr;gap:28px}
 }
 </style>
 </head>
 <body>
-
 <div id="cur"></div>
-<div id="cur-ring"></div>
+<div id="cur-r"></div>
 
-<!-- ── NAV ── -->
-<nav id="nav">
-  <a href="#" class="nav-wordmark">
-    <div class="nav-wordmark-dot"></div>
-    The Autonomous Enterprise
-  </a>
-  <div class="nav-right">
-    <a href="#why-now" class="nav-link">Why Now</a>
-    <a href="#problem" class="nav-link">The Problem</a>
-    <a href="#philosophy" class="nav-link">Philosophy</a>
-    <a href="#architecture" class="nav-link">Architecture</a>
-    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="nav-btn">GitHub →</a>
+<!-- ═══ NAV ═══ -->
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="index.html" class="mn-brand">AE <span>·</span> Platform</a>
+    <div class="mn-sep"></div>
+    <span class="mn-tag">Architecture Portfolio · 2025–2026</span>
+  </div>
+  <div class="mn-r">
+    <a href="#platform" class="mn-link">Platform</a>
+    <a href="#governance" class="mn-link">Governance</a>
+    <a href="#pillars" class="mn-link">Pillars</a>
+    <a href="#portfolio" class="mn-link">Portfolio</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" class="mn-gh" target="_blank">GitHub →</a>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
+<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-rule"></div>
+  <div class="hero-grid" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="gr" x="0" y="0" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M72 0 L0 0 0 72" fill="none" stroke="white" stroke-width=".5"/></pattern></defs>
+      <rect width="1440" height="900" fill="url(#gr)"/>
+      <line x1="0" y1="900" x2="600" y2="0" stroke="white" stroke-width=".3" opacity=".5"/>
+      <line x1="200" y1="900" x2="800" y2="0" stroke="white" stroke-width=".3" opacity=".3"/>
+      <line x1="900" y1="900" x2="1440" y2="200" stroke="white" stroke-width=".3" opacity=".4"/>
+    </svg>
+  </div>
+  <div class="hero-eyebrow">TOGAF 10 · Google Cloud · Vertex AI · EU AI Act · ADK Multi-Agent</div>
+  <h1 class="hero-h1">The<br><em>Autonomous</em><br><strong>Enterprise</strong></h1>
+  <p class="hero-sub">A portfolio-grade AI solutions architecture for regulated industry.<br>Four intelligent pillars. Five C-Suite governance dashboards.<br>Zero black-box decisions. Every inference explainable. Every action auditable.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hs-n"><em>4</em></div><div class="hs-l">Intelligent Pillars</div></div>
+    <div class="hero-stat"><div class="hs-n"><em>5</em></div><div class="hs-l">Governance Dashboards</div></div>
+    <div class="hero-stat"><div class="hs-n"><em>4</em></div><div class="hs-l">Architecture Layers</div></div>
+    <div class="hero-stat"><div class="hs-n"><em>0</em></div><div class="hs-l">Black-Box Decisions</div></div>
+    <div class="hero-stat"><div class="hs-n"><em>16</em></div><div class="hs-l">Architecture Decisions</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#platform" class="btn-primary">Explore the Platform ↓</a>
+    <a href="#portfolio" class="btn-ghost">View Portfolio Pages →</a>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">Scroll</div>
+</section>
 
-  <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-kicker">
-        <div class="hero-kicker-line"></div>
-        Architecture Portfolio · 2025–2026
-      </div>
-      <h1 class="hero-h1">
-        The enterprise<br>
-        that runs <em>itself</em><br>
-        <strong>reasons, acts, and accounts<br>for itself.</strong>
-      </h1>
-      <p class="hero-thesis">
-        An explainability-first, human-supervised enterprise AI architecture —
-        designed for regulated industries, from the business requirements layer
-        through to production infrastructure. Six design phases.
-        Eight intelligent modules. One coherent system.
-      </p>
-    </div>
+<!-- ═══ CREDENTIALS STRIP ═══ -->
+<div class="creds">
+  <span class="cred-label">Built by</span>
+  <span class="cred">TOGAF 10 EA</span>
+  <span class="cred">Google MLE</span>
+  <span class="cred">Google Cloud Architect</span>
+  <span class="cred">SAFe SA + SPC</span>
+  <div class="cred-sep"></div>
+  <span class="cred">EU AI Act — Annex III Compliant</span>
+  <span class="cred">ISO 13485 · FDA 21 CFR 820</span>
+  <span class="cred">ASC 606 · GDPR · CSRD</span>
+  <div class="cred-sep"></div>
+  <span class="cred">Vertex AI · ADK Multi-Agent · A2A</span>
+  <span class="cred">GKE · Cloud Run · VPC-SC · CMEK</span>
+  <span class="cred">BigQuery · Pub/Sub · Firestore</span>
+</div>
 
-    <div class="hero-right">
-      <div class="hero-counter-block">
-        <div class="hero-counter">
-          <div class="hero-counter-num">6</div>
-          <div class="hero-counter-label">Design Phases</div>
-          <div class="hero-counter-desc">Requirements → TOGAF → FRD/PRD → Agents → ML → Infrastructure</div>
-        </div>
-        <div class="hero-counter">
-          <div class="hero-counter-num">8</div>
-          <div class="hero-counter-label">Intelligent Modules</div>
-          <div class="hero-counter-desc">Each with its own agent, ML model, XAI layer, and HITL checkpoint</div>
-        </div>
-        <div class="hero-counter">
-          <div class="hero-counter-num">3</div>
-          <div class="hero-counter-label">Architecture Layers</div>
-          <div class="hero-counter-desc">Presentation · Agent & ML Platform · Infrastructure & Governance</div>
-        </div>
-        <div class="hero-counter">
-          <div class="hero-counter-num">0</div>
-          <div class="hero-counter-label">Black-Box Decisions</div>
-          <div class="hero-counter-desc">Every ML inference is explainable. Every agent action is auditable.</div>
-        </div>
-      </div>
+<!-- ═══ PLATFORM ARCHITECTURE DIAGRAM ═══ -->
+<section class="arch-diagram" id="platform">
+  <div class="s-ey go ap">Platform Architecture</div>
+  <h2 class="s-h2 ap" style="color:var(--cream)">The full platform, <em>at a glance</em>.</h2>
+  <p class="s-p ap">Five governance dashboards sit above four autonomous pillars. Every pillar is a domain suite sharing a common four-layer contract — from HITL-enabled presentation surfaces down to a zero-trust GCP infrastructure that makes compliance structurally un-bypassable. Click any node to explore.</p>
+
+  <div class="arch-diagram-wrap ap">
+    <svg width="100%" viewBox="0 0 680 800" role="img"
+      style="--t:rgba(245,240,232,.65);--s:rgba(245,240,232,.32);--bg2:rgba(255,255,255,.05);--b:rgba(255,255,255,.1);font-family:'IBM Plex Mono',monospace">
+      <title>The Autonomous Enterprise — Platform Architecture Diagram</title>
+      <desc>Structural diagram showing five C-Suite governance dashboards above four autonomous pillars (Seller, Buyer, Supply Chain, Finance), each pillar containing named modules and sharing a four-layer GCP architecture.</desc>
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Platform boundary -->
+      <rect x="10" y="10" width="660" height="778" rx="4" fill="none" stroke="rgba(245,240,232,.08)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="10" fill="rgba(245,240,232,.2)" x="22" y="26" letter-spacing="0.1em">THE AUTONOMOUS ENTERPRISE PLATFORM</text>
+
+      <!-- ── GOVERNANCE BAND ── -->
+      <rect x="22" y="36" width="636" height="96" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)" stroke-width="0.5"/>
+      <text font-family="'Syne',sans-serif" font-size="11" font-weight="600" fill="rgba(245,240,232,.7)" x="340" y="55" text-anchor="middle" letter-spacing="0.05em">C-SUITE GOVERNANCE LAYER</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(245,240,232,.25)" x="340" y="69" text-anchor="middle">Dashboards of dashboards · aggregated signal from all four pillars</text>
+
+      <!-- FinRisk tile -->
+      <a href="gov-finrisk.html">
+        <rect x="32" y="78" width="110" height="44" rx="4" fill="#FCE8E6" fill-opacity="0.08" stroke="#D93025" stroke-width="0.5" stroke-opacity="0.4"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#F28B82" x="87" y="97" text-anchor="middle">FinRisk</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(242,139,130,.5)" x="87" y="112" text-anchor="middle">Sentinel</text>
+      </a>
+      <!-- Data Gov tile -->
+      <a href="gov-data-governance.html">
+        <rect x="150" y="78" width="110" height="44" rx="4" fill="#E8F0FE" fill-opacity="0.06" stroke="#1A73E8" stroke-width="0.5" stroke-opacity="0.4"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#8AB4F8" x="205" y="97" text-anchor="middle">Data</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.5)" x="205" y="112" text-anchor="middle">Governance</text>
+      </a>
+      <!-- Compliance tile -->
+      <a href="gov-compliance.html">
+        <rect x="268" y="78" width="110" height="44" rx="4" fill="#EDE7F6" fill-opacity="0.07" stroke="#6200EE" stroke-width="0.5" stroke-opacity="0.4"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#C58AF9" x="323" y="97" text-anchor="middle">Compliance</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.5)" x="323" y="112" text-anchor="middle">Hub</text>
+      </a>
+      <!-- Strategy tile -->
+      <a href="gov-strategy.html">
+        <rect x="386" y="78" width="110" height="44" rx="4" fill="#FEF3E2" fill-opacity="0.07" stroke="#D4AC1A" stroke-width="0.5" stroke-opacity="0.4"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#FDD663" x="441" y="97" text-anchor="middle">Strategy</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(253,214,99,.5)" x="441" y="112" text-anchor="middle">Dashboard</text>
+      </a>
+      <!-- GreenOps tile -->
+      <a href="gov-greenops.html">
+        <rect x="504" y="78" width="142" height="44" rx="4" fill="#E6F4EA" fill-opacity="0.07" stroke="#137333" stroke-width="0.5" stroke-opacity="0.4"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#81C995" x="575" y="97" text-anchor="middle">GreenOps</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.5)" x="575" y="112" text-anchor="middle">Platform</text>
+      </a>
+
+      <!-- Signal arrows up from each pillar midpoint -->
+      <line x1="105" y1="590" x2="105" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+      <line x1="258" y1="590" x2="258" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+      <line x1="412" y1="590" x2="412" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+      <line x1="566" y1="590" x2="566" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+
+      <!-- ── PILLAR 1 — Seller ── -->
+      <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" target="_blank">
+        <rect x="22" y="148" width="152" height="454" rx="8" fill="rgba(138,180,248,.04)" stroke="#378ADD" stroke-width="0.6" stroke-opacity="0.35"/>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(138,180,248,.85)" x="98" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(138,180,248,.85)" x="98" y="188" text-anchor="middle" letter-spacing="0.04em">SELLER</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.4)" x="98" y="203" text-anchor="middle">Q2C · Quote-to-Cash</text>
+      </a>
+      <!-- Seller modules -->
+      <a href="page-09-m01.html">
+        <rect x="32" y="215" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="233" text-anchor="middle">M-01 · CCAI Sales Agent</text>
+      </a>
+      <a href="page-09-m02.html">
+        <rect x="32" y="249" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="267" text-anchor="middle">M-02 · ContractGuard</text>
+      </a>
+      <a href="page-09-m03.html">
+        <rect x="32" y="283" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="301" text-anchor="middle">M-03 · RevRec AI</text>
+      </a>
+      <!-- Seller layer separator + tech labels -->
+      <line x1="32" y1="325" x2="164" y2="325" stroke="rgba(138,180,248,.12)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="340" text-anchor="middle">ADK · Dialogflow CX</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="356" text-anchor="middle">XGBoost · SHAP</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="372" text-anchor="middle">Vertex AI Pipelines</text>
+      <line x1="32" y1="386" x2="164" y2="386" stroke="rgba(138,180,248,.08)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.2)" x="98" y="400" text-anchor="middle">EU AI Act · ASC 606</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.2)" x="98" y="416" text-anchor="middle">ISO 13485 · GDPR</text>
+      <line x1="32" y1="430" x2="164" y2="430" stroke="rgba(138,180,248,.06)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="445" text-anchor="middle">GCP europe-west3</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="461" text-anchor="middle">VPC-SC · CMEK</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="477" text-anchor="middle">Terraform IaC</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.1)" x="98" y="512" text-anchor="middle">→ Seller portfolio</text>
+
+      <!-- ── PILLAR 2 — Buyer ── -->
+      <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" target="_blank">
+        <rect x="176" y="148" width="152" height="454" rx="8" fill="rgba(197,138,249,.04)" stroke="#7F77DD" stroke-width="0.6" stroke-opacity="0.35"/>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(197,138,249,.85)" x="252" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(197,138,249,.85)" x="252" y="188" text-anchor="middle" letter-spacing="0.04em">BUYER</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.4)" x="252" y="203" text-anchor="middle">P2P · Procure-to-Pay</text>
+      </a>
+      <a href="page-09-m04.html">
+        <rect x="186" y="215" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="233" text-anchor="middle">Procurement Intel</text>
+      </a>
+      <a href="page-09-m04.html">
+        <rect x="186" y="249" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="267" text-anchor="middle">Supplier Scoring</text>
+      </a>
+      <a href="page-09-m04.html">
+        <rect x="186" y="283" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="301" text-anchor="middle">AP Exception Agent</text>
+      </a>
+      <line x1="186" y1="325" x2="318" y2="325" stroke="rgba(197,138,249,.12)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="340" text-anchor="middle">ADK · MCP Tools</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="356" text-anchor="middle">Anomaly Detection</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="372" text-anchor="middle">Vertex AI · SHAP</text>
+      <line x1="186" y1="386" x2="318" y2="386" stroke="rgba(197,138,249,.08)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.2)" x="252" y="400" text-anchor="middle">EU AI Act · GDPR</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.2)" x="252" y="416" text-anchor="middle">OECD · IFRS</text>
+      <line x1="186" y1="430" x2="318" y2="430" stroke="rgba(197,138,249,.06)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="445" text-anchor="middle">Apigee · Cloud Tasks</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="461" text-anchor="middle">Assured Workloads</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="477" text-anchor="middle">VPC-SC · CMEK</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.1)" x="252" y="512" text-anchor="middle">→ Buyer portfolio</text>
+
+      <!-- ── PILLAR 3 — Supply Chain ── -->
+      <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank">
+        <rect x="330" y="148" width="152" height="454" rx="8" fill="rgba(93,202,165,.04)" stroke="#1D9E75" stroke-width="0.6" stroke-opacity="0.35"/>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(93,202,165,.85)" x="406" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(93,202,165,.85)" x="406" y="188" text-anchor="middle" letter-spacing="0.04em">SUPPLY CHAIN</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.4)" x="406" y="203" text-anchor="middle">Ops · Field Service</text>
+      </a>
+      <a href="page-09-m05.html">
+        <rect x="340" y="215" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="233" text-anchor="middle">M-05 · Asset IQ</text>
+      </a>
+      <a href="page-09-m05.html">
+        <rect x="340" y="249" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="267" text-anchor="middle">Fleet Telemetry</text>
+      </a>
+      <a href="page-09-m05.html">
+        <rect x="340" y="283" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="301" text-anchor="middle">Demand Planning</text>
+      </a>
+      <line x1="340" y1="325" x2="472" y2="325" stroke="rgba(93,202,165,.12)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="340" text-anchor="middle">ADK · A2A Protocol</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="356" text-anchor="middle">RUL Regression</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="372" text-anchor="middle">Isolation Forest</text>
+      <line x1="340" y1="386" x2="472" y2="386" stroke="rgba(93,202,165,.08)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.2)" x="406" y="400" text-anchor="middle">ISO 13485 · GDPR</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.2)" x="406" y="416" text-anchor="middle">FDA 21 CFR 820</text>
+      <line x1="340" y1="430" x2="472" y2="430" stroke="rgba(93,202,165,.06)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="445" text-anchor="middle">Pub/Sub · Firestore</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="461" text-anchor="middle">GKE · Cloud Run</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="477" text-anchor="middle">BeyondCorp · IAM</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.1)" x="406" y="512" text-anchor="middle">→ Supply Chain portfolio</text>
+
+      <!-- ── PILLAR 4 — Finance ── -->
+      <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" target="_blank">
+        <rect x="484" y="148" width="154" height="454" rx="8" fill="rgba(129,201,149,.04)" stroke="#137333" stroke-width="0.6" stroke-opacity="0.35"/>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(129,201,149,.85)" x="561" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(129,201,149,.85)" x="561" y="188" text-anchor="middle" letter-spacing="0.04em">FINANCE</text>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.4)" x="561" y="203" text-anchor="middle">Finance · Treasury</text>
+      </a>
+      <a href="page-09-m04.html">
+        <rect x="494" y="215" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="233" text-anchor="middle">Intercompany Recon</text>
+      </a>
+      <a href="page-09-m04.html">
+        <rect x="494" y="249" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="267" text-anchor="middle">Treasury Visibility</text>
+      </a>
+      <a href="Finrisk_Sentinel.html">
+        <rect x="494" y="283" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
+        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="301" text-anchor="middle">M-04 · FinRisk Agent</text>
+      </a>
+      <line x1="494" y1="325" x2="628" y2="325" stroke="rgba(129,201,149,.12)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="340" text-anchor="middle">ADK · SAP Connectors</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="356" text-anchor="middle">Cash Flow Forecast</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="372" text-anchor="middle">Vertex AI · SHAP</text>
+      <line x1="494" y1="386" x2="628" y2="386" stroke="rgba(129,201,149,.08)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.2)" x="561" y="400" text-anchor="middle">EU AI Act · GDPR</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.2)" x="561" y="416" text-anchor="middle">CSRD · OECD · IFRS</text>
+      <line x1="494" y1="430" x2="628" y2="430" stroke="rgba(129,201,149,.06)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="445" text-anchor="middle">Spanner · BigQuery</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="461" text-anchor="middle">SWIFT gpi · Apigee</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="477" text-anchor="middle">Assured Workloads</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.1)" x="561" y="512" text-anchor="middle">→ Finance portfolio</text>
+
+      <!-- ── Pillar layer bracket labels (left) ── -->
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.18)" x="16" y="270" text-anchor="middle" transform="rotate(-90,16,270)" letter-spacing="0.08em">L01 · MODULES</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.12)" x="16" y="358" text-anchor="middle" transform="rotate(-90,16,358)" letter-spacing="0.08em">L02–L03</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.08)" x="16" y="458" text-anchor="middle" transform="rotate(-90,16,458)" letter-spacing="0.08em">L04 · GCP</text>
+
+      <!-- ── SHARED INFRA BAND ── -->
+      <rect x="22" y="622" width="636" height="76" rx="6" fill="rgba(120,217,236,.04)" stroke="rgba(120,217,236,.15)" stroke-width="0.5"/>
+      <text font-family="'Syne',sans-serif" font-size="10" font-weight="600" fill="rgba(120,217,236,.6)" x="340" y="641" text-anchor="middle" letter-spacing="0.06em">LAYER 04 — SHARED GCP INFRASTRUCTURE</text>
+
+      <!-- infra chips -->
+      <rect x="32" y="650" width="110" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="87" y="666" text-anchor="middle">VPC-SC · Zero Trust</text>
+
+      <rect x="150" y="650" width="100" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="200" y="666" text-anchor="middle">CMEK · Spanner</text>
+
+      <rect x="258" y="650" width="120" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="318" y="666" text-anchor="middle">Immutable Audit Log</text>
+
+      <rect x="386" y="650" width="106" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="439" y="666" text-anchor="middle">Workload Identity</text>
+
+      <rect x="500" y="650" width="148" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="574" y="666" text-anchor="middle">Terraform · Cloud Build</text>
+
+      <!-- arrows pillar → infra -->
+      <line x1="105" y1="602" x2="105" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
+      <line x1="252" y1="602" x2="252" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
+      <line x1="406" y1="602" x2="406" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
+      <line x1="561" y1="602" x2="561" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
+
+      <!-- ── Legend ── -->
+      <line x1="22" y1="716" x2="658" y2="716" stroke="rgba(245,240,232,.08)" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.25)" x="22" y="732" letter-spacing="0.06em">LEGEND</text>
+      <rect x="70" y="723" width="10" height="10" rx="2" fill="rgba(138,180,248,.15)" stroke="#378ADD" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="85" y="732">Seller (Q2C)</text>
+      <rect x="155" y="723" width="10" height="10" rx="2" fill="rgba(197,138,249,.15)" stroke="#7F77DD" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="170" y="732">Buyer (P2P)</text>
+      <rect x="240" y="723" width="10" height="10" rx="2" fill="rgba(93,202,165,.15)" stroke="#1D9E75" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="255" y="732">Supply Chain</text>
+      <rect x="335" y="723" width="10" height="10" rx="2" fill="rgba(129,201,149,.15)" stroke="#137333" stroke-width="0.5"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="350" y="732">Finance</text>
+      <line x1="400" y1="727" x2="420" y2="727" stroke="rgba(245,240,232,.2)" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.25)" x="425" y="732">Signal flow to governance</text>
+      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.15)" x="22" y="756" letter-spacing="0.04em">All infrastructure · GCP europe-west3 · EU AI Act Annex III · SHAP before HITL · SAP write guard enforced · Click any node to navigate</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ GOVERNANCE BAND ═══ -->
+<section class="gov-band" id="governance">
+  <div class="gov-eyebrow ap">
+    <div class="gov-label">C-Suite Governance · Five Dashboard Domains</div>
+    <h2 class="gov-h2">Every domain. One <em>audit trail</em>.</h2>
+    <p class="gov-sub">Five independent dashboards — each a deep-dive into a single governance domain — that pull aggregated signal from all four pillars. Each dashboard is a standalone page with its own data sources, HITL constraints, regulatory obligations, and GCP architecture.</p>
+  </div>
+  <div class="gov-grid ap">
+
+    <a href="gov-finrisk.html" class="gov-card finrisk">
+      <div class="gc-badge red">Financial Risk</div>
+      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L16 14H2L9 2Z" stroke="#D93025" stroke-width="1.2"/><line x1="9" y1="7" x2="9" y2="10" stroke="#D93025" stroke-width="1.2"/><circle cx="9" cy="12" r=".7" fill="#D93025"/></svg></div>
+      <div class="gc-title">FinRisk Sentinel</div>
+      <div class="gc-sub">Real-time anomaly detection across all payment and settlement flows. Dual-reviewer HITL. Isolation Forest + BigQuery streaming.</div>
+      <div class="gc-sources">Sources: Payment streams · AP ledger · Treasury · Intercompany flows</div>
+      <div class="gc-link">View Dashboard →</div>
+    </a>
+
+    <a href="gov-data-governance.html" class="gov-card govdata">
+      <div class="gc-badge blue">Data Governance</div>
+      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="#1A73E8" stroke-width="1.2"/><line x1="6" y1="2" x2="6" y2="16" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="12" y1="2" x2="12" y2="16" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="2" y1="11" x2="16" y2="11" stroke="#1A73E8" stroke-width=".7" opacity=".5"/></svg></div>
+      <div class="gc-title">Data Governance</div>
+      <div class="gc-sub">TFX schema validation, Feature Store lineage, quarantine pipeline. Steward-gated reinstatement across all pillars.</div>
+      <div class="gc-sources">Sources: Feature Store · TFX pipelines · Quarantine queue · All pillar data</div>
+      <div class="gc-link">View Dashboard →</div>
+    </a>
+
+    <a href="gov-compliance.html" class="gov-card compliance">
+      <div class="gc-badge purple">Compliance</div>
+      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#6200EE" stroke-width="1.2"/><polyline points="5.5,9 8,11.5 12.5,6.5" stroke="#6200EE" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="gc-title">Compliance Hub</div>
+      <div class="gc-sub">EU AI Act Art. 14 HITL audit trail. Regulatory obligations encoded as write-path constraints, not documentation footnotes.</div>
+      <div class="gc-sources">Sources: HITL audit log · Model cards · SHAP records · All pillars</div>
+      <div class="gc-link">View Dashboard →</div>
+    </a>
+
+    <a href="gov-strategy.html" class="gov-card strategy">
+      <div class="gc-badge gold">Executive Strategy</div>
+      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><polyline points="2,13 6,8 9,10 13,5 16,7" stroke="#B8960C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="5" r="1.2" fill="#B8960C"/></svg></div>
+      <div class="gc-title">Strategy Dashboard</div>
+      <div class="gc-sub">BigQuery materialised views. Fleet panel, revenue pipeline, CPQ velocity across all pillars. Five C-Suite panels.</div>
+      <div class="gc-sources">Sources: Salesforce · SAP · Asset telemetry · All module KPIs</div>
+      <div class="gc-link">View Dashboard →</div>
+    </a>
+
+    <a href="gov-greenops.html" class="gov-card greenops">
+      <div class="gc-badge green">Sustainability</div>
+      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 16C9 16 3 12 3 7C3 4.24 5.24 2 8 2C10 2 11.5 3 12.5 4.5C13.5 3 15 2.5 16 3C16 7 13 10 9 16Z" stroke="#137333" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      <div class="gc-title">GreenOps Platform</div>
+      <div class="gc-sub">Carbon Footprint API, GKE workload scheduling, CSRD Scope 3 traceability. Real-time emissions across all cloud workloads.</div>
+      <div class="gc-sources">Sources: Carbon Footprint API · GKE metrics · CSRD Scope 3 feed</div>
+      <div class="gc-link">View Dashboard →</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══ FOUR PILLARS ═══ -->
+<section class="pillars" id="pillars">
+  <div class="pillar-intro ap">
+    <div>
+      <div class="s-ey go">The Four Pillars</div>
+      <h2 class="s-h2">Every domain. One <em>coherent</em> platform.</h2>
     </div>
+    <p class="s-p">Each pillar is a domain suite — a collection of AI modules sharing a common data governance spine, identity fabric, and audit ledger. Modules within a pillar communicate via A2A protocol. Every module is built on the same four-layer contract. Click any module row to navigate directly to its page.</p>
   </div>
 
-  <div class="hero-bottom">
-    <div class="hero-scroll">
-      <div class="hero-scroll-line"></div>
-      <span>Scroll to explore</span>
+  <div class="pillar-grid ap">
+
+    <!-- Pillar 01 — Seller -->
+    <div class="pillar-card q2c">
+      <div class="pc-num">01</div>
+      <div class="pc-domain">Q2C · Quote-to-Cash</div>
+      <h3 class="pc-title">The Autonomous <em>Seller</em></h3>
+      <p class="pc-desc">CCAI Sales Agent handles inbound qualification through turn 11, autonomously. ContractGuard extracts and risk-scores 200+ clause types. RevRec AI classifies multi-element arrangements before any GL entry posts.</p>
+      <div class="pc-modules">
+        <a href="page-09-m01.html" class="pc-module-row"><span class="pm-label">M-01 · CCAI Sales Agent</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m02.html" class="pc-module-row"><span class="pm-label">M-02 · ContractGuard</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m03.html" class="pc-module-row"><span class="pm-label">M-03 · RevRec AI</span><span class="pm-arrow">↗</span></a>
+      </div>
+      <div class="pc-footer">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
+        <div class="pc-tags"><span class="pc-tag">ADK</span><span class="pc-tag">Dialogflow CX</span><span class="pc-tag">XGBoost</span></div>
+      </div>
     </div>
-    <div class="hero-tags">
-      <span class="hero-tag">EU AI Act Compliant</span>
-      <span class="hero-tag">TOGAF 10</span>
-      <span class="hero-tag">Google Cloud · Vertex AI</span>
-      <span class="hero-tag">ADK Multi-Agent</span>
-      <span class="hero-tag">XAI / SHAP</span>
-      <span class="hero-tag">Medical Devices · ISO 13485</span>
+
+    <!-- Pillar 02 — Buyer -->
+    <div class="pillar-card p2p">
+      <div class="pc-num">02</div>
+      <div class="pc-domain">P2P · Procure-to-Pay</div>
+      <h3 class="pc-title">The Autonomous <em>Buyer</em></h3>
+      <p class="pc-desc">Intelligent procurement from requisition through payment. Supplier intelligence, contract compliance, spend analytics, and AP exception triage — governed by the same HITL and XAI framework as every AE module.</p>
+      <div class="pc-modules">
+        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Procurement Intelligence</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Supplier Scoring Agent</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">AP Exception Agent</span><span class="pm-arrow">↗</span></a>
+      </div>
+      <div class="pc-footer">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
+        <div class="pc-tags"><span class="pc-tag">Vertex AI</span><span class="pc-tag">Pub/Sub</span><span class="pc-tag">SHAP</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 03 — Supply Chain -->
+    <div class="pillar-card sc">
+      <div class="pc-num">03</div>
+      <div class="pc-domain">Supply Chain · Operations</div>
+      <h3 class="pc-title">The Autonomous <em>Supply Chain</em></h3>
+      <p class="pc-desc">Asset IQ monitors 12,000+ deployed MRI units and predicts remaining useful life to the day. The €40M warranty over-reserve is an engineering problem, solvable with a unified telemetry pipeline and a well-specified RUL model.</p>
+      <div class="pc-modules">
+        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">M-05 · Asset IQ</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">Fleet Telemetry Pipeline</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">Demand Planning</span><span class="pm-arrow">↗</span></a>
+      </div>
+      <div class="pc-footer">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
+        <div class="pc-tags"><span class="pc-tag">ISO 13485</span><span class="pc-tag">RUL Model</span><span class="pc-tag">Isolation Forest</span></div>
+      </div>
+    </div>
+
+    <!-- Pillar 04 — Finance -->
+    <div class="pillar-card fin">
+      <div class="pc-num">04</div>
+      <div class="pc-domain">Finance · Treasury · AP</div>
+      <h3 class="pc-title">The Autonomous <em>Finance</em></h3>
+      <p class="pc-desc">Three agents above SAP — not instead of it. Intercompany reconciliation, treasury visibility, and AP exception triage, each operating within a governed intelligence layer. CSRD Scope 3 is a native output of the settlement flow.</p>
+      <div class="pc-modules">
+        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Intercompany Recon Agent</span><span class="pm-arrow">↗</span></a>
+        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Treasury Visibility Agent</span><span class="pm-arrow">↗</span></a>
+        <a href="Finrisk_Sentinel.html" class="pc-module-row"><span class="pm-label">M-04 · FinRisk Sentinel</span><span class="pm-arrow">↗</span></a>
+      </div>
+      <div class="pc-footer">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
+        <div class="pc-tags"><span class="pc-tag">Assured Workloads</span><span class="pc-tag">SWIFT gpi</span><span class="pc-tag">CSRD Scope 3</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE STACK ═══ -->
+<section class="arch-block">
+  <div class="s-ey go ap">Four-Layer Architecture</div>
+  <h2 class="s-h2 ap" style="color:var(--cream)">One <em>coherent</em> contract. Every pillar.</h2>
+  <p class="s-p ap">Each module across each pillar is designed against the same four-layer stack. Trust is enforced at the infrastructure layer — not the application layer — making compliance structurally un-bypassable.</p>
+  <div class="arch-stack ap">
+    <div class="arch-layer">
+      <div class="al-label"><div class="al-num">LAYER 01</div><div class="al-name">Experience &amp;<br>Presentation</div><div class="al-desc">What humans see, review, and approve</div></div>
+      <div class="al-chips">
+        <span class="al-chip blue">Portfolio Site</span><span class="al-chip blue">8 App Dashboards</span><span class="al-chip blue">HITL Approval UI</span><span class="al-chip blue">XAI Explanation Viewer</span><span class="al-chip blue">Audit Trail Dashboard</span><span class="al-chip blue">C-Suite Governance Layer</span><span class="al-chip blue">React · TypeScript</span><span class="al-chip blue">BeyondCorp · IAP</span>
+      </div>
+    </div>
+    <div class="al-arrow">↕ &nbsp; REST / gRPC / Pub/Sub events</div>
+    <div class="arch-layer">
+      <div class="al-label"><div class="al-num">LAYER 02</div><div class="al-name">Agent<br>Orchestration</div><div class="al-desc">Where intelligence acts</div></div>
+      <div class="al-chips">
+        <span class="al-chip purple">ADK Multi-Agent Swarm</span><span class="al-chip purple">CCAI Sales Agent</span><span class="al-chip purple">A2A Protocol</span><span class="al-chip purple">MCP Tool Manifest</span><span class="al-chip purple">Pub/Sub Orchestration</span><span class="al-chip purple">Agent State Machines</span><span class="al-chip purple">Circuit Breakers</span><span class="al-chip purple">Autonomy Boundaries</span><span class="al-chip purple">Firestore Agent State</span>
+      </div>
+    </div>
+    <div class="al-arrow">↕ &nbsp; Feature Store · Model Registry · XAI contracts</div>
+    <div class="arch-layer">
+      <div class="al-label"><div class="al-num">LAYER 03</div><div class="al-name">MLOps &amp;<br>Intelligence</div><div class="al-desc">Where ML infers and explains</div></div>
+      <div class="al-chips">
+        <span class="al-chip gold">Vertex AI Pipelines</span><span class="al-chip gold">Feature Store</span><span class="al-chip gold">SHAP · XAI Layer</span><span class="al-chip gold">Model Registry</span><span class="al-chip gold">Drift Detection</span><span class="al-chip gold">Model Cards</span><span class="al-chip gold">Retraining Pipelines</span><span class="al-chip gold">Confidence Scoring</span><span class="al-chip gold">BigQuery ML</span>
+      </div>
+    </div>
+    <div class="al-arrow">↕ &nbsp; VPC-native · CMEK-encrypted · IAM-bound</div>
+    <div class="arch-layer">
+      <div class="al-label"><div class="al-num">LAYER 04</div><div class="al-name">Infrastructure<br>&amp; Governance</div><div class="al-desc">Where trust is physically enforced</div></div>
+      <div class="al-chips">
+        <span class="al-chip teal">Terraform IaC</span><span class="al-chip teal">GKE Autopilot</span><span class="al-chip teal">Cloud Run</span><span class="al-chip teal">VPC-SC Zero-Trust</span><span class="al-chip teal">CMEK Encryption</span><span class="al-chip teal">BeyondCorp</span><span class="al-chip teal">Workload Identity</span><span class="al-chip teal">Immutable Audit Log</span><span class="al-chip teal">Cloud Build CI/CD</span><span class="al-chip teal">Assured Workloads</span><span class="al-chip teal">Cloud Armor · SCC</span><span class="al-chip teal">FinOps · GreenOps</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── 01 WHY NOW ── -->
-<div class="s-divider ap" id="why-now">
-  <span class="s-num">01</span>
-  <div class="s-line"></div>
-  <span class="s-label">Why Now</span>
-</div>
-
-<div class="why-section">
-  <div class="why-intro ap">
-    <div class="why-pull">
-      The architectural conditions for enterprise AI at scale<br>
-      <strong>are now in place.</strong>
-    </div>
-    <div class="why-body-col">
-      <p>Three things had to be true simultaneously for an autonomous enterprise to be architecturally viable: the regulatory framework had to be clear enough to design against, the tooling had to be mature enough to build production systems with, and the data infrastructure had to be fast enough to act on in real time.</p>
-      <p>In 2024–25, all three converged. The Autonomous Enterprise is a response to that convergence — a complete architectural design that takes each of the four enabling factors below and expresses it as a concrete engineering decision.</p>
-    </div>
+<!-- ═══ PRINCIPLES ═══ -->
+<section class="principles">
+  <div class="s-ey ap">Non-Negotiable Design Principles</div>
+  <h2 class="s-h2 ap">Architectural constraints,<br>not <em>guidelines</em>.</h2>
+  <div class="pr-grid ap">
+    <div class="pr-card"><div class="pr-n">I</div><div class="pr-title">SHAP Before HITL</div><p class="pr-body">Every SHAP explanation is written to BigQuery before the HITL checkpoint is created. The audit record cannot be retrospectively amended. XAI is not a dashboard you add after the model ships.</p></div>
+    <div class="pr-card"><div class="pr-n">II</div><div class="pr-title">SAP Write Guard</div><p class="pr-body">The sap.post_journal_entry() function requires a hitl_id parameter. The SAP write is structurally unreachable without a committed human approval record. Compliance enforced by the write path.</p></div>
+    <div class="pr-card"><div class="pr-n">III</div><div class="pr-title">Quarantine-Then-Review</div><p class="pr-body">Schema-violating records are quarantined, not discarded. Data loss in a sensor system is irreversible. Every quarantine event generates a steward notification and a reinstatement workflow.</p></div>
+    <div class="pr-card"><div class="pr-n">IV</div><div class="pr-title">Augment, Not Replace</div><p class="pr-body">Salesforce and SAP stay exactly where they are. The AE is the orchestration and intelligence layer above them. Every module has a defined autonomy boundary — below it, act. Above it, brief a human and wait.</p></div>
   </div>
+</section>
 
-  <div class="forces-grid">
-    <div class="force ap ap-d1">
-      <span class="force-num">FORCE — 01</span>
-      <div class="force-title">Regulatory Clarity Arrived</div>
-      <div class="force-body">The EU AI Act entered enforcement in August 2024. High-risk AI systems — including anything that touches medical devices, credit, or employment — now require explainability, human oversight, and documented architecture by law. Compliance is no longer optional, and it's no longer vague. This is the forcing function that turns "nice to have" XAI into a contractual necessity.</div>
-      <span class="force-year">EU AI Act · Aug 2024</span>
-    </div>
-    <div class="force ap ap-d2">
-      <span class="force-num">FORCE — 02</span>
-      <div class="force-title">LLMs Reached Enterprise Grade</div>
-      <div class="force-body">Gemini 1.5 Pro's 1M token context window means an LLM can now read an entire contract portfolio, a full Q2C history, or a decade of asset maintenance logs in a single pass — and reason across them. This isn't incremental. It collapses the boundary between structured enterprise data and unstructured documents that has blocked enterprise AI adoption for fifteen years.</div>
-      <span class="force-year">Context Window · 2024</span>
-    </div>
-    <div class="force ap ap-d3">
-      <span class="force-num">FORCE — 03</span>
-      <div class="force-title">Agentic Tooling Matured</div>
-      <div class="force-body">Google's Agent Development Kit (ADK), the Model Context Protocol (MCP), and the Agent-to-Agent (A2A) communication protocol gave the industry its first production-grade framework for multi-agent systems. For the first time, you can design a swarm of specialist agents with formal state machines, tool contracts, and audit trails — without building the orchestration layer from scratch.</div>
-      <span class="force-year">ADK / MCP / A2A · 2025</span>
-    </div>
-    <div class="force ap ap-d4">
-      <span class="force-num">FORCE — 04</span>
-      <div class="force-title">Enterprise Data Fabric Is Ready</div>
-      <div class="force-body">BigQuery, Vertex AI Feature Store, Pub/Sub, and Firestore now compose into a real-time enterprise data fabric that didn't exist in its current form three years ago. The gap between an event in the field — a sensor anomaly on an MRI unit, a contract clause triggering a price adjustment — and an AI-driven response has collapsed from days to seconds.</div>
-      <span class="force-year">GCP Data Platform · 2024–25</span>
-    </div>
-  </div>
-</div>
-
-<!-- ── 02 THE PROBLEM ── -->
-<div class="s-divider ap" id="problem">
-  <span class="s-num">02</span>
-  <div class="s-line"></div>
-  <span class="s-label">The Anchor Problem</span>
-</div>
-
-<div class="problem-section">
-  <div class="problem-banner ap">
-    <div class="problem-left">
-      <div class="problem-eyebrow">Anchor Client · Medical Imaging OEM</div>
-      <div class="problem-client-name"><strong>ClaraVis</strong> Medical Systems</div>
-      <div class="problem-tagline">
-        Munich, Germany · €1.2B Revenue · 4,200 Employees<br>
-        MRI &amp; CT Imaging Portfolio · Installed Base: 12,000+ Units · 34 Countries
-      </div>
-      <div class="problem-metrics">
-        <div class="pm">
-          <div class="pm-val">47</div>
-          <div class="pm-label">Days avg. CPQ cycle</div>
-        </div>
-        <div class="pm">
-          <div class="pm-val">€40<sup>M</sup></div>
-          <div class="pm-label">Annual warranty over-reserve</div>
-        </div>
-        <div class="pm">
-          <div class="pm-val">3.2<sup>×</sup></div>
-          <div class="pm-label">Reactive vs predictive maint. cost</div>
-        </div>
-        <div class="pm">
-          <div class="pm-val">9</div>
-          <div class="pm-label">Stakeholders per deal</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="problem-right">
-      <div class="pain-card">
-        <div class="pain-header">
-          <span class="pain-index">PAIN 01</span>
-          <div class="pain-title">Manual Quote-to-Cash Across 9 Silos</div>
-        </div>
-        <div class="pain-body">Every MRI configuration requires sequential handoffs between Sales, Applications Engineering, Legal, Service, Finance, Revenue Recognition, Logistics, and Post-Sales. Each handoff is a human, an email, and a 3–5 day delay. The system wasn't designed — it accumulated. Nobody owns the end-to-end, so nobody can fix it.</div>
-        <div class="pain-stat">Target with AE: CPQ cycle under 9 days. Revenue close reduced by 31 days.</div>
-      </div>
-
-      <div class="pain-card">
-        <div class="pain-header">
-          <span class="pain-index">PAIN 02</span>
-          <div class="pain-title">EU AI Act Exposure on Every ML Decision</div>
-        </div>
-        <div class="pain-body">ClaraVis's existing data science team built three predictive models — revenue recognition, asset failure prediction, and contract risk scoring — all of which are classified as high-risk under EU AI Act Annex III. None of them currently produce a human-reviewable explanation. None have a documented human oversight checkpoint. A compliance audit in Q3 2025 flagged all three.</div>
-        <div class="pain-stat">The AE satisfies Article 14 by making human oversight a state machine node. Every high-risk inference routes through a named approver — with a SHAP explanation and confidence score presented — before any write operation commits.</div>
-      </div>
-
-      <div class="pain-card">
-        <div class="pain-header">
-          <span class="pain-index">PAIN 03</span>
-          <div class="pain-title">12,000 Units. No Unified Telemetry.</div>
-        </div>
-        <div class="pain-body">Installed MRI units send DICOM service events, error codes, and utilisation data to 6 different regional systems with no common schema. Predictive maintenance is impossible. Field service is reactive. The €40M warranty reserve exists because nobody can predict failures — so finance provisions for the worst case every quarter.</div>
-        <div class="pain-stat">Unified asset event pipeline → RUL prediction model → 40% reduction in unplanned downtime.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 03 DESIGN PHILOSOPHY ── -->
-<div class="s-divider ap" id="philosophy">
-  <span class="s-num">03</span>
-  <div class="s-line"></div>
-  <span class="s-label">Design Philosophy</span>
-</div>
-
-<div class="philosophy-section">
-  <div class="ap">
-    <h2 class="s-heading">Four principles.<br>Non-negotiable in a <em>regulated</em> context.</h2>
-    <p class="s-sub">These aren't best-practice guidelines. In the EU AI Act and FDA regulatory environment, they are architectural constraints. Every component of the AE must satisfy all four.</p>
-  </div>
-
-  <div class="philosophy-grid" style="margin-top:40px">
-    <div class="principle ap ap-d1">
-      <div class="principle-accent"></div>
-      <div class="principle-bg-glyph">I</div>
-      <span class="principle-num">PRINCIPLE — 01</span>
-      <div class="principle-title">Explainability engineered in — from model design to audit trail</div>
-      <div class="principle-body">XAI is not a dashboard you add after the model ships. Every ML model in this system is designed with its explanation contract upfront — before a single line of training code is written. The explanation must be human-readable, must identify the top features driving each decision, and must be written to the audit log before any downstream action is taken. SHAP values are generated at inference time, not retrospectively. Model Cards document intended use, known limitations, and bias analysis — and they are versioned alongside the model in the registry.</div>
-      <div class="principle-proof"><strong>In practice:</strong> When the revenue recognition model classifies a ClaraVis MRI transaction as a lease vs a sale, the Finance Controller sees: the top 5 contract features that drove the classification, the confidence score, and a one-click override with mandatory reason code before the entry posts to the GL.</div>
-    </div>
-
-    <div class="principle ap ap-d2">
-      <div class="principle-accent"></div>
-      <div class="principle-bg-glyph">II</div>
-      <span class="principle-num">PRINCIPLE — 02</span>
-      <div class="principle-title">Human oversight is a first-class state machine node, specified before implementation</div>
-      <div class="principle-body">EU AI Act Article 14 defines meaningful human oversight as a designed mechanism — a specific point in the decision flow where a named human reviews the agent's reasoning, the SHAP explanation, the confidence score, and chooses to approve, reject, or escalate. In this architecture, every HITL checkpoint is a formal state in the agent's state machine, with a defined entry condition, a presentation contract, a decision interface, a timeout behaviour, and an immutable audit record written before the agent proceeds.</div>
-      <div class="principle-proof"><strong>In practice:</strong> The Contract Guard agent autonomously extracts and classifies 200+ clause types. When it flags a liability cap as non-standard, it pauses, surfaces the clause with its risk score and similar past precedents, and waits for a Legal reviewer to approve before any counter-proposal is drafted.</div>
-    </div>
-
-    <div class="principle ap ap-d3">
-      <div class="principle-accent"></div>
-      <div class="principle-bg-glyph">III</div>
-      <span class="principle-num">PRINCIPLE — 03</span>
-      <div class="principle-title">Compliance obligations encoded as write-path constraints, satisfied continuously</div>
-      <div class="principle-body">Most enterprise compliance tools are forensic — they tell you what happened after the fact. This architecture makes compliance a live property of every transaction. ASC 606 revenue recognition rules, EU AI Act Article 13 transparency requirements, and ISO 13485 device record requirements are encoded as immutable constraints in the data model and enforced by the write path — not checked by a monthly report. Every event is tagged with the regulatory obligation it satisfies at the time of writing. The compliance audit trail is a by-product of normal operations, not a separate process.</div>
-      <div class="principle-proof"><strong>In practice:</strong> Every ClaraVis MRI device shipment event writes simultaneously to the asset register, the revenue recognition pipeline, and the ISO 13485 device history record — in one atomic transaction with a single regulatory tag set.</div>
-    </div>
-
-    <div class="principle ap ap-d4">
-      <div class="principle-accent"></div>
-      <div class="principle-bg-glyph">IV</div>
-      <span class="principle-num">PRINCIPLE — 04</span>
-      <div class="principle-title">Augment the enterprise — never replace its judgment</div>
-      <div class="principle-body">The agent swarm does not run the enterprise. It runs the work the enterprise shouldn't be spending human time on: extracting data, transforming it, routing it, flagging anomalies, generating options, and preparing decisions for human review. Every module has a defined autonomy boundary — a set of actions below a risk threshold it can execute without asking, and a set above the threshold where it prepares the best possible brief for a human and waits. Replacing human judgment in a medical device company is not the goal. Making it faster, better-informed, and fully documented is.</div>
-      <div class="principle-proof"><strong>In practice:</strong> The CCAI Sales Agent handles the first 11 turns of an inbound MRI inquiry — qualification, product fit, configuration options, pricing estimate — fully autonomously. Turn 12, where deal-specific commercial terms are discussed, automatically escalates to a Senior Account Executive with a full briefing document the agent prepared.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 04 ARCHITECTURE CONCEPT ── -->
-<div class="s-divider ap" id="architecture">
-  <span class="s-num">04</span>
-  <div class="s-line"></div>
-  <span class="s-label">The Architecture</span>
-</div>
-
-<div class="layers-section">
-  <div class="layers-intro ap">
+<!-- ═══ ANCHOR CLIENT ═══ -->
+<section class="client-block">
+  <div class="client-inner ap">
     <div>
-      <h2 class="s-heading">Three layers.<br>One <em>coherent</em> contract.</h2>
-      <p class="s-sub">Each layer has a single responsibility and a clean interface to the layer above and below it. XAI outputs and HITL checkpoints flow upward from the ML layer to the Presentation layer. Governance and audit constraints flow downward from policy into the Infrastructure layer. Nothing bypasses a layer. Nothing is ad-hoc.</p>
-      <p class="s-sub" style="margin-top:16px">This is a concept overview. The full technical design — GCP reference architecture, Terraform IaC, ADK agent topology, and Vertex AI pipeline specs — is developed in Phase 2 (TOGAF D) and Phase 6 of the design process.</p>
+      <div class="s-ey">Anchor Client</div>
+      <h2 class="s-h2">ClaraVis Medical <em>Systems</em></h2>
+      <p class="s-p">Munich, Germany · €1.2B Revenue · 4,200 Employees · MRI &amp; CT Imaging · 12,000+ Units · 34 Countries</p>
+      <div class="client-kpis">
+        <div class="kpi"><div class="kpi-val"><em>47</em> days</div><div class="kpi-label">avg. CPQ cycle across 9 silos</div></div>
+        <div class="kpi"><div class="kpi-val"><em>€40M</em></div><div class="kpi-label">annual warranty over-reserve</div></div>
+        <div class="kpi"><div class="kpi-val"><em>3.2×</em></div><div class="kpi-label">reactive vs predictive maint. cost</div></div>
+        <div class="kpi"><div class="kpi-val"><em>3</em> models</div><div class="kpi-label">EU AI Act non-compliant in production</div></div>
+        <div class="kpi"><div class="kpi-val"><em>6</em></div><div class="kpi-label">disconnected telemetry systems</div></div>
+        <div class="kpi"><div class="kpi-val"><em>34</em></div><div class="kpi-label">countries of operation</div></div>
+      </div>
     </div>
-    <div style="font-family:var(--mono);font-size:12px;color:var(--text-2);line-height:1.9;font-weight:300">
-      <p>The three-layer model is deliberately borrowed from classic enterprise architecture thinking — but updated for the agentic era. Layer 1 is what users see and interact with, including the HITL approval surfaces. Layer 2 is where intelligence lives: the agent swarm, the ML models, the XAI pipeline, the event bus. Layer 3 is where trust is enforced: zero-trust networking, encrypted storage, IAM, immutable audit logs, and the IaC that makes all of it reproducible and auditable.</p>
-      <p style="margin-top:16px">The insight is that in a regulated enterprise, trust cannot be a property of the application — it must be a property of the infrastructure. If the infrastructure doesn't enforce it, any application can violate it. Layer 3 makes compliance physically un-bypassable.</p>
+    <div class="client-right">
+      <div class="s-ey">Three Structural Pain Points</div>
+      <div class="pain-item">
+        <div class="pain-num">Pain 01</div>
+        <div class="pain-title">Manual Quote-to-Cash Across 9 Silos</div>
+        <p class="pain-body">Sequential handoffs between Sales, Applications Engineering, Legal, Service, Finance, Revenue Recognition, Logistics, and Post-Sales. Each handoff is a human, an email, and a 3–5 day delay.</p>
+        <div class="pain-resolve">CPQ cycle under 9 days via M-01 + M-02. Revenue close reduced by 31 days.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">Pain 02</div>
+        <div class="pain-title">EU AI Act Exposure on Three Live Models</div>
+        <p class="pain-body">Revenue recognition, asset failure prediction, and contract risk scoring — all Annex III high-risk. None produce a human-reviewable explanation. A Q3 2025 compliance audit flagged all three.</p>
+        <div class="pain-resolve">HITL as state machine node. SHAP at inference. Article 14 satisfied structurally.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">Pain 03</div>
+        <div class="pain-title">12,000 Units. No Unified Telemetry.</div>
+        <p class="pain-body">MRI units send DICOM service events to 6 different regional systems with no common schema. Predictive maintenance is impossible. The €40M reserve exists because nobody can predict failures.</p>
+        <div class="pain-resolve">Unified asset event pipeline → RUL model → 40% reduction in unplanned downtime.</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="layers-visual ap">
-    <div class="layer-bar lb-l1">
-      <div class="layer-bar-left">
-        <div class="layer-bar-num">LAYER 01</div>
-        <div class="layer-bar-name">Presentation &amp; Experience</div>
-      </div>
-      <div class="layer-bar-right">
-        <div class="layer-bar-chips">
-          <span class="layer-chip">Portfolio Site</span>
-          <span class="layer-chip">8 App Dashboards</span>
-          <span class="layer-chip">HITL Approval UI</span>
-          <span class="layer-chip">XAI Explanation Viewer</span>
-          <span class="layer-chip">Architecture Explorer</span>
-          <span class="layer-chip">Audit Trail Dashboard</span>
-          <span class="layer-chip">React · TypeScript</span>
-        </div>
-      </div>
-    </div>
-    <div class="layer-connector">↕ &nbsp; REST / gRPC / Pub/Sub events</div>
-    <div class="layer-bar lb-l2">
-      <div class="layer-bar-left">
-        <div class="layer-bar-num">LAYER 02</div>
-        <div class="layer-bar-name">Agent &amp; ML Platform</div>
-      </div>
-      <div class="layer-bar-right">
-        <div class="layer-bar-chips">
-          <span class="layer-chip">ADK Multi-Agent Swarm</span>
-          <span class="layer-chip">CCAI Sales Agent</span>
-          <span class="layer-chip">Vertex AI Pipelines</span>
-          <span class="layer-chip">Feature Store</span>
-          <span class="layer-chip">SHAP · XAI Layer</span>
-          <span class="layer-chip">Model Registry</span>
-          <span class="layer-chip">A2A Protocol</span>
-          <span class="layer-chip">MCP Tool Manifest</span>
-          <span class="layer-chip">Pub/Sub Orchestration</span>
-          <span class="layer-chip">Drift Detection</span>
-        </div>
-      </div>
-    </div>
-    <div class="layer-connector">↕ &nbsp; VPC-native · CMEK-encrypted · IAM-bound</div>
-    <div class="layer-bar lb-l3">
-      <div class="layer-bar-left">
-        <div class="layer-bar-num">LAYER 03</div>
-        <div class="layer-bar-name">Infrastructure &amp; Governance</div>
-      </div>
-      <div class="layer-bar-right">
-        <div class="layer-bar-chips">
-          <span class="layer-chip">Terraform IaC</span>
-          <span class="layer-chip">GKE · Cloud Run</span>
-          <span class="layer-chip">VPC-SC Zero-Trust</span>
-          <span class="layer-chip">CMEK Encryption</span>
-          <span class="layer-chip">BeyondCorp</span>
-          <span class="layer-chip">IAM · Workload Identity</span>
-          <span class="layer-chip">Immutable Audit Log</span>
-          <span class="layer-chip">Cloud Build CI/CD</span>
-          <span class="layer-chip">GreenOps Scheduling</span>
-          <span class="layer-chip">FinOps Cost Tags</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ═══ PORTFOLIO NAVIGATION ═══ -->
+<section class="portfolio-nav" id="portfolio">
+  <div class="s-ey go ap">Complete Portfolio</div>
+  <h2 class="s-h2 ap" style="color:var(--cream)">Every page, <em>every decision</em>.</h2>
 
-<!-- ── 05 WHAT THIS IS NOT ── -->
-<div class="not-section ap">
-  <div class="not-header">
-    <div class="not-heading">
-      Six things the architecture<br><em>delivers</em> — by design.
-    </div>
-    <div class="not-body">
-      Every architecture decision in this portfolio is production-grade. Every design artifact traces to a real enterprise requirement. The ClaraVis scenario is a representative composite of patterns from real regulated-industry AI deployments.<br><br>
-      Each capability below is a structural property of the design — an outcome of the architectural decisions made across the six phases, expressed in component specifications, and enforced by the infrastructure.
-    </div>
-  </div>
-  <div class="not-grid">
-    <div class="not-item">
-      <div class="not-item-title">A formally specified multi-agent system</div>
-      <div class="not-item-body">Agent topology defined using Google ADK. Each agent carries a state machine specification, a tool manifest, a confidence threshold, a documented autonomy boundary, and a circuit-breaker configuration. Every component traces to a named GCP service or ADK construct.</div>
-    </div>
-    <div class="not-item">
-      <div class="not-item-title">An executable architecture</div>
-      <div class="not-item-body">Every component in every layer maps to a named GCP service, a Terraform resource, or an ADK agent definition. Architecture Decision Records document each significant choice alongside the alternatives considered. The architecture is buildable directly from its design artifacts.</div>
-    </div>
-    <div class="not-item">
-      <div class="not-item-title">Compliance as a structural property</div>
-      <div class="not-item-body">EU AI Act, FDA 21 CFR 820, and ASC 606 obligations are encoded as write-path constraints. A compliance audit reads the operational log — there is no separate compliance database and no remediation process. Compliance is continuous and automatic.</div>
-    </div>
-    <div class="not-item">
-      <div class="not-item-title">Full enterprise scope on a common data fabric</div>
-      <div class="not-item-body">Sales, contracting, asset management, revenue recognition, risk monitoring, and infrastructure governance — eight modules sharing a common Pub/Sub event fabric, a common Vertex AI Feature Store, a common XAI contract, and a common HITL specification.</div>
-    </div>
-    <div class="not-item">
-      <div class="not-item-title">Domain-specific ML patterns</div>
-      <div class="not-item-body">ASC 606 hybrid recognition rules encoded as classification logic. CQRS event sourcing for immutable audit trails. Two-tier predictive maintenance — RUL prediction at fleet level, anomaly detection at unit level. SHAP explanation contract per model, specified before training begins.</div>
-    </div>
-    <div class="not-item">
-      <div class="not-item-title">Documented tradeoffs at every decision point</div>
-      <div class="not-item-body">Every Architecture Decision Record states what was selected, what was considered, and the technical reasoning: Firestore over Spanner for agent state, Cloud Run over GKE for stateless modules, SHAP over LIME for the XAI layer. The reasoning is the design.</div>
-    </div>
-  </div>
-</div>
+  <div class="pn-grid ap">
 
-<!-- ── 06 COMPLIANCE MATRIX OVERVIEW ── -->
-<div class="s-divider ap">
-  <span class="s-num">05</span>
-  <div class="s-line"></div>
-  <span class="s-label">Regulatory Grounding</span>
-</div>
+    <!-- Governance Dashboards -->
+    <div class="pn-divider">Governance Dashboards — C-Suite Layer</div>
 
-<div class="compliance-section ap">
-  <div style="margin-bottom:32px">
-    <h2 class="s-heading">Compliance is not<br>a <em>layer.</em> It is the foundation.</h2>
-    <p class="s-sub">Each regulation below imposes specific architectural constraints — not just documentation requirements. The design satisfies them structurally, not through post-hoc reporting.</p>
-  </div>
-  <div class="compliance-table">
-    <div class="ct-row header">
-      <div class="ct-cell">Regulation</div>
-      <div class="ct-cell">Architectural Constraint It Imposes on the AE</div>
-      <div class="ct-cell">Risk Level</div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>EU AI Act — Annex III</strong><br>High-Risk AI Systems</div>
-      <div class="ct-cell">Every ML inference must produce a human-readable explanation before any write operation. Named human approver required for high-risk decisions. Immutable audit trail mandatory. Risk management system documented and versioned.</div>
-      <div class="ct-cell"><span class="ct-badge high">High Risk</span></div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>FDA 21 CFR 820</strong><br>Quality System Regulation</div>
-      <div class="ct-cell">Device History Records must be created atomically with each shipment event. Software validation records required for any software affecting device safety. Change control enforced at the infrastructure layer via Terraform state management.</div>
-      <div class="ct-cell"><span class="ct-badge high">High Risk</span></div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>ISO 13485 : 2016</strong><br>Medical Devices QMS</div>
-      <div class="ct-cell">Traceability from customer order through to installed device, service history, and decommissioning. Every module writes to a shared Device Master Record. Post-market surveillance data from field telemetry feeds back into risk model retraining pipeline.</div>
-      <div class="ct-cell"><span class="ct-badge med">Moderate</span></div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>ASC 606 / IFRS 15</strong><br>Revenue Recognition</div>
-      <div class="ct-cell">Recognition rules encoded as immutable constraints in the write path — applied at transaction time, before any downstream posting. Each transaction tagged with the performance obligation it satisfies at write time. Journal entries require an approved HITL record. Post-hoc reclassification requires a full audit trail.</div>
-      <div class="ct-cell"><span class="ct-badge med">Moderate</span></div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>GDPR / EU DPDP</strong><br>Data Protection</div>
-      <div class="ct-cell">All PII and PHI confined within VPC-SC perimeter. CMEK encryption — ClaraVis holds the keys, not Google. Data residency enforced by GCP region constraints in Terraform. Right-to-erasure handled via Firestore document-level deletion with audit record preservation.</div>
-      <div class="ct-cell"><span class="ct-badge native">Native to Infra</span></div>
-    </div>
-    <div class="ct-row">
-      <div class="ct-cell"><strong>ISO 27001</strong><br>Information Security</div>
-      <div class="ct-cell">BeyondCorp zero-trust: no implicit network trust. All service-to-service calls via Workload Identity. Secrets managed exclusively through Secret Manager — no hardcoded credentials anywhere in the codebase or IaC. Security posture continuously validated by Security Command Center.</div>
-      <div class="ct-cell"><span class="ct-badge native">Native to Infra</span></div>
-    </div>
-  </div>
-</div>
+    <a href="gov-finrisk.html" class="pn-card">
+      <div class="pn-index">GOV-01</div>
+      <div class="pn-title">FinRisk Sentinel Dashboard</div>
+      <p class="pn-desc">Design, data sources, anomaly model, dual-reviewer HITL, regulatory constraints, and GCP architecture for the financial risk governance dashboard.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="gov-data-governance.html" class="pn-card">
+      <div class="pn-index">GOV-02</div>
+      <div class="pn-title">Data Governance Dashboard</div>
+      <p class="pn-desc">TFX schema validation, Feature Store lineage, quarantine pipeline, steward reinstatement workflow, and cross-pillar data quality monitoring.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="gov-compliance.html" class="pn-card">
+      <div class="pn-index">GOV-03</div>
+      <div class="pn-title">Compliance Hub Dashboard</div>
+      <p class="pn-desc">EU AI Act Article 14 HITL audit trail, model card registry, SHAP conformance log, regulatory obligation mapping, and cross-pillar compliance posture.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="gov-strategy.html" class="pn-card">
+      <div class="pn-index">GOV-04</div>
+      <div class="pn-title">Strategy Dashboard</div>
+      <p class="pn-desc">BigQuery materialised views, fleet panel, revenue pipeline, CPQ velocity, cross-module KPI aggregation. Five C-Suite panels pulling from all pillars.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="gov-greenops.html" class="pn-card">
+      <div class="pn-index">GOV-05</div>
+      <div class="pn-title">GreenOps Platform Dashboard</div>
+      <p class="pn-desc">Carbon Footprint API, GKE workload scheduling, CSRD Scope 3 traceability, real-time emissions telemetry, and hard-deadline bypass constraints.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
 
-<!-- ── BRIDGE TO NEXT PAGE ── -->
-<div class="next-section ap">
-  <div class="next-left">
-    <div class="next-label">Continue the Architecture</div>
-    <div class="next-heading">
-      The concept is clear.<br>
-      <strong>Now comes the design.</strong>
-    </div>
-    <div class="next-body">
-      The following pages take every principle above and express it as concrete architecture artifacts — buyer requirements, TOGAF phases, agent topology, ML pipeline design, and infrastructure code. Each page is independently readable. Together, they form a complete AI Solutions Architecture portfolio.
-    </div>
-  </div>
-  <div class="next-pages">
-    <a href="page-02.html" class="next-page-link">
-      <div class="npl-num">PG 02</div>
-      <div>
-        <div class="npl-title">ClaraVis — Client Brief &amp; Requirements</div>
-        <div class="npl-sub">BRD · Stakeholder Map · AI Readiness Audit · Use Case Catalogue</div>
-        <span class="npl-status design">In Design</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-    <a href="page-03.html" class="next-page-link">
-      <div class="npl-num">PG 03</div>
-      <div>
-        <div class="npl-title">TOGAF ADM — Phases A through F</div>
-        <div class="npl-sub">Architecture Vision · Business · Data/App · Technology · Migration</div>
-        <span class="npl-status design">In Design</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-    <a href="page-05.html" class="next-page-link">
-      <div class="npl-num">PG 04</div>
-      <div>
-        <div class="npl-title">Agent Swarm Architecture</div>
-        <div class="npl-sub">ADK · A2A · MCP · State Machines · Guardrails</div>
-        <span class="npl-status soon">Coming</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-    <a href="page-06.html" class="next-page-link">
-      <div class="npl-num">PG 05</div>
-      <div>
-        <div class="npl-title">ML Engineering &amp; MLOps</div>
-        <div class="npl-sub">Feature Store · Model Cards · XAI · Vertex Pipelines · Drift Detection</div>
-        <span class="npl-status soon">Coming</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-    <a href="page-07.html" class="next-page-link">
-      <div class="npl-num">PG 06</div>
-      <div>
-        <div class="npl-title">Infrastructure &amp; GCP Architecture</div>
-        <div class="npl-sub">Terraform · VPC-SC · GKE · CI/CD · FinOps · GreenOps</div>
-        <span class="npl-status soon">Coming</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-    <a href="page-09.html" class="next-page-link">
-      <div class="npl-num">PG 07</div>
-      <div>
-        <div class="npl-title">The AE Suite — 8 Intelligent Modules</div>
-        <div class="npl-sub">ContractGuard · FinRisk · RevRec · AssetIQ · GreenOps · and more</div>
-        <span class="npl-status soon">Coming</span>
-      </div>
-      <div class="npl-arrow">→</div>
-    </a>
-  </div>
-</div>
+    <!-- spacer -->
+    <div style="background:transparent"></div>
 
-<!-- ── FOOTER ── -->
+    <!-- Architecture Portfolio -->
+    <div class="pn-divider">Architecture Portfolio — Nine Design Pages</div>
+
+    <a href="page-02.html" class="pn-card">
+      <div class="pn-index">PAGE 02</div>
+      <div class="pn-title">ClaraVis: Client Brief</div>
+      <p class="pn-desc">Requirements, stakeholders, pain points, regulatory exposure. The anchor client that drives every design decision in the portfolio.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-03.html" class="pn-card">
+      <div class="pn-index">PAGE 03</div>
+      <div class="pn-title">TOGAF ADM: Phases A–F</div>
+      <p class="pn-desc">Architecture work products, migration horizons, and ADRs 001–006 across six formal TOGAF design phases.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-04.html" class="pn-card">
+      <div class="pn-index">PAGE 04</div>
+      <div class="pn-title">Delivery &amp; Product Design</div>
+      <p class="pn-desc">SAFe ARTs, personas, FRD, and eleven HITL checkpoints specifying every human oversight moment in the platform.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-05.html" class="pn-card">
+      <div class="pn-index">PAGE 05</div>
+      <div class="pn-title">Agent Swarm Architecture</div>
+      <p class="pn-desc">ADK multi-agent design, A2A protocol, five agent specs with state machines, circuit breakers, and formal autonomy boundaries.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-06.html" class="pn-card">
+      <div class="pn-index">PAGE 06</div>
+      <div class="pn-title">ML Engineering &amp; MLOps</div>
+      <p class="pn-desc">Five model cards. Vertex AI Pipelines. SHAP XAI layer. Drift detection and retraining. EU AI Act conformance documentation.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-07.html" class="pn-card">
+      <div class="pn-index">PAGE 07</div>
+      <div class="pn-title">Infrastructure &amp; GCP</div>
+      <p class="pn-desc">Terraform IaC, VPC-SC, GKE, Cloud Run, CMEK, Chaos engineering runbook, and BeyondCorp zero-trust mesh.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-08.html" class="pn-card">
+      <div class="pn-index">PAGE 08</div>
+      <div class="pn-title">Go-to-Market Strategy</div>
+      <p class="pn-desc">Buyer map, horizon value, adoption risks, and ADR-016: phased adoption as the EU Act deadline forcing function.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-09.html" class="pn-card">
+      <div class="pn-index">PAGE 09</div>
+      <div class="pn-title">AE Suite — Module Index</div>
+      <p class="pn-desc">All eight modules, dependency matrix, demo pathway index. The München narrative across five modules.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+
+    <!-- Module Pages -->
+    <div class="pn-divider">Module Pages — Deep Dives</div>
+
+    <a href="page-09-m01.html" class="pn-card">
+      <div class="pn-index">M-01</div>
+      <div class="pn-title">CCAI Sales Agent</div>
+      <p class="pn-desc">ADK multi-agent · CCAI · Dialogflow CX · HITL-01 turn-11 escalation. Full agent state machine and demo pathway.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-09-m02.html" class="pn-card">
+      <div class="pn-index">M-02</div>
+      <div class="pn-title">ContractGuard</div>
+      <p class="pn-desc">Document AI · Gemini 1.5 Pro · XGBoost · Vector Store. 200+ clause types. HITL-02/03 legal reviewer workflow.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-09-m03.html" class="pn-card">
+      <div class="pn-index">M-03</div>
+      <div class="pn-title">RevRec AI</div>
+      <p class="pn-desc">XGBoost · SHAP · Salesforce + SAP. ASC 606 multi-element classification. HITL-04/05/09 Finance Controller approval.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="Finrisk_Sentinel.html" class="pn-card">
+      <div class="pn-index">M-04</div>
+      <div class="pn-title">FinRisk Sentinel</div>
+      <p class="pn-desc">Isolation Forest · BigQuery streaming · dual-reviewer HITL-08. Real-time anomaly detection across payment flows.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="page-09-m05.html" class="pn-card">
+      <div class="pn-index">M-05</div>
+      <div class="pn-title">Asset IQ</div>
+      <p class="pn-desc">RUL regression · Isolation Forest · 12K units · ISO 13485. HITL-06/07 Field Service Manager maintenance scheduling.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="greenops.html" class="pn-card">
+      <div class="pn-index">M-06</div>
+      <div class="pn-title">GreenOps Platform</div>
+      <p class="pn-desc">Carbon Footprint API · GKE scheduling · CSRD Scope 3. Hard-deadline bypass. No HITL — infrastructure governance only.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="strategy-dashboard.html" class="pn-card">
+      <div class="pn-index">M-07</div>
+      <div class="pn-title">Strategy Dashboard</div>
+      <p class="pn-desc">BigQuery materialised views · Looker Studio · 5 panels. Fleet, pipeline, velocity, and cross-module KPI aggregation.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="data-governance.html" class="pn-card">
+      <div class="pn-index">M-08</div>
+      <div class="pn-title">Data Governance</div>
+      <p class="pn-desc">TFX Validate · Feature Store lineage · quarantine pipeline. Steward-gated reinstatement. H1 horizon — foundational.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+
+    <!-- Reference -->
+    <div class="pn-divider">Reference Documents</div>
+
+    <a href="adr-index.html" class="pn-card">
+      <div class="pn-index">REF-01</div>
+      <div class="pn-title">ADR Index · All 16 Decisions</div>
+      <p class="pn-desc">Every architecture decision record with alternatives considered, full rationale, and consequences — the complete decision log.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="glossary.html" class="pn-card">
+      <div class="pn-index">REF-02</div>
+      <div class="pn-title">Glossary</div>
+      <p class="pn-desc">One-sentence definitions for every technical term used across the portfolio. EU AI Act, TOGAF, GCP, and ML terminology.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+    <a href="changelog.html" class="pn-card">
+      <div class="pn-index">REF-03</div>
+      <div class="pn-title">Changelog</div>
+      <p class="pn-desc">Version history, design evolution, and rationale for significant architectural changes across the portfolio lifecycle.</p>
+      <span class="pn-arrow">↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
 <footer>
-  <div class="footer-inner">
+  <div class="ft-inner">
     <div>
-      <div class="footer-brand">The <em>Autonomous</em> Enterprise</div>
-      <div class="footer-note" style="margin-top:8px">
-        A full-stack enterprise AI architecture portfolio. Six design phases. Eight intelligent modules. Every decision explainable, every agent auditable, every human checkpoint intentional.
+      <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+      <p class="ft-sub">A portfolio-grade AI solutions architecture. TOGAF 10 · Vertex AI · Google ADK · EU AI Act compliant. GCP europe-west3.</p>
+    </div>
+    <div>
+      <div class="ft-col-head">Governance</div>
+      <div class="ft-links">
+        <a href="gov-finrisk.html" class="ft-link">FinRisk Sentinel</a>
+        <a href="gov-data-governance.html" class="ft-link">Data Governance</a>
+        <a href="gov-compliance.html" class="ft-link">Compliance Hub</a>
+        <a href="gov-strategy.html" class="ft-link">Strategy Dashboard</a>
+        <a href="gov-greenops.html" class="ft-link">GreenOps Platform</a>
       </div>
     </div>
-    <div class="footer-links">
-      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="footer-link">GitHub</a>
-      <a href="#" class="footer-link">LinkedIn</a>
-      <a href="#" class="footer-link">Blog</a>
-      <a href="#" class="footer-link">About</a>
+    <div>
+      <div class="ft-col-head">Pillars</div>
+      <div class="ft-links">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" class="ft-link" target="_blank">Autonomous Seller →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" class="ft-link" target="_blank">Autonomous Buyer →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="ft-link" target="_blank">Autonomous Supply Chain →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" class="ft-link" target="_blank">Autonomous Finance →</a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-head">Portfolio</div>
+      <div class="ft-links">
+        <a href="page-09.html" class="ft-link">Module Index</a>
+        <a href="adr-index.html" class="ft-link">ADR Index</a>
+        <a href="glossary.html" class="ft-link">Glossary</a>
+        <a href="changelog.html" class="ft-link">Changelog</a>
+        <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" class="ft-link" target="_blank">GitHub →</a>
+      </div>
     </div>
   </div>
-  <div class="ft-copy">© 2026 Siddharth Rao</div>
+  <div class="ft-copy">
+    © 2026 Siddharthan Rao · TOGAF EA · Google MLE · Google Cloud Architect · SAFe SA + SPC · Built as an architecture portfolio. Not affiliated with Anthropic, Google, or SAP SE.
+  </div>
 </footer>
 
-<!-- ── JS ── -->
 <script>
-// Cursor
-const cur = document.getElementById('cur');
-const ring = document.getElementById('cur-ring');
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-(function tick(){
-  cur.style.cssText += `left:${mx}px;top:${my}px;`;
-  rx += (mx-rx)*0.1; ry += (my-ry)*0.1;
-  ring.style.cssText += `left:${rx}px;top:${ry}px;`;
-  requestAnimationFrame(tick);
-})();
-
-// Nav scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('stuck', scrollY > 50);
-}, {passive:true});
-
-// Appear on scroll
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
-}, {threshold: 0.08});
-document.querySelectorAll('.ap').forEach(el => io.observe(el));
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.ap').forEach(el=>obs.observe(el));
+document.querySelectorAll('.gov-grid,.pillar-grid,.arch-stack,.pr-grid,.client-kpis,.pn-grid').forEach(grid=>{
+  Array.from(grid.children).forEach((child,i)=>{
+    if(child.classList.contains('pn-divider'))return;
+    child.style.transitionDelay=(i*0.05)+'s';
+    if(!child.classList.contains('ap'))child.classList.add('ap');
+    obs.observe(child);
+  });
+});
 </script>
 </body>
 </html>

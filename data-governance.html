@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Governance — Module 08 · The Autonomous Enterprise Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--ink:#0E0D0B;--ink-2:#1A1916;--cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;--mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;--white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;--border:#DADCE0;--border-2:#E8EAED;--text:#202124;--text-2:#5F6368;--text-3:#80868B;--blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;--green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;--amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;--red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;--teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;--purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;--col:56px;}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35}
+body:has(a:hover) #cur{width:13px;height:13px}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--amber)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--amber)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--amber)}
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--amber)}.sn.act{color:var(--amber);border-bottom-color:var(--amber);font-weight:500}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'M08';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);pointer-events:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
+.ph-tag-amber{background:#FEF3E2;color:#7A4100}.ph-tag-blue{background:#E8F0FE;color:#1557B0}
+.ph-tag-green{background:#E6F4EA;color:#0D5226}.ph-tag-teal{background:#E4F7F7;color:#005F67}
+.ph-tag-red{background:#FCE8E6;color:#A50E0E}.ph-tag-purple{background:#EDE7F6;color:#3700B3}
+.sec{padding:64px var(--col);background:var(--surface)}.sec.w{background:var(--white)}.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.bl{color:var(--blue)}.s-ey.go{color:var(--gold-lt)}.s-ey.te{color:var(--teal)}.s-ey.re{color:var(--red)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 em{font-style:italic;color:var(--gold)}.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}.ap.in{opacity:1;transform:none}
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--amber)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.steward-mockup{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:4px}
+.sm-titlebar{background:var(--ink);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.sm-dot{width:10px;height:10px;border-radius:50%}
+.sm-title{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.5);letter-spacing:.05em;margin-left:4px}
+.sm-body{display:grid;grid-template-columns:1fr 280px}
+.sm-main{padding:24px;border-right:1px solid var(--border)}
+.sm-sidebar{padding:20px;background:var(--white)}
+.sm-sl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}
+.violation-box{background:var(--red-lt);border:1px solid rgba(217,48,37,.2);border-left:3px solid var(--red);padding:12px 14px;margin-bottom:12px}
+.vb-label{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--red-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.vb-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--red-dk);line-height:1.6}
+.schema-diff{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px}
+.sd-col{background:var(--surface-2);border:1px solid var(--border);padding:10px 12px}
+.sd-col-label{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.sd-col.expected .sd-col-label{color:var(--green-dk)}.sd-col.arriving .sd-col-label{color:var(--red-dk)}
+.sd-field{font-family:var(--mono);font-size:10px;padding:3px 0;border-bottom:1px solid var(--border-2);color:var(--text-2)}
+.sd-field.match{color:var(--green-dk)}.sd-field.missing{color:var(--text-3);font-style:italic}
+.sd-field.new{color:var(--red-dk);background:var(--red-lt);padding:3px 4px}
+.sd-field.type-mismatch{color:var(--amber-dk);background:var(--amber-lt);padding:3px 4px}
+.mapping-box{background:var(--blue-lt);border:1px solid rgba(26,115,232,.2);padding:10px 12px;margin-bottom:12px;font-family:var(--mono);font-size:10px;color:var(--blue-dk);line-height:1.6}
+.q-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.q-stat{background:var(--surface-2);border:1px solid var(--border);padding:10px;text-align:center}
+.qs-num{font-family:var(--display);font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.qs-label{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:2px}
+.sm-actions{display:flex;gap:8px;margin-top:12px}
+.sm-btn-reinstate{flex:1;padding:10px;background:var(--green);color:var(--white);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-align:center;cursor:pointer}
+.sm-btn-discard{flex:1;padding:10px;background:var(--white);color:var(--red-dk);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--red);text-align:center;cursor:pointer}
+.sm-cf-label{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px;margin-top:10px}
+.sm-cf-val{font-family:var(--mono);font-size:11px;color:var(--text);font-weight:300}
+.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
+.adr.am{border-left:4px solid var(--amber)}.adr.gr{border-left:4px solid var(--green)}.adr.bl{border-left:4px solid var(--blue)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr.am .adr-id{color:var(--amber)}.adr.gr .adr-id{color:var(--green)}.adr.bl .adr-id{color:var(--blue)}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
+.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.rb{background:var(--white);border:1px solid var(--border);padding:26px;border-top:3px solid var(--border)}
+.rb.cto{border-top-color:var(--purple)}.rb.cco{border-top-color:var(--red)}.rb.ea{border-top-color:var(--blue)}.rb.aiq{border-top-color:var(--green)}.rb.ciso{border-top-color:var(--amber)}.rb.cfo{border-top-color:var(--teal)}
+.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rb.cto .rb-who{color:var(--purple)}.rb.cco .rb-who{color:var(--red)}.rb.ea .rb-who{color:var(--blue)}.rb.aiq .rb-who{color:var(--green)}.rb.ciso .rb-who{color:var(--amber)}.rb.cfo .rb-who{color:var(--teal)}
+.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
+.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
+.rb-rl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rb-r{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
+.rb-ev{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
+.rb.cto .rb-ev{background:var(--purple-lt);color:var(--purple-dk)}.rb.cco .rb-ev{background:var(--red-lt);color:var(--red-dk)}
+.rb.ea .rb-ev{background:var(--blue-lt);color:var(--blue-dk)}.rb.aiq .rb-ev{background:var(--green-lt);color:var(--green-dk)}
+.rb.ciso .rb-ev{background:var(--amber-lt);color:var(--amber-dk)}.rb.cfo .rb-ev{background:var(--teal-lt);color:var(--teal-dk)}
+.demo-controls{padding:20px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.control-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.pill-group{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid var(--border);background:var(--white);color:var(--text-2);cursor:pointer;transition:all .18s;user-select:none}
+.pill:hover{border-color:var(--amber);color:var(--amber)}.pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.run-btn{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 32px;background:var(--amber);color:var(--white);border:none;cursor:pointer;transition:background .2s;margin-top:12px}
+.run-btn:hover{background:var(--amber-dk)}.run-btn:disabled{opacity:.4;cursor:not-allowed}
+.demo-stage{display:grid;grid-template-columns:1fr 1fr;min-height:560px;border:1px solid var(--border);margin-top:4px}
+.demo-left{background:#0d1117;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
+.demo-right{background:#0a0f14;display:flex;flex-direction:column}
+.demo-col-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.demo-col-title{font-family:var(--mono);font-size:11px;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase}
+.demo-col-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;letter-spacing:.06em;margin-left:auto;border:1px solid}
+.badge-amber{background:rgba(176,96,0,.15);color:#FFCA28;border-color:rgba(176,96,0,.25)}
+.badge-green{background:rgba(19,115,51,.15);color:#81C784;border-color:rgba(19,115,51,.25)}
+.badge-red{background:rgba(217,48,37,.15);color:#EF9A9A;border-color:rgba(217,48,37,.25)}
+.ingest-stream{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:5px;overflow-y:auto;max-height:360px}
+.record-card{border:1px solid rgba(255,255,255,.05);padding:10px 12px;animation:recIn .3s ease}
+@keyframes recIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.record-card.valid{border-color:rgba(19,115,51,.25);background:rgba(19,115,51,.04)}
+.record-card.quarantine{border-color:rgba(217,48,37,.3);background:rgba(217,48,37,.05)}
+.record-card.dlp{border-color:rgba(176,96,0,.3);background:rgba(176,96,0,.05)}
+.rc-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rc-region{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,255,255,.45)}
+.rc-status{font-family:var(--mono);font-size:9px;font-weight:500;padding:1px 6px;margin-left:auto}
+.st-v{background:rgba(19,115,51,.2);color:#81C784}.st-q{background:rgba(217,48,37,.2);color:#EF9A9A}.st-d{background:rgba(176,96,0,.2);color:#FFCA28}
+.rc-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);line-height:1.5}
+.validation-panel{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.vnode{border:1px solid rgba(255,255,255,.06);padding:12px 14px;display:flex;align-items:center;gap:10px;transition:all .4s}
+.vnode.active{border-color:rgba(176,96,0,.4);background:rgba(176,96,0,.06);animation:pulseNode .7s ease-in-out infinite}
+.vnode.pass{border-color:rgba(19,115,51,.4);background:rgba(19,115,51,.05)}
+.vnode.fail{border-color:rgba(217,48,37,.4);background:rgba(217,48,37,.05)}
+@keyframes pulseNode{0%,100%{border-color:rgba(176,96,0,.4)}50%{border-color:rgba(176,96,0,.7)}}
+.vn-icon{font-size:16px;width:24px;text-align:center;flex-shrink:0}
+.vn-label{font-family:var(--mono);font-size:11px;font-weight:500;color:rgba(255,255,255,.4);flex:1}
+.vnode.active .vn-label{color:#FFCA28}.vnode.pass .vn-label{color:#81C784}.vnode.fail .vn-label{color:#EF9A9A}
+.vn-result{font-family:var(--mono);font-size:9px;padding:1px 6px}
+.vr-pass{background:rgba(19,115,51,.2);color:#81C784}.vr-fail{background:rgba(217,48,37,.2);color:#EF9A9A}
+.vr-idle{background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
+.quarantine-path{background:rgba(217,48,37,.04);border:1px solid rgba(217,48,37,.15);padding:14px 16px;margin-top:6px;display:none}
+.qp-label{font-family:var(--mono);font-size:9px;color:rgba(217,48,37,.6);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.steward-alert{background:#0d1117;border:1px solid rgba(176,96,0,.3);padding:14px 16px;margin-top:4px;display:none}
+.sa-header{font-family:var(--mono);font-size:10px;font-weight:500;color:#FFCA28;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.sa-body{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);line-height:1.6;margin-bottom:10px;white-space:pre-line}
+.sa-actions{display:flex;gap:6px}
+.sa-btn{font-family:var(--mono);font-size:10px;font-weight:500;padding:7px 14px;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;border:none;transition:all .2s}
+.sa-btn-reinstate{background:rgba(19,115,51,.2);color:#81C784;border:1px solid rgba(19,115,51,.3)}.sa-btn-reinstate:hover{background:rgba(19,115,51,.4)}
+.sa-btn-discard{background:rgba(217,48,37,.12);color:#EF9A9A;border:1px solid rgba(217,48,37,.2)}.sa-btn-discard:hover{background:rgba(217,48,37,.25)}
+.feature-store{background:rgba(98,0,238,.04);border:1px solid rgba(98,0,238,.2);padding:12px 14px;margin-top:6px;display:none;animation:slideIn .4s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fs-label{font-family:var(--mono);font-size:9px;color:rgba(98,0,238,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.fs-fields{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.fs-field{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3)}.fs-field strong{color:#CE93D8}
+.demo-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:4px}
+.dm{background:var(--white);padding:16px 20px}
+.dm-label{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.dm-value{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--amber)}
+.dm-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:2px}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}.ft-brand em{font-style:italic;color:var(--gold)}
+.sa-btn-redact{background:rgba(98,0,238,.15);color:#CE93D8;border:1px solid rgba(98,0,238,.3)}.sa-btn-redact:hover{background:rgba(98,0,238,.3)}
+/* DLQ path */
+.dlq-path{background:rgba(176,96,0,.04);border:1px solid rgba(176,96,0,.2);padding:14px 16px;margin-top:6px;display:none;border-left:3px solid var(--amber)}
+.dlq-label{font-family:var(--mono);font-size:9px;color:rgba(176,96,0,.7);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+/* canonical schema table */
+.schema-table{width:100%;border-collapse:collapse;margin-top:4px;font-family:var(--mono);font-size:11px}
+.schema-table th{background:var(--ink);color:rgba(245,240,232,.5);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07)}
+.schema-table td{padding:9px 14px;border-bottom:1px solid var(--border-2);color:var(--text-2);vertical-align:top}
+.schema-table tr:last-child td{border-bottom:none}
+.schema-table tr:hover td{background:var(--surface-2)}
+.st-required{display:inline-block;font-size:8px;padding:1px 5px;background:var(--red-lt);color:var(--red-dk);font-weight:500;letter-spacing:.05em}
+.st-optional{display:inline-block;font-size:8px;padding:1px 5px;background:var(--green-lt);color:var(--green-dk);font-weight:500;letter-spacing:.05em}
+.st-ver{display:inline-block;font-size:8px;padding:1px 5px;background:var(--blue-lt);color:var(--blue-dk);font-weight:500;letter-spacing:.05em;margin-left:4px}
+.st-pii{display:inline-block;font-size:8px;padding:1px 5px;background:var(--amber-lt);color:var(--amber-dk);font-weight:500;letter-spacing:.05em;margin-left:4px}
+/* SLO strip */
+.slo-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:4px;border:1px solid var(--border)}
+.slo-cell{background:var(--white);padding:18px 20px}
+.slo-label{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.slo-val{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--green);line-height:1}
+.slo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:3px}
+/* ops dashboard */
+.ops-dash{background:#0a0e13;border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden;margin-top:4px}
+.od-titlebar{background:#060a0e;padding:14px 22px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.od-dot{width:10px;height:10px;border-radius:50%}
+.od-title{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.4);letter-spacing:.05em;margin-left:4px;flex:1}
+.od-live{font-family:var(--mono);font-size:9px;padding:2px 8px;background:rgba(19,115,51,.2);color:#81C784;border:1px solid rgba(19,115,51,.25);letter-spacing:.06em;animation:odPulse 2s ease-in-out infinite}
+@keyframes odPulse{0%,100%{opacity:1}50%{opacity:.55}}
+.od-kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.05)}
+.od-kpi{background:#0d1117;padding:16px 14px}
+.od-kpi-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+.od-kpi-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:400;line-height:1;letter-spacing:-.01em}
+.od-kpi-sub{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);margin-top:3px}
+.od-kpi-sparkline{height:20px;margin-top:6px}
+.od-body{display:grid;grid-template-columns:1fr 1fr 320px;min-height:420px}
+.od-col{border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column}
+.od-col:last-child{border-right:none}
+.od-col-hdr{padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between}
+.od-col-title{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase}
+.od-col-badge{font-family:var(--mono);font-size:8px;padding:2px 7px;letter-spacing:.06em;border:1px solid}
+.od-pipeline-list{flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.od-pipe-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(255,255,255,.04);transition:border-color .2s}
+.od-pipe-row:hover{border-color:rgba(255,255,255,.1)}
+.od-pipe-region{font-family:var(--mono);font-size:9px;font-weight:500;color:rgba(255,255,255,.35);width:72px;flex-shrink:0}
+.od-pipe-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.od-pipe-bar{height:100%;border-radius:2px;transition:width 1s ease}
+.od-pipe-pct{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);width:34px;text-align:right}
+.od-pipe-status{font-family:var(--mono);font-size:8px;padding:1px 6px;border-radius:0}
+.od-quarantine-list{flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.od-q-row{padding:10px 12px;border:1px solid rgba(255,255,255,.04);animation:odRowIn .4s ease}
+@keyframes odRowIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:none}}
+.od-q-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.od-q-id{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3)}
+.od-q-badge{font-family:var(--mono);font-size:8px;padding:1px 5px;margin-left:auto}
+.od-q-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.18);line-height:1.5}
+.od-slo-panel{padding:14px 16px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.od-slo-item{padding:12px 14px;border:1px solid rgba(255,255,255,.05)}
+.od-slo-name{font-family:var(--mono);font-size:9px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.od-slo-gauge-wrap{height:5px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.od-slo-gauge{height:100%;border-radius:2px}
+.od-slo-vals{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)}
+.od-slo-current{font-family:var(--display);font-size:16px;font-weight:800;margin-bottom:2px}
+.od-footer{padding:10px 18px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.od-footer-item{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);display:flex;align-items:center;gap:5px}
+.od-footer-dot{width:6px;height:6px;border-radius:50%}
+@media(max-width:1100px){.od-body{grid-template-columns:1fr 1fr;}.od-slo-panel{display:none}}
+@media(max-width:860px){.od-kpi-row{grid-template-columns:repeat(3,1fr)}.slo-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){:root{--col:22px}.rebuttal-grid{grid-template-columns:1fr}.sm-body{grid-template-columns:1fr}.demo-stage{grid-template-columns:1fr}.demo-metrics{grid-template-columns:1fr 1fr}.mn-r .mn-link{display:none}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-09.html" class="mn-back">← Platform Index</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">AE Platform &nbsp;/&nbsp; <strong>M-08 · Data Governance · H1 Foundation</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="greenops.html" class="mn-link">M-06 GreenOps →</a>
+    <a href="strategy-dashboard.html" class="mn-link">M-07 Dashboard →</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+<nav class="snav" id="snav">
+  <a href="#context" class="sn act" data-sec="context">System Context</a>
+  <a href="#schema" class="sn" data-sec="schema">Canonical Schema</a>
+  <a href="#architecture" class="sn" data-sec="architecture">Architecture</a>
+  <a href="#statemachine" class="sn" data-sec="statemachine">State Machine</a>
+  <a href="#steward" class="sn" data-sec="steward">Steward Interface</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
+  <a href="#ops-dashboard" class="sn" data-sec="ops-dashboard">Ops Dashboard</a>
+  <a href="#demo" class="sn" data-sec="demo">Live Demo</a>
+</nav>
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise · AE Platform Layer · Module 08 · H1 Foundation · PI-1</div>
+  <h1 class="ph-h1">Data Governance<br><em>The Platform Foundation</em><br><strong>— Every feature has a lineage. Every record has a source.</strong></h1>
+  <p class="ph-sub">Data Governance is deployed in Horizon 1 — before any ML model, before any HITL checkpoint, before any inference in any suite. It validates every record entering the AE data fabric, tags every feature with a traceable lineage, and quarantines anything that fails. Without it, the SHAP explanations that satisfy EU AI Act Article 11 have no verified provenance.</p>
+  <div class="ph-tags">
+    <span class="ph-tag ph-tag-amber">H1 Foundation · PI-1 Prerequisite</span>
+    <span class="ph-tag ph-tag-blue">TFX Validate · Schema enforcement</span>
+    <span class="ph-tag ph-tag-green">Feature Store lineage · BigQuery</span>
+    <span class="ph-tag ph-tag-teal">Pub/Sub · 6 regional sources</span>
+    <span class="ph-tag ph-tag-red">Quarantine-then-review · Steward alert</span>
+    <span class="ph-tag ph-tag-purple">Platform Layer · Minimal Risk</span>
+  </div>
+</header>
+<div style="background:var(--amber-lt);border-bottom:1px solid rgba(176,96,0,.15);padding:18px var(--col);display:flex;align-items:center;gap:16px" class="ap">
+  <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0">H1</div>
+  <div style="font-family:var(--mono);font-size:12px;font-weight:300;color:var(--amber-dk);line-height:1.7">This is the PI-1 prerequisite. No domain suite — Autonomous Seller, Autonomous HR, or any future suite — can deploy until Data Governance is live and the 6-region canonical schema is validated. Deployment order: <strong style="font-weight:500">M-08 (H1)</strong> → M-06 (H3 · PI-7) → M-07 (H3 · PI-8).</div>
+</div>
+<section class="sec w ap" id="context">
+  <div class="s-ey">System Context — C4 Level 1</div>
+  <h2 class="s-h2">Raw data in from six sources. <em>Validated, lineage-tagged features out to every suite.</em></h2>
+  <p class="s-p">Data Governance sits at the boundary between raw regional data sources and the AE data fabric. Everything entering the Feature Store, BigQuery financial stream, and contract event stream — from any suite — passes through Data Governance first. All suites are blocked until this module is live.</p>
+  <div class="dw ap">
+    <div class="dw-title">Data Governance — System Context (C4 Level 1)</div>
+    <div class="dw-sub">H1 platform foundation · three input streams · six regions · Feature Store + BigQuery outputs · data steward for quarantine only</div>
+    <svg width="100%" viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="270" y="70" width="320" height="220" rx="8" fill="#FEF3E2" stroke="#B06000" stroke-width="2"/>
+      <text x="430" y="98" font-size="12" font-weight="700" fill="#7A4100" text-anchor="middle">Data Governance</text>
+      <text x="430" y="114" font-size="9" fill="#B06000" text-anchor="middle">Module 08 · Platform Layer · H1 · PI-1</text>
+      <text x="430" y="132" font-size="9" fill="#7A4100" text-anchor="middle">TFX Schema Validator</text>
+      <text x="430" y="146" font-size="9" fill="#7A4100" text-anchor="middle">Quality scorer (completeness · freshness)</text>
+      <text x="430" y="160" font-size="9" fill="#7A4100" text-anchor="middle">Lineage tagger (source · event_id · ts)</text>
+      <text x="430" y="174" font-size="9" fill="#7A4100" text-anchor="middle">Quarantine manager · Schema drift detector</text>
+      <text x="430" y="192" font-size="8" fill="#B06000" text-anchor="middle">Cloud Run · Pub/Sub · BigQuery · TFX · DLP API</text>
+      <text x="430" y="206" font-size="8" fill="#B06000" text-anchor="middle">No ML inference · deterministic validation only</text>
+      <text x="430" y="252" font-size="8" fill="#B06000" text-anchor="middle">All domain suites blocked until DG is live</text>
+      <rect x="20" y="30" width="185" height="72" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="112" y="54" font-size="11" font-weight="700" fill="#1557B0" text-anchor="middle">6 Regional Asset Systems</text>
+      <text x="112" y="68" font-size="8" fill="#1A73E8" text-anchor="middle">Pub/Sub ae-asset-events</text>
+      <text x="112" y="81" font-size="8" fill="#1557B0" text-anchor="middle">Sensor telemetry · DICOM events</text>
+      <text x="112" y="93" font-size="8" fill="#1557B0" text-anchor="middle">Variable schema quality</text>
+      <line x1="205" y1="66" x2="270" y2="160" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="20" y="140" width="185" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="112" y="164" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">Salesforce Events</text>
+      <text x="112" y="178" font-size="8" fill="#137333" text-anchor="middle">Pub/Sub ae-q2c-events</text>
+      <text x="112" y="190" font-size="8" fill="#0D5226" text-anchor="middle">Contract · opportunity · payment</text>
+      <line x1="205" y1="170" x2="270" y2="180" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="20" y="240" width="185" height="60" rx="4" fill="#E4F7F7" stroke="#007B83" stroke-width="1.5"/>
+      <text x="112" y="264" font-size="11" font-weight="700" fill="#005F67" text-anchor="middle">Financial Events</text>
+      <text x="112" y="278" font-size="8" fill="#007B83" text-anchor="middle">Pub/Sub ae-financial-events</text>
+      <line x1="205" y1="270" x2="270" y2="220" stroke="#007B83" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="40" width="185" height="72" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="742" y="66" font-size="11" font-weight="700" fill="#3700B3" text-anchor="middle">Vertex AI Feature Store</text>
+      <text x="742" y="80" font-size="9" fill="#6200EE" text-anchor="middle">Validated · lineage-tagged</text>
+      <text x="742" y="93" font-size="8" fill="#3700B3" text-anchor="middle">quality_score per feature</text>
+      <text x="742" y="105" font-size="8" fill="#3700B3" text-anchor="middle">All suites: AS · AHR · future</text>
+      <line x1="590" y1="160" x2="650" y2="76" stroke="#6200EE" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="150" width="185" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="742" y="174" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">BigQuery Canonical</text>
+      <text x="742" y="188" font-size="9" fill="#137333" text-anchor="middle">ae_assets · ae_financial · ae_contracts</text>
+      <text x="742" y="200" font-size="8" fill="#0D5226" text-anchor="middle">quality_score · lineage_ref per row</text>
+      <line x1="590" y1="190" x2="650" y2="180" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="250" width="185" height="80" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="742" y="276" font-size="11" font-weight="700" fill="#A50E0E" text-anchor="middle">Quarantine + Steward</text>
+      <text x="742" y="290" font-size="9" fill="#D93025" text-anchor="middle">ae_quarantine · failed records</text>
+      <text x="742" y="304" font-size="8" fill="#A50E0E" text-anchor="middle">P2 data steward alert</text>
+      <text x="742" y="317" font-size="8" fill="#A50E0E" text-anchor="middle">Reinstate or discard</text>
+      <line x1="590" y1="240" x2="742" y2="250" stroke="#D93025" stroke-width="1.5" marker-end="url(#ctx)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:2px solid #B06000"></div>Data Governance boundary (H1)</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1.5px solid #6200EE"></div>Feature Store (validated output)</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1.5px solid #D93025"></div>Quarantine + steward alert</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ap" id="schema">
+  <div class="s-ey bl">Canonical Schema</div>
+  <h2 class="s-h2">The load-bearing artifact. <em>Every suite depends on this.</em></h2>
+  <p class="s-p">The 6-region canonical schema v2.0 is the contract between every regional data source and the AE data fabric. All suites are blocked until this schema is validated and live. Schema changes must be registered before deployment — unregistered changes trigger quarantine automatically.</p>
+  <div class="dw ap">
+    <div class="dw-title">AE Canonical Schema v2.0 — ae_assets · representative fields</div>
+    <div class="dw-sub">BigQuery table definition · TFX Schema proto source of truth · 6-region enforcement · version-controlled in ML Metadata</div>
+    <table class="schema-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Constraint</th>
+          <th>Version</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>entity_id</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Unique asset identifier · format: {REGION}-{TYPE}-{SEQ}</td></tr>
+        <tr><td><code>event_id</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Pub/Sub message ID · used as lineage_ref anchor</td></tr>
+        <tr><td><code>event_timestamp</code></td><td>TIMESTAMP</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>UTC · ISO-8601 · type mismatch triggers quarantine</td></tr>
+        <tr><td><code>source_region</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>ENUM: EMEA-North · EMEA-West · APAC-East · APAC-South · AMER-East · AMER-West</td></tr>
+        <tr><td><code>asset_type</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>ENUM: MRI-7T · CT-Premium · MRI-3T · Ultrasound-Elite</td></tr>
+        <tr><td><code>bearing_vibration_hz</code></td><td>FLOAT</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Range: 0–500 · anomaly threshold: fleet_mean ± 3σ</td></tr>
+        <tr><td><code>bearing_temp_c</code></td><td>FLOAT</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Range: -10–150°C · null triggers quality score deduction</td></tr>
+        <tr><td><code>bearing_temp_optical_c</code></td><td>FLOAT</td><td><span class="st-optional">OPTIONAL</span></td><td><span class="st-ver">v2.1</span></td><td>New canonical field · maps from optical_sensor_temp_c (APAC-East firmware v4.2.1)</td></tr>
+        <tr><td><code>power_draw_kw</code></td><td>FLOAT</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Range: 0–50kW · feeds GreenOps carbon model</td></tr>
+        <tr><td><code>firmware_version</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Semver · tracks schema drift to firmware release correlation</td></tr>
+        <tr><td><code>free_text_notes</code></td><td>STRING</td><td><span class="st-optional">OPTIONAL</span><span class="st-pii">DLP SCAN</span></td><td><span class="st-ver">v1.0</span></td><td>Engineer field notes · DLP API scanned inline before TFX · PII detection routes to DLP HOLD (not schema quarantine)</td></tr>
+        <tr><td><code>schema_version</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Written by DG agent post-validation · used as lineage_ref component</td></tr>
+        <tr><td><code>quality_score</code></td><td>FLOAT</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Written by DG quality scorer · 0–1 · threshold 0.85 for Feature Store · 0.60 for BigQuery</td></tr>
+        <tr><td><code>lineage_ref</code></td><td>STRING</td><td><span class="st-required">REQUIRED</span></td><td><span class="st-ver">v1.0</span></td><td>Composite: event_id + schema_version + ingest_ts · EU AI Act Art. 11 anchor</td></tr>
+      </tbody>
+    </table>
+    <div class="dw-legend" style="margin-top:16px">
+      <div class="dl"><span class="st-required">REQUIRED</span>&nbsp;Schema violation → immediate quarantine</div>
+      <div class="dl"><span class="st-optional">OPTIONAL</span>&nbsp;Absence recorded in quality score</div>
+      <div class="dl"><span class="st-pii">DLP SCAN</span>&nbsp;Cloud DLP inline scan before TFX · routes to DLP HOLD on PII detection</div>
+      <div class="dl"><span class="st-ver">v2.1</span>&nbsp;Version introduced · tracked in ML Metadata Schema artifact</div>
+    </div>
+  </div>
+  <div style="margin-top:16px" class="ap">
+    <div class="dw-title" style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span style="width:3px;height:14px;display:block;background:var(--blue)"></span>Cost Model — Cloud DLP (CFO rebuttal addendum)</div>
+    <div style="background:var(--blue-lt);border:1px solid rgba(26,115,232,.18);padding:18px 20px;font-family:var(--mono);font-size:11px;font-weight:300;color:var(--blue-dk);line-height:1.8">
+      <strong>DLP scope:</strong> Only <code>free_text_notes</code> (OPTIONAL field, present in ~12% of records at ClaraVis volume) is submitted to the Cloud DLP Content API. Structured numeric fields are not inspected — DLP has no value on FLOAT/TIMESTAMP fields. At 15,000 msg/day × 12% = ~1,800 DLP API calls/day → ~54,000/month. Cloud DLP free tier: 1 unit = 1 API call for content &lt;500KB. Monthly DLP cost: <strong>54,000 calls × $0.003/unit ≈ $162/month</strong>. Full revised cost model: Cloud Run ~€0.14 + BigQuery ~€2 + Cloud DLP ~$162 = <strong>≈ $165/month total</strong>. Batch validation was not considered — see ADR-DG02. DLP cost scales linearly with free_text field prevalence; an operator flag suppresses DLP scan when notes field is absent.
+    </div>
+  </div>
+</section>
+  <div class="s-ey go">Architecture — Validation Pipeline</div>
+  <h2 class="s-h2">Schema. Quality. Lineage. <em>Three gates. Every record.</em></h2>
+  <p class="s-p">Data Governance uses TFX's deterministic validation engine and BigQuery lineage tables — no ML inference. Every record passes through schema conformance, quality scoring, and lineage tagging before reaching the Feature Store. Records that fail schema validation go to quarantine immediately. Records that pass schema but score below 0.60 quality also quarantine.</p>
+  <div class="dw dk ap">
+    <div class="dw-title">Data Governance — Validation Pipeline</div>
+    <div class="dw-sub">Three input streams · TFX schema validation · quality scoring · lineage tagging · three output paths</div>
+    <svg width="100%" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="arch" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="8" y="8" width="882" height="346" rx="8" fill="none" stroke="rgba(217,48,37,.3)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="22" y="26" font-size="9" fill="rgba(239,154,154,.55)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · europe-west3</text>
+      <rect x="20" y="40" width="110" height="100" rx="4" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="75" y="64" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">Pub/Sub</text>
+      <text x="75" y="78" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">ae-asset-events</text>
+      <text x="75" y="92" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">ae-q2c-events</text>
+      <text x="75" y="106" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">ae-financial-events</text>
+      <text x="75" y="120" font-size="8" fill="rgba(19,115,51,.4)" text-anchor="middle">always-on pull</text>
+      <rect x="170" y="30" width="150" height="80" rx="4" fill="rgba(176,96,0,.15)" stroke="#B06000" stroke-width="1.5"/>
+      <text x="245" y="56" font-size="10" font-weight="700" fill="#FFCC80" text-anchor="middle">DG Agent</text>
+      <text x="245" y="70" font-size="8" fill="rgba(176,96,0,.6)" text-anchor="middle">Cloud Run · stateless</text>
+      <text x="245" y="82" font-size="8" fill="rgba(176,96,0,.55)" text-anchor="middle">SA: dg-sa@ · WIF</text>
+      <text x="245" y="94" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">DLP API inline scan</text>
+      <line x1="130" y1="90" x2="170" y2="70" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="370" y="30" width="150" height="80" rx="4" fill="rgba(184,150,12,.12)" stroke="rgba(184,150,12,.3)" stroke-width="1.5"/>
+      <text x="445" y="56" font-size="10" font-weight="700" fill="#D4AC1A" text-anchor="middle">TFX Validator</text>
+      <text x="445" y="70" font-size="8" fill="rgba(184,150,12,.6)" text-anchor="middle">Schema conformance</text>
+      <text x="445" y="82" font-size="8" fill="rgba(184,150,12,.55)" text-anchor="middle">vs ae_schemas (BQ)</text>
+      <text x="445" y="94" font-size="8" fill="rgba(184,150,12,.5)" text-anchor="middle">Drift fingerprint check</text>
+      <line x1="320" y1="70" x2="370" y2="70" stroke="rgba(176,96,0,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="370" y="130" width="150" height="60" rx="4" fill="rgba(26,115,232,.1)" stroke="rgba(26,115,232,.25)" stroke-width="1"/>
+      <text x="445" y="153" font-size="10" font-weight="500" fill="#90CAF9" text-anchor="middle">Quality Scorer</text>
+      <text x="445" y="167" font-size="8" fill="rgba(26,115,232,.55)" text-anchor="middle">Completeness · freshness</text>
+      <text x="445" y="179" font-size="8" fill="rgba(26,115,232,.5)" text-anchor="middle">Null rate · range check</text>
+      <line x1="445" y1="110" x2="445" y2="130" stroke="rgba(184,150,12,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="370" y="210" width="150" height="60" rx="4" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.25)" stroke-width="1"/>
+      <text x="445" y="233" font-size="10" font-weight="500" fill="#CE93D8" text-anchor="middle">Lineage Tagger</text>
+      <text x="445" y="247" font-size="8" fill="rgba(98,0,238,.55)" text-anchor="middle">event_id · schema_version</text>
+      <text x="445" y="259" font-size="8" fill="rgba(98,0,238,.5)" text-anchor="middle">quality_score · ingest_ts</text>
+      <line x1="445" y1="190" x2="445" y2="210" stroke="rgba(26,115,232,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <line x1="520" y1="240" x2="610" y2="120" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <text x="555" y="175" font-size="7" fill="rgba(19,115,51,.5)">≥0.85</text>
+      <rect x="610" y="80" width="220" height="50" rx="4" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.25)" stroke-width="1.5"/>
+      <text x="720" y="102" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">Vertex AI Feature Store</text>
+      <text x="720" y="116" font-size="8" fill="rgba(98,0,238,.55)" text-anchor="middle">Lineage tag · quality_score · all suites</text>
+      <line x1="520" y1="250" x2="610" y2="200" stroke="rgba(26,115,232,.35)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arch)"/>
+      <text x="555" y="235" font-size="7" fill="rgba(26,115,232,.45)">0.60–0.85</text>
+      <rect x="610" y="180" width="220" height="40" rx="4" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="720" y="197" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">BigQuery Canonical</text>
+      <text x="720" y="210" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">Conditional · quality_flag=WARNING</text>
+      <line x1="445" y1="110" x2="245" y2="170" stroke="rgba(217,48,37,.4)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arch)"/>
+      <text x="330" y="132" font-size="7" fill="rgba(217,48,37,.45)">schema fail</text>
+      <rect x="160" y="170" width="160" height="60" rx="4" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.3)" stroke-width="1.5"/>
+      <text x="240" y="194" font-size="10" font-weight="700" fill="#EF9A9A" text-anchor="middle">Quarantine Manager</text>
+      <text x="240" y="208" font-size="8" fill="rgba(217,48,37,.6)" text-anchor="middle">ae_quarantine · P2 alert</text>
+      <text x="240" y="220" font-size="8" fill="rgba(217,48,37,.55)" text-anchor="middle">Raw record preserved</text>
+      <rect x="610" y="280" width="220" height="50" rx="4" fill="rgba(217,48,37,.08)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="720" y="302" font-size="10" font-weight="700" fill="#EF9A9A" text-anchor="middle">ae_quarantine · Steward Alert</text>
+      <text x="720" y="316" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">Reinstate or discard decision</text>
+      <line x1="320" y1="200" x2="610" y2="305" stroke="rgba(217,48,37,.25)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arch)"/>
+    </svg>
+  </div>
+</section>
+
+<section class="sec ap" id="statemachine">
+  <div class="s-ey te">Record State Machine</div>
+  <h2 class="s-h2">Every record. <em>One of five states. No silent discard.</em></h2>
+  <p class="s-p">A record that fails validation is never silently discarded — it moves to QUARANTINED, where it waits for a data steward decision. If reinstated, it re-enters the VALIDATING state with the approved mapping rule applied. If discarded, an audit tombstone is written to ae_governance.discard_log.</p>
+  <div class="dw ap">
+    <div class="dw-title">Data Governance — Record State Machine</div>
+    <div class="dw-sub">INGESTED → VALIDATING → QUALITY_SCORED → LINEAGE_TAGGED → FEATURE_STORE_READY · or QUARANTINED → REINSTATED | DISCARDED</div>
+    <svg width="100%" viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="sm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="10" y="90" width="100" height="36" rx="18" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="60" y="113" font-size="9" font-weight="700" fill="#1557B0" text-anchor="middle">INGESTED</text>
+      <rect x="140" y="90" width="110" height="36" rx="18" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="195" y="113" font-size="9" font-weight="700" fill="#7A4100" text-anchor="middle">VALIDATING</text>
+      <rect x="280" y="90" width="130" height="36" rx="18" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1"/>
+      <text x="345" y="113" font-size="9" font-weight="700" fill="#1557B0" text-anchor="middle">QUALITY_SCORED</text>
+      <rect x="440" y="90" width="140" height="36" rx="18" fill="#EDE7F6" stroke="#6200EE" stroke-width="1"/>
+      <text x="510" y="113" font-size="9" font-weight="700" fill="#3700B3" text-anchor="middle">LINEAGE_TAGGED</text>
+      <rect x="610" y="90" width="148" height="36" rx="18" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="684" y="113" font-size="9" font-weight="700" fill="#0D5226" text-anchor="middle">FEATURE_STORE</text>
+      <line x1="110" y1="108" x2="140" y2="108" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sm)"/>
+      <line x1="250" y1="108" x2="280" y2="108" stroke="#B06000" stroke-width="1.5" marker-end="url(#sm)"/>
+      <line x1="410" y1="108" x2="440" y2="108" stroke="#1A73E8" stroke-width="1" marker-end="url(#sm)"/>
+      <line x1="580" y1="108" x2="610" y2="108" stroke="#6200EE" stroke-width="1" marker-end="url(#sm)"/>
+      <rect x="140" y="165" width="130" height="36" rx="18" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="205" y="188" font-size="9" font-weight="700" fill="#A50E0E" text-anchor="middle">QUARANTINED</text>
+      <line x1="195" y1="126" x2="195" y2="165" stroke="#D93025" stroke-width="1.5" marker-end="url(#sm)"/>
+      <text x="210" y="149" font-size="8" fill="#D93025">schema fail</text>
+      <path d="M345 126 Q345 155 270 165" fill="none" stroke="rgba(217,48,37,.4)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#sm)"/>
+      <text x="330" y="150" font-size="7" fill="rgba(217,48,37,.4)">quality&lt;0.60</text>
+      <path d="M205 165 Q205 142 195 126" fill="none" stroke="rgba(19,115,51,.4)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#sm)"/>
+      <text x="136" y="145" font-size="7" fill="rgba(19,115,51,.5)">reinstate</text>
+      <rect x="310" y="165" width="100" height="36" rx="18" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+      <text x="360" y="188" font-size="9" font-weight="700" fill="#80868B" text-anchor="middle">DISCARDED</text>
+      <line x1="270" y1="183" x2="310" y2="183" stroke="rgba(80,80,80,.4)" stroke-width="1.5" marker-end="url(#sm)"/>
+      <text x="290" y="178" font-size="7" fill="rgba(80,80,80,.4)">discard</text>
+      <path d="M100 108 Q120 50 440 183" fill="none" stroke="rgba(176,96,0,.35)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#sm)"/>
+      <rect x="440" y="165" width="100" height="36" rx="18" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="490" y="188" font-size="9" font-weight="700" fill="#7A4100" text-anchor="middle">DLP HOLD</text>
+      <text x="270" y="44" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">DLP PII trigger → separate quarantine path</text>
+    </svg>
+  </div>
+</section>
+
+<section class="sec ap" id="steward">
+  <div class="s-ey re">Data Steward Interface</div>
+  <h2 class="s-h2">The only human decision in Data Governance — <em>quarantine reinstatement.</em></h2>
+  <p class="s-p">The data steward interface is operationally different from every other HITL in any suite. No time pressure (P2, not P0), no financial consequence to the individual decision, no dual-reviewer requirement. The steward's job is schema triage: understand the violation, confirm the mapping rule, reinstate or discard.</p>
+  <div class="ap">
+    <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px">Data Governance · Quarantine Review — APAC-East · Schema v2.1 · 847 records on hold</div>
+    <div class="steward-mockup">
+      <div class="sm-titlebar">
+        <div class="sm-dot" style="background:#FF5F57"></div>
+        <div class="sm-dot" style="background:#FFBD2E"></div>
+        <div class="sm-dot" style="background:#28CA41"></div>
+        <div class="sm-title">Data Governance — Quarantine Queue · APAC-East · 2 violations · P2 · 847 records on hold</div>
+      </div>
+      <div class="sm-body">
+        <div class="sm-main">
+          <div class="sm-sl">Quarantine Summary</div>
+          <div class="q-stats">
+            <div class="q-stat"><div class="qs-num">847</div><div class="qs-label">Records quarantined</div></div>
+            <div class="q-stat"><div class="qs-num">2</div><div class="qs-label">Violations detected</div></div>
+            <div class="q-stat"><div class="qs-num" style="color:var(--amber-dk)">P2</div><div class="qs-label">Alert priority</div></div>
+          </div>
+          <div class="sm-sl">Violation Details</div>
+          <div class="violation-box">
+            <div class="vb-label">Violation 1 — Type Mismatch (BLOCKING)</div>
+            <div class="vb-body">Field: event_timestamp · Expected: TIMESTAMP · Arriving: STRING ("2026-03-15T14:22:11Z")<br>Suggested fix: PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%SZ', event_timestamp) AS event_timestamp</div>
+          </div>
+          <div class="violation-box">
+            <div class="vb-label">Violation 2 — New Field (SCHEMA DRIFT)</div>
+            <div class="vb-body">Field: optical_sensor_temp_c (FLOAT) · Not in canonical schema v2.0<br>Source: APAC-East firmware v4.2.1 added optical bore temperature sensor<br>Suggested: optical_sensor_temp_c → bearing_temp_optical_c (new canonical field v2.1)</div>
+          </div>
+          <div class="sm-sl">Schema Diff</div>
+          <div class="schema-diff">
+            <div class="sd-col expected">
+              <div class="sd-col-label">Canonical v2.0</div>
+              <div class="sd-field match">event_timestamp: TIMESTAMP</div>
+              <div class="sd-field match">bearing_vibration_hz: FLOAT</div>
+              <div class="sd-field" style="color:var(--text-3);font-size:9px">... 8 other fields unchanged</div>
+            </div>
+            <div class="sd-col arriving">
+              <div class="sd-col-label">Arriving v2.1 (APAC-East)</div>
+              <div class="sd-field type-mismatch">event_timestamp: STRING ⚠</div>
+              <div class="sd-field missing">bearing_vibration_hz: — (absent)</div>
+              <div class="sd-field new">optical_sensor_temp_c: FLOAT ✗</div>
+            </div>
+          </div>
+          <div class="sm-sl">Suggested Mapping Rule (auto-generated)</div>
+          <div class="mapping-box">
+            <strong>Mapping rule v2.1_APAC_EAST (pending approval):</strong><br>
+            1. PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%SZ', event_timestamp) AS event_timestamp<br>
+            2. optical_sensor_temp_c → stored as bearing_temp_optical_c (new canonical field)<br>
+            3. bearing_vibration_hz → NULL · imputed via fleet median at inference<br><br>
+            <em style="color:var(--blue-dk)">Approving reinstates all 847 records and updates ae_schemas to v2.1.</em>
+          </div>
+          <div class="sm-actions">
+            <div class="sm-btn-reinstate">✓ Approve Mapping + Reinstate 847 Records</div>
+            <div class="sm-btn-discard">✗ Discard Batch</div>
+          </div>
+        </div>
+        <div class="sm-sidebar">
+          <div class="sm-sl">Batch Detail</div>
+          <div class="sm-cf-label">Source region</div><div class="sm-cf-val">APAC-East</div>
+          <div class="sm-cf-label">Records quarantined</div><div class="sm-cf-val">847</div>
+          <div class="sm-cf-label">Units affected</div><div class="sm-cf-val">14 MRI-7T + 9 CT-Premium · APAC-East</div>
+          <div class="sm-cf-label">Schema version</div><div class="sm-cf-val" style="color:var(--red-dk);font-weight:500">v2.1 (unregistered)</div>
+          <div class="sm-cf-label">Asset IQ impact</div><div class="sm-cf-val" style="color:var(--amber-dk)">APAC-East: stale features, confidence degraded → HITL-06. Other 5 regions: unaffected.</div>
+          <div class="sm-cf-label">EU AI Act</div><div class="sm-cf-val" style="font-size:10px;color:var(--text-2)">Reinstating with mapping rule preserves Art. 11 provenance chain. Mapping logged to ae_governance.schema_mappings.</div>
+          <div style="margin-top:14px;padding:10px;background:#FEF3E2;border-radius:3px;font-family:var(--mono);font-size:10px;color:var(--amber-dk);line-height:1.5"><strong>P2 — no SLA</strong><br>Not an emergency. Asset IQ continues for 5 other regions. Reinstate when mapping is confirmed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sec w ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Three Data Governance decisions. <em>Every alternative documented.</em></h2>
+  <div class="adr-col ap">
+    <div class="adr am">
+      <div class="adr-id">ADR-DG01 — Data Governance Platform</div>
+      <div class="adr-title">TFX ExampleValidator over custom JSON schema validation</div>
+      <div class="adr-body">Custom JSON schema validation (Python jsonschema or Pydantic) was the initial design. Replaced with TFX ExampleValidator for four reasons: (1) TFX is stateful — it learns statistics from observed data and can flag distributional drift, not just structural violations. A temperature reading within the valid range but 10 standard deviations above fleet mean would pass JSON schema validation and fail TFX's anomaly detection. (2) TFX integrates natively with Vertex AI Pipelines — the same schema definitions used in offline training are enforced at serving time, eliminating train-serve skew. (3) TFX's Schema artifact is versionable in the ML Metadata store — schema evolution is tracked automatically. (4) TFX Validate data quality expectations are living documentation satisfying EU AI Act Article 11's training data requirement. Custom JSON schema has none of these properties.</div>
+      <div class="adr-status">Accepted · Platform Layer · Data Governance</div>
+    </div>
+    <div class="adr gr">
+      <div class="adr-id">ADR-DG02 — Data Governance Platform</div>
+      <div class="adr-title">Quarantine-then-review over reject-on-arrival</div>
+      <div class="adr-body">The simpler design: reject schema-violating records at the Pub/Sub subscriber — log the error and discard. Rejected for two reasons: (1) Data loss is irreversible in a real-time sensor system. A regional system sending 847 records per batch cannot easily re-send data from 4 hours ago. Quarantine preserves the raw record in BigQuery, allowing reprocessing once the schema mapping is confirmed. Reject-on-arrival means the data is permanently gone. (2) Schema violations often indicate a legitimate upstream system update, not corrupted data. The APAC-East firmware update is the canonical example — the data is valid, the schema registration is missing. Reject-on-arrival silently discards valid, irreplaceable telemetry. Quarantine-then-review surfaces the issue to a human who can determine whether the data is recoverable.</div>
+      <div class="adr-status">Accepted · Platform Layer · Data Governance</div>
+    </div>
+    <div class="adr bl">
+      <div class="adr-id">ADR-AQ02 (cross-reference) — enforced here</div>
+      <div class="adr-title">Unified Pub/Sub schema over per-region API adapters — enforced by Data Governance</div>
+      <div class="adr-body">ADR-AQ02 was documented in the Asset IQ module as the schema standardisation decision. It is cross-referenced here because Data Governance is the component that makes ADR-AQ02 enforceable at runtime. The unified Pub/Sub canonical schema is not a convention that source systems are expected to follow — it is a gate that every record must pass. Without Data Governance, ADR-AQ02 is a design aspiration. With Data Governance, it is a hard technical constraint. Any regional system that updates its schema without registering the change will have its records quarantined until a steward reviews them. This creates a virtuous feedback loop — schema violations are visible, immediate, and operationally costly (P2 alert), incentivising regional teams to register schema changes before deploying.</div>
+      <div class="adr-status">Accepted · Cross-reference · Asset IQ ADR-AQ02 · enforced by Data Governance · <a href="Finrisk_Sentinel.html" style="color:var(--blue);text-decoration:none">→ Asset IQ module</a></div>
+    </div>
+    <div class="adr bl">
+      <div class="adr-id">ADR-DG03 — Data Governance · DLP Routing</div>
+      <div class="adr-title">DLP PII Hold routes to Redact-then-Reinstate, not schema quarantine reinstatement</div>
+      <div class="adr-body">Two PII handling approaches were evaluated. (1) Reject-on-PII-detection: discard records containing PII in free_text_notes. Rejected because field engineer notes are operationally valuable — they often contain maintenance observations that inform the RUL model's context features. Silent discard removes recoverable signal. (2) DLP HOLD with Redact-then-Reinstate: quarantine the raw record, alert the data steward with the specific detected entity types (e.g., PERSON_NAME, EMAIL_ADDRESS), and require an explicit redaction action before reinstatement. The steward does not see a "Reinstate as-is" option for DLP holds — only "Redact detected fields + Reinstate" or "Discard". This distinction is critical: schema quarantine reinstatement is a mapping approval; DLP reinstatement without redaction would write raw PII to the Feature Store, violating GDPR data minimisation (Art. 5(1)(c)). The DLP HOLD state is therefore architecturally distinct from the QUARANTINED state — different steward UI, different approval action, different audit log entry (ae_governance.dlp_remediation_log vs ae_governance.discard_log). Cloud DLP is scoped to free_text_notes only; structured numeric/timestamp fields are not inspected. Cost: ~$162/month at ClaraVis volume — see Canonical Schema section cost addendum.</div>
+      <div class="adr-status">Accepted · Platform Layer · Data Governance · GDPR Art. 5(1)(c) · Cloud DLP Content API</div>
+    </div>
+  </div>
+</section>
+</section>
+
+<section class="sec ap" id="rebuttals">
+  <div class="s-ey re">Stakeholder Rebuttals</div>
+  <h2 class="s-h2">Six objections. <em>Each with an architectural answer.</em></h2>
+  <div class="rebuttal-grid ap">
+    <div class="rb cto">
+      <div class="rb-who">CTO · S-01</div>
+      <div class="rb-concern">Why a separate module — can't the Feature Store handle validation natively?</div>
+      <div class="rb-q">"Vertex AI Feature Store has data validation capabilities. Why build a separate Data Governance module when the Feature Store already handles ingestion quality?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">Vertex AI Feature Store validates that incoming data conforms to the feature group schema — it ensures correct feature types are present. It does not validate business rules that make a record meaningful: a temperature reading of 73.4°C is schema-valid but only meaningful if the freshness is within the expected window, the quality score meets the threshold, the source system is registered, and the lineage tag is attached. The Feature Store also does not write quarantine records, alert data stewards, track schema drift fingerprints, or produce the lineage metadata required for EU AI Act Article 11. Data Governance handles the layer between raw Pub/Sub events and Feature Store ingest — a prerequisite to it, not a replacement.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> ADR-DG01 (TFX vs Feature Store native validation) · EU AI Act Art. 11 (lineage provenance requirement)</div>
+    </div>
+    <div class="rb cco">
+      <div class="rb-who">CCO · S-02</div>
+      <div class="rb-concern">How does feature lineage satisfy EU AI Act Article 11?</div>
+      <div class="rb-q">"EU AI Act Article 11 requires documentation covering training data provenance, characteristics, and quality. How does attaching a lineage tag satisfy that obligation in a way an auditor can verify?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">For any SHAP explanation presented to a human reviewer, an auditor can trace: the lineage_ref field in the SHAP record → the Feature Store feature group entry with the lineage tag → the DG validation log entry confirming schema version and quality score → the original Pub/Sub message ID and source system. This is not a description of provenance — it is a queryable audit chain. The TFX validation log entry, quality score, and schema version are all written to ae_governance.validation_log at validation time. The Feature Store offline store records used for model training carry the same lineage tags, so the training dataset's provenance is fully documented.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> ae_governance.validation_log · Feature Store lineage_ref field · EU AI Act Art. 11</div>
+    </div>
+    <div class="rb ea">
+      <div class="rb-who">Enterprise Architect · S-08</div>
+      <div class="rb-concern">What happens to downstream modules when a large batch is quarantined?</div>
+      <div class="rb-q">"If APAC-East sends 847 records and all are quarantined, does Asset IQ stop predicting for those units? Does the quarantine cascade to other regions?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">Asset IQ continues running on all non-APAC-East records without interruption — the quarantine is scoped to the batch and region that failed. For APAC-East units, Asset IQ uses the last valid feature snapshot from before the quarantine event. Stale features are flagged — the quality_score drops below the 0.85 high-confidence threshold, routing APAC-East unit predictions to HITL-06 rather than auto-work-order until the quarantine resolves. The quarantine cannot cascade to other regions because Pub/Sub topics use per-region message filtering and the DG agent processes each message independently.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> Asset IQ HITL-06 (confidence threshold + staleness flag) · Pub/Sub per-region filtering</div>
+    </div>
+    <div class="rb aiq">
+      <div class="rb-who">Asset IQ — Field Service Manager</div>
+      <div class="rb-concern">If APAC-East data is quarantined, do I have visibility into those units?</div>
+      <div class="rb-q">"We have 23 units in APAC-East. If their sensor data is quarantined for 4+ hours, am I flying blind while the data steward resolves the schema issue?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">You are not flying blind. Asset IQ uses the last validated feature snapshot for APAC-East units. The daily RUL batch job still produces predictions for all 23 units using yesterday's feature values, with a lower confidence score (freshness component of the quality metric degrades as features become stale). Predictions below the 0.82 confidence threshold route to your HITL-06 queue with the note: "Feature freshness below threshold — APAC-East schema quarantine active." You see the prediction, the SHAP attribution, and the staleness flag. The system never silently stops predicting — it degrades gracefully with visible flags.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> Asset IQ Feature Store (freshness in quality score) · HITL-06 interface (staleness flag)</div>
+    </div>
+    <div class="rb ciso">
+      <div class="rb-who">CISO · S-09</div>
+      <div class="rb-concern">Who has access to the quarantine dataset — it contains raw telemetry?</div>
+      <div class="rb-q">"ae_quarantine contains raw telemetry that failed validation — including original field values and device ID. Who has access, and for how long is data retained?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">The ae_quarantine dataset has four principals: the DG agent SA (write — inserts quarantine records), the data steward role (read — reviews violations), the DG admin SA (read-write — reinstatement processing), and the audit SA (read-only — 7-year audit access). No developer SA has access. Quarantine records are retained for 90 days after resolution (reinstatement or discard), then deleted by BigQuery table expiry. Unresolved records are retained indefinitely until a steward decision is made. VPC-SC applies to ae_quarantine as to all ae_ datasets.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> BigQuery IAM (ae_quarantine access policy) · 90-day quarantine retention · VPC-SC perimeter</div>
+    </div>
+    <div class="rb cfo">
+      <div class="rb-who">CFO · S-03</div>
+      <div class="rb-concern">What is the cost of running Data Governance continuously on all six streams?</div>
+      <div class="rb-q">"Data Governance is always-on, processing three Pub/Sub topics continuously. What is the monthly infrastructure cost, and is there a cheaper architecture — batch validation, for example?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">Data Governance's Cloud Run cost is minimal because it is stateless and event-driven — it runs only when a Pub/Sub message arrives. At ClaraVis's volume (~15,000 messages/day), Cloud Run processing time per message is approximately 80ms. Total monthly Cloud Run compute: ~10 CPU-hours ≈ €0.14/month. BigQuery writes: approximately €2/month. Total infrastructure cost: approximately €2.20/month. Batch validation was not considered because schema violations need detection before the daily RUL batch job runs — a quarantine event discovered at 03:00 UTC daily scan means an entire day of potentially corrupt features already in the Feature Store. Streaming validation at point of ingestion is both cheaper and faster than batch validation with quarantine rollback.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> Cloud Run event-driven pricing · ADR-DG02 · Asset IQ RUL batch (needs clean features before 02:00 UTC)</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec w ap" id="ops-dashboard">
+  <div class="s-ey gr">Operational Dashboard</div>
+  <h2 class="s-h2">Platform health. <em>Real-time. Six regions. One screen.</em></h2>
+  <p class="s-p">The Data Governance Ops Dashboard is the primary operational interface for the platform on-call engineer. It shows pipeline throughput per region, active quarantine queue depth, SLO burn rate, and DLQ status. All data is live-updated — every record processed, quarantined, or DLQ'd is visible within 5 seconds of the event.</p>
+  <div class="slo-strip ap">
+    <div class="slo-cell">
+      <div class="slo-label">Pipeline P99 Latency</div>
+      <div class="slo-val" id="slo-latency">312ms</div>
+      <div class="slo-sub">SLO target: &lt;500ms · <span style="color:var(--green)">✓ PASS</span></div>
+    </div>
+    <div class="slo-cell">
+      <div class="slo-label">Quarantine Resolution SLO</div>
+      <div class="slo-val" id="slo-qres">1h 42m</div>
+      <div class="slo-sub">P2 target: &lt;4h business hours · <span style="color:var(--green)">✓ PASS</span></div>
+    </div>
+    <div class="slo-cell">
+      <div class="slo-label">DLQ Messages (7d)</div>
+      <div class="slo-val" style="color:var(--green)" id="slo-dlq">0</div>
+      <div class="slo-sub">Max delivery attempts: 5 · Retry budget: 60min</div>
+    </div>
+    <div class="slo-cell">
+      <div class="slo-label">Feature Store Error Budget</div>
+      <div class="slo-val" style="color:var(--green)" id="slo-budget">98.7%</div>
+      <div class="slo-sub">30d window · SLO: 99.5% · <span style="color:var(--amber)">⚠ 1.9% burned</span></div>
+    </div>
+  </div>
+
+  <div class="ops-dash ap" style="margin-top:24px">
+    <div class="od-titlebar">
+      <div class="od-dot" style="background:#FF5F57"></div>
+      <div class="od-dot" style="background:#FFBD2E"></div>
+      <div class="od-dot" style="background:#28CA41"></div>
+      <div class="od-title">AE Platform · Data Governance Ops — europe-west3 · ae-governance-ops</div>
+      <div class="od-live" id="od-live-badge">● LIVE</div>
+    </div>
+    <div class="od-kpi-row" id="od-kpi-row">
+      <div class="od-kpi">
+        <div class="od-kpi-label">Records today</div>
+        <div class="od-kpi-val" style="color:#81C784" id="kpi-total">14,892</div>
+        <div class="od-kpi-sub">↑ 3.2% vs yesterday</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline id="spark-total" points="0,15 13,12 26,14 39,8 52,10 65,6 80,4" fill="none" stroke="#81C784" stroke-width="1.5" opacity=".6"/></svg>
+      </div>
+      <div class="od-kpi">
+        <div class="od-kpi-label">Passed validation</div>
+        <div class="od-kpi-val" style="color:#A5D6A7" id="kpi-pass">14,618</div>
+        <div class="od-kpi-sub" id="kpi-pass-pct">98.2% pass rate</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,14 13,11 26,13 39,7 52,9 65,5 80,3" fill="none" stroke="#A5D6A7" stroke-width="1.5" opacity=".6"/></svg>
+      </div>
+      <div class="od-kpi">
+        <div class="od-kpi-label">Quarantined</div>
+        <div class="od-kpi-val" style="color:#EF9A9A" id="kpi-quar">247</div>
+        <div class="od-kpi-sub" id="kpi-quar-sub">3 batches · 2 pending</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,18 13,17 26,16 39,18 52,14 65,16 80,12" fill="none" stroke="#EF9A9A" stroke-width="1.5" opacity=".6"/></svg>
+      </div>
+      <div class="od-kpi">
+        <div class="od-kpi-label">DLP Holds</div>
+        <div class="od-kpi-val" style="color:#FFCA28" id="kpi-dlp">27</div>
+        <div class="od-kpi-sub">1 pending redact review</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,19 13,18 26,19 39,17 52,18 65,15 80,16" fill="none" stroke="#FFCA28" stroke-width="1.5" opacity=".6"/></svg>
+      </div>
+      <div class="od-kpi">
+        <div class="od-kpi-label">P99 Latency</div>
+        <div class="od-kpi-val" style="color:#90CAF9" id="kpi-latency">312ms</div>
+        <div class="od-kpi-sub">SLO: &lt;500ms · ✓</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline id="spark-latency" points="0,8 13,10 26,7 39,12 52,9 65,11 80,8" fill="none" stroke="#90CAF9" stroke-width="1.5" opacity=".6"/></svg>
+      </div>
+      <div class="od-kpi">
+        <div class="od-kpi-label">DLQ (7d)</div>
+        <div class="od-kpi-val" style="color:#81C784" id="kpi-dlq-val">0</div>
+        <div class="od-kpi-sub">Retry budget: 5 attempts</div>
+        <svg class="od-kpi-sparkline" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,20 80,20" fill="none" stroke="#81C784" stroke-width="1.5" opacity=".4"/></svg>
+      </div>
+    </div>
+    <div class="od-body">
+      <div class="od-col">
+        <div class="od-col-hdr">
+          <div class="od-col-title">Pipeline throughput · by region</div>
+          <div class="od-col-badge" style="color:#81C784;border-color:rgba(19,115,51,.3)">6 / 6 REGIONS</div>
+        </div>
+        <div class="od-pipeline-list" id="od-pipeline-list"></div>
+      </div>
+      <div class="od-col">
+        <div class="od-col-hdr">
+          <div class="od-col-title">Quarantine queue</div>
+          <div class="od-col-badge" id="od-q-badge" style="color:#EF9A9A;border-color:rgba(217,48,37,.25)">2 PENDING</div>
+        </div>
+        <div class="od-quarantine-list" id="od-quarantine-list"></div>
+      </div>
+      <div class="od-col">
+        <div class="od-col-hdr">
+          <div class="od-col-title">SLO burn rate · 30d</div>
+          <div class="od-col-badge" style="color:#90CAF9;border-color:rgba(26,115,232,.25)">2 SLOs</div>
+        </div>
+        <div class="od-slo-panel" id="od-slo-panel">
+          <div class="od-slo-item">
+            <div class="od-slo-name">Pipeline P99 Latency &lt;500ms</div>
+            <div class="od-slo-current" style="color:#81C784">312ms</div>
+            <div class="od-slo-gauge-wrap"><div class="od-slo-gauge" style="width:62%;background:#81C784"></div></div>
+            <div class="od-slo-vals"><span>0ms</span><span style="color:#81C784">SLO: 500ms</span><span>1000ms</span></div>
+          </div>
+          <div class="od-slo-item">
+            <div class="od-slo-name">Quarantine Resolution &lt;4h</div>
+            <div class="od-slo-current" style="color:#81C784">1h 42m</div>
+            <div class="od-slo-gauge-wrap"><div class="od-slo-gauge" style="width:43%;background:#81C784"></div></div>
+            <div class="od-slo-vals"><span>0h</span><span style="color:#81C784">SLO: 4h</span><span>8h</span></div>
+          </div>
+          <div class="od-slo-item">
+            <div class="od-slo-name">Feature Store Error Budget (30d)</div>
+            <div class="od-slo-current" style="color:#FFCA28">1.3% burned</div>
+            <div class="od-slo-gauge-wrap"><div class="od-slo-gauge" style="width:26%;background:linear-gradient(90deg,#81C784,#FFCA28)"></div></div>
+            <div class="od-slo-vals"><span>0%</span><span style="color:#FFCA28">Burned: 1.3%</span><span style="color:rgba(239,154,154,.7)">Budget: 0.5%</span></div>
+            <div style="font-family:var(--mono);font-size:8px;color:rgba(255,202,40,.5);margin-top:4px">⚠ Approaching budget limit — investigate APAC-East staleness impact</div>
+          </div>
+          <div class="od-slo-item">
+            <div class="od-slo-name">DLQ Failure Rate (7d)</div>
+            <div class="od-slo-current" style="color:#81C784">0 messages</div>
+            <div class="od-slo-gauge-wrap"><div class="od-slo-gauge" style="width:0%;background:#81C784"></div></div>
+            <div class="od-slo-vals"><span>0</span><span style="color:#81C784">Target: 0</span><span>10</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="od-footer">
+      <div class="od-footer-item"><div class="od-footer-dot" style="background:#81C784"></div>Pub/Sub: 3 topics active</div>
+      <div class="od-footer-item"><div class="od-footer-dot" style="background:#90CAF9"></div>Cloud Run: dg-agent · 2 instances</div>
+      <div class="od-footer-item"><div class="od-footer-dot" style="background:#CE93D8"></div>Feature Store: online serving ✓</div>
+      <div class="od-footer-item"><div class="od-footer-dot" style="background:#FFCA28"></div>ae_quarantine: 247 records · 2 pending</div>
+      <div class="od-footer-item"><div class="od-footer-dot" style="background:#81C784"></div>VPC-SC perimeter: europe-west3 · intact</div>
+      <div style="margin-left:auto;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15)" id="od-last-update">Last update: just now</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ap" id="demo">
+  <div class="s-ey">Interactive Demo</div>
+  <h2 class="s-h2">Three paths. <em>Every record goes somewhere. Nothing is silently lost.</em></h2>
+  <p class="s-p">Select a scenario and run the simulation. Watch records arrive via Pub/Sub, pass through the TFX validation pipeline, and route to their outcome. The schema violation scenario shows the full quarantine-then-review path with a data steward alert — click Reinstate to watch the records flow through to the Feature Store.</p>
+  <div class="demo-controls ap">
+    <div class="control-label">Scenario</div>
+    <div class="pill-group">
+      <div class="pill active" onclick="setScenario('clean')" id="pill-clean">Clean Record · Feature Store</div>
+      <div class="pill" onclick="setScenario('schema')" id="pill-schema">Schema Violation · Quarantine</div>
+      <div class="pill" onclick="setScenario('dlp')" id="pill-dlp">DLP Trigger · PII Hold</div>
+    </div>
+    <button class="run-btn" id="run-btn" onclick="runSim()">▶ Run Simulation</button>
+  </div>
+  <div class="demo-stage ap">
+    <div class="demo-left">
+      <div class="demo-col-header">
+        <div class="demo-col-title">Pub/Sub Ingestion Stream</div>
+        <div class="demo-col-badge badge-amber" id="stream-badge">IDLE</div>
+      </div>
+      <div class="ingest-stream" id="ingest-stream">
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;padding:32px">
+          <div style="font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.2);text-align:center">Select a scenario and press Run<br>to publish a record to ae-asset-events</div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-right">
+      <div class="demo-col-header">
+        <div class="demo-col-title">Validation Pipeline</div>
+        <div class="demo-col-badge badge-amber" id="pipeline-badge">READY</div>
+      </div>
+      <div class="validation-panel" id="validation-panel">
+        <div class="vnode" id="vn-pubsub"><div class="vn-icon">📡</div><div class="vn-label">Pub/Sub message received</div><div class="vn-result vr-idle" id="vr-pubsub">IDLE</div></div>
+        <div class="vnode" id="vn-dlp"><div class="vn-icon">🔍</div><div class="vn-label">DLP API scan</div><div class="vn-result vr-idle" id="vr-dlp">IDLE</div></div>
+        <div class="vnode" id="vn-tfx"><div class="vn-icon">🧪</div><div class="vn-label">TFX ExampleValidator · schema check</div><div class="vn-result vr-idle" id="vr-tfx">IDLE</div></div>
+        <div class="vnode" id="vn-quality"><div class="vn-icon">📊</div><div class="vn-label">Quality scorer · completeness + freshness</div><div class="vn-result vr-idle" id="vr-quality">IDLE</div></div>
+        <div class="vnode" id="vn-lineage"><div class="vn-icon">🏷️</div><div class="vn-label">Lineage tagger · event_id + schema_version</div><div class="vn-result vr-idle" id="vr-lineage">IDLE</div></div>
+        <div class="vnode" id="vn-output"><div class="vn-icon">✅</div><div class="vn-label">Feature Store write</div><div class="vn-result vr-idle" id="vr-output">IDLE</div></div>
+        <div class="vnode" id="vn-dlq" style="display:none;border-color:rgba(176,96,0,.3)"><div class="vn-icon">⚠️</div><div class="vn-label">Dead-Letter Topic · ae-dg-dlq</div><div class="vn-result vr-idle" id="vr-dlq">IDLE</div></div>
+      </div>
+      <div class="quarantine-path" id="quarantine-path">
+        <div class="qp-label">Quarantine Path Active</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(217,48,37,.5);line-height:1.6" id="qp-body">Writing to ae_quarantine...</div>
+      </div>
+      <div class="steward-alert" id="steward-alert">
+        <div class="sa-header">⚠ Data Steward Alert — P2</div>
+        <div class="sa-body" id="sa-body">Review quarantine queue</div>
+        <div class="sa-actions" id="sa-actions">
+          <div class="sa-btn sa-btn-reinstate" onclick="reinstate()">✓ Approve Mapping + Reinstate</div>
+          <div class="sa-btn sa-btn-discard" onclick="discard()">✗ Discard + Tombstone</div>
+        </div>
+      </div>
+      <div class="dlq-path" id="dlq-path">
+        <div class="dlq-label">⚠ Dead-Letter Queue · Processing Failure</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(176,96,0,.6);line-height:1.6" id="dlq-body">Message routed to ae-dg-dlq after max delivery attempts exceeded.</div>
+        <div style="font-family:var(--mono);font-size:9px;color:rgba(176,96,0,.4);margin-top:6px">P2 alert fired · on-call notified · retry budget: 5 attempts · backoff: 30s/2min/10min/30min/60min</div>
+      </div>
+      <div class="feature-store" id="feature-store">
+        <div class="fs-label">Vertex AI Feature Store · new record written</div>
+        <div class="fs-fields" id="fs-fields"></div>
+      </div>
+    </div>
+  </div>
+  <div class="demo-metrics ap">
+    <div class="dm"><div class="dm-label">Source Region</div><div class="dm-value" id="m-region" style="color:var(--text-3);font-size:14px">—</div><div class="dm-sub">Pub/Sub origin</div></div>
+    <div class="dm"><div class="dm-label">Validation Result</div><div class="dm-value" id="m-result" style="color:var(--text-3);font-size:12px">—</div><div class="dm-sub">TFX outcome</div></div>
+    <div class="dm"><div class="dm-label">Quality Score</div><div class="dm-value" id="m-quality" style="color:var(--text-3)">—</div><div class="dm-sub">0–1 threshold: 0.85</div></div>
+    <div class="dm"><div class="dm-label">Lineage Tagged</div><div class="dm-value" id="m-lineage" style="color:var(--text-3);font-size:12px">—</div><div class="dm-sub">EU AI Act Art. 11</div></div>
+  </div>
+</section>
+
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>AE Platform Navigation</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">This is where<br><strong>the platform begins.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">Data Governance is the H1 prerequisite. Deployment order: <strong style="font-weight:500;color:rgba(245,240,232,.7)">M-08 (H1 · PI-1)</strong> → M-06 GreenOps (H3 · PI-7) → M-07 Strategy Dashboard (H3 · PI-8). No suite can operate on the AE Platform until the 6-region canonical schema is validated and the Feature Store lineage pipeline is live.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="greenops.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(19,115,51,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(19,115,51,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(19,115,51,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);letter-spacing:.07em">M-06</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">GreenOps Platform →</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Carbon-aware scheduling for all AE workloads · H3 · PI-7</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="strategy-dashboard.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(26,115,232,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(26,115,232,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(26,115,232,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--blue);letter-spacing:.07em">M-07</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Strategy Dashboard →</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">All suites · all signals · one screen · H3 · PI-8</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-09.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold-lt);letter-spacing:.07em">PG 09</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Platform Index</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+<footer><div class="ft-brand">The <em>Autonomous</em> Enterprise</div><div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2)">© 2026 Siddharth Rao</div></footer>
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['context','schema','architecture','statemachine','steward','adrs','rebuttals','ops-dashboard','demo'];
+const sio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);if(link)link.classList.add('act');}});},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+
+// ── Ops Dashboard live data ─────────────────────────────────────────
+const regions=[
+  {name:'EMEA-North',pass:2841,total:2841,color:'#81C784'},
+  {name:'EMEA-West', pass:2514,total:2520,color:'#81C784'},
+  {name:'APAC-East', pass:1980,total:2227,color:'#EF9A9A'},
+  {name:'APAC-South',pass:2601,total:2618,color:'#81C784'},
+  {name:'AMER-East', pass:2342,total:2350,color:'#81C784'},
+  {name:'AMER-West', pass:2340,total:2356,color:'#A5D6A7'},
+];
+const quarantineQueue=[
+  {id:'asst_ae_0315',region:'APAC-East', type:'SCHEMA',  records:847,age:'2h 14m',status:'PENDING'},
+  {id:'asst_ew_0088',region:'EMEA-West', type:'DLP HOLD',records:6,  age:'0h 31m',status:'PENDING'},
+  {id:'asst_as_0201',region:'APAC-South',type:'SCHEMA',  records:17, age:'5h 02m',status:'RESOLVED'},
+  {id:'asst_ae_0288',region:'APAC-East', type:'SCHEMA',  records:112,age:'1d 03h', status:'DISCARDED'},
+];
+function renderPipeline(){
+  const el=document.getElementById('od-pipeline-list');if(!el)return;
+  el.innerHTML=regions.map(rg=>{
+    const pct=Math.round(rg.pass/rg.total*100);
+    const bad=rg.color==='#EF9A9A';
+    return `<div class="od-pipe-row"><div class="od-pipe-region">${rg.name}</div><div class="od-pipe-bar-wrap"><div class="od-pipe-bar" style="width:${pct}%;background:${rg.color}"></div></div><div class="od-pipe-pct" style="color:${rg.color}">${pct}%</div><div style="font-family:var(--mono);font-size:8px;padding:1px 5px;background:${bad?'rgba(217,48,37,.15)':'rgba(19,115,51,.12)'};color:${rg.color}">${rg.pass.toLocaleString()}/${rg.total.toLocaleString()}</div></div>`;
+  }).join('');
+}
+function renderQuarantine(){
+  const el=document.getElementById('od-quarantine-list');if(!el)return;
+  el.innerHTML=quarantineQueue.map(q=>{
+    const isSchema=q.type==='SCHEMA';const isPending=q.status==='PENDING';
+    const tc=isSchema?'#EF9A9A':'#FFCA28';const bc=isSchema?'rgba(217,48,37,.15)':'rgba(176,96,0,.15)';
+    const sc2=isPending?'rgba(176,96,0,.2)':'rgba(255,255,255,.05)';const stc=isPending?'#FFCA28':'rgba(255,255,255,.2)';
+    return `<div class="od-q-row" style="border-color:${isPending?'rgba(217,48,37,.2)':'rgba(255,255,255,.04)'}"><div class="od-q-top"><div class="od-q-id">${q.id}</div><div class="od-q-badge" style="background:${bc};color:${tc}">${q.type}</div><div class="od-q-badge" style="background:${sc2};color:${stc};margin-left:4px">${q.status}</div></div><div class="od-q-meta">${q.region} · ${q.records} records · age: ${q.age}</div></div>`;
+  }).join('');
+}
+let totalCount=14892,passCount=14618,latency=312;
+function tickDashboard(){
+  const delta=Math.floor(Math.random()*8)+1;
+  const passDelta=Math.random()>.04?delta:Math.max(0,delta-1);
+  totalCount+=delta;passCount+=passDelta;
+  latency=Math.max(180,Math.min(490,latency+(Math.random()*30-15)));
+  const kT=document.getElementById('kpi-total'),kP=document.getElementById('kpi-pass'),kPct=document.getElementById('kpi-pass-pct'),kL=document.getElementById('kpi-latency'),kSL=document.getElementById('slo-latency'),odLast=document.getElementById('od-last-update');
+  if(kT)kT.textContent=totalCount.toLocaleString();
+  if(kP)kP.textContent=passCount.toLocaleString();
+  if(kPct)kPct.textContent=(passCount/totalCount*100).toFixed(1)+'% pass rate';
+  if(kL){const lms=Math.round(latency);kL.textContent=lms+'ms';kL.style.color=lms<400?'#90CAF9':'#FFCA28';}
+  if(kSL)kSL.textContent=Math.round(latency)+'ms';
+  if(odLast){const now=new Date();odLast.textContent='Last update: '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' UTC';}
+  const spark=document.getElementById('spark-total');
+  if(spark){const pts=spark.getAttribute('points').split(' ').map(p=>p.split(','));pts.shift();const lY=+pts[pts.length-1][1];pts.push(['0',Math.max(2,Math.min(18,lY+(Math.random()*4-2))).toFixed(1)]);pts.forEach((p,i)=>{p[0]=String(i*13)});spark.setAttribute('points',pts.map(p=>p.join(',')).join(' '));}
+}
+renderPipeline();renderQuarantine();setInterval(tickDashboard,3000);
+
+// ── Live Demo ───────────────────────────────────────────────────────
+let scenario='clean',simRunning=false,awaitingSteward=false,isDLPScenario=false;
+const wait=ms=>new Promise(res=>setTimeout(res,ms));
+const SC={
+  clean:{region:'EMEA-North',schemaVer:'v2.0',eventId:'asst_en_0001',tfxResult:'PASS',quality:0.94,quarantine:false,dlp:false},
+  schema:{region:'APAC-East',schemaVer:'v2.1 (unregistered)',eventId:'asst_ae_0315',tfxResult:'FAIL',quality:null,quarantine:true,dlp:false},
+  dlp:{region:'EMEA-West',schemaVer:'v2.0',eventId:'asst_ew_0088',tfxResult:null,quality:null,quarantine:false,dlp:true}
+};
+function setScenario(s){if(simRunning||awaitingSteward)return;scenario=s;['clean','schema','dlp'].forEach(k=>document.getElementById('pill-'+k).classList.toggle('active',k===s));resetSim();}
+function resetNodes(){
+  ['pubsub','dlp','tfx','quality','lineage','output'].forEach(n=>{
+    document.getElementById('vn-'+n).className='vnode';
+    const rv=document.getElementById('vr-'+n);rv.className='vn-result vr-idle';rv.textContent='IDLE';
+  });
+  document.getElementById('vn-dlq').style.display='none';
+}
+function resetSim(){
+  resetNodes();
+  document.getElementById('ingest-stream').innerHTML='<div style="display:flex;align-items:center;justify-content:center;flex:1;padding:32px"><div style="font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.2);text-align:center">Select a scenario and press Run</div></div>';
+  ['quarantine-path','steward-alert','feature-store','dlq-path'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('stream-badge').textContent='IDLE';
+  document.getElementById('pipeline-badge').textContent='READY';
+  ['m-region','m-result','m-quality','m-lineage'].forEach(id=>{const el=document.getElementById(id);el.textContent='—';el.style.color='var(--text-3)';el.style.fontSize='';});
+  document.getElementById('run-btn').textContent='▶ Run Simulation';
+  document.getElementById('run-btn').disabled=false;
+  document.getElementById('sa-actions').innerHTML=`<div class="sa-btn sa-btn-reinstate" onclick="reinstate()">✓ Approve Mapping + Reinstate</div><div class="sa-btn sa-btn-discard" onclick="discard()">✗ Discard + Tombstone</div>`;
+  awaitingSteward=false;isDLPScenario=false;
+}
+function addRecord(sc){
+  const stream=document.getElementById('ingest-stream');stream.innerHTML='';
+  const cls=sc.quarantine?'quarantine':sc.dlp?'dlp':'valid';
+  const stLabel=sc.quarantine?'SCHEMA VIOLATION':sc.dlp?'DLP FLAG':'VALID';
+  const stCls=sc.quarantine?'st-q':sc.dlp?'st-d':'st-v';
+  const card=document.createElement('div');
+  card.className='record-card '+cls;
+  card.innerHTML=`<div class="rc-top"><div class="rc-region">${sc.region}</div><div class="rc-status ${stCls}">${stLabel}</div></div><div class="rc-meta">event_id: <strong style="color:rgba(255,255,255,.4)">${sc.eventId}</strong><br>schema_version: <strong style="color:rgba(255,255,255,.4)">${sc.schemaVer}</strong><br>source: ae-asset-events</div>`;
+  stream.appendChild(card);
+}
+function setNode(id,state,text,cls){
+  document.getElementById('vn-'+id).className='vnode '+state;
+  const rv=document.getElementById('vr-'+id);rv.className='vn-result '+cls;rv.textContent=text;
+}
+async function runSim(){
+  if(simRunning||awaitingSteward)return;simRunning=true;isDLPScenario=false;
+  document.getElementById('run-btn').disabled=true;
+  const sc=SC[scenario];
+  document.getElementById('stream-badge').textContent='ACTIVE';
+  document.getElementById('pipeline-badge').textContent='RUNNING';
+  document.getElementById('m-region').textContent=sc.region;
+  document.getElementById('m-region').style.color='var(--amber)';
+  document.getElementById('vn-dlq').style.display='none';
+  document.getElementById('dlq-path').style.display='none';
+  addRecord(sc);await wait(500);
+  setNode('pubsub','active','RECEIVING','vr-idle');await wait(600);setNode('pubsub','pass','RECEIVED','vr-pass');
+  setNode('dlp','active','SCANNING','vr-idle');await wait(700);
+  if(sc.dlp){
+    isDLPScenario=true;
+    setNode('dlp','fail','PII DETECTED','vr-fail');await wait(500);
+    document.getElementById('quarantine-path').style.display='block';
+    document.getElementById('qp-body').textContent='DLP API detected PERSON_NAME + EMAIL_ADDRESS in free_text_notes.\nWriting to ae_quarantine (DLP_HOLD). Raw record preserved — PII not yet redacted.\nAudit entry: ae_governance.dlp_remediation_log';
+    document.getElementById('steward-alert').style.display='block';
+    document.getElementById('sa-body').textContent='Record '+sc.eventId+' · DLP HOLD · '+sc.region+'\nPII detected: PERSON_NAME, EMAIL_ADDRESS in free_text_notes.\nAction required: Redact detected fields, then reinstate — or discard.\n⚠ Reinstate-as-is unavailable for DLP holds (GDPR Art. 5(1)(c)).';
+    document.getElementById('sa-actions').innerHTML=`<div class="sa-btn sa-btn-redact" onclick="redactReinstate()">✦ Redact PII Fields + Reinstate</div><div class="sa-btn sa-btn-discard" onclick="discard()">✗ Discard + Tombstone</div>`;
+    document.getElementById('m-result').textContent='DLP HOLD';document.getElementById('m-result').style.color='var(--amber)';
+    document.getElementById('m-quality').textContent='N/A';document.getElementById('m-lineage').textContent='PENDING';
+    awaitingSteward=true;simRunning=false;
+    document.getElementById('run-btn').disabled=false;document.getElementById('run-btn').textContent='↺ Run again';
+    document.getElementById('pipeline-badge').textContent='AWAITING STEWARD';return;
+  } else {setNode('dlp','pass','CLEAN','vr-pass');}
+  setNode('tfx','active','VALIDATING','vr-idle');await wait(800);
+  if(sc.quarantine){
+    setNode('tfx','fail','SCHEMA FAIL','vr-fail');await wait(500);
+    document.getElementById('quarantine-path').style.display='block';
+    document.getElementById('qp-body').textContent='SCHEMA VIOLATION · event_timestamp STRING ≠ TIMESTAMP · new field optical_sensor_temp_c\nWriting to ae_quarantine · P2 alert fired.';
+    document.getElementById('m-result').textContent='QUARANTINED';document.getElementById('m-result').style.color='var(--red)';
+    document.getElementById('m-quality').textContent='N/A';
+    document.getElementById('steward-alert').style.display='block';
+    document.getElementById('sa-body').textContent='847 records quarantined · APAC-East · Schema v2.1\nViolations: event_timestamp type mismatch · new field optical_sensor_temp_c\nMapping rule v2.1_APAC_EAST pending approval.';
+    document.getElementById('sa-actions').innerHTML=`<div class="sa-btn sa-btn-reinstate" onclick="reinstate()">✓ Approve Mapping + Reinstate</div><div class="sa-btn sa-btn-discard" onclick="discard()">✗ Discard + Tombstone</div>`;
+    awaitingSteward=true;simRunning=false;
+    document.getElementById('run-btn').disabled=false;document.getElementById('run-btn').textContent='↺ Run again';
+    document.getElementById('pipeline-badge').textContent='AWAITING STEWARD';document.getElementById('m-lineage').textContent='BLOCKED';return;
+  } else {setNode('tfx','pass','PASS v2.0','vr-pass');}
+  setNode('quality','active','SCORING','vr-idle');await wait(700);setNode('quality','pass',sc.quality,'vr-pass');
+  document.getElementById('m-result').textContent='VALID';document.getElementById('m-result').style.color='var(--green)';
+  document.getElementById('m-quality').textContent=sc.quality;document.getElementById('m-quality').style.color='var(--green)';
+  setNode('lineage','active','TAGGING','vr-idle');await wait(700);setNode('lineage','pass','TAGGED','vr-pass');
+  document.getElementById('m-lineage').textContent='YES';document.getElementById('m-lineage').style.color='var(--green)';
+  setNode('output','active','WRITING','vr-idle');await wait(800);setNode('output','pass','WRITTEN','vr-pass');
+  document.getElementById('feature-store').style.display='block';
+  document.getElementById('fs-fields').innerHTML=`<div class="fs-field">entity_id: <strong>EMEA-N-MCH-0042</strong></div><div class="fs-field">event_id: <strong>${sc.eventId}</strong></div><div class="fs-field">schema_version: <strong>v2.0</strong></div><div class="fs-field">quality_score: <strong>${sc.quality}</strong></div><div class="fs-field">source_region: <strong>${sc.region}</strong></div><div class="fs-field">lineage_ref: <strong>${sc.eventId}</strong></div><div class="fs-field">eu_ai_act_art11: <strong style="color:#CE93D8">provenance_chain_complete</strong></div>`;
+  document.getElementById('stream-badge').textContent='COMPLETE';document.getElementById('pipeline-badge').textContent='DONE';
+  simRunning=false;document.getElementById('run-btn').disabled=false;document.getElementById('run-btn').textContent='↺ Run again';
+}
+async function redactReinstate(){
+  if(!awaitingSteward)return;awaitingSteward=false;
+  document.getElementById('steward-alert').style.display='none';document.getElementById('quarantine-path').style.display='none';
+  const sc=SC[scenario];
+  setNode('dlp','pass','PII REDACTED','vr-pass');await wait(400);
+  setNode('tfx','active','VALIDATING (post-redact)','vr-idle');await wait(600);setNode('tfx','pass','PASS v2.0','vr-pass');await wait(400);
+  setNode('quality','active','SCORING','vr-idle');await wait(600);setNode('quality','pass','0.91','vr-pass');await wait(400);
+  setNode('lineage','active','TAGGING (dlp ref)','vr-idle');await wait(600);setNode('lineage','pass','TAGGED + DLP_REF','vr-pass');await wait(400);
+  setNode('output','active','WRITING','vr-idle');await wait(700);setNode('output','pass','REINSTATED','vr-pass');
+  document.getElementById('feature-store').style.display='block';
+  document.getElementById('fs-fields').innerHTML=`<div class="fs-field">entity_id: <strong>EMEA-W-MCH-0088</strong></div><div class="fs-field">event_id: <strong>${sc.eventId}</strong></div><div class="fs-field">free_text_notes: <strong style="color:#FFCA28">[REDACTED · PERSON_NAME, EMAIL_ADDRESS]</strong></div><div class="fs-field">quality_score: <strong>0.91</strong></div><div class="fs-field">dlp_ref: <strong style="color:#FFCA28">${sc.eventId}_dlp_001</strong></div><div class="fs-field">eu_ai_act_art11: <strong style="color:#CE93D8">provenance_chain_complete</strong></div><div class="fs-field">gdpr_art5: <strong style="color:#81C784">data_minimisation_applied</strong></div>`;
+  document.getElementById('m-result').textContent='REINSTATED (REDACTED)';document.getElementById('m-result').style.color='var(--green)';
+  document.getElementById('m-quality').textContent='0.91';document.getElementById('m-quality').style.color='var(--green)';
+  document.getElementById('m-lineage').textContent='YES + DLP_REF';document.getElementById('m-lineage').style.color='var(--green)';
+  document.getElementById('pipeline-badge').textContent='REINSTATED';
+}
+async function reinstate(){
+  if(!awaitingSteward)return;awaitingSteward=false;
+  document.getElementById('steward-alert').style.display='none';document.getElementById('quarantine-path').style.display='none';
+  const sc=SC[scenario];
+  setNode('tfx','pass','PASS v2.1 (mapped)','vr-pass');await wait(400);
+  setNode('quality','active','SCORING','vr-idle');await wait(600);setNode('quality','pass','0.93','vr-pass');await wait(400);
+  setNode('lineage','active','TAGGING (mapping ref)','vr-idle');await wait(600);setNode('lineage','pass','TAGGED + MAPPING','vr-pass');await wait(400);
+  setNode('output','active','WRITING','vr-idle');await wait(700);setNode('output','pass','REINSTATED','vr-pass');
+  document.getElementById('feature-store').style.display='block';
+  document.getElementById('fs-fields').innerHTML=`<div class="fs-field">entity_id: <strong>APAC-E-MCH-0091</strong></div><div class="fs-field">event_id: <strong>${sc.eventId}</strong></div><div class="fs-field">schema_version: <strong>v2.1 (mapping v2.1_APAC_EAST)</strong></div><div class="fs-field">quality_score: <strong>0.93</strong></div><div class="fs-field">status: <strong style="color:#81C784">REINSTATED</strong></div><div class="fs-field">eu_ai_act_art11: <strong style="color:#CE93D8">provenance_chain_complete</strong></div><div class="fs-field">ae_schemas: <strong style="color:#FFCA28">updated to v2.1</strong></div>`;
+  document.getElementById('m-result').textContent='REINSTATED';document.getElementById('m-result').style.color='var(--green)';
+  document.getElementById('m-quality').textContent='0.93';document.getElementById('m-quality').style.color='var(--green)';
+  document.getElementById('m-lineage').textContent='YES + MAPPING';document.getElementById('m-lineage').style.color='var(--green)';
+  document.getElementById('pipeline-badge').textContent='REINSTATED';
+}
+function discard(){
+  if(!awaitingSteward)return;awaitingSteward=false;
+  document.getElementById('steward-alert').style.display='none';
+  document.getElementById('quarantine-path').innerHTML='<div class="qp-label">Discard · Audit Tombstone Written</div><div style="font-family:var(--mono);font-size:10px;color:rgba(217,48,37,.5);line-height:1.6">Records permanently discarded. Audit tombstone written to ae_governance.discard_log with: event_ids, steward_id, discard_reason, timestamp.</div>';
+  document.getElementById('quarantine-path').style.display='block';
+  document.getElementById('m-result').textContent='DISCARDED';document.getElementById('m-result').style.color='var(--red)';
+  document.getElementById('m-lineage').textContent='TOMBSTONE';document.getElementById('pipeline-badge').textContent='DISCARDED';
+}
+</script>
+</body>
+</html>

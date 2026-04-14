@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenOps Platform — M-06 · AE Platform Layer · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
+  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
+  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
+  --border:#DADCE0;--border-2:#E8EAED;
+  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
+  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
+  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
+  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
+  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
+  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
+  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
+  --col:56px;
+}
+body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
+#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
+body:has(a:hover) #cur{width:13px;height:13px}
+body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
+.mn-l{display:flex;align-items:center;gap:14px}
+.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
+.mn-sep{width:1px;height:14px;background:var(--border)}
+.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
+.mn-r{display:flex;align-items:center;gap:20px}
+.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
+.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
+.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
+.phdr::before{content:'M06';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;line-height:1;pointer-events:none;user-select:none}
+.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
+.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
+.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
+.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
+.ph-tag-green{background:#E6F4EA;color:#0D5226}
+.ph-tag-blue{background:#E8F0FE;color:#1557B0}
+.ph-tag-teal{background:#E4F7F7;color:#005F67}
+.ph-tag-amber{background:#FEF3E2;color:#7A4100}
+.ph-tag-purple{background:#EDE7F6;color:#3700B3}
+.sec{padding:64px var(--col);background:var(--surface)}
+.sec.w{background:var(--white)}
+.sec.dk{background:var(--ink);padding:64px var(--col)}
+.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
+.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.te{color:var(--teal)}.s-ey.pu{color:var(--purple)}.s-ey.re{color:var(--red)}
+.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
+.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
+.s-h2 strong{font-weight:600}.s-h2 em{font-style:italic;color:var(--gold)}
+.sec.dk .s-h2{color:var(--cream)}
+.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
+.sec.dk .s-p{color:rgba(245,240,232,.5)}
+.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.ap.in{opacity:1;transform:none}
+.dw{background:var(--white);border:1px solid var(--border);padding:32px;margin-top:4px}
+.dw.dk{background:var(--ink-2);border:1px solid rgba(255,255,255,.07)}
+.dw-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.dw-title::before{content:'';width:3px;height:14px;display:block;flex-shrink:0}
+.dw .dw-title{color:var(--text)}.dw .dw-title::before{background:var(--green)}
+.dw.dk .dw-title{color:var(--cream)}.dw.dk .dw-title::before{background:var(--gold-lt)}
+.dw-sub{font-family:var(--mono);font-size:11px;margin-bottom:20px}
+.dw .dw-sub{color:var(--text-3)}.dw.dk .dw-sub{color:rgba(245,240,232,.35)}
+.dw-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:14px}
+.dw .dw-legend{border-top:1px solid var(--border-2)}.dw.dk .dw-legend{border-top:1px solid rgba(255,255,255,.06)}
+.dl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.dw .dl{color:var(--text-2)}.dw.dk .dl{color:rgba(245,240,232,.4)}
+.dl-box{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.esg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
+.esg-card{border:1px solid var(--border);padding:20px;background:var(--white)}
+.esg-card.green{border-top:3px solid var(--green)}.esg-card.blue{border-top:3px solid var(--blue)}.esg-card.teal{border-top:3px solid var(--teal)}.esg-card.amber{border-top:3px solid var(--amber)}
+.esg-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.esg-value{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:4px}
+.esg-card.green .esg-value{color:var(--green)}.esg-card.blue .esg-value{color:var(--blue)}.esg-card.teal .esg-value{color:var(--teal)}.esg-card.amber .esg-value{color:var(--amber)}
+.esg-sub{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.ci-chart{background:var(--surface-2);border:1px solid var(--border);padding:20px;margin-top:4px}
+.ci-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.job-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;margin-top:4px}
+.job-table th{background:var(--surface-2);color:var(--text-3);font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.job-table td{padding:9px 12px;border-bottom:1px solid var(--border-2);color:var(--text-2);vertical-align:top;line-height:1.5}
+.job-table tr:last-child td{border-bottom:none}.job-table tr:hover td{background:var(--surface-2)}
+.defer-yes{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226}
+.defer-no{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#FCE8E6;color:#A50E0E}
+.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
+.adr.gr{border-left:4px solid var(--green)}.adr.bl{border-left:4px solid var(--blue)}
+.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.adr.gr .adr-id{color:var(--green)}.adr.bl .adr-id{color:var(--blue)}
+.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
+.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
+.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.rb{background:var(--white);border:1px solid var(--border);padding:26px;border-top:3px solid var(--border)}
+.rb.cto{border-top-color:var(--purple)}.rb.cfo{border-top-color:var(--green)}.rb.cco{border-top-color:var(--red)}.rb.ea{border-top-color:var(--blue)}
+.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rb.cto .rb-who{color:var(--purple)}.rb.cfo .rb-who{color:var(--green)}.rb.cco .rb-who{color:var(--red)}.rb.ea .rb-who{color:var(--blue)}
+.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
+.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
+.rb-rl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rb-r{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
+.rb-ev{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
+.rb.cto .rb-ev{background:var(--purple-lt);color:var(--purple-dk)}.rb.cfo .rb-ev{background:var(--green-lt);color:var(--green-dk)}.rb.cco .rb-ev{background:var(--red-lt);color:var(--red-dk)}.rb.ea .rb-ev{background:var(--blue-lt);color:var(--blue-dk)}
+.demo-steps{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.ds{background:var(--white);border:1px solid var(--border);padding:20px 24px;display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
+.ds-num{font-family:var(--display);font-size:28px;font-weight:800;color:var(--border);line-height:1;padding-top:2px}
+.ds.active .ds-num{color:var(--green)}.ds.defer-step .ds-num{color:var(--amber)}.ds.dispatch-step .ds-num{color:var(--green)}
+.ds-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px;color:var(--text-3)}
+.ds.active .ds-label{color:var(--green)}.ds.defer-step .ds-label{color:var(--amber)}.ds.dispatch-step .ds-label{color:var(--green)}
+.ds-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.ds-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.7}
+.ds-say{margin-top:10px;padding:8px 12px;background:var(--surface-2);border-left:2px solid var(--border);font-family:var(--serif);font-size:13px;font-style:italic;color:var(--text-2);line-height:1.6}
+.ds.defer-step .ds-say{background:var(--amber-lt);border-left-color:var(--amber);color:var(--amber-dk);font-style:normal;font-family:var(--mono);font-size:11px}
+.ds.dispatch-step .ds-say{background:var(--green-lt);border-left-color:var(--green);color:var(--green-dk);font-style:normal;font-family:var(--mono);font-size:11px}
+.ds-services{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.ds-svc{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226}
+footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}.ft-brand em{font-style:italic;color:var(--gold)}
+@media(max-width:1100px){:root{--col:32px}}
+@media(max-width:860px){:root{--col:22px}.rebuttal-grid{grid-template-columns:1fr}.esg-grid{grid-template-columns:1fr 1fr}.mn-r .mn-link{display:none}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav class="mnav">
+  <div class="mn-l">
+    <a href="page-09.html" class="mn-back">← Platform Index</a>
+    <div class="mn-sep"></div>
+    <div class="mn-crumb">AE Platform &nbsp;/&nbsp; <strong>M-06 · GreenOps Platform</strong></div>
+  </div>
+  <div class="mn-r">
+    <a href="page-09.html" class="mn-link">← Index</a>
+    <a href="strategy-dashboard.html" class="mn-link">M-07 Dashboard →</a>
+    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
+  </div>
+</nav>
+<nav class="snav" id="snav">
+  <a href="#context" class="sn act" data-sec="context">System Context</a>
+  <a href="#containers" class="sn" data-sec="containers">Containers</a>
+  <a href="#architecture" class="sn" data-sec="architecture">Architecture</a>
+  <a href="#statemachine" class="sn" data-sec="statemachine">State Machine</a>
+  <a href="#dataflow" class="sn" data-sec="dataflow">Data Flow</a>
+  <a href="#esg" class="sn" data-sec="esg">ESG Metrics</a>
+  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
+  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
+  <a href="#demo" class="sn" data-sec="demo">Demo Pathway</a>
+  <a href="#dashboard" class="sn" data-sec="dashboard">Dashboard</a>
+</nav>
+
+<header class="phdr">
+  <div class="ph-bc">The Autonomous Enterprise · AE Platform Layer · M-06</div>
+  <h1 class="ph-h1">GreenOps Platform<br><em>Carbon-Aware Scheduling</em><br><strong>— Defer when the grid is dirty. Dispatch when it's clean.</strong></h1>
+  <p class="ph-sub">GreenOps is a cross-cutting platform service — it shifts every flexible AE workload from every domain suite to low-carbon grid windows without touching a single domain module. Hard-deadline jobs are never deferred. All carbon savings are auditable to the job level and exported as CSRD Scope 3 Category 11 emissions data, shared across the entire platform.</p>
+  <div class="ph-tags">
+    <span class="ph-tag ph-tag-green">Carbon-aware scheduling · ±6h window</span>
+    <span class="ph-tag ph-tag-blue">GCP Carbon Footprint API</span>
+    <span class="ph-tag ph-tag-teal">GKE Autopilot · Cloud Scheduler</span>
+    <span class="ph-tag ph-tag-amber">CSRD Scope 3 · EU taxonomy</span>
+    <span class="ph-tag ph-tag-purple">AE Platform · H3 · PI-7 · Minimal Risk</span>
+  </div>
+</header>
+
+<!-- §01 SYSTEM CONTEXT -->
+<section class="sec w ap" id="context">
+  <div class="s-ey gr">System Context — C4 Level 1</div>
+  <h2 class="s-h2">Carbon intensity in. <em>Optimal dispatch time out.</em> No humans required.</h2>
+  <p class="s-p">GreenOps is the only AE Platform service with no HITL checkpoint and no human decision path. Scheduling decisions are fully autonomous within the ±6 hour deferral window. It serves all domain suites equally — the Autonomous Seller, Autonomous HR, and every suite that follows. The CTO and sustainability team are consumers of GreenOps output (the ESG metrics dashboard and Strategy Dashboard feed), not participants in its decisions.</p>
+  <div class="dw ap" role="img" aria-label="GreenOps system context C4 Level 1. Inputs: GCP Carbon Footprint API, Cloud Scheduler from all domain suites. GreenOps boundary: carbon intensity forecaster, scheduling decision engine, job dispatcher, ESG metrics writer. Outputs: GKE Autopilot dispatch, BigQuery ESG metrics, CSRD Scope 3 export. No human decision path.">
+    <div class="dw-title">GreenOps Platform — System Context (C4 Level 1)</div>
+    <div class="dw-sub">Fully autonomous within ±6h window · no HITL · hard-deadline jobs never deferred · CSRD audit trail per job · serves all AE domain suites</div>
+    <svg width="100%" viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="ctx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="270" y="60" width="320" height="210" rx="8" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="430" y="88" font-size="12" font-weight="700" fill="#0D5226" text-anchor="middle">GreenOps Platform</text>
+      <text x="430" y="104" font-size="9" fill="#137333" text-anchor="middle">M-06 · AE Platform Layer · H3</text>
+      <text x="430" y="122" font-size="9" fill="#0D5226" text-anchor="middle">Carbon intensity forecaster</text>
+      <text x="430" y="136" font-size="9" fill="#0D5226" text-anchor="middle">Scheduling decision engine</text>
+      <text x="430" y="150" font-size="9" fill="#0D5226" text-anchor="middle">Job dispatcher (GKE Autopilot)</text>
+      <text x="430" y="164" font-size="9" fill="#0D5226" text-anchor="middle">ESG metrics writer</text>
+      <text x="430" y="182" font-size="8" fill="#137333" text-anchor="middle">Cloud Run · BigQuery · Cloud Scheduler</text>
+      <text x="430" y="196" font-size="8" fill="#137333" text-anchor="middle">No HITL · No ML inference · Minimal Risk</text>
+      <text x="430" y="210" font-size="8" fill="#137333" text-anchor="middle">Hard-deadline jobs: NEVER deferred</text>
+      <text x="430" y="224" font-size="8" fill="#137333" text-anchor="middle">Flexible jobs: ±6h window from submission</text>
+      <text x="430" y="242" font-size="8" fill="#137333" text-anchor="middle">europe-west3 · always-on · all domain suites</text>
+      <rect x="20" y="40" width="190" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="115" y="64" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">GCP Carbon Footprint API</text>
+      <text x="115" y="78" font-size="8" fill="#137333" text-anchor="middle">grid intensity · europe-west3</text>
+      <text x="115" y="91" font-size="8" fill="#0D5226" text-anchor="middle">gCO₂eq/kWh · 12h forecast</text>
+      <line x1="210" y1="70" x2="270" y2="150" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="20" y="140" width="190" height="60" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="115" y="164" font-size="11" font-weight="700" fill="#1557B0" text-anchor="middle">Cloud Scheduler</text>
+      <text x="115" y="178" font-size="8" fill="#1A73E8" text-anchor="middle">All AE domain suite batch jobs</text>
+      <text x="115" y="191" font-size="8" fill="#1557B0" text-anchor="middle">flexibility_window: flexible | hard</text>
+      <line x1="210" y1="170" x2="270" y2="160" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="40" width="185" height="72" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="742" y="66" font-size="11" font-weight="700" fill="#3700B3" text-anchor="middle">GKE Autopilot</text>
+      <text x="742" y="80" font-size="9" fill="#6200EE" text-anchor="middle">Job dispatch at optimal window</text>
+      <text x="742" y="93" font-size="8" fill="#3700B3" text-anchor="middle">Low-carbon window confirmed</text>
+      <text x="742" y="105" font-size="8" fill="#3700B3" text-anchor="middle">All AE domain suite ML batch jobs</text>
+      <line x1="590" y1="160" x2="650" y2="76" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="150" width="185" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="742" y="174" font-size="11" font-weight="700" fill="#0D5226" text-anchor="middle">BigQuery ESG Metrics</text>
+      <text x="742" y="188" font-size="8" fill="#137333" text-anchor="middle">ae_greenops.job_metrics</text>
+      <text x="742" y="200" font-size="8" fill="#0D5226" text-anchor="middle">kgCO₂eq saved per job · CSRD</text>
+      <line x1="590" y1="180" x2="650" y2="180" stroke="#137333" stroke-width="1.5" marker-end="url(#ctx)"/>
+      <rect x="650" y="250" width="185" height="52" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1"/>
+      <text x="742" y="274" font-size="11" font-weight="700" fill="#7A4100" text-anchor="middle">CSRD Scope 3 Export</text>
+      <text x="742" y="288" font-size="8" fill="#B06000" text-anchor="middle">Category 11 · EU taxonomy</text>
+      <text x="742" y="300" font-size="8" fill="#7A4100" text-anchor="middle">Platform-wide sustainability report</text>
+      <line x1="590" y1="220" x2="742" y2="250" stroke="#B06000" stroke-width="1.5" marker-end="url(#ctx)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:2px solid #137333"></div>GreenOps boundary (AE Platform)</div>
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:1.5px solid #137333"></div>Carbon API + BigQuery ESG</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1.5px solid #6200EE"></div>GKE Autopilot dispatch</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:1px solid #B06000"></div>CSRD export</div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px">Deferral Eligibility — AE Platform Batch Jobs (Representative — All Domain Suites)</div>
+    <table class="job-table">
+      <thead><tr><th>Job</th><th>Suite / Module</th><th>Schedule</th><th>Deadline type</th><th>Max deferral</th><th>Eligible for carbon deferral?</th></tr></thead>
+      <tbody>
+        <tr><td>Weekly model retraining (RevRec AI)</td><td>AS Suite · M-03</td><td>Sundays 02:00 UTC</td><td>Soft — weekly freshness</td><td>±6 hours</td><td><span class="defer-yes">✓ Deferrable</span></td></tr>
+        <tr><td>Weekly model retraining (Asset IQ RUL)</td><td>AS Suite · M-05</td><td>Sundays 03:00 UTC</td><td>Soft — weekly freshness</td><td>±6 hours</td><td><span class="defer-yes">✓ Deferrable</span></td></tr>
+        <tr><td>Weekly model retraining (ContractGuard)</td><td>AS Suite · M-02</td><td>Sundays 04:00 UTC</td><td>Soft — weekly freshness</td><td>±6 hours</td><td><span class="defer-yes">✓ Deferrable</span></td></tr>
+        <tr><td>Daily feature pipeline backfill</td><td>AE Platform · M-08</td><td>Daily 01:00 UTC</td><td>Soft — before daily RUL run</td><td>±3 hours</td><td><span class="defer-yes">✓ Deferrable</span></td></tr>
+        <tr><td>Daily RUL batch prediction</td><td>AS Suite · M-05</td><td>Daily 02:00 UTC</td><td><strong>Hard</strong> — FSM queue same day</td><td>None</td><td><span class="defer-no">✗ Never deferred</span></td></tr>
+        <tr><td>FinRisk anomaly model refresh</td><td>AS Suite · M-04</td><td>Daily 03:00 UTC</td><td><strong>Hard</strong> — streaming model currency</td><td>None</td><td><span class="defer-no">✗ Never deferred</span></td></tr>
+        <tr><td>ContractGuard Vector Store reindex</td><td>AS Suite · M-02</td><td>Monthly, 1st</td><td>Soft — monthly precedent freshness</td><td>±12 hours</td><td><span class="defer-yes">✓ Deferrable</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- §01b C4 LEVEL 2 CONTAINER -->
+<section class="sec ap" id="containers">
+  <div class="s-ey gr">Container Diagram — C4 Level 2</div>
+  <h2 class="s-h2">Four deployable units. <em>One scheduling boundary.</em></h2>
+  <p class="s-p">The GreenOps Platform boundary contains four distinct deployable containers. Each maps to a GCP-managed service with an explicit IAM surface and VPC-SC perimeter membership. Technology choices are documented in ADR-GO02 through ADR-GO05.</p>
+  <div class="dw ap" role="img" aria-label="GreenOps C4 Level 2 Container diagram. Four containers: GreenOps Agent on Cloud Run, Firestore deferred_jobs collection, BigQuery ae_greenops dataset, Cloud Scheduler trigger. One per-module service account per container boundary. VPC-SC perimeter encloses all four.">
+    <div class="dw-title">GreenOps Platform — Container Diagram (C4 Level 2)</div>
+    <div class="dw-sub">greenops-sa@ roles: roles/run.invoker · roles/datastore.user · roles/bigquery.dataEditor · roles/monitoring.viewer · scoped to greenops project only</div>
+    <svg width="100%" viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="c4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- VPC-SC boundary -->
+      <rect x="8" y="8" width="844" height="280" rx="8" fill="none" stroke="rgba(19,115,51,.25)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="22" y="26" font-size="9" fill="rgba(19,115,51,.5)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · europe-west3 · greenops project</text>
+      <!-- Container 1: Cloud Scheduler (external trigger) -->
+      <rect x="24" y="50" width="160" height="100" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="104" y="74" font-size="10" font-weight="700" fill="#1557B0" text-anchor="middle">Cloud Scheduler</text>
+      <text x="104" y="88" font-size="8" fill="#1A73E8" text-anchor="middle">[GCP Managed]</text>
+      <text x="104" y="102" font-size="8" fill="#1557B0" text-anchor="middle">HTTP POST trigger</text>
+      <text x="104" y="116" font-size="8" fill="#1557B0" text-anchor="middle">job_id · suite_id · deadline</text>
+      <text x="104" y="130" font-size="8" fill="#1557B0" text-anchor="middle">flexibility_window flag</text>
+      <!-- Container 2: GreenOps Agent -->
+      <rect x="230" y="40" width="190" height="140" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="325" y="64" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">GreenOps Agent</text>
+      <text x="325" y="78" font-size="8" fill="#137333" text-anchor="middle">[Cloud Run · always-on]</text>
+      <text x="325" y="94" font-size="8" fill="#0D5226" text-anchor="middle">Carbon intensity forecaster</text>
+      <text x="325" y="108" font-size="8" fill="#0D5226" text-anchor="middle">Scheduling decision engine</text>
+      <text x="325" y="122" font-size="8" fill="#0D5226" text-anchor="middle">Job dispatcher → GKE</text>
+      <text x="325" y="136" font-size="8" fill="#0D5226" text-anchor="middle">Circuit breaker: api_fallback mode</text>
+      <text x="325" y="150" font-size="8" fill="#137333" text-anchor="middle">SA: greenops-sa@ · min-instances:1</text>
+      <text x="325" y="164" font-size="8" fill="#137333" text-anchor="middle">roles/run.invoker · roles/datastore.user</text>
+      <!-- Container 3: Firestore -->
+      <rect x="470" y="50" width="160" height="100" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="550" y="74" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">Firestore</text>
+      <text x="550" y="88" font-size="8" fill="#D93025" text-anchor="middle">[GCP Native · Datastore mode]</text>
+      <text x="550" y="102" font-size="8" fill="#A50E0E" text-anchor="middle">deferred_jobs collection</text>
+      <text x="550" y="116" font-size="8" fill="#A50E0E" text-anchor="middle">TTL: window_expiry field</text>
+      <text x="550" y="130" font-size="8" fill="#A50E0E" text-anchor="middle">ADR-GO03: see note below</text>
+      <!-- Container 4: BigQuery -->
+      <rect x="680" y="50" width="160" height="100" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1.5"/>
+      <text x="760" y="74" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">BigQuery</text>
+      <text x="760" y="88" font-size="8" fill="#137333" text-anchor="middle">[GCP Native · Serverless]</text>
+      <text x="760" y="102" font-size="8" fill="#0D5226" text-anchor="middle">ae_greenops.job_metrics</text>
+      <text x="760" y="116" font-size="8" fill="#0D5226" text-anchor="middle">metered_kwh · carbon_saved</text>
+      <text x="760" y="130" font-size="8" fill="#0D5226" text-anchor="middle">CSRD export query</text>
+      <!-- Arrows -->
+      <line x1="184" y1="100" x2="230" y2="100" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#c4)"/>
+      <line x1="420" y1="110" x2="470" y2="110" stroke="#137333" stroke-width="1.5" marker-end="url(#c4)"/>
+      <line x1="470" y1="90" x2="420" y2="90" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#c4)"/>
+      <line x1="630" y1="100" x2="680" y2="100" stroke="#137333" stroke-width="1.5" marker-end="url(#c4)"/>
+      <!-- GKE below -->
+      <rect x="230" y="220" width="190" height="50" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="325" y="240" font-size="10" font-weight="700" fill="#3700B3" text-anchor="middle">GKE Autopilot</text>
+      <text x="325" y="254" font-size="8" fill="#6200EE" text-anchor="middle">All AE domain suite batch ML jobs</text>
+      <text x="325" y="265" font-size="8" fill="#3700B3" text-anchor="middle">roles/container.developer · greenops-sa@</text>
+      <line x1="325" y1="180" x2="325" y2="220" stroke="#137333" stroke-width="1.5" marker-end="url(#c4)"/>
+      <!-- Carbon API (external) -->
+      <rect x="230" y="220" width="0" height="0"/>
+      <rect x="24" y="185" width="160" height="60" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="1" stroke-dasharray="5 3"/>
+      <text x="104" y="207" font-size="9" font-weight="500" fill="#0D5226" text-anchor="middle">Carbon Footprint API</text>
+      <text x="104" y="221" font-size="8" fill="#137333" text-anchor="middle">[GCP · VPC-SC native]</text>
+      <text x="104" y="234" font-size="8" fill="#0D5226" text-anchor="middle">Circuit breaker on timeout</text>
+      <line x1="184" y1="215" x2="230" y2="140" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#c4)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:2px solid #137333"></div>GreenOps Agent (Cloud Run)</div>
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1.5px solid #1A73E8"></div>Cloud Scheduler trigger</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1.5px solid #D93025"></div>Firestore deferred queue</div>
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:1.5px solid #137333"></div>BigQuery ESG · GKE Autopilot</div>
+      <div class="dl"><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">Dashed border = external GCP service (VPC-SC native, no internet egress) · ADR-GO03 documents Firestore vs Cloud Tasks decision</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- §02 ARCHITECTURE -->
+<section class="sec dk ap" id="architecture">
+  <div class="s-ey go">Architecture — Carbon-Aware Scheduling Pipeline</div>
+  <h2 class="s-h2">Forecast. Score. Defer or dispatch. <em>Every decision logged.</em></h2>
+  <p class="s-p">The GreenOps scheduling pipeline runs every 30 minutes to re-evaluate deferred jobs against the latest carbon intensity forecast. A job that was deferred 90 minutes ago because the grid was at 142 gCO₂eq/kWh gets re-evaluated when the forecast shows a low-carbon window approaching. The decision to dispatch is autonomous and immediate — no human is in the path. A circuit breaker wraps every Carbon Footprint API call: on timeout or 5xx, GreenOps enters degraded mode — all queued jobs dispatch immediately with <code style="font-family:var(--mono);font-size:11px">api_fallback:true</code> flagged in the ESG record, and full scheduling resumes on the next successful API response.</p>
+  <div class="dw dk ap" role="img" aria-label="GreenOps carbon-aware scheduling pipeline. Cloud Scheduler submits job with suite_id and deadline. GreenOps Agent on Cloud Run: hard deadline jobs bypass to immediate GKE dispatch. Flexible jobs: intensity below 80 = dispatch, above 80 = Firestore deferred queue, 30min re-eval loop. Window expired = force dispatch. All dispatches write BigQuery ESG record.">
+    <div class="dw-title">GreenOps — Carbon-Aware Scheduling Pipeline</div>
+    <div class="dw-sub">30-minute re-evaluation loop · hard-deadline bypass · Firestore deferred queue · BigQuery ESG record per dispatch · VPC-SC perimeter</div>
+    <svg width="100%" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="arch" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="8" y="8" width="882" height="366" rx="8" fill="none" stroke="rgba(19,115,51,.2)" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="22" y="26" font-size="9" fill="rgba(165,214,167,.4)" font-weight="500" letter-spacing=".06em">VPC-SC PERIMETER · europe-west3</text>
+      <rect x="20" y="40" width="130" height="80" rx="4" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="85" y="68" font-size="10" font-weight="700" fill="#90CAF9" text-anchor="middle">Cloud Scheduler</text>
+      <text x="85" y="82" font-size="8" fill="rgba(26,115,232,.6)" text-anchor="middle">job_id · suite_id</text>
+      <text x="85" y="94" font-size="8" fill="rgba(26,115,232,.55)" text-anchor="middle">deadline · flex_window</text>
+      <text x="85" y="106" font-size="8" fill="rgba(26,115,232,.5)" text-anchor="middle">type: hard | flexible</text>
+      <line x1="150" y1="80" x2="190" y2="80" stroke="rgba(26,115,232,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="190" y="30" width="160" height="100" rx="4" fill="rgba(19,115,51,.15)" stroke="#137333" stroke-width="1.5"/>
+      <text x="270" y="58" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">GreenOps Agent</text>
+      <text x="270" y="72" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">Cloud Run · always-on</text>
+      <text x="270" y="84" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">30-min re-eval loop</text>
+      <text x="270" y="96" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">SA: greenops-sa@ · scoped to greenops project</text>
+      <text x="270" y="108" font-size="8" fill="rgba(19,115,51,.45)" text-anchor="middle">Firestore deferred queue</text>
+      <rect x="190" y="180" width="160" height="72" rx="4" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1"/>
+      <text x="270" y="204" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">Carbon Footprint API</text>
+      <text x="270" y="218" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">intensity + 12h forecast</text>
+      <text x="270" y="230" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">europe-west3 · gCO₂eq/kWh</text>
+      <line x1="270" y1="130" x2="270" y2="180" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="400" y="30" width="200" height="200" rx="4" fill="rgba(184,150,12,.08)" stroke="rgba(184,150,12,.25)" stroke-width="1.5"/>
+      <text x="500" y="58" font-size="10" font-weight="700" fill="#D4AC1A" text-anchor="middle">Decision Engine</text>
+      <text x="500" y="76" font-size="8" fill="rgba(184,150,12,.55)" text-anchor="middle">hard_deadline = true?</text>
+      <text x="500" y="90" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">→ BYPASS: dispatch immediately</text>
+      <text x="500" y="108" font-size="8" fill="rgba(184,150,12,.5)" text-anchor="middle">intensity &lt; 80 gCO₂eq/kWh?</text>
+      <text x="500" y="122" font-size="8" fill="rgba(19,115,51,.6)" text-anchor="middle">→ dispatch immediately</text>
+      <text x="500" y="140" font-size="8" fill="rgba(184,150,12,.5)" text-anchor="middle">intensity ≥ 80 + window open?</text>
+      <text x="500" y="154" font-size="8" fill="rgba(217,48,37,.5)" text-anchor="middle">→ add to Firestore deferred queue</text>
+      <text x="500" y="172" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">window expired?</text>
+      <text x="500" y="186" font-size="8" fill="rgba(176,96,0,.45)" text-anchor="middle">→ force dispatch + expiry flag</text>
+      <text x="500" y="204" font-size="8" fill="rgba(184,150,12,.35)" text-anchor="middle">re-eval every 30 min</text>
+      <text x="500" y="218" font-size="8" fill="rgba(184,150,12,.3)" text-anchor="middle">SA: greenops-sa@</text>
+      <line x1="350" y1="80" x2="400" y2="80" stroke="rgba(184,150,12,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <line x1="270" y1="180" x2="400" y2="140" stroke="rgba(19,115,51,.3)" stroke-width="1" marker-end="url(#arch)" stroke-dasharray="4 3"/>
+      <rect x="660" y="30" width="200" height="72" rx="4" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.25)" stroke-width="1.5"/>
+      <text x="760" y="58" font-size="10" font-weight="700" fill="#CE93D8" text-anchor="middle">GKE Autopilot</text>
+      <text x="760" y="72" font-size="8" fill="rgba(98,0,238,.55)" text-anchor="middle">All AE domain suite batch ML jobs</text>
+      <text x="760" y="84" font-size="8" fill="rgba(98,0,238,.5)" text-anchor="middle">Per-pod scheduling · scales to load</text>
+      <text x="760" y="96" font-size="8" fill="rgba(98,0,238,.45)" text-anchor="middle">Dispatched at optimal intensity</text>
+      <line x1="600" y1="80" x2="660" y2="66" stroke="rgba(98,0,238,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="660" y="160" width="200" height="72" rx="4" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.25)" stroke-width="1.5"/>
+      <text x="760" y="184" font-size="10" font-weight="700" fill="#A5D6A7" text-anchor="middle">BigQuery ESG Record</text>
+      <text x="760" y="198" font-size="8" fill="rgba(19,115,51,.55)" text-anchor="middle">ae_greenops.job_metrics</text>
+      <text x="760" y="210" font-size="8" fill="rgba(19,115,51,.5)" text-anchor="middle">actual_intensity · est_kWh</text>
+      <text x="760" y="222" font-size="8" fill="rgba(19,115,51,.45)" text-anchor="middle">metered_kwh · carbon_saved_kgco2 · csrd_eligible</text>
+      <line x1="600" y1="150" x2="760" y2="160" stroke="rgba(19,115,51,.4)" stroke-width="1.5" marker-end="url(#arch)"/>
+      <rect x="660" y="290" width="200" height="60" rx="4" fill="rgba(176,96,0,.1)" stroke="rgba(176,96,0,.25)" stroke-width="1"/>
+      <text x="760" y="314" font-size="9" font-weight="500" fill="#FFCC80" text-anchor="middle">CSRD Scope 3 Export</text>
+      <text x="760" y="328" font-size="8" fill="rgba(176,96,0,.55)" text-anchor="middle">Category 11 · monthly BigQuery query</text>
+      <text x="760" y="340" font-size="8" fill="rgba(176,96,0,.5)" text-anchor="middle">EU taxonomy · platform-wide</text>
+      <line x1="760" y1="232" x2="760" y2="290" stroke="rgba(176,96,0,.35)" stroke-width="1" marker-end="url(#arch)" stroke-dasharray="4 3"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:rgba(184,150,12,.1);border:1.5px solid rgba(184,150,12,.3)"></div>Decision engine</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(98,0,238,.1);border:1.5px solid rgba(98,0,238,.25)"></div>GKE Autopilot dispatch</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(19,115,51,.1);border:1.5px solid rgba(19,115,51,.25)"></div>BigQuery ESG record</div>
+      <div class="dl"><div class="dl-box" style="background:rgba(176,96,0,.1);border:1px solid rgba(176,96,0,.25)"></div>CSRD export</div>
+    </div>
+  </div>
+</section>
+
+<!-- §03 STATE MACHINE -->
+<section class="sec ap" id="statemachine">
+  <div class="s-ey gr">State Machine — Job Lifecycle</div>
+  <h2 class="s-h2">Five states. <em>No dead ends. Every job dispatched eventually.</em></h2>
+  <p class="s-p">The GreenOps job state machine has no failure state — every job reaches COMPLETE. Hard deadline jobs bypass the DEFERRED state entirely. Window-expired jobs dispatch at whatever the current intensity is; the ESG record captures the actual emissions accurately (saving_pct = 0% in the worst case — the data is honest, not optimistic).</p>
+  <div class="dw ap" role="img" aria-label="GreenOps job state machine. SUBMITTED to EVALUATING to either DEFERRED (intensity above 80, re-eval loop) or DISPATCHING (intensity below 80 or hard deadline). DEFERRED returns to DISPATCHING when intensity drops or window expires. DISPATCHING to COMPLETE with BigQuery ESG record written.">
+    <div class="dw-title">GreenOps — Job State Machine</div>
+    <div class="dw-sub">SUBMITTED → EVALUATING → [DEFERRED] → DISPATCHING → COMPLETE · no failure state · window expiry = forced dispatch, not failure</div>
+    <svg width="100%" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="sm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="20" y="80" width="110" height="48" rx="4" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+      <text x="75" y="101" font-size="10" font-weight="700" fill="#1557B0" text-anchor="middle">SUBMITTED</text>
+      <text x="75" y="117" font-size="8" fill="#1A73E8" text-anchor="middle">Cloud Scheduler</text>
+      <rect x="180" y="80" width="120" height="48" rx="4" fill="#FEF3E2" stroke="#B06000" stroke-width="1.5"/>
+      <text x="240" y="101" font-size="10" font-weight="700" fill="#7A4100" text-anchor="middle">EVALUATING</text>
+      <text x="240" y="117" font-size="8" fill="#B06000" text-anchor="middle">Carbon API check</text>
+      <rect x="360" y="20" width="120" height="48" rx="4" fill="#FCE8E6" stroke="#D93025" stroke-width="1.5"/>
+      <text x="420" y="41" font-size="10" font-weight="700" fill="#A50E0E" text-anchor="middle">DEFERRED</text>
+      <text x="420" y="57" font-size="8" fill="#D93025" text-anchor="middle">Firestore queue</text>
+      <rect x="540" y="80" width="120" height="48" rx="4" fill="#EDE7F6" stroke="#6200EE" stroke-width="1.5"/>
+      <text x="600" y="101" font-size="10" font-weight="700" fill="#3700B3" text-anchor="middle">DISPATCHING</text>
+      <text x="600" y="117" font-size="8" fill="#6200EE" text-anchor="middle">GKE Autopilot submit</text>
+      <rect x="700" y="80" width="100" height="48" rx="4" fill="#E6F4EA" stroke="#137333" stroke-width="2"/>
+      <text x="750" y="101" font-size="10" font-weight="700" fill="#0D5226" text-anchor="middle">COMPLETE</text>
+      <text x="750" y="117" font-size="8" fill="#137333" text-anchor="middle">ESG record written</text>
+      <line x1="130" y1="104" x2="180" y2="104" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sm)"/>
+      <path d="M300 86 Q330 44 360 44" fill="none" stroke="#D93025" stroke-width="1.5" marker-end="url(#sm)" stroke-dasharray="4 3"/>
+      <text x="322" y="58" font-size="8" fill="#D93025" text-anchor="middle">intensity≥80</text>
+      <path d="M300 120 Q420 168 540 120" fill="none" stroke="#137333" stroke-width="1.5" marker-end="url(#sm)"/>
+      <text x="420" y="178" font-size="8" fill="#137333" text-anchor="middle">intensity&lt;80 or hard_deadline</text>
+      <path d="M480 44 Q510 44 540 88" fill="none" stroke="#137333" stroke-width="1.5" marker-end="url(#sm)"/>
+      <text x="522" y="60" font-size="8" fill="#137333">intensity↓</text>
+      <path d="M480 56 Q570 20 600 80" fill="none" stroke="#B06000" stroke-width="1" marker-end="url(#sm)" stroke-dasharray="3 2"/>
+      <text x="558" y="30" font-size="8" fill="#B06000">window expired</text>
+      <path d="M420 20 Q420 -8 450 20" fill="none" stroke="#D93025" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="455" y="8" font-size="7" fill="#D93025">30-min re-eval</text>
+      <line x1="660" y1="104" x2="700" y2="104" stroke="#6200EE" stroke-width="1.5" marker-end="url(#sm)"/>
+    </svg>
+    <div class="dw-legend">
+      <div class="dl"><div class="dl-box" style="background:#E8F0FE;border:1.5px solid #1A73E8"></div>SUBMITTED</div>
+      <div class="dl"><div class="dl-box" style="background:#FEF3E2;border:1.5px solid #B06000"></div>EVALUATING</div>
+      <div class="dl"><div class="dl-box" style="background:#FCE8E6;border:1.5px solid #D93025"></div>DEFERRED</div>
+      <div class="dl"><div class="dl-box" style="background:#EDE7F6;border:1.5px solid #6200EE"></div>DISPATCHING</div>
+      <div class="dl"><div class="dl-box" style="background:#E6F4EA;border:2px solid #137333"></div>COMPLETE</div>
+      <div class="dl"><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">Dashed amber = window-expiry forced dispatch · Dashed red = defer path</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- §04 DATA FLOW -->
+<section class="sec dk ap" id="dataflow">
+  <div class="s-ey go">Data Flow Sequence</div>
+  <h2 class="s-h2">One deferred job. <em>One ESG record. Every step timestamped.</em></h2>
+  <p class="s-p">The sequence shows a weekly ContractGuard Vector Store reindex arriving at 02:00 UTC, deferred because europe-west3 is at 142 gCO₂eq/kWh, re-evaluated five times across the 30-minute loop, dispatched at 06:12 when intensity drops to 74, and completing with a 49% carbon saving logged to BigQuery.</p>
+  <div class="dw dk ap" role="img" aria-label="GreenOps data flow sequence for a deferred flexible job. Job arrives at Cloud Scheduler 02:00. GreenOps Agent calls Carbon API at 02:01: current 142, min 68 at +3.8h. Queues to Firestore at 02:02. Re-evaluation cycles defer until 06:00 when intensity is 74. GKE dispatch at 06:12. ESG record at 07:14: saved 0.120 kgCO2, saving 49%, csrd_eligible true.">
+    <div class="dw-title">GreenOps — Data Flow Sequence (Deferred Dispatch)</div>
+    <div class="dw-sub">contractguard_vectorstore_reindex · 02:00 UTC · deferred 4h12m · dispatched at 71 gCO₂eq/kWh · 49% saving</div>
+    <svg width="100%" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'IBM Plex Mono',monospace">
+      <defs><marker id="seq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect x="10" y="10" width="100" height="28" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+      <text x="60" y="28" font-size="9" font-weight="500" fill="#90CAF9" text-anchor="middle">Cloud Scheduler</text>
+      <line x1="60" y1="38" x2="60" y2="285" stroke="rgba(26,115,232,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <rect x="155" y="10" width="120" height="28" rx="3" fill="rgba(19,115,51,.15)" stroke="rgba(19,115,51,.3)" stroke-width="1.5"/>
+      <text x="215" y="28" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">GreenOps Agent</text>
+      <line x1="215" y1="38" x2="215" y2="285" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+      <rect x="335" y="10" width="110" height="28" rx="3" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.2)" stroke-width="1"/>
+      <text x="390" y="28" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">Carbon API</text>
+      <line x1="390" y1="38" x2="390" y2="285" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+      <rect x="497" y="10" width="90" height="28" rx="3" fill="rgba(217,48,37,.1)" stroke="rgba(217,48,37,.2)" stroke-width="1"/>
+      <text x="542" y="28" font-size="9" font-weight="500" fill="#EF9A9A" text-anchor="middle">Firestore</text>
+      <line x1="542" y1="38" x2="542" y2="285" stroke="#D93025" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+      <rect x="643" y="10" width="80" height="28" rx="3" fill="rgba(98,0,238,.1)" stroke="rgba(98,0,238,.2)" stroke-width="1"/>
+      <text x="683" y="28" font-size="9" font-weight="500" fill="#CE93D8" text-anchor="middle">GKE</text>
+      <line x1="683" y1="38" x2="683" y2="285" stroke="#6200EE" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+      <rect x="783" y="10" width="100" height="28" rx="3" fill="rgba(19,115,51,.1)" stroke="rgba(19,115,51,.2)" stroke-width="1"/>
+      <text x="833" y="28" font-size="9" font-weight="500" fill="#A5D6A7" text-anchor="middle">BigQuery ESG</text>
+      <line x1="833" y1="38" x2="833" y2="285" stroke="#137333" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+      <line x1="60" y1="62" x2="209" y2="62" stroke="rgba(26,115,232,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="64" y="50" width="140" height="14" rx="2" fill="rgba(26,115,232,.1)"/>
+      <text x="134" y="61" font-size="8" fill="#90CAF9" text-anchor="middle">contractguard_vectorstore_reindex · flexible</text>
+      <text x="10" y="62" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">02:00</text>
+      <line x1="215" y1="82" x2="384" y2="82" stroke="rgba(19,115,51,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="220" y="70" width="159" height="14" rx="2" fill="rgba(19,115,51,.08)"/>
+      <text x="299" y="81" font-size="8" fill="#A5D6A7" text-anchor="middle">get_forecast(europe-west3, 12h)</text>
+      <text x="10" y="82" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">02:01</text>
+      <line x1="384" y1="98" x2="221" y2="98" stroke="#137333" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="225" y="86" width="154" height="14" rx="2" fill="rgba(19,115,51,.06)"/>
+      <text x="302" y="97" font-size="8" fill="#A5D6A7" text-anchor="middle">current: 142 · min@06:12: 68 gCO₂eq/kWh</text>
+      <line x1="215" y1="122" x2="536" y2="122" stroke="rgba(217,48,37,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="220" y="110" width="311" height="14" rx="2" fill="rgba(217,48,37,.08)"/>
+      <text x="375" y="121" font-size="8" fill="#EF9A9A" text-anchor="middle">queue_deferred(job_id, window_expiry=08:00) · intensity 142 ≥ 80</text>
+      <text x="10" y="122" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">02:02</text>
+      <rect x="10" y="134" width="880" height="20" rx="2" fill="rgba(26,115,232,.03)" stroke="rgba(26,115,232,.08)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="450" y="148" font-size="8" fill="rgba(26,115,232,.4)" text-anchor="middle" font-weight="500">Re-evaluation cycles: 02:30 (128, defer) · 03:00 (112, defer) · 03:30 (98, defer) · 04:00 (84, defer) · 04:30 (76, approaching threshold)</text>
+      <line x1="215" y1="170" x2="384" y2="170" stroke="rgba(19,115,51,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="220" y="158" width="159" height="14" rx="2" fill="rgba(19,115,51,.08)"/>
+      <text x="299" y="169" font-size="8" fill="#A5D6A7" text-anchor="middle">get_forecast(europe-west3, 12h)</text>
+      <text x="10" y="170" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">06:00</text>
+      <line x1="384" y1="186" x2="221" y2="186" stroke="#137333" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="225" y="174" width="154" height="14" rx="2" fill="rgba(19,115,51,.06)"/>
+      <text x="302" y="185" font-size="8" fill="#A5D6A7" text-anchor="middle">current: 74 · next 30min: 68 → dispatch</text>
+      <line x1="215" y1="210" x2="677" y2="210" stroke="rgba(98,0,238,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="220" y="198" width="452" height="14" rx="2" fill="rgba(98,0,238,.08)"/>
+      <text x="446" y="209" font-size="8" fill="#CE93D8" text-anchor="middle">gke.submit_job(contractguard_vectorstore_reindex, carbon_intensity=71, metered_kwh=1.8)</text>
+      <text x="10" y="210" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">06:12</text>
+      <line x1="215" y1="250" x2="827" y2="250" stroke="rgba(19,115,51,.5)" stroke-width="1.5" marker-end="url(#seq)"/>
+      <rect x="220" y="238" width="602" height="14" rx="2" fill="rgba(19,115,51,.08)"/>
+      <text x="521" y="249" font-size="8" fill="#A5D6A7" text-anchor="middle">BQ write: actual 0.128 kgCO₂ · baseline 0.248 kgCO₂ (at 138) · saved 0.120 · saving_pct 49% · csrd_eligible: true</text>
+      <text x="10" y="250" font-size="8" fill="rgba(245,240,232,.3)" text-anchor="end">07:14</text>
+      <line x1="827" y1="270" x2="221" y2="270" stroke="#137333" stroke-width="1" marker-end="url(#seq)" stroke-dasharray="3 2"/>
+      <rect x="225" y="258" width="597" height="14" rx="2" fill="rgba(19,115,51,.06)"/>
+      <text x="523" y="269" font-size="8" fill="#A5D6A7" text-anchor="middle">state: COMPLETE · deferred_by: 4h12m · carbon_saving: 49% · CSRD_eligible: true</text>
+    </svg>
+  </div>
+</section>
+
+<!-- §05 ESG METRICS -->
+<section class="sec ap" id="esg">
+  <div class="s-ey gr">ESG Metrics Dashboard</div>
+  <h2 class="s-h2">Carbon savings. <em>Per job. Per month. Per CSRD export.</em></h2>
+  <p class="s-p">GreenOps produces auditable carbon savings data — not estimates or projections. Every dispatch writes an actual-vs-baseline record to BigQuery. The CSRD Scope 3 Category 11 export aggregates savings across all AE domain suites and is generated monthly from these records. The figures below are indicative of a full H3 platform deployment at ClaraVis's workload volume.</p>
+  <div class="esg-grid ap">
+    <div class="esg-card green"><div class="esg-label">Monthly Carbon Saved</div><div class="esg-value">18.4</div><div class="esg-sub">kgCO₂eq / month · all suites · all deferred jobs</div></div>
+    <div class="esg-card blue"><div class="esg-label">Jobs Deferred (monthly)</div><div class="esg-value">14</div><div class="esg-sub">of 22 flexible jobs · 64% deferral rate</div></div>
+    <div class="esg-card teal"><div class="esg-label">Average Carbon Reduction</div><div class="esg-value">41%</div><div class="esg-sub">vs immediate dispatch baseline</div></div>
+    <div class="esg-card amber"><div class="esg-label">Avg Deferral Duration</div><div class="esg-value">3.8h</div><div class="esg-sub">well within ±6h window</div></div>
+  </div>
+  <div class="ci-chart ap">
+    <div class="ci-label">Representative Carbon Intensity Profile — europe-west3 · 24-hour window (gCO₂eq/kWh)</div>
+    <svg width="100%" viewBox="0 0 860 120" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="ciGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#137333" stop-opacity=".2"/><stop offset="100%" stop-color="#137333" stop-opacity=".02"/></linearGradient></defs>
+      <line x1="60" y1="20" x2="840" y2="20" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="60" y1="50" x2="840" y2="50" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="60" y1="80" x2="840" y2="80" stroke="#DADCE0" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="52" y="24" font-size="8" fill="#80868B" text-anchor="end">180</text>
+      <text x="52" y="54" font-size="8" fill="#80868B" text-anchor="end">110</text>
+      <text x="52" y="84" font-size="8" fill="#80868B" text-anchor="end">40</text>
+      <line x1="60" y1="70" x2="840" y2="70" stroke="#137333" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="844" y="74" font-size="8" fill="#137333" font-weight="500">80</text>
+      <polyline fill="url(#ciGrad)" stroke="none" points="60,20 60,41 93,43 127,41 160,44 193,50 227,62 260,70 293,72 327,69 360,65 393,21 427,24 460,41 493,43 527,64 560,73 593,70 627,65 660,48 693,41 727,40 760,41 793,43 840,44 840,100 60,100"/>
+      <polyline fill="none" stroke="#137333" stroke-width="2" stroke-linejoin="round" points="60,41 93,43 127,41 160,44 193,50 227,62 260,70 293,72 327,69 360,65 393,21 427,24 460,41 493,43 527,64 560,73 593,70 627,65 660,48 693,41 727,40 760,41 793,43 840,44"/>
+      <rect x="227" y="20" width="133" height="80" rx="2" fill="rgba(19,115,51,.08)"/>
+      <rect x="527" y="20" width="133" height="80" rx="2" fill="rgba(19,115,51,.08)"/>
+      <text x="293" y="108" font-size="8" fill="#137333" text-anchor="middle" font-weight="500">Dispatch window</text>
+      <text x="593" y="108" font-size="8" fill="#137333" text-anchor="middle" font-weight="500">Dispatch window</text>
+      <text x="60" y="115" font-size="8" fill="#80868B" text-anchor="middle">00:00</text>
+      <text x="193" y="115" font-size="8" fill="#80868B" text-anchor="middle">04:00</text>
+      <text x="327" y="115" font-size="8" fill="#80868B" text-anchor="middle">08:00</text>
+      <text x="460" y="115" font-size="8" fill="#80868B" text-anchor="middle">12:00</text>
+      <text x="593" y="115" font-size="8" fill="#80868B" text-anchor="middle">16:00</text>
+      <text x="727" y="115" font-size="8" fill="#80868B" text-anchor="middle">20:00</text>
+      <text x="840" y="115" font-size="8" fill="#80868B" text-anchor="middle">24:00</text>
+    </svg>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--text-3)">
+      <span>Green shading = typical GreenOps dispatch windows · Dashed green = 80 gCO₂eq/kWh dispatch threshold</span>
+      <span>Source: GCP Carbon Footprint API · europe-west3 · representative week</span>
+    </div>
+  </div>
+
+  <div style="margin-top:4px;background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--blue);padding:18px 22px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">GreenOps Platform SLOs — Reliability Targets</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:12px">
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Dispatch Latency P99</div><div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--blue)">&lt;90s</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3)">job submission → GKE dispatch · hard deadline path</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Re-eval Loop Availability</div><div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--blue)">99.5%</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3)">30-min cycle completes within 35 min · error budget: 3.6h/month</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">ESG Record Write SLO</div><div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--blue)">99.9%</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-3)">every dispatch writes BigQuery ESG record · CSRD completeness guarantee</div></div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;font-weight:300;color:var(--text-2);line-height:1.75">SLO breach triggers Cloud Monitoring alert to the AE Platform on-call. Downstream suites are notified via the platform event bus. Circuit breaker (ADR-GO04) activates automatically — no manual intervention required. Error budget is tracked monthly and reviewed alongside CSRD savings figures.</div>
+  </div>
+
+  <div style="margin-top:4px;background:var(--amber-lt);border:1px solid rgba(176,96,0,.2);border-left:4px solid var(--amber);padding:18px 22px" class="ap">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--amber-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">CSRD Scope 3 Category 11 — Use of sold products</div>
+    <div style="font-family:var(--mono);font-size:11px;font-weight:300;color:var(--amber-dk);line-height:1.75">CSRD Scope 3 Category 11 covers emissions from the use of sold products. For a medical imaging OEM like ClaraVis, this includes the energy consumed by MRI and CT units in customer facilities. GreenOps addresses the indirect emissions from ClaraVis's own GCP workloads across all domain suites — a smaller but fully auditable contribution. The BigQuery ae_greenops.job_metrics table exports monthly to a CSRD-aligned CSV with: reporting_period, scope, category, activity_description, activity_units, activity_quantity, emission_factor, total_emissions_kgCO2eq. This export feeds directly into ClaraVis's sustainability reporting tool and satisfies the EU taxonomy technical screening criteria for climate change mitigation.</div>
+  </div>
+</section>
+
+<!-- §06 ADRs -->
+<section class="sec w ap" id="adrs">
+  <div class="s-ey te">Architecture Decision Records</div>
+  <h2 class="s-h2">Five GreenOps decisions. <em>All defensible on their own terms.</em></h2>
+  <div class="adr-col ap">
+    <div class="adr gr">
+      <div class="adr-id">ADR-GO01 — GreenOps specific</div>
+      <div class="adr-title">±6 hour deferral window — not ±1 hour, not ±24 hours</div>
+      <div class="adr-body">The deferral window is the single most important GreenOps design parameter. Too short (±1 hour) and the window is rarely wide enough to capture a meaningful carbon intensity improvement — europe-west3 intensity changes gradually, and a 1-hour window often doesn't span a low-carbon trough. Too long (±24 hours) and flexible jobs start to accumulate in the deferred queue for periods that affect model freshness — a RevRec AI model that hasn't been retrained for 30+ hours is consuming a week-old training dataset. ±6 hours was chosen based on two empirical observations: (1) Analysis of 90 days of europe-west3 Carbon Footprint API data shows that a low-carbon window (below 80 gCO₂eq/kWh) occurs within 6 hours of any given time approximately 73% of the time. (2) The ML models across AE Platform domain suites were evaluated for freshness sensitivity — all maintain acceptable prediction quality with weekly retraining cycles; a 6-hour delay on a weekly job represents a 0.4% increase in the retraining interval, which is statistically indistinguishable from expected model performance at the weekly evaluation frequency.</div>
+      <div class="adr-status">Accepted · Phase GreenOps Design · AE Platform</div>
+    </div>
+    <div class="adr bl">
+      <div class="adr-id">ADR-GO02 — GreenOps specific</div>
+      <div class="adr-title">GCP Carbon Footprint API over third-party carbon intensity APIs (Electricity Maps, WattTime)</div>
+      <div class="adr-body">Electricity Maps and WattTime were evaluated — both provide more granular real-time and forecast carbon intensity data than GCP's Carbon Footprint API, including marginal emissions rates (which are arguably more accurate for scheduling decisions than average emissions rates). Rejected for three reasons: (1) External API dependency: GCP's Carbon Footprint API is available within the VPC-SC perimeter as a GCP-native service — no outbound internet call required. Electricity Maps and WattTime require outbound HTTPS calls from the Cloud Run agent to external services, introducing a network egress path that must be documented in the VPC-SC threat model and approved by the CISO. For a platform-layer service serving all suites, adding an external API dependency for a Minimal Risk module is not justified. (2) GCP Carbon Footprint API data is directly aligned with the GCP billing carbon reporting that ClaraVis uses for its own internal GCP sustainability reporting — using the same data source for scheduling decisions and CSRD reporting ensures internal consistency. (3) At the forecast granularity required (30-minute intervals, 12-hour horizon), GCP's Carbon Footprint API is sufficient — the marginal vs average emissions distinction matters more for real-time demand response than for batch job scheduling with a 6-hour window.</div>
+      <div class="adr-status">Accepted · Phase GreenOps Design · AE Platform</div>
+    </div>
+
+    <div class="adr gr">
+      <div class="adr-id">ADR-GO03 — GreenOps specific</div>
+      <div class="adr-title">Firestore (Datastore mode) as deferred queue — not Cloud Tasks</div>
+      <div class="adr-body">Cloud Tasks was the primary candidate for the deferred job queue — it is the canonical GCP service for delayed/scheduled task execution. Rejected for this use case for two reasons: (1) GreenOps does not need guaranteed-once delivery with a fixed delay. The deferred queue requires re-evaluation on every 30-minute loop against the current carbon intensity — the dispatch decision is not "dispatch after N minutes" (Cloud Tasks' model) but "dispatch when a condition is met on a schedule" (a query pattern). (2) Firestore enables the query GreenOps actually needs: SELECT all jobs WHERE window_expiry &gt; NOW() AND state = DEFERRED — a predicate query over a mutable document store. Cloud Tasks does not expose its queue as a queryable datastore. Firestore in Datastore mode provides this with native TTL on window_expiry, strong consistency within a single collection, and VPC-SC perimeter membership. The tradeoff — no native dead-letter queue — is mitigated by the window-expiry forced dispatch: every job that cannot be deferred successfully is force-dispatched at window_expiry, not lost. Document accumulation is bounded by the job volume (≤30 jobs/week at ClaraVis H3 workload) making unbounded growth not a concern at this scale.</div>
+      <div class="adr-status">Accepted · Phase GreenOps Design · AE Platform</div>
+    </div>
+    <div class="adr bl">
+      <div class="adr-id">ADR-GO04 — GreenOps specific</div>
+      <div class="adr-title">Carbon Footprint API circuit breaker — dispatch-all degraded mode, not block</div>
+      <div class="adr-body">When the GCP Carbon Footprint API is unavailable (timeout, 5xx, or stale data beyond 90 minutes), GreenOps must choose between two degraded modes: (A) block all job dispatch until the API recovers, or (B) dispatch all queued jobs immediately and flag records as api_fallback:true. Option A preserves carbon optimisation intent but violates the "every job dispatched eventually" safety property — a multi-hour API outage would hold all domain suite training jobs in DEFERRED state, potentially cascading into model freshness violations for jobs approaching their window_expiry. Option B sacrifices carbon savings for the duration of the outage but maintains the scheduling reliability guarantee that GreenOps promises to all domain suites. Degraded-mode dispatches are flagged in BigQuery (api_fallback:true, saving_pct:0%) and excluded from CSRD savings calculations — the audit trail remains accurate. The circuit breaker threshold is: 3 consecutive API failures within a 5-minute window triggers degraded mode; recovery requires 2 consecutive successful API calls.</div>
+      <div class="adr-status">Accepted · Phase GreenOps Design · AE Platform</div>
+    </div>
+    <div class="adr gr">
+      <div class="adr-id">ADR-GO05 — GreenOps specific</div>
+      <div class="adr-title">Static 80 gCO₂eq/kWh dispatch threshold for MVP — adaptive threshold deferred to Phase 2</div>
+      <div class="adr-body">Google's carbon-aware computing research (Radovanovic et al., 2021) uses a rolling percentile threshold — typically the 75th percentile of the trailing 30-day distribution — rather than a static absolute value. This approach adapts to seasonal variation: europe-west3's carbon intensity is meaningfully lower in summer (higher solar generation) than winter, so a static 80 gCO₂eq/kWh threshold may produce near-zero deferral in winter and near-100% deferral in summer. The adaptive threshold approach is architecturally superior and is the target state for Phase 2. It is deferred for MVP for two reasons: (1) It requires 30 days of Carbon Footprint API historical data before the rolling window is statistically meaningful — deploying in H3 means the threshold logic would run on incomplete data for the first month. (2) A static threshold is easier to audit: CSRD reviewers can verify that every job dispatched below 80 gCO₂eq/kWh meets the threshold without needing to reconstruct the rolling window at each dispatch time. Phase 2 will introduce a threshold_type field (static|rolling_p75) in the ESG record to maintain auditability across the transition.</div>
+      <div class="adr-status">Accepted (MVP) · Phase 2 target: rolling P75 · AE Platform</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- §07 REBUTTALS -->
+<section class="sec ap" id="rebuttals">
+  <div class="s-ey re">Stakeholder Rebuttals</div>
+  <h2 class="s-h2">Four objections. <em>Each with an architectural answer.</em></h2>
+  <div class="rebuttal-grid ap">
+    <div class="rb cto">
+      <div class="rb-who">CTO · S-01</div>
+      <div class="rb-concern">What's the actual carbon saving — is this meaningful or greenwashing?</div>
+      <div class="rb-q">"18.4 kgCO₂eq per month sounds small. ClaraVis's installed MRI fleet consumes gigawatt-hours annually. Is a carbon-aware scheduler for ML training jobs a genuine sustainability initiative or a token gesture that looks good in a CSRD report?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">18.4 kgCO₂eq per month from GKE batch scheduling is a small number in absolute terms — it is the right number for this scope. GreenOps addresses Scope 2 emissions from ClaraVis's own GCP workloads across all domain suites, not the Scope 3 Category 11 emissions from 12,000 MRI units in customer facilities. The ClaraVis installed fleet is a genuinely large Scope 3 emissions source — that requires a product-level energy efficiency programme, not a cloud scheduling optimisation. GreenOps is correctly scoped: it addresses what it can address (GCP compute carbon platform-wide), produces auditable evidence (BigQuery per-job records), and contributes to the CSRD reporting obligation under EU taxonomy. The value is not in the kilogram figure — it is in the auditability. A CSRD auditor can query ae_greenops.job_metrics and verify every savings claim to the job level. That is genuinely harder to produce than a top-down estimate, and it is a meaningful differentiator in ClaraVis's sustainability disclosure.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> BigQuery ae_greenops.job_metrics (per-job audit trail) · CSRD Scope 3 export format · ADR-GO01 (model freshness impact — 0.4% retraining interval increase)</div>
+    </div>
+    <div class="rb cfo">
+      <div class="rb-who">CFO · S-03</div>
+      <div class="rb-concern">Does deferring ML training jobs affect model freshness or prediction quality?</div>
+      <div class="rb-q">"If GreenOps defers the weekly RevRec AI retraining by up to 6 hours, and that model is used for ASC 606 classification the next morning, is there any risk that a 6-hour-stale model produces classifications that the Finance team later disputes?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">RevRec AI is retrained weekly, not hourly. A 6-hour deferral on a weekly job changes the retraining interval from 168 hours to 174 hours — a 3.6% increase. The model's performance metrics are evaluated on a weekly basis against the holdout set. At weekly evaluation frequency, a 6-hour deferral produces no statistically measurable change in model quality. The model that the Finance Controller sees on Monday morning is functionally identical whether the retraining ran at 02:00 Sunday or 08:00 Sunday. The hard-deadline bypass rule additionally ensures that any job with a genuine operational dependency — the daily RUL batch job, the FinRisk model refresh — is never deferred. The freshness concern is real for daily jobs. For weekly jobs with a ±6 hour deferral window, the concern does not apply at a single-deferral level. To guard against compounding deferrals (e.g., three consecutive Sunday deferrals during a sustained high-carbon-intensity period), Vertex AI Model Monitoring is configured with a weekly drift-detection check against the holdout set — if skew exceeds the defined threshold, an alert fires and the next retraining job is marked hard_deadline regardless of carbon intensity.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> ADR-GO01 (0.4% retraining interval increase · weekly evaluation frequency) · Job eligibility table (daily RUL and FinRisk = hard deadline, never deferred) · AS Suite RevRec AI Model Card (weekly retraining cycle) · Vertex AI Model Monitoring (weekly drift check · compounding-deferral safeguard)</div>
+    </div>
+    <div class="rb cco">
+      <div class="rb-who">CCO · S-02</div>
+      <div class="rb-concern">Does GreenOps produce audit-quality CSRD Scope 3 data?</div>
+      <div class="rb-q">"CSRD requires third-party assurance of sustainability disclosures from 2025 onwards for large companies. Will the data GreenOps produces satisfy an external auditor — or is it an internal estimate that needs a separate verification process?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">The BigQuery ae_greenops.job_metrics table is designed for external audit from the start. Every row contains: the GCP job ID (traceable to the Cloud Logging job execution record), the Carbon Footprint API response at dispatch time (with the API's own audit reference), the actual kWh consumed captured in the <code>metered_kwh</code> field (sourced from GKE resource utilisation via Cloud Monitoring — not estimated), the emission factor applied (gCO₂eq/kWh from the API), and the calculated emissions figure. An auditor can verify each savings claim by checking the source API data, the actual compute utilisation, and the arithmetic independently. The CSRD export format aligns with the EU taxonomy technical screening criteria — the column structure matches the reporting standard for Scope 3 Category 11. The remaining assurance gap is the carbon intensity data itself — GCP's Carbon Footprint API data is published by Google with their own methodology statement. ClaraVis would need to reference that methodology in their CSRD disclosure, which is standard practice for Scope 2 location-based calculations.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> CSRD Scope 3 export format (§05) · BigQuery job_metrics schema (GCP job ID + API reference + actual kWh) · ADR-GO02 (GCP Carbon API aligned with GCP billing reporting)</div>
+    </div>
+    <div class="rb ea">
+      <div class="rb-who">Enterprise Architect · S-08</div>
+      <div class="rb-concern">What if the low-carbon window never arrives within the ±6 hour window?</div>
+      <div class="rb-q">"If europe-west3 has an extended period of high carbon intensity — a heat wave reducing renewable generation for 12+ hours — every deferred job will hit its window expiry and dispatch at high intensity. Does GreenOps handle this gracefully or does it produce a burst of forced dispatches that overload GKE?"</div>
+      <div class="rb-rl">Architectural response</div>
+      <div class="rb-r">Window expiry dispatches are handled in the decision engine with two protections against burst dispatch. First, the Firestore deferred queue tracks each job's window_expiry independently — jobs with expiry times staggered across a 6-hour window dispatch sequentially as their individual windows expire, not simultaneously. The weekly retraining jobs for RevRec AI, Asset IQ, and ContractGuard have submission times at 02:00, 03:00, and 04:00 UTC respectively, and maximum window expiries at 08:00, 09:00, and 10:00 — so even in a worst-case no-low-carbon scenario, the three forced dispatches are spaced an hour apart. Second, GKE Autopilot's per-pod scheduling absorbs burst workloads gracefully — a burst of three training jobs does not saturate GKE because each runs on its own node pool, provisioned independently. The window-expiry scenario is a degraded mode, not a failure mode — jobs run at higher carbon intensity than optimal, saving_pct = 0%, and the CSRD export reflects actual emissions accurately.</div>
+      <div class="rb-ev"><strong>Evidence:</strong> Job eligibility table (staggered submission times) · State machine (window-expiry = forced dispatch, not failure) · GKE Autopilot (per-pod scheduling, no burst saturation) · BigQuery ESG record (saving_pct = 0% in worst case, still auditable)</div>
+    </div>
+  </div>
+</section>
+
+<!-- §08 DEMO -->
+<section class="sec w ap" id="demo">
+  <div class="s-ey am">Demo Pathway</div>
+  <h2 class="s-h2">Three minutes. One deferred job. <em>One dispatch. One ESG record.</em></h2>
+  <p class="s-p">The demo shows the complete GreenOps lifecycle: job submitted, carbon intensity checked, job deferred, intensity drops, job dispatched, ESG record written. The key moments are the Firestore deferred queue entry and the BigQuery ESG record — which together show that every decision is logged, every saving is calculated, and every claim is auditable.</p>
+  <div class="demo-steps ap">
+    <div class="ds">
+      <div class="ds-num">00</div>
+      <div class="ds-content">
+        <div class="ds-label">Setup · 30s before</div>
+        <div class="ds-title">Open GreenOps monitoring and Carbon API dashboard</div>
+        <div class="ds-body">Open the GreenOps monitoring panel. Show the current carbon intensity for europe-west3 (set to 138 gCO₂eq/kWh for the demo). Show the Firestore deferred queue — currently empty. Show the BigQuery ae_greenops.job_metrics table with recent dispatch records from across all active domain suites. This establishes the normal operating state before the demo job is submitted.</div>
+        <div class="ds-services"><span class="ds-svc">GreenOps monitoring</span><span class="ds-svc">Carbon API dashboard</span><span class="ds-svc">Firestore deferred queue</span></div>
+      </div>
+    </div>
+    <div class="ds active">
+      <div class="ds-num">01</div>
+      <div class="ds-content">
+        <div class="ds-label">Submit job · 0:00</div>
+        <div class="ds-title">Trigger the weekly ContractGuard Vector Store reindex via Cloud Scheduler</div>
+        <div class="ds-body">Manually trigger the Cloud Scheduler job for contractguard_vectorstore_reindex with flexibility_window: flexible, deadline: +12h. Watch the GreenOps Cloud Run logs: "Job received · contractguard_vectorstore_reindex · suite: as_suite · flexible · calling Carbon Footprint API…", "Current intensity: 138 gCO₂eq/kWh · min forecast (next 6h): 72 gCO₂eq/kWh at +3.8h · threshold: 80 · decision: DEFER".</div>
+        <div class="ds-say">"The job arrives from the Autonomous Seller suite. GreenOps doesn't care which suite sent it — it checks the carbon intensity: 138 right now, above the 80 threshold. But the forecast shows 72 in about 3.8 hours. The job can wait."</div>
+        <div class="ds-services"><span class="ds-svc">Cloud Scheduler trigger</span><span class="ds-svc">Carbon Footprint API</span><span class="ds-svc">GreenOps decision engine</span></div>
+      </div>
+    </div>
+    <div class="ds defer-step">
+      <div class="ds-num">02</div>
+      <div class="ds-content">
+        <div class="ds-label">Deferred · 0:20</div>
+        <div class="ds-title">Show the Firestore deferred queue entry — job waiting</div>
+        <div class="ds-body">Open Firestore. Navigate to the deferred_jobs collection. Show the document for contractguard_vectorstore_reindex: job_id, suite_id, submitted_at, window_expiry (submitted_at + 12h), current_intensity: 138, forecast_min_intensity: 72, forecast_dispatch_time: +3.8h. The job is waiting.</div>
+        <div class="ds-say">"The job is in Firestore — every 30 minutes, GreenOps re-evaluates it. If the carbon intensity drops below 80 before the window expires, it dispatches. If the window expires, it dispatches at whatever the current intensity is. Either way, the ESG record captures the actual carbon cost."</div>
+        <div class="ds-services"><span class="ds-svc">Firestore deferred_jobs</span><span class="ds-svc">30-min re-eval loop</span></div>
+      </div>
+    </div>
+    <div class="ds dispatch-step">
+      <div class="ds-num">03</div>
+      <div class="ds-content">
+        <div class="ds-label">Dispatch · 0:45 (simulated +3.8h)</div>
+        <div class="ds-title">Simulate carbon intensity dropping — watch GreenOps dispatch</div>
+        <div class="ds-body">Update the simulated carbon intensity in the demo environment to 71 gCO₂eq/kWh (below the 80 threshold). Watch the GreenOps re-evaluation cycle fire: "Re-evaluation: contractguard_vectorstore_reindex · current intensity: 71 &lt; 80 threshold · DISPATCH". Cloud Run submits the job to GKE Autopilot. Show the GKE workload appearing in the Console.</div>
+        <div class="ds-say">"Intensity just dropped below 80. GreenOps catches it on the next 30-minute re-evaluation and dispatches immediately. The job runs now, at 71 gCO₂eq/kWh instead of 138. That's a 49% carbon reduction on this job — and it took no human intervention whatsoever."</div>
+        <div class="ds-services"><span class="ds-svc">GreenOps re-evaluation</span><span class="ds-svc">GKE Autopilot dispatch</span><span class="ds-svc">Cloud Run logs</span></div>
+      </div>
+    </div>
+    <div class="ds active">
+      <div class="ds-num">04</div>
+      <div class="ds-content">
+        <div class="ds-label">ESG Record · 1:30</div>
+        <div class="ds-title">Show the BigQuery ESG metrics record</div>
+        <div class="ds-body">After the simulated job completes, open BigQuery ae_greenops.job_metrics. Show the new row: job_id contractguard_vectorstore_reindex, suite_id as_suite, actual_intensity 71, metered_kwh 1.8 (source: GKE Cloud Monitoring — not estimated), actual_emissions_kgco2: 0.128, baseline_emissions_kgco2: 0.248 (at 138), carbon_saved_kgco2: 0.120, saving_pct: 48%, csrd_eligible: true, dispatch_delay_h: 3.8. Every field populated. Every number metered and traceable.</div>
+        <div class="ds-say">"One row in BigQuery. One job from the AS Suite. The metered_kwh field is sourced from GKE resource utilisation via Cloud Monitoring — not an estimate. The saving_pct is calculated from actual carbon intensities. An auditor can verify the 71 gCO₂eq/kWh figure directly from the Carbon Footprint API at that timestamp. No estimates in this audit trail — none."</div>
+        <div class="ds-services"><span class="ds-svc">BigQuery ae_greenops.job_metrics</span><span class="ds-svc">CSRD eligible flag</span></div>
+      </div>
+    </div>
+    <div class="ds">
+      <div class="ds-num">05</div>
+      <div class="ds-content">
+        <div class="ds-label">CSRD Export · 2:00</div>
+        <div class="ds-title">Show the monthly CSRD Scope 3 export query — platform-wide</div>
+        <div class="ds-body">Run the monthly CSRD export query: SELECT reporting_period, 'Scope 3' as scope, 'Category 11' as category, 'GCP ML workload carbon optimisation — AE Platform all suites' as activity, 'kgCO₂eq' as units, SUM(carbon_saved_kgco2) as total_saved, SUM(actual_emissions_kgco2) as total_actual FROM ae_greenops.job_metrics WHERE csrd_eligible = true AND DATE_TRUNC(dispatch_ts, MONTH) = DATE_TRUNC(CURRENT_DATE(), MONTH). Show the result. One query covers jobs from every domain suite.</div>
+        <div class="ds-say">"Monthly CSRD export. One SQL query. Covers every job across every AE domain suite. The CFO and sustainability team can run this themselves — they don't need a data engineer. GreenOps makes the numbers, BigQuery makes them reportable."</div>
+        <div class="ds-services"><span class="ds-svc">BigQuery CSRD export query</span><span class="ds-svc">Scope 3 Category 11</span><span class="ds-svc">EU taxonomy aligned</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §09 DASHBOARD SIMULATION -->
+<section class="sec w ap" id="dashboard">
+  <div class="s-ey gr">ESG Monitoring Dashboard — Live View Simulation</div>
+  <h2 class="s-h2">What the sustainability team sees. <em>Every number from BigQuery.</em></h2>
+  <p class="s-p">This is the GreenOps monitoring view as it appears to the CTO and sustainability team — a read-only consumer of <code style="font-family:var(--mono);font-size:12px">ae_greenops.job_metrics</code>. No decisions are made here. Every figure shown is derived from the same BigQuery table that feeds the CSRD Scope 3 export. The live queue panel shows the current state of the Firestore <code style="font-family:var(--mono);font-size:12px">deferred_jobs</code> collection.</p>
+  <div class="ap" style="margin-top:4px">
+    <!-- Dashboard chrome -->
+    <div style="background:#0E0D0B;border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden;font-family:'IBM Plex Mono',monospace">
+      <!-- Titlebar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#1A1916;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:#FFBD2E"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:#28C840"></div>
+          <span style="font-size:11px;color:rgba(245,240,232,.3);margin-left:8px;letter-spacing:.05em">GreenOps ESG Dashboard · ae_greenops.job_metrics · europe-west3</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:9px;padding:3px 8px;background:rgba(19,115,51,.25);color:#A5D6A7;letter-spacing:.07em">● LIVE</span>
+          <span style="font-size:9px;color:rgba(245,240,232,.25);letter-spacing:.05em">Last sync: 30s ago</span>
+        </div>
+      </div>
+      <!-- Top KPI row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:20px 20px;background:#0E0D0B">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">MTD Carbon Saved</div>
+          <div style="font-size:30px;font-weight:700;color:#A5D6A7;letter-spacing:-.02em;line-height:1">18.4</div>
+          <div style="font-size:9px;color:rgba(165,214,167,.5);margin-top:4px">kgCO₂eq · all suites · 14 jobs</div>
+          <div style="margin-top:8px;height:2px;background:rgba(255,255,255,.06);border-radius:1px"><div style="width:64%;height:2px;background:#137333;border-radius:1px"></div></div>
+          <div style="font-size:8px;color:rgba(245,240,232,.2);margin-top:3px">64% deferral rate this month</div>
+        </div>
+        <div style="padding:20px 20px;background:#0E0D0B">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Current Intensity</div>
+          <div style="font-size:30px;font-weight:700;color:#FFB74D;letter-spacing:-.02em;line-height:1">92</div>
+          <div style="font-size:9px;color:rgba(255,183,77,.5);margin-top:4px">gCO₂eq/kWh · above 80 threshold</div>
+          <div style="margin-top:8px;height:2px;background:rgba(255,255,255,.06);border-radius:1px"><div style="width:82%;height:2px;background:#B06000;border-radius:1px"></div></div>
+          <div style="font-size:8px;color:rgba(245,240,232,.2);margin-top:3px">Forecast min: 64 in +2.4h</div>
+        </div>
+        <div style="padding:20px 20px;background:#0E0D0B">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Jobs In Queue</div>
+          <div style="font-size:30px;font-weight:700;color:#CE93D8;letter-spacing:-.02em;line-height:1">3</div>
+          <div style="font-size:9px;color:rgba(206,147,216,.5);margin-top:4px">deferred · waiting for clean window</div>
+          <div style="margin-top:8px;display:flex;gap:3px">
+            <div style="width:8px;height:8px;border-radius:50%;background:#D93025;opacity:.8"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#FFB74D;opacity:.8"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#FFB74D;opacity:.8"></div>
+            <div style="font-size:8px;color:rgba(245,240,232,.2);margin-left:4px">1 expiring soon · 2 waiting</div>
+          </div>
+        </div>
+        <div style="padding:20px 20px;background:#0E0D0B">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">API Status</div>
+          <div style="font-size:30px;font-weight:700;color:#A5D6A7;letter-spacing:-.02em;line-height:1">OK</div>
+          <div style="font-size:9px;color:rgba(165,214,167,.5);margin-top:4px">Carbon Footprint API · nominal</div>
+          <div style="margin-top:8px;display:flex;gap:3px;align-items:center">
+            <div style="width:6px;height:6px;border-radius:50%;background:#137333"></div>
+            <div style="font-size:8px;color:rgba(245,240,232,.2)">Circuit breaker: CLOSED · 0 fallback dispatches MTD</div>
+          </div>
+        </div>
+      </div>
+      <!-- Carbon intensity chart + deferred queue side by side -->
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:1px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)">
+        <!-- Chart panel -->
+        <div style="padding:20px;background:#0E0D0B">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px">Carbon Intensity Forecast — europe-west3 · next 12h · gCO₂eq/kWh</div>
+          <svg width="100%" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="dash-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#137333" stop-opacity=".25"/>
+                <stop offset="100%" stop-color="#137333" stop-opacity=".02"/>
+              </linearGradient>
+              <linearGradient id="high-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#B06000" stop-opacity=".15"/>
+                <stop offset="100%" stop-color="#B06000" stop-opacity=".02"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="40" y1="10" x2="490" y2="10" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="40" y1="35" x2="490" y2="35" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="40" y1="60" x2="490" y2="60" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="40" y1="85" x2="490" y2="85" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <text x="34" y="14" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="end">160</text>
+            <text x="34" y="39" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="end">110</text>
+            <text x="34" y="64" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="end">80</text>
+            <text x="34" y="89" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="end">50</text>
+            <!-- 80 threshold line -->
+            <line x1="40" y1="60" x2="490" y2="60" stroke="#137333" stroke-width="1" stroke-dasharray="5 4" opacity=".6"/>
+            <text x="492" y="64" font-size="8" fill="#A5D6A7" opacity=".7">80</text>
+            <!-- High zone shading (now → +2.4h) -->
+            <polyline points="40,42 80,44 120,46 160,48 200,52" fill="url(#high-grad)" stroke="none"/>
+            <!-- Low zone shading (+2.4h → end) -->
+            <polyline points="200,52 240,60 280,65 320,62 360,58 400,54 440,50 490,48 490,110 200,110" fill="url(#dash-grad)" stroke="none"/>
+            <!-- Intensity line -->
+            <polyline fill="none" stroke="#FFB74D" stroke-width="2" stroke-linejoin="round" points="40,42 80,44 120,46 160,48 200,52"/>
+            <polyline fill="none" stroke="rgba(255,183,77,.3)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="5 3" points="200,52 240,60 280,65 320,62 360,58 400,54 440,50 490,48"/>
+            <!-- NOW marker -->
+            <line x1="200" y1="8" x2="200" y2="95" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="203" y="18" font-size="8" fill="rgba(245,240,232,.4)">NOW</text>
+            <!-- Forecast min marker -->
+            <line x1="310" y1="8" x2="310" y2="95" stroke="rgba(19,115,51,.4)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="313" y="18" font-size="8" fill="#A5D6A7">min 64 (+2.4h)</text>
+            <circle cx="310" cy="65" r="4" fill="#137333" opacity=".9"/>
+            <!-- Dispatch window highlight -->
+            <rect x="280" y="8" width="130" height="87" rx="2" fill="rgba(19,115,51,.06)"/>
+            <!-- Time labels -->
+            <text x="40" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">Now</text>
+            <text x="120" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">+2h</text>
+            <text x="200" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">+4h</text>
+            <text x="310" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">+6h</text>
+            <text x="400" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">+9h</text>
+            <text x="490" y="104" font-size="8" fill="rgba(245,240,232,.2)" text-anchor="middle">+12h</text>
+          </svg>
+          <div style="display:flex;gap:16px;margin-top:4px">
+            <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(245,240,232,.3)"><div style="width:16px;height:2px;background:#FFB74D"></div>Actual</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(245,240,232,.3)"><div style="width:16px;height:1px;background:rgba(255,183,77,.4)"></div>Forecast</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(245,240,232,.3)"><div style="width:16px;height:1px;background:#137333;border-top:1px dashed #137333"></div>80 threshold</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(245,240,232,.3)"><div style="width:12px;height:10px;background:rgba(19,115,51,.15);border-radius:1px"></div>Dispatch window</div>
+          </div>
+        </div>
+        <!-- Deferred queue panel -->
+        <div style="padding:20px;background:#0E0D0B;border-left:1px solid rgba(255,255,255,.04)">
+          <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px">Firestore deferred_jobs · 3 active</div>
+          <!-- Job 1 - expiring soon -->
+          <div style="padding:10px 12px;background:#1A1916;border:1px solid rgba(217,48,37,.2);border-left:3px solid #D93025;margin-bottom:3px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <span style="font-size:10px;font-weight:500;color:#EF9A9A">revrec_ai_weekly_retrain</span>
+              <span style="font-size:8px;padding:2px 6px;background:rgba(217,48,37,.2);color:#EF9A9A">EXPIRING</span>
+            </div>
+            <div style="font-size:8px;color:rgba(245,240,232,.3)">suite: as_suite · M-03</div>
+            <div style="font-size:8px;color:rgba(245,240,232,.25);margin-top:2px">submitted: 02:00 · expiry: 08:00 · <span style="color:#EF9A9A">41m remaining</span></div>
+            <div style="margin-top:6px;height:1.5px;background:rgba(255,255,255,.06);border-radius:1px"><div style="width:88%;height:1.5px;background:#D93025;border-radius:1px;opacity:.6"></div></div>
+          </div>
+          <!-- Job 2 - waiting -->
+          <div style="padding:10px 12px;background:#1A1916;border:1px solid rgba(176,96,0,.15);border-left:3px solid #B06000;margin-bottom:3px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <span style="font-size:10px;font-weight:500;color:#FFB74D">asset_iq_rul_weekly_retrain</span>
+              <span style="font-size:8px;padding:2px 6px;background:rgba(176,96,0,.2);color:#FFB74D">DEFERRED</span>
+            </div>
+            <div style="font-size:8px;color:rgba(245,240,232,.3)">suite: as_suite · M-05</div>
+            <div style="font-size:8px;color:rgba(245,240,232,.25);margin-top:2px">submitted: 03:00 · expiry: 09:00 · 1h41m remaining</div>
+            <div style="margin-top:6px;height:1.5px;background:rgba(255,255,255,.06);border-radius:1px"><div style="width:55%;height:1.5px;background:#B06000;border-radius:1px;opacity:.6"></div></div>
+          </div>
+          <!-- Job 3 - waiting -->
+          <div style="padding:10px 12px;background:#1A1916;border:1px solid rgba(176,96,0,.1);border-left:3px solid rgba(176,96,0,.4)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <span style="font-size:10px;font-weight:500;color:rgba(255,183,77,.6)">contractguard_weekly_retrain</span>
+              <span style="font-size:8px;padding:2px 6px;background:rgba(176,96,0,.15);color:rgba(255,183,77,.6)">DEFERRED</span>
+            </div>
+            <div style="font-size:8px;color:rgba(245,240,232,.3)">suite: as_suite · M-02</div>
+            <div style="font-size:8px;color:rgba(245,240,232,.25);margin-top:2px">submitted: 04:00 · expiry: 10:00 · 2h41m remaining</div>
+            <div style="margin-top:6px;height:1.5px;background:rgba(255,255,255,.06);border-radius:1px"><div style="width:30%;height:1.5px;background:rgba(176,96,0,.5);border-radius:1px"></div></div>
+          </div>
+          <div style="margin-top:10px;padding:8px 10px;background:rgba(19,115,51,.08);border:1px solid rgba(19,115,51,.15)">
+            <div style="font-size:8px;color:rgba(165,214,167,.6);line-height:1.6">Next re-eval in <strong style="color:#A5D6A7">8m 22s</strong> · Forecast shows clean window at +2.4h · Expected dispatch: all 3 jobs</div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom: recent dispatches table -->
+      <div style="padding:18px 20px;background:#0E0D0B">
+        <div style="font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">Recent Dispatches — ae_greenops.job_metrics · last 7 days</div>
+        <table style="width:100%;border-collapse:collapse;font-size:10px">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.06)">
+              <th style="text-align:left;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">Job ID</th>
+              <th style="text-align:left;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">Suite</th>
+              <th style="text-align:right;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">Intensity</th>
+              <th style="text-align:right;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">metered_kwh</th>
+              <th style="text-align:right;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">CO₂ Saved</th>
+              <th style="text-align:right;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">Saving %</th>
+              <th style="text-align:center;padding:4px 8px;font-size:8px;font-weight:500;color:rgba(245,240,232,.25);letter-spacing:.07em;text-transform:uppercase">CSRD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.03)">
+              <td style="padding:6px 8px;color:rgba(245,240,232,.6);font-size:9px">contractguard_vectorstore_reindex</td>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.35);font-size:9px">as_suite</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">71</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.5);font-size:9px">1.8</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">0.120 kg</td>
+              <td style="padding:6px 8px;text-align:right;font-size:9px"><span style="padding:2px 5px;background:rgba(19,115,51,.25);color:#A5D6A7">49%</span></td>
+              <td style="padding:6px 8px;text-align:center;font-size:9px;color:#A5D6A7">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.03)">
+              <td style="padding:6px 8px;color:rgba(245,240,232,.6);font-size:9px">revrec_ai_weekly_retrain</td>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.35);font-size:9px">as_suite</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">68</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.5);font-size:9px">4.2</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">0.318 kg</td>
+              <td style="padding:6px 8px;text-align:right;font-size:9px"><span style="padding:2px 5px;background:rgba(19,115,51,.25);color:#A5D6A7">52%</span></td>
+              <td style="padding:6px 8px;text-align:center;font-size:9px;color:#A5D6A7">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.03)">
+              <td style="padding:6px 8px;color:rgba(245,240,232,.6);font-size:9px">asset_iq_rul_weekly_retrain</td>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.35);font-size:9px">as_suite</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">74</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.5);font-size:9px">6.1</td>
+              <td style="padding:6px 8px;text-align:right;color:#A5D6A7;font-size:9px">0.391 kg</td>
+              <td style="padding:6px 8px;text-align:right;font-size:9px"><span style="padding:2px 5px;background:rgba(19,115,51,.25);color:#A5D6A7">43%</span></td>
+              <td style="padding:6px 8px;text-align:center;font-size:9px;color:#A5D6A7">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.03)">
+              <td style="padding:6px 8px;color:rgba(245,240,232,.6);font-size:9px">feature_pipeline_backfill</td>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.35);font-size:9px">ae_platform</td>
+              <td style="padding:6px 8px;text-align:right;color:#FFB74D;font-size:9px">86</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.5);font-size:9px">0.9</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.35);font-size:9px">0.000 kg</td>
+              <td style="padding:6px 8px;text-align:right;font-size:9px"><span style="padding:2px 5px;background:rgba(176,96,0,.2);color:#FFB74D">0%</span></td>
+              <td style="padding:6px 8px;text-align:center;font-size:9px;color:rgba(245,240,232,.25)">—</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.6);font-size:9px">daily_rul_batch_prediction</td>
+              <td style="padding:6px 8px;color:rgba(245,240,232,.35);font-size:9px">as_suite</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.4);font-size:9px">104</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.5);font-size:9px">2.3</td>
+              <td style="padding:6px 8px;text-align:right;color:rgba(245,240,232,.35);font-size:9px">—</td>
+              <td style="padding:6px 8px;text-align:right;font-size:9px"><span style="padding:2px 5px;background:rgba(255,255,255,.06);color:rgba(245,240,232,.3)">HARD</span></td>
+              <td style="padding:6px 8px;text-align:center;font-size:9px;color:rgba(245,240,232,.25)">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:8px;color:rgba(245,240,232,.2)">
+          <span>Source: ae_greenops.job_metrics · BigQuery · europe-west3</span>
+          <span>metered_kwh: GKE Cloud Monitoring · carbon_intensity: GCP Carbon Footprint API · all figures audit-traceable</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div style="padding:64px var(--col);background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start" class="ap">
+  <div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gold-lt);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:18px;height:1px;background:var(--gold-lt)"></span>AE Platform Navigation</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:16px">Three platform services.<br><strong>GreenOps is the second.</strong></div>
+    <p style="font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.85">Data Governance (M-08) is the H1 foundation — deployed first, before any suite. GreenOps (M-06) activates in H3 once workload volumes justify carbon scheduling. The Strategy Dashboard (M-07) closes the platform layer — reading GreenOps ESG metrics alongside signals from every domain suite and presenting the unified executive view.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <a href="strategy-dashboard.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(19,115,51,.2);transition:background .18s,border-color .18s,transform .18s" onmouseover="this.style.background='#252420';this.style.borderColor='rgba(19,115,51,.4)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='#1A1916';this.style.borderColor='rgba(19,115,51,.2)';this.style.transform='none'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);letter-spacing:.07em">M-07</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">Strategy Dashboard →</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">All suites, all signals, one screen · reads GreenOps ESG feed</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="data-governance.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid rgba(176,96,0,.15);transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--amber);letter-spacing:.07em">M-08</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← Data Governance · H1 Foundation</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">Deployed first · validates every record GreenOps defers</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+    <a href="page-09.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:.07em">PG 09</div>
+      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Platform Index</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">All platform services · deployment order · dependency matrix</div></div>
+      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
+    </a>
+  </div>
+</div>
+<footer>
+  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
+  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2);letter-spacing:.03em">© 2026 Siddharth Rao</div>
+</footer>
+<script>
+const c=document.getElementById('cur'),r=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
+document.querySelectorAll('.ap').forEach(el=>io.observe(el));
+const secs=['context','containers','architecture','statemachine','dataflow','esg','adrs','rebuttals','demo','dashboard'];
+const sio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);if(link)link.classList.add('act');}});},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+</script>
+</body>
+</html>
