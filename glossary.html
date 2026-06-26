@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glossary · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* ALPHA NAV */
+.alpha-nav { background: white; border-bottom: 1px solid var(--border); padding: 0.75rem 2.5rem; position: sticky; top: 49px; z-index: 90; display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.alpha-link { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); text-decoration: none; padding: 4px 8px; border-radius: var(--r); transition: color 0.15s, background 0.15s; }
+.alpha-link:hover { color: var(--blue); background: var(--blue-bg); }
+
+/* GLOSSARY TERMS */
+.glossary-section { margin-bottom: 3rem; }
+.section-letter-big { font-family: var(--serif); font-size: 42px; color: var(--border2); line-height: 1; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.gterm { padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+.gterm:last-child { border-bottom: none; }
+.gterm-word { font-family: var(--sans); font-size: 14.5px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; margin-bottom: 4px; }
+.gterm-abbr { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); margin-left: 6px; letter-spacing: 0.05em; }
+.gterm-def { font-size: 13px; line-height: 1.65; color: var(--text2); }
+.gterm-ref { font-family: var(--mono); font-size: 9.5px; color: var(--blue); margin-top: 5px; }
+.gterm-ref a { color: var(--blue); text-decoration: none; }
+.gterm-ref a:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise</div>
+  <div class="sidebar-project">Glossary</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#A">A — ADK, ADR, ASC 606…</a></li>
+      <li><a href="#B">B — BANT, BigQuery…</a></li>
+      <li><a href="#C">C — C4, CCAI, CMEK…</a></li>
+      <li><a href="#D">D — DHR, Document AI…</a></li>
+      <li><a href="#E">E — EU AI Act, ERM…</a></li>
+      <li><a href="#F">F — Feature Store, Firestore…</a></li>
+      <li><a href="#G">G — GKE, GreenOps…</a></li>
+      <li><a href="#H">H — HITL, Horizon…</a></li>
+      <li><a href="#I">I — Isolation Forest, ISO…</a></li>
+      <li><a href="#J">J — Journal entry…</a></li>
+      <li><a href="#L">L — Lineage, Looker…</a></li>
+      <li><a href="#M">M — Materialised View, MCP…</a></li>
+      <li><a href="#O">O — Optimistic lock…</a></li>
+      <li><a href="#P">P — Pub/Sub, PI…</a></li>
+      <li><a href="#Q">Q — Quarantine…</a></li>
+      <li><a href="#R">R — RAG, RevRec, RUL…</a></li>
+      <li><a href="#S">S — SAFe, SAP, SHAP…</a></li>
+      <li><a href="#T">T — Terraform, TFX, TOGAF…</a></li>
+      <li><a href="#V">V — Vertex AI, VPC-SC…</a></li>
+      <li><a href="#W">W — Workload Identity…</a></li>
+      <li><a href="#X">X — XGBoost, XAI…</a></li>
+      <li><a href="#Z">Z — Z-score</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Reference Docs</div>
+    <div class="stack-item"><strong><a href="adr-index.html" style="color:inherit;text-decoration:none">ADR Index</a></strong>every significant decision</div>
+    <div class="stack-item"><strong><a href="changelog.html" style="color:inherit;text-decoration:none">Changelog</a></strong>design history, v1.0 → v2.0</div>
+    <div class="stack-item"><strong><a href="index.html" style="color:inherit;text-decoration:none">AE Platform</a></strong>governance layer home</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="index.html">the-autonomous-enterprise</a> / <a href="#">glossary</a>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-tag">All Terms · All Modules</span>
+      <a href="adr-index.html" class="topbar-tag" style="text-decoration:none">ADR Index →</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:900px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">Reference Document &nbsp;·&nbsp; The Autonomous Enterprise &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">Glossary: <em>One Sentence</em><br>per Term</h1>
+      <div class="doc-byline">
+        <span>All terms used across the nine portfolio pages and eight module pages</span>
+        <span>Defined in the context of their use in this portfolio</span>
+      </div>
+    </header>
+
+    <nav class="alpha-nav">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text3);padding:4px 8px">Jump:</span>
+      <a class="alpha-link" href="#A">A</a><a class="alpha-link" href="#B">B</a><a class="alpha-link" href="#C">C</a><a class="alpha-link" href="#D">D</a><a class="alpha-link" href="#E">E</a><a class="alpha-link" href="#F">F</a><a class="alpha-link" href="#G">G</a><a class="alpha-link" href="#H">H</a><a class="alpha-link" href="#I">I</a><a class="alpha-link" href="#J">J</a><a class="alpha-link" href="#K">K</a><a class="alpha-link" href="#L">L</a><a class="alpha-link" href="#M">M</a><a class="alpha-link" href="#N">N</a><a class="alpha-link" href="#O">O</a><a class="alpha-link" href="#P">P</a><a class="alpha-link" href="#Q">Q</a><a class="alpha-link" href="#R">R</a><a class="alpha-link" href="#S">S</a><a class="alpha-link" href="#T">T</a><a class="alpha-link" href="#U">U</a><a class="alpha-link" href="#V">V</a><a class="alpha-link" href="#W">W</a><a class="alpha-link" href="#X">X</a><a class="alpha-link" href="#Z">Z</a>
+    </nav>
+
+    <div class="glossary-section" id="A">
+      <div class="section-letter-big">A</div>
+      <div class="gterm"><div class="gterm-word">A2A<span class="gterm-abbr">Agent-to-Agent Protocol</span></div><div class="gterm-def">Google's typed inter-agent communication standard in ADK, where each agent publishes a structured task message and receives a structured response, enabling agent replaceability without changing the Orchestrator.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">Quote-to-Cash, Page 05</a> · <a href="adr-index.html#ADR-008">ADR-008</a></div></div>
+      <div class="gterm"><div class="gterm-word">ADK<span class="gterm-abbr">Agent Development Kit</span></div><div class="gterm-def">Google's native GCP framework for building multi-agent systems, providing first-class integration with CCAI, Dialogflow CX, Vertex AI, and Cloud Run, with A2A as its inter-agent protocol.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">Quote-to-Cash, Page 05</a> · <a href="adr-index.html#ADR-007">ADR-007</a></div></div>
+      <div class="gterm"><div class="gterm-word">ADR<span class="gterm-abbr">Architecture Decision Record</span></div><div class="gterm-def">A short document capturing a significant architectural decision, the context that required it, the alternatives considered, and the consequences of the choice.</div><div class="gterm-ref"><a href="adr-index.html">ADR Index</a></div></div>
+      <div class="gterm"><div class="gterm-word">ADM<span class="gterm-abbr">Architecture Development Method</span></div><div class="gterm-def">TOGAF's iterative framework for enterprise architecture, structured as phases A through H plus a Requirements Management phase, used in this portfolio to structure the ClaraVis architecture work from vision through migration.</div><div class="gterm-ref"><a href="page-03.html">Page 03</a></div></div>
+      <div class="gterm"><div class="gterm-word">ANN<span class="gterm-abbr">Approximate Nearest Neighbour</span></div><div class="gterm-def">An indexing algorithm that trades exact nearest-neighbour accuracy for sub-linear query time at scale, used in Vertex AI Vector Store for ContractGuard's clause precedent retrieval.</div><div class="gterm-ref">M-02 ContractGuard</div></div>
+      <div class="gterm"><div class="gterm-word">ART<span class="gterm-abbr">Agile Release Train</span></div><div class="gterm-def">A long-lived team of teams in SAFe that delivers a continuous flow of value by operating on a shared PI cadence — each of the AE Portfolio's four Solution Trains decomposes into its own ARTs internally, documented on that pillar's own SAFe page.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a></div></div>
+      <div class="gterm"><div class="gterm-word">ASC 606</div><div class="gterm-def">The FASB revenue recognition standard requiring companies to recognise revenue when (or as) performance obligations are satisfied, which governs how ClaraVis classifies contract revenue as SALE, MULTI-ELEMENT, or SERVICE.</div><div class="gterm-ref">M-03 RevRec AI</div></div>
+      <div class="gterm"><div class="gterm-word">Asset IQ</div><div class="gterm-def">AE Module 05 — the predictive maintenance module for ClaraVis's 12,000-unit installed fleet, combining RUL regression (GKE Autopilot batch) and anomaly detection (Cloud Run streaming) with HITL-06 and HITL-07 checkpoints.</div><div class="gterm-ref">M-05</div></div>
+      <div class="gterm"><div class="gterm-word">Authorised View</div><div class="gterm-def">A BigQuery access control pattern where a view in one dataset is granted read access to tables in another dataset, used in the Strategy Dashboard to give Looker Studio read access to materialised views without exposing source operational datasets.</div><div class="gterm-ref">M-07 Strategy Dashboard</div></div>
+    </div>
+
+    <div class="glossary-section" id="B">
+      <div class="section-letter-big">B</div>
+      <div class="gterm"><div class="gterm-word">BANT</div><div class="gterm-def">Budget / Authority / Need / Timeline — the four qualification signals the CCAI Sales Agent extracts in turns 2–5 to determine whether an inbound prospect is a qualified lead worth escalating to an Account Executive.</div><div class="gterm-ref">M-01 CCAI Sales Agent</div></div>
+      <div class="gterm"><div class="gterm-word">BigQuery</div><div class="gterm-def">Google Cloud's serverless data warehouse, used in the AE as the canonical audit store (ae_audit), operational datasets per module (ae_devices, ae_financial, etc.), materialized views for the Strategy Dashboard, and the CSRD ESG export.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+      <div class="gterm"><div class="gterm-word">BeyondCorp</div><div class="gterm-def">Google's zero-trust access model, used for developer access to GCP resources without a traditional VPN — access is granted based on device posture and identity rather than network location.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+      <div class="gterm"><div class="gterm-word">BOM<span class="gterm-abbr">Bill of Materials</span></div><div class="gterm-def">The configured list of products, services, and licence items that the CCAI Sales Agent's CPQ Agent assembles and validates against Salesforce CPQ during the configuration turns (6–9) of a sales conversation.</div><div class="gterm-ref">M-01</div></div>
+      <div class="gterm"><div class="gterm-word">Break-glass SA</div><div class="gterm-def">A service account with elevated Terraform state access that is normally locked and only usable by a named human with MFA in a declared emergency, providing a recovery path without permanently granting broad access to standard developer accounts.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="C">
+      <div class="section-letter-big">C</div>
+      <div class="gterm"><div class="gterm-word">C4 Model</div><div class="gterm-def">A hierarchical software architecture diagramming approach (Context, Containers, Components, Code) — this portfolio uses C4 Level 1 (System Context) for each module's system context diagram, showing inputs, outputs, and external actors.</div><div class="gterm-ref">All module §01 sections</div></div>
+      <div class="gterm"><div class="gterm-word">CCAI<span class="gterm-abbr">Contact Center AI</span></div><div class="gterm-def">Google Cloud's platform for AI-powered customer conversations, providing the web chat and phone entry points for the CCAI Sales Agent (M-01) and handling DTMF/speech recognition for voice channel interactions.</div><div class="gterm-ref">M-01</div></div>
+      <div class="gterm"><div class="gterm-word">CMEK<span class="gterm-abbr">Customer-Managed Encryption Keys</span></div><div class="gterm-def">A GCP encryption model where the customer holds encryption keys in Cloud KMS rather than Google, ensuring that Google cannot access the encrypted data even with administrative access to the service.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+      <div class="gterm"><div class="gterm-word">Contamination parameter</div><div class="gterm-def">The Isolation Forest hyperparameter specifying the expected proportion of anomalies in the training data — set to 0.005 (0.5%) for FinRisk Sentinel, calibrating the model to flag approximately 1–3 high-severity payments per month.</div><div class="gterm-ref">M-04 FinRisk Sentinel</div></div>
+      <div class="gterm"><div class="gterm-word">ContractGuard</div><div class="gterm-def">AE Module 02 — the contract risk analysis module using a two-pass architecture (Document AI structured extraction followed by Gemini 1.5 Pro semantic analysis) to flag clause-level risks and generate counter-position drafts for Legal review.</div><div class="gterm-ref">M-02</div></div>
+      <div class="gterm"><div class="gterm-word">CPQ<span class="gterm-abbr">Configure, Price, Quote</span></div><div class="gterm-def">Salesforce's product configuration and pricing engine, used by the CCAI Sales Agent's CPQ Agent to validate product configurations, check pricing rules, and create Opportunities with validated BOMs.</div><div class="gterm-ref">M-01</div></div>
+      <div class="gterm"><div class="gterm-word">CSRD<span class="gterm-abbr">Corporate Sustainability Reporting Directive</span></div><div class="gterm-def">EU regulation requiring large companies to report on environmental, social, and governance metrics — GreenOps (M-06) produces Scope 3 Category 11 carbon savings data for ClaraVis's CSRD annual sustainability report.</div><div class="gterm-ref">M-06 GreenOps</div></div>
+    </div>
+
+    <div class="glossary-section" id="D">
+      <div class="section-letter-big">D</div>
+      <div class="gterm"><div class="gterm-word">Data Governance</div><div class="gterm-def">AE Module 08 — the H1 foundation module that validates all records entering the AE data fabric using TFX ExampleValidator, tags every feature with a traceable lineage, and quarantines records that fail schema or quality checks.</div><div class="gterm-ref">M-08</div></div>
+      <div class="gterm"><div class="gterm-word">DHR<span class="gterm-abbr">Device History Record</span></div><div class="gterm-def">An FDA 21 CFR 820.184 regulatory requirement for medical device manufacturers to maintain complete maintenance history for each manufactured unit — Asset IQ writes a DHR event at every maintenance action triggered by a HITL-06 decision.</div><div class="gterm-ref">M-05 Asset IQ</div></div>
+      <div class="gterm"><div class="gterm-word">Dialogflow CX</div><div class="gterm-def">Google Cloud's conversation design platform for building multi-turn dialogue flows, used by the CCAI Sales Agent for voice channel routing and intent detection across both web chat and phone entry points.</div><div class="gterm-ref">M-01</div></div>
+      <div class="gterm"><div class="gterm-word">Document AI</div><div class="gterm-def">Google Cloud's document processing service, used as Pass 1 in ContractGuard's two-pass architecture to perform deterministic structured extraction of contract clauses before Gemini's semantic Pass 2.</div><div class="gterm-ref">M-02</div></div>
+      <div class="gterm"><div class="gterm-word">Drift detection</div><div class="gterm-def">Automated monitoring that flags when a model's input feature distribution or output prediction distribution has shifted significantly from the training baseline, triggering retraining to prevent silent model degradation.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="E">
+      <div class="section-letter-big">E</div>
+      <div class="gterm"><div class="gterm-word">EU AI Act</div><div class="gterm-def">EU Regulation 2024/1689 establishing a risk-based framework for AI systems — Articles 11 (technical documentation), 13 (transparency/explainability), 14 (human oversight), and 15 (robustness) are the four articles with direct architectural consequences in this portfolio.</div><div class="gterm-ref"><a href="page-03.html">Page 03</a> · all module pages</div></div>
+      <div class="gterm"><div class="gterm-word">Embedding</div><div class="gterm-def">A dense vector representation of text produced by a language model (text-embedding-004 in this portfolio), used in ContractGuard's Vector Store to enable semantic similarity search across the clause precedent corpus.</div><div class="gterm-ref">M-02</div></div>
+    </div>
+
+    <div class="glossary-section" id="F">
+      <div class="section-letter-big">F</div>
+      <div class="gterm"><div class="gterm-word">Feature Store</div><div class="gterm-def">Vertex AI's managed feature storage service providing online (low-latency per-entity lookup) and offline (batch retrieval for training) feature serving — all AE modules that use ML models read features from the Feature Store, which Data Governance validates before ingestion.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a> · M-08</div></div>
+      <div class="gterm"><div class="gterm-word">FinRisk Sentinel</div><div class="gterm-def">AE Module 04 — the financial anomaly detection module that scores every incoming payment against a sliding-window rolling baseline using Isolation Forest, routing high-severity alerts to a dual-reviewer HITL-08 with a 1-hour SLA.</div><div class="gterm-ref">M-04</div></div>
+      <div class="gterm"><div class="gterm-word">Firestore</div><div class="gterm-def">Google Cloud's document database, used in the AE as the agent state store (conversation sessions, BANT scores, BOM drafts) and the immutable HITL audit record store — strong consistency and real-time listeners make it the correct choice for HITL state that must be written atomically and read immediately.</div><div class="gterm-ref"><a href="adr-index.html">ADR-004 · ADR-009</a></div></div>
+      <div class="gterm"><div class="gterm-word">FSM<span class="gterm-abbr">Field Service Manager</span></div><div class="gterm-def">The ClaraVis stakeholder responsible for scheduling and dispatching field engineers for asset maintenance — the primary reviewer in Asset IQ's HITL-06 (unit-level maintenance decision) and one of two reviewers in HITL-07 (fleet-level anomaly).</div><div class="gterm-ref">M-05</div></div>
+    </div>
+
+    <div class="glossary-section" id="G">
+      <div class="section-letter-big">G</div>
+      <div class="gterm"><div class="gterm-word">Gemini 1.5 Pro</div><div class="gterm-def">Google's frontier multimodal language model with a 1 million token context window, used in ContractGuard's Pass 2 for semantic contract analysis and counter-position draft generation, and in the CCAI Sales Agent's Orchestrator for intent detection.</div><div class="gterm-ref">M-02 · M-01</div></div>
+      <div class="gterm"><div class="gterm-word">GKE Autopilot<span class="gterm-abbr">Google Kubernetes Engine</span></div><div class="gterm-def">Google's managed Kubernetes service in Autopilot mode — node provisioning, patching, and hardening are fully managed, with per-pod billing optimal for the AE's batch ML workloads (Asset IQ RUL training, ContractGuard Vector Store reindex).</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a> · <a href="adr-index.html">ADR-015</a></div></div>
+      <div class="gterm"><div class="gterm-word">GreenOps Platform</div><div class="gterm-def">AE Module 06 — the carbon-aware scheduling module that defers flexible batch ML jobs to low-carbon grid windows (below 80 gCO₂eq/kWh in europe-west3) within a ±6 hour window, producing per-job carbon savings records for CSRD Scope 3 reporting.</div><div class="gterm-ref">M-06</div></div>
+    </div>
+
+    <div class="glossary-section" id="H">
+      <div class="section-letter-big">H</div>
+      <div class="gterm"><div class="gterm-word">HITL<span class="gterm-abbr">Human-in-the-Loop</span></div><div class="gterm-def">A mandatory checkpoint where a qualified human reviewer must approve, override, or escalate an AI-generated decision before any consequential downstream action — the AE has 11 named HITL checkpoints (HITL-01 through HITL-11), each with a specific actor, SLA, and Firestore audit record.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a> · all module pages</div></div>
+      <div class="gterm"><div class="gterm-word">LPM<span class="gterm-abbr">Lean Portfolio Management</span></div><div class="gterm-def">The SAFe Portfolio-level practice of connecting Strategic Themes to funded Solution Trains via Lean Budgets, reviewed at a quarterly Portfolio Sync — the level at which the AE governs investment across all four Solution Trains, without descending into any single Solution Train's own ART backlog.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a></div></div>
+      <div class="gterm"><div class="gterm-word">Solution Train</div><div class="gterm-def">A SAFe Large Solution Level construct — a system of systems that collects multiple ARTs into a single coordinated delivery for one end-to-end business process. The AE Portfolio runs four: Quote-to-Cash, Procure-to-Pay, Finance Operations, and Supply Chain — each one is documented in full on that pillar's own site.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a></div></div>
+      <div class="gterm"><div class="gterm-word">Horizon (H1/H2/H3)</div><div class="gterm-def">The AE's phased deployment framework: H1 deploys the Data Governance foundation and CCAI Sales Agent pilot; H2 deploys ContractGuard, RevRec AI, Asset IQ, and FinRisk Sentinel; H3 deploys GreenOps and Strategy Dashboard as the full-suite capstone.</div><div class="gterm-ref"><a href="page-03.html">Page 03</a> · <a href="adr-index.html">ADR-016</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="I">
+      <div class="section-letter-big">I</div>
+      <div class="gterm"><div class="gterm-word">Isolation Forest</div><div class="gterm-def">An unsupervised anomaly detection algorithm that isolates anomalies by randomly partitioning features — anomalies are isolated in fewer partitions than normal observations — used in both FinRisk Sentinel (financial anomaly) and Asset IQ (streaming sensor anomaly) because its tree structure enables exact SHAP attributions.</div><div class="gterm-ref">M-04 · M-05 · <a href="adr-index.html">ADR-011</a></div></div>
+      <div class="gterm"><div class="gterm-word">ISO 13485</div><div class="gterm-def">The international standard for quality management systems in medical device design and manufacture — Asset IQ writes ISO 13485 DHR events at every maintenance action to maintain ClaraVis's regulatory compliance for its 12,000-unit installed fleet.</div><div class="gterm-ref">M-05</div></div>
+    </div>
+
+    <div class="glossary-section" id="J">
+      <div class="section-letter-big">J</div>
+      <div class="gterm"><div class="gterm-word">Journal entry</div><div class="gterm-def">An SAP financial posting that records a revenue recognition event in ClaraVis's general ledger — in RevRec AI, the SAP journal entry function requires a hitl_id parameter, making it structurally unreachable without a committed HITL approval record.</div><div class="gterm-ref">M-03 · <a href="adr-index.html">ADR-R01</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="L">
+      <div class="section-letter-big">L</div>
+      <div class="gterm"><div class="gterm-word">Lineage (feature)</div><div class="gterm-def">The traceable chain from a raw sensor event through Data Governance validation, Feature Store ingestion, Vertex AI inference, and SHAP explanation to the HITL record — every link tagged with source, event_id, schema_version, and quality_score, satisfying EU AI Act Article 11 technical documentation.</div><div class="gterm-ref">M-08</div></div>
+      <div class="gterm"><div class="gterm-word">Looker Studio</div><div class="gterm-def">Google's browser-based business intelligence tool, used for the Strategy Dashboard (M-07) to render five panels from BigQuery materialised views — chosen over a custom React dashboard because it provides native BigQuery integration and GCP IAM authentication without a separate backend.</div><div class="gterm-ref">M-07 · <a href="adr-index.html">ADR-SD01</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="M">
+      <div class="section-letter-big">M</div>
+      <div class="gterm"><div class="gterm-word">Materialised View</div><div class="gterm-def">A BigQuery view whose query results are pre-computed and cached on a refresh schedule — the Strategy Dashboard uses five named materialised views (one per panel) with per-panel refresh cadences from 5 minutes to 1 hour, isolating dashboard query load from operational write performance.</div><div class="gterm-ref">M-07 · <a href="adr-index.html">ADR-SD02</a></div></div>
+      <div class="gterm"><div class="gterm-word">MCP<span class="gterm-abbr">Model Context Protocol</span></div><div class="gterm-def">Anthropic's open protocol for connecting AI models to external tools and data sources — referenced in the AE agent architecture as the protocol enabling agents to interact with Salesforce, SAP, and GCP services through typed tool definitions.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">Quote-to-Cash, Page 05</a></div></div>
+      <div class="gterm"><div class="gterm-word">Model Card</div><div class="gterm-def">A structured document attached to each model version in Vertex AI Model Registry capturing intended use, training data, evaluation metrics, known limitations, and EU AI Act compliance classification — required by FDA change control for ClaraVis's medical device software models.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a></div></div>
+      <div class="gterm"><div class="gterm-word">MULTI-ELEMENT</div><div class="gterm-def">One of three ASC 606 revenue classifications produced by RevRec AI, indicating that a contract bundles equipment sale and service obligations requiring allocation of the transaction price across performance obligations before revenue recognition.</div><div class="gterm-ref">M-03</div></div>
+    </div>
+
+    <div class="glossary-section" id="O">
+      <div class="section-letter-big">O</div>
+      <div class="gterm"><div class="gterm-word">Optimistic lock</div><div class="gterm-def">A concurrency control mechanism in Firestore used by FinRisk Sentinel's HITL-08 dual-reviewer design — the first decision commits at document version 1, and the second write detects the version conflict and closes automatically, preventing double-action without requiring reviewer coordination.</div><div class="gterm-ref">M-04 · <a href="adr-index.html">ADR-FR02</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="P">
+      <div class="section-letter-big">P</div>
+      <div class="gterm"><div class="gterm-word">PI<span class="gterm-abbr">Program Increment</span></div><div class="gterm-def">A SAFe timebox (typically 8–12 weeks) during which an ART plans, builds, and validates a significant increment of value — the AE Portfolio's four Solution Trains operate on a shared PI cadence across PI-1 through PI-9.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a></div></div>
+      <div class="gterm"><div class="gterm-word">Pub/Sub</div><div class="gterm-def">Google Cloud's asynchronous message bus, used in the AE as the integration event bus carrying three topic streams: ae-asset-events (telemetry), ae-q2c-events (contract/opportunity), and ae-financial-events (payments/classifications) — chosen over direct HTTP to decouple the AE from Salesforce and SAP outage windows.</div><div class="gterm-ref"><a href="adr-index.html">ADR-006</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="Q">
+      <div class="section-letter-big">Q</div>
+      <div class="gterm"><div class="gterm-word">Quarantine</div><div class="gterm-def">Data Governance's holding area (ae_quarantine BigQuery dataset) for records that fail TFX schema validation or quality scoring — records are preserved for data steward review and potential reinstatement rather than discarded, preventing irreversible data loss from legitimate upstream schema changes.</div><div class="gterm-ref">M-08 · <a href="adr-index.html">ADR-DG02</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="R">
+      <div class="section-letter-big">R</div>
+      <div class="gterm"><div class="gterm-word">RAG<span class="gterm-abbr">Retrieval-Augmented Generation</span></div><div class="gterm-def">A pattern where a language model's response is grounded in documents retrieved from a vector store — used in ContractGuard (precedent clause retrieval) and the CCAI Sales Agent's Knowledge Agent (product catalogue Q&amp;A with a 0.72 confidence threshold before answering).</div><div class="gterm-ref">M-02 · M-01</div></div>
+      <div class="gterm"><div class="gterm-word">RevRec AI</div><div class="gterm-def">AE Module 03 — the revenue recognition classification module that applies ASC 606 rules to every ClaraVis contract, producing SALE / MULTI-ELEMENT / SERVICE classifications with XGBoost + SHAP, with HITL-04 required for every classification before SAP journal entry.</div><div class="gterm-ref">M-03</div></div>
+      <div class="gterm"><div class="gterm-word">RUL<span class="gterm-abbr">Remaining Useful Life</span></div><div class="gterm-def">A regression prediction (in days) of how much operational life a medical imaging unit has before requiring major maintenance, computed daily by Asset IQ's GKE Autopilot batch job across ClaraVis's 12,000-unit fleet.</div><div class="gterm-ref">M-05</div></div>
+    </div>
+
+    <div class="glossary-section" id="S">
+      <div class="section-letter-big">S</div>
+      <div class="gterm"><div class="gterm-word">SAFe<span class="gterm-abbr">Scaled Agile Framework</span></div><div class="gterm-def">An enterprise agility framework organising delivery into Agile Release Trains and Program Increments — used at the Portfolio level via Lean Portfolio Management to structure the AE's three-horizon delivery plan across its four Solution Trains, each of which decomposes into its own ARTs.</div><div class="gterm-ref"><a href="page-04.html">Page 04</a></div></div>
+      <div class="gterm"><div class="gterm-word">SAP</div><div class="gterm-def">ClaraVis's ERP system, used for general ledger journal entries (revenue posting from RevRec AI) — the AE integrates with SAP via a function call that requires a hitl_id parameter, ensuring no SAP write occurs without a committed HITL approval record.</div><div class="gterm-ref">M-03</div></div>
+      <div class="gterm"><div class="gterm-word">SHAP<span class="gterm-abbr">SHapley Additive exPlanations</span></div><div class="gterm-def">A game-theory-based XAI method that assigns each feature an exact contribution value to a model's prediction — TreeExplainer produces deterministic SHAP values for tree-based models, written to BigQuery before any HITL checkpoint is created to satisfy EU AI Act Article 13.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a> · <a href="adr-index.html">ADR-005</a></div></div>
+      <div class="gterm"><div class="gterm-word">Sliding window</div><div class="gterm-def">FinRisk Sentinel's dynamic baseline computation method — rolling 90-day mean, standard deviation, and Z-score are recomputed on every incoming payment event, so the anomaly model scores against an account's current normal behaviour rather than a static historical snapshot.</div><div class="gterm-ref">M-04 · <a href="adr-index.html">ADR-FR01</a></div></div>
+      <div class="gterm"><div class="gterm-word">Strategy Dashboard</div><div class="gterm-def">AE Module 07 — the C-suite intelligence layer that reads from all seven preceding module datasets via BigQuery materialised views and renders five panels (Pipeline Health, Revenue Recognition, Fleet Intelligence, Financial Risk, Compliance Posture) in Looker Studio.</div><div class="gterm-ref">M-07</div></div>
+    </div>
+
+    <div class="glossary-section" id="T">
+      <div class="section-letter-big">T</div>
+      <div class="gterm"><div class="gterm-word">Terraform</div><div class="gterm-def">HashiCorp's infrastructure-as-code tool, used to provision all AE GCP infrastructure — module versioning uses git tag pinning and terraform.lock.hcl hash verification, and local terraform apply is prevented in production by restricting developer SA credentials to read-only on prod resources.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+      <div class="gterm"><div class="gterm-word">TFX<span class="gterm-abbr">TensorFlow Extended</span></div><div class="gterm-def">Google's production ML platform library, specifically TFX ExampleValidator, used in Data Governance (M-08) for schema conformance checking and distributional drift detection — stateful, integrates with Vertex AI Pipelines, and compatible with Great Expectations for EU AI Act Article 11 data documentation.</div><div class="gterm-ref">M-08 · <a href="adr-index.html">ADR-DG01</a></div></div>
+      <div class="gterm"><div class="gterm-word">TOGAF</div><div class="gterm-def">The Open Group Architecture Framework — an enterprise architecture methodology and certification framework whose Architecture Development Method (ADM) structures Page 03 of this portfolio, producing work products from Architecture Vision (Phase A) through Migration Planning (Phase F).</div><div class="gterm-ref"><a href="page-03.html">Page 03</a></div></div>
+      <div class="gterm"><div class="gterm-word">Train-serve skew</div><div class="gterm-def">The error that occurs when a model is trained on features computed by one pipeline but served on features computed by a different pipeline — TFX ExampleValidator enforced at both training and serving time prevents this by ensuring the same schema is validated at both stages.</div><div class="gterm-ref">M-08</div></div>
+    </div>
+
+    <div class="glossary-section" id="V">
+      <div class="section-letter-big">V</div>
+      <div class="gterm"><div class="gterm-word">Vertex AI</div><div class="gterm-def">Google Cloud's unified ML platform, used in the AE for model training and serving (Vertex AI Pipelines), online inference (Vertex AI Endpoints for Isolation Forest and XGBoost), feature management (Feature Store), model versioning (Model Registry), and RAG (Vector Store).</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a></div></div>
+      <div class="gterm"><div class="gterm-word">VPC-SC<span class="gterm-abbr">Virtual Private Cloud Service Controls</span></div><div class="gterm-def">A GCP security perimeter that restricts which GCP services can exchange data with each other and prevents data exfiltration by blocking API calls to GCP services from outside the defined perimeter — all AE production resources operate within the europe-west3 VPC-SC perimeter.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="W">
+      <div class="section-letter-big">W</div>
+      <div class="gterm"><div class="gterm-word">Workload Identity Federation<span class="gterm-abbr">WIF</span></div><div class="gterm-def">A GCP authentication mechanism that allows a service running outside GCP (or a GCP service acting as another) to impersonate a GCP service account without a long-lived service account key — all AE agent service accounts use WIF, eliminating key rotation risk and reducing the credential attack surface.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="X">
+      <div class="section-letter-big">X</div>
+      <div class="gterm"><div class="gterm-word">XAI<span class="gterm-abbr">Explainable AI</span></div><div class="gterm-def">The practice of making AI model decisions interpretable to humans — in this portfolio, XAI is implemented via SHAP TreeExplainer for all tree-based models (XGBoost and Isolation Forest), with SHAP values written to BigQuery before every HITL checkpoint to satisfy EU AI Act Article 13.</div><div class="gterm-ref"><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06</a></div></div>
+      <div class="gterm"><div class="gterm-word">XGBoost<span class="gterm-abbr">eXtreme Gradient Boosting</span></div><div class="gterm-def">A tree-based gradient boosting algorithm chosen for RevRec AI and ContractGuard's risk scoring because its decision-tree structure enables exact, deterministic SHAP attributions via TreeExplainer — required for the immutable EU AI Act Article 13 audit trail.</div><div class="gterm-ref">M-03 · M-02 · <a href="adr-index.html">ADR-010</a></div></div>
+    </div>
+
+    <div class="glossary-section" id="Z">
+      <div class="section-letter-big">Z</div>
+      <div class="gterm"><div class="gterm-word">Z-score</div><div class="gterm-def">A statistical measure of how many standard deviations a value is from its distribution's mean — used in FinRisk Sentinel alongside the Isolation Forest score to provide a human-readable anomaly context ("85.8σ above 90-day baseline") alongside the model's multi-dimensional signal.</div><div class="gterm-ref">M-04</div></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Glossary · The Autonomous Enterprise · 2026</span>
+    <span><a href="adr-index.html" style="color:inherit;text-decoration:none">ADR Index</a> · <a href="changelog.html" style="color:inherit;text-decoration:none">Changelog</a> · © 2026 Siddharth Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('section[id], header[id], .glossary-section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

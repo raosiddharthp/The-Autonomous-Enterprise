@@ -1,1071 +1,1156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Compliance Command Centre — Module 09 · The Autonomous Enterprise Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-:root{
-  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
-  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
-  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
-  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
-  --border:#DADCE0;--border-2:#E8EAED;
-  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
-  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
-  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
-  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
-  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
-  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
-  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
-  --col:56px;
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
 }
-body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
-#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
-#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
-body:has(a:hover) #cur{width:13px;height:13px}
-body:has(a:hover) #cur-r{width:44px;height:44px;opacity:.18}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
 
-/* ── NAVIGATION ── */
-.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:var(--white);border-bottom:1px solid var(--border)}
-.mn-l{display:flex;align-items:center;gap:14px}
-.mn-back{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.05em;transition:color .2s}.mn-back:hover{color:var(--blue)}
-.mn-sep{width:1px;height:14px;background:var(--border)}
-.mn-crumb{font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.04em}.mn-crumb strong{color:var(--text);font-weight:500}
-.mn-r{display:flex;align-items:center;gap:20px}
-.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
-.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
-.snav{position:sticky;top:52px;z-index:500;background:var(--white);border-bottom:1px solid var(--border);padding:0 var(--col);display:flex;overflow-x:auto;scrollbar-width:none}
-.sn{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.04em;padding:11px 18px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s}
-.sn:hover{color:var(--blue)}.sn.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 
-/* ── PAGE HEADER ── */
-.phdr{background:var(--ink);padding:80px var(--col) 60px;margin-top:88px;position:relative;overflow:hidden}
-.phdr::before{content:'M09';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:180px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-.05em;pointer-events:none;user-select:none}
-.ph-bc{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
-.ph-h1{font-family:var(--serif);font-size:clamp(32px,4.8vw,58px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:14px}
-.ph-h1 strong{font-weight:600}.ph-h1 em{font-style:italic;color:var(--gold)}
-.ph-sub{font-family:var(--mono);font-size:13px;font-weight:300;color:rgba(245,240,232,.48);line-height:1.75;max-width:640px}
-.ph-tags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
-.ph-tag{font-family:var(--mono);font-size:10px;padding:4px 11px;letter-spacing:.06em}
-.ph-tag-blue{background:#E8F0FE;color:#1557B0}.ph-tag-green{background:#E6F4EA;color:#0D5226}
-.ph-tag-teal{background:#E4F7F7;color:#005F67}.ph-tag-amber{background:#FEF3E2;color:#7A4100}
-.ph-tag-purple{background:#EDE7F6;color:#3700B3}.ph-tag-red{background:#FCE8E6;color:#A50E0E}
-
-/* ── SECTIONS ── */
-.sec{padding:64px var(--col);background:var(--surface)}
-.sec.w{background:var(--white)}.sec.dk{background:var(--ink);padding:64px var(--col)}
-.sec.dk2{background:var(--ink-2);padding:64px var(--col)}
-.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
-.s-ey.gr{color:var(--green)}.s-ey.am{color:var(--amber)}.s-ey.go{color:var(--gold-lt)}.s-ey.te{color:var(--teal)}.s-ey.re{color:var(--red)}.s-ey.pu{color:var(--purple)}
-.sec.dk .s-ey,.sec.dk2 .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before,.sec.dk2 .s-ey::before{background:var(--gold-lt)}
-.s-h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--text);line-height:1.1;margin-bottom:10px}
-.s-h2 em{font-style:italic;color:var(--gold)}.sec.dk .s-h2,.sec.dk2 .s-h2{color:var(--cream)}
-.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.85;max-width:680px;margin-bottom:36px}
-.sec.dk .s-p,.sec.dk2 .s-p{color:rgba(245,240,232,.5)}
-.ap{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}.ap.in{opacity:1;transform:none}
-
-/* ── POSTURE OVERVIEW ── */
-.posture-grid{display:grid;grid-template-columns:288px 1fr;gap:28px;align-items:start}
-.master-ring-card{background:var(--white);border:1px solid var(--border);padding:28px 24px;display:flex;flex-direction:column;align-items:center}
-.ring-wrap{position:relative;width:164px;height:164px;margin-bottom:18px}
-.ring-svg{width:164px;height:164px}
-.ring-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.ring-score{font-family:var(--display);font-size:38px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-.03em}
-.ring-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.08em;margin-top:3px}
-.ring-title{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);letter-spacing:.06em;text-align:center;margin-bottom:5px;text-transform:uppercase}
-.ring-date{font-family:var(--mono);font-size:9px;color:var(--text-3);text-align:center}
-.ring-legend{display:flex;gap:14px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-2)}
-.rl-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--text-2)}
-.rl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.fw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.fw-card{background:var(--white);border:1px solid var(--border);padding:16px}
-.fw-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.fw-name{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);letter-spacing:.03em}
-.fw-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.fw-dot.g{background:var(--green)}.fw-dot.a{background:#F9AB00}.fw-dot.r{background:var(--red)}
-.fw-art{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-bottom:9px;line-height:1.4}
-.fw-bar-bg{height:3px;background:var(--border-2);border-radius:2px;overflow:hidden}
-.fw-bar-fill{height:100%;border-radius:2px}
-.fw-bar-fill.g{background:var(--green)}.fw-bar-fill.a{background:#F9AB00}.fw-bar-fill.r{background:var(--red)}
-.fw-pct{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:5px}
-
-/* ── ALERT BANNER ── */
-.alert-banner{background:var(--red-lt);border:1px solid rgba(217,48,37,.25);border-left:4px solid var(--red);padding:14px 20px;display:flex;align-items:center;gap:14px;margin-bottom:28px}
-.ab-icon{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--red);letter-spacing:.06em;white-space:nowrap}
-.ab-text{font-family:var(--mono);font-size:11px;color:var(--red-dk);line-height:1.5}
-
-/* ── TABLES (shared) ── */
-.ae-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
-.ae-table th{background:var(--surface-2);color:var(--text-3);font-weight:500;letter-spacing:.07em;font-size:9px;text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border)}
-.ae-table td{padding:10px 12px;border-bottom:1px solid var(--border-2);vertical-align:middle}
-.ae-table tr:last-child td{border-bottom:none}
-.ae-table tr:hover td{background:var(--surface-2)}
-.ae-table.dk th{background:rgba(255,255,255,.03);color:rgba(245,240,232,.3);border-bottom:1px solid rgba(255,255,255,.07)}
-.ae-table.dk td{color:rgba(245,240,232,.65);border-bottom:1px solid rgba(255,255,255,.04)}
-.ae-table.dk tr:hover td{background:rgba(255,255,255,.03)}
-
-/* ── CHIPS & BADGES ── */
-.chip{font-family:var(--mono);font-size:9px;padding:2px 8px;letter-spacing:.05em;font-weight:500;display:inline-block}
-.chip-high{background:var(--red-lt);color:var(--red-dk)}
-.chip-limited{background:var(--amber-lt);color:var(--amber-dk)}
-.chip-minimal{background:var(--green-lt);color:var(--green-dk)}
-.chip-blue{background:var(--blue-lt);color:var(--blue-dk)}
-.mod-badge{font-family:var(--mono);font-size:9px;padding:2px 8px;background:var(--blue-lt);color:var(--blue-dk);display:inline-block}
-.mod-badge.dk{background:rgba(26,115,232,.15);color:#8AB4F8}
-.check-ok{color:var(--green);font-weight:500}
-.check-warn{color:#F9AB00;font-weight:500}
-.check-fail{color:var(--red);font-weight:500}
-.cell-name{font-weight:500;color:var(--text)}
-.cell-muted{font-family:var(--mono);font-size:9px;color:var(--text-3)}
-
-/* ── KPI STRIPS ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
-.kpi-cell{background:var(--white);padding:18px 20px}
-.kpi-val{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
-.kpi-label{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-.kpi-delta{font-family:var(--mono);font-size:9px}
-.delta-up{color:var(--green)}.delta-dn{color:var(--red)}.delta-flat{color:var(--text-3)}
-.kpi-row.dk{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.06)}
-.kpi-row.dk .kpi-cell{background:var(--ink-2)}
-.kpi-row.dk .kpi-val{color:var(--cream)}
-.kpi-row.dk .kpi-label{color:rgba(245,240,232,.3)}
-
-/* ── PROGRESS BAR ── */
-.prog-wrap{display:inline-flex;align-items:center;gap:8px;vertical-align:middle}
-.prog-bg{height:6px;background:var(--border-2);border-radius:3px;width:72px;display:inline-block}
-.prog-fill{height:100%;border-radius:3px;display:block}
-
-/* ── SLA STATUS ── */
-.sla-ok{color:var(--green);font-weight:500}
-.sla-warn{color:#F9AB00;font-weight:500}
-.sla-breach{color:var(--red);font-weight:500}
-
-/* ── XAI CARDS ── */
-.xai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.xai-card{background:var(--white);border:1px solid var(--border);padding:22px}
-.xai-model{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);margin-bottom:3px}
-.xai-module{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-bottom:16px}
-.xai-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.xai-lbl{font-family:var(--mono);font-size:9px;color:var(--text-2)}
-.xai-val{font-family:var(--mono);font-size:11px;font-weight:500}
-.xai-bar-bg{height:4px;background:var(--border-2);border-radius:2px;overflow:hidden;margin-bottom:12px}
-.xai-bar-fill{height:100%;border-radius:2px}
-.drift-chip{font-family:var(--mono);font-size:9px;padding:2px 9px;letter-spacing:.05em;display:inline-block;margin-top:4px}
-.drift-stable{background:var(--green-lt);color:var(--green-dk)}
-.drift-warn{background:var(--amber-lt);color:var(--amber-dk)}
-
-/* ── GDPR PANELS ── */
-.gdpr-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
-.gdpr-panel{background:var(--ink-2);border:1px solid rgba(255,255,255,.07);padding:22px}
-.gdpr-panel-title{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
-.gdpr-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.gdpr-row:last-child{border-bottom:none}
-.gdpr-key{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.55)}
-.gdpr-val{font-family:var(--mono);font-size:10px;color:#81C995;font-weight:500}
-
-/* ── CALENDAR ── */
-.cal-list{display:flex;flex-direction:column;gap:10px}
-.cal-item{display:flex;align-items:center;gap:16px;background:var(--white);border:1px solid var(--border);padding:16px 18px}
-.cal-date-col{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);min-width:88px}
-.cal-connector{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.cal-body{flex:1}
-.cal-title{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text);margin-bottom:3px;line-height:1.4}
-.cal-desc{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.5}
-.cal-pill{font-family:var(--mono);font-size:9px;padding:3px 10px;letter-spacing:.05em;white-space:nowrap}
-.cp-overdue{background:var(--red-lt);color:var(--red-dk);border:1px solid rgba(217,48,37,.2)}
-.cp-upcoming{background:var(--amber-lt);color:var(--amber-dk);border:1px solid rgba(176,96,0,.2)}
-.cp-ok{background:var(--green-lt);color:var(--green-dk);border:1px solid rgba(19,115,51,.2)}
-.cp-scheduled{background:var(--blue-lt);color:var(--blue-dk);border:1px solid rgba(26,115,232,.2)}
-
-/* ── INCIDENT LOG ── */
-.inc-sev{font-family:var(--mono);font-size:9px;padding:2px 8px;font-weight:500;display:inline-block}
-.isev-p1{background:rgba(217,48,37,.2);color:#FFAB91}
-.isev-p2{background:rgba(176,96,0,.2);color:#FFD08A}
-.isev-p3{background:rgba(19,115,51,.2);color:#81C995}
-.inc-res{font-family:var(--mono);font-size:9px;padding:2px 8px;display:inline-block}
-.ires-open{background:rgba(217,48,37,.15);color:#FF8A80}
-.ires-review{background:rgba(176,96,0,.15);color:#FFD08A}
-.ires-closed{background:rgba(19,115,51,.15);color:#81C995}
-
-/* ── ADR CARDS ── */
-.adr-col{display:flex;flex-direction:column;gap:4px;margin-top:4px}
-.adr{background:var(--surface-2);border:1px solid var(--border);padding:22px 24px}
-.adr.bl{border-left:4px solid var(--blue)}.adr.gr{border-left:4px solid var(--green)}.adr.am{border-left:4px solid var(--amber)}.adr.re{border-left:4px solid var(--red)}
-.adr-id{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
-.adr.bl .adr-id{color:var(--blue)}.adr.gr .adr-id{color:var(--green)}.adr.am .adr-id{color:var(--amber)}.adr.re .adr-id{color:var(--red)}
-.adr-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.2}
-.adr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.65;margin-bottom:8px}
-.adr-status{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;background:#E6F4EA;color:#0D5226;letter-spacing:.06em}
-
-/* ── REBUTTAL GRID ── */
-.rebuttal-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
-.rb{background:var(--white);border:1px solid var(--border);padding:26px;border-top:3px solid var(--border)}
-.rb.caio{border-top-color:var(--red)}.rb.clo{border-top-color:var(--blue)}.rb.cfo{border-top-color:var(--green)}.rb.cpo{border-top-color:var(--purple)}
-.rb-who{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
-.rb.caio .rb-who{color:var(--red)}.rb.clo .rb-who{color:var(--blue)}.rb.cfo .rb-who{color:var(--green)}.rb.cpo .rb-who{color:var(--purple)}
-.rb-concern{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.25;letter-spacing:-.01em}
-.rb-q{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-left:12px;border-left:2px solid var(--border)}
-.rb-rl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green-dk);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.rb-r{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75;margin-bottom:10px}
-.rb-ev{padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.55}
-.rb.caio .rb-ev{background:var(--red-lt);color:var(--red-dk)}.rb.clo .rb-ev{background:var(--blue-lt);color:var(--blue-dk)}
-.rb.cfo .rb-ev{background:var(--green-lt);color:var(--green-dk)}.rb.cpo .rb-ev{background:var(--purple-lt);color:var(--purple-dk)}
-
-/* ── FOOTER ── */
-footer{background:var(--ink-2);padding:28px var(--col);border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.ft-brand{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)}.ft-brand em{font-style:italic;color:var(--gold)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1100px){:root{--col:32px}}
-@media(max-width:900px){
-  :root{--col:22px}
-  .posture-grid{grid-template-columns:1fr}
-  .fw-grid{grid-template-columns:repeat(2,1fr)}
-  .xai-grid{grid-template-columns:1fr 1fr}
-  .kpi-row{grid-template-columns:1fr 1fr}
-  .gdpr-pair{grid-template-columns:1fr}
-  .rebuttal-grid{grid-template-columns:1fr}
-  .mn-r .mn-link{display:none}
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
 }
-@media(max-width:600px){
-  .fw-grid{grid-template-columns:1fr}
-  .xai-grid{grid-template-columns:1fr}
-  .kpi-row{grid-template-columns:1fr}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: #16150f; border-color: #2a281f; }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: #16150f; border-right: 1px solid #2a281f; }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: #8a8870; }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: #8a8870; }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-<div id="cur"></div><div id="cur-r"></div>
+<div class="page-wrap">
 
-<!-- ══ NAVIGATION ══ -->
-<nav class="mnav">
-  <div class="mn-l">
-    <a href="strategy-dashboard.html" class="mn-back">← M-07 Strategy</a>
-    <div class="mn-sep"></div>
-    <div class="mn-crumb">AE Platform &nbsp;/&nbsp; <strong>M-09 · Compliance Command Centre</strong></div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">ae platform / module 09</div>
+  <div class="sidebar-project">Compliance<br>Command Centre</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#posture">Posture Overview</a></li>
+      <li><a href="#register">AI Risk Register</a></li>
+      <li><a href="#hitl">HITL Audit</a></li>
+      <li><a href="#xai">XAI / Explainability</a></li>
+      <li><a href="#gdpr">GDPR &amp; Data Rights</a></li>
+      <li><a href="#calendar">Regulatory Calendar</a></li>
+      <li><a href="#incidents">Incident Log</a></li>
+      <li><a href="#adrs">ADRs</a></li>
+      <li><a href="#rebuttals">Rebuttals</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <ul class="sidebar-nav">
+      <li><a href="#adr-017" class="sub">ADR-017 Read-only M-09</a></li>
+      <li><a href="#adr-005" class="sub">ADR-005 SHAP over LIME</a></li>
+      <li><a href="#adr-004" class="sub">ADR-004 Firestore audit</a></li>
+      <li><a href="#adr-016" class="sub">ADR-016 Phased adoption</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Stack</div>
+    <div class="stack-item"><strong>BigQuery materialised views</strong>cross-module read layer</div>
+    <div class="stack-item"><strong>Firestore</strong>append-only HITL audit trail</div>
+    <div class="stack-item"><strong>SHAP TreeExplainer</strong>deterministic XAI (ADR-005)</div>
+    <div class="stack-item"><strong>VPC-SC · CMEK</strong>europe-west3 perimeter</div>
+    <div class="stack-item"><strong>IAM Data Viewer only</strong>read-only enforcement (ADR-017)</div>
+    <div class="stack-item"><strong>Pub/Sub → Dataflow</strong>Firestore → BQ export</div>
   </div>
-  <div class="mn-r">
-    <a href="data-governance.html" class="mn-link">← M-08 Data Gov</a>
-    <a href="page-09.html" class="mn-link">Platform Index</a>
-    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="mn-gh">GitHub →</a>
-  </div>
-</nav>
+</aside>
 
-<!-- ══ SUB-NAV ══ -->
-<nav class="snav" id="snav">
-  <a href="#posture" class="sn act" data-sec="posture">Posture Overview</a>
-  <a href="#register" class="sn" data-sec="register">AI Risk Register</a>
-  <a href="#hitl" class="sn" data-sec="hitl">HITL Audit</a>
-  <a href="#xai" class="sn" data-sec="xai">XAI / Explainability</a>
-  <a href="#gdpr" class="sn" data-sec="gdpr">GDPR &amp; Data Rights</a>
-  <a href="#calendar" class="sn" data-sec="calendar">Regulatory Calendar</a>
-  <a href="#incidents" class="sn" data-sec="incidents">Incident Log</a>
-  <a href="#adrs" class="sn" data-sec="adrs">ADRs</a>
-  <a href="#rebuttals" class="sn" data-sec="rebuttals">Rebuttals</a>
-</nav>
-
-<!-- ══ PAGE HEADER ══ -->
-<header class="phdr">
-  <div class="ph-bc">The Autonomous Enterprise · Governance Layer · Module 09</div>
-  <h1 class="ph-h1">Compliance <em>Command Centre</em><br><strong>— One posture. Nine frameworks. Four pillars.</strong></h1>
-  <p class="ph-sub">Real-time AI regulatory posture across all four pillars of the Autonomous Enterprise — Seller, Buyer, Finance, Supply Chain. C-suite visibility into EU AI Act obligations, GDPR data rights, FDA SaMD requirements, ISO 13485, and EU CSRD reporting. The governance layer that proves the platform is not just powerful, but legal.</p>
-  <div class="ph-tags">
-    <span class="ph-tag ph-tag-red">EU AI Act 2024/1689</span>
-    <span class="ph-tag ph-tag-blue">GDPR Art. 22</span>
-    <span class="ph-tag ph-tag-green">ISO 13485:2016</span>
-    <span class="ph-tag ph-tag-amber">FDA 21 CFR 820</span>
-    <span class="ph-tag ph-tag-teal">EU CSRD / ESRS E1</span>
-    <span class="ph-tag ph-tag-purple">ASC 606 · IFRS 15</span>
-    <span class="ph-tag ph-tag-blue">ISO 27001 · DORA</span>
-    <span class="ph-tag ph-tag-green">CAIO · CLO · CFO · CPO · Read-only · H3</span>
-  </div>
-</header>
-
-<!-- ══════════════════════════════════════════
-     SECTION 1 — POSTURE OVERVIEW
-══════════════════════════════════════════ -->
-<section class="sec w ap" id="posture">
-  <div class="s-ey gr">01 — Overall Compliance Posture</div>
-  <h2 class="s-h2">Nine frameworks. <em>One master score.</em></h2>
-  <p class="s-p">Aggregate compliance health refreshed every 15 minutes from BigQuery materialised views across all AE modules. One framework in AMBER: EU AI Act Art. 9 post-market monitoring log is 6 days overdue for M-04 FinRisk Sentinel. All other frameworks GREEN. No RED items outstanding.</p>
-
-  <!-- Alert banner -->
-  <div class="alert-banner">
-    <div class="ab-icon">⚠ P1 OPEN</div>
-    <div class="ab-text"><strong>EU AI Act Art. 9 — FinRisk Sentinel (M-04):</strong> Post-market monitoring log was due 07 Apr 2026. Now 6 days overdue. Assign to CFO office for immediate remediation. Regulator notification may be required if not resolved within 14 days of deadline.</div>
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="page-09.html">ae-platform</a> / <a href="#">module-09</a> · governance layer · 2026
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-tag">EU AI Act · High-Risk</span>
+      <span class="topbar-tag">GDPR Art. 22</span>
+      <span class="topbar-tag">Read-only · IAM enforced</span>
+    </div>
   </div>
 
-  <div class="posture-grid">
-    <!-- Master ring -->
-    <div class="master-ring-card">
-      <div class="ring-title">Master Compliance Score</div>
-      <div class="ring-wrap">
-        <svg class="ring-svg" viewBox="0 0 164 164" role="img" aria-label="Master compliance score: 89% — 8 frameworks green, 1 amber, 0 red">
-          <circle cx="82" cy="82" r="64" fill="none" stroke="#E8EAED" stroke-width="13"/>
-          <!-- Green arc: 8/9 × 360 = 320deg circumference ≈ 402. 320/360 × 402 = 357 -->
-          <circle cx="82" cy="82" r="64" fill="none" stroke="#137333" stroke-width="13"
-            stroke-dasharray="357 402" stroke-dashoffset="100" stroke-linecap="round" transform="rotate(-90 82 82)"/>
-          <!-- Amber arc: 1/9 × 402 = 44.6 -->
-          <circle cx="82" cy="82" r="64" fill="none" stroke="#F9AB00" stroke-width="13"
-            stroke-dasharray="44 402" stroke-dashoffset="-257" stroke-linecap="round" transform="rotate(-90 82 82)"/>
-        </svg>
-        <div class="ring-label">
-          <div class="ring-score">89%</div>
-          <div class="ring-sub">COMPLIANT</div>
+  <div class="content">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="abstract">
+      <div class="doc-eyebrow">Module 09 &nbsp;·&nbsp; Governance Layer &nbsp;·&nbsp; The Autonomous Enterprise Platform &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">Compliance Command Centre: <em>One Posture</em><br>Across Nine Regulatory Frameworks</h1>
+      <div class="doc-byline">
+        <span>Design Documentation &nbsp;·&nbsp; Governance &amp; Audit Reference</span>
+        <span>Architecture Portfolio &nbsp;·&nbsp; April 2026</span>
+        <span>Read-only · BigQuery Data Viewer IAM only</span>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-value teal">89%</div>
+          <div class="stat-label">master compliance score<br>8 frameworks green · 1 amber · 0 red</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value amber">11</div>
+          <div class="stat-label">active HITL checkpoints<br>across six modules · 98.7% coverage (30d)</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value coral">1</div>
+          <div class="stat-label">P1 incident open<br>Art. 9 post-market log overdue · M-04</div>
         </div>
       </div>
-      <div class="ring-date">Refreshed: 13 Apr 2026 · 09:42 UTC</div>
-      <div class="ring-legend">
-        <div class="rl-item"><div class="rl-dot" style="background:var(--green)"></div>8 GREEN</div>
-        <div class="rl-item"><div class="rl-dot" style="background:#F9AB00"></div>1 AMBER</div>
-        <div class="rl-item"><div class="rl-dot" style="background:var(--red)"></div>0 RED</div>
+
+      <div class="abstract-grid">
+        <div class="abstract-label">Abstract</div>
+        <div class="abstract-body">
+          <p>The Autonomous Enterprise Platform deploys nine AI systems across four process pillars — Quote-to-Cash, Procure-to-Pay, Finance Operations, and Supply Chain — each carrying distinct obligations under the EU AI Act, GDPR, FDA SaMD regulation, ISO 13485, and EU CSRD. No single stakeholder can hold all nine compliance postures in their head, and no individual module dashboard is built to prove a regulatory record under audit.</p>
+          <p>The Compliance Command Centre is the governance layer that aggregates posture across all nine frameworks into one master score, refreshed every fifteen minutes from BigQuery materialised views. It is deliberately read-only: the module has no write path to Firestore, SAP, or Salesforce, enforced at the IAM layer rather than by convention. Its purpose is not operational — it is evidentiary. When a regulator asks for proof that an AI system was overseen, explained, and governed, this is the module that answers.</p>
+          <div class="kw-row">
+            <span class="kw">EU AI Act 2024/1689</span>
+            <span class="kw">GDPR Art. 22</span>
+            <span class="kw">ISO 13485:2016</span>
+            <span class="kw">FDA 21 CFR 820</span>
+            <span class="kw">EU CSRD / ESRS E1</span>
+            <span class="kw">ASC 606 · IFRS 15</span>
+            <span class="kw">ISO 27001 · DORA</span>
+            <span class="kw">HITL audit</span>
+            <span class="kw">SHAP / XAI</span>
+            <span class="kw">read-only architecture</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
 
-    <!-- Framework tiles -->
-    <div class="fw-grid">
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">EU AI Act</span><div class="fw-dot a"></div></div>
-        <div class="fw-art">Art. 6, 9, 13, 14, 17 · Annex III<br>High-risk obligations · Aug 2026</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill a" style="width:81%"></div></div>
-        <div class="fw-pct">81% · Art. 9 risk log overdue (M-04)</div>
+    <!-- §1 POSTURE OVERVIEW -->
+    <section class="section" id="posture">
+      <h2 class="section-heading"><span class="section-num">§1</span> Overall Compliance Posture</h2>
+      <p class="body-text">Aggregate compliance health is refreshed every fifteen minutes from BigQuery materialised views across all Autonomous Enterprise modules. As of the current refresh, <strong>one framework sits in amber</strong>: the EU AI Act Art. 9 post-market monitoring log for FinRisk Sentinel (M-04) is six days overdue. All other frameworks are green. No framework is currently red.</p>
+
+      <div class="callout coral">
+        <div class="callout-label">⚠ P1 Open</div>
+        <div class="callout-body"><strong>EU AI Act Art. 9 — FinRisk Sentinel (M-04):</strong> the post-market monitoring log was due 07 April 2026 and is now six days overdue. Assigned to the CFO office for immediate remediation. Regulator notification may become required under Art. 62 if the log is not filed within fourteen days of the original deadline.</div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">GDPR</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">Art. 22 automated decisions<br>Data residency · VPC-SC europe-west3</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:97%"></div></div>
-        <div class="fw-pct">97% · 2 pending SAR reviews within SLA</div>
+
+      <div class="posture-grid">
+        <div class="ring-card">
+          <div class="ring-title">Master Compliance Score</div>
+          <div class="ring-wrap">
+            <svg class="ring-svg" width="150" height="150" viewBox="0 0 164 164" role="img" aria-label="Master compliance score: 89 percent — 8 frameworks green, 1 amber, 0 red">
+              <circle cx="82" cy="82" r="64" fill="none" stroke="#e8e5de" stroke-width="13"/>
+              <circle cx="82" cy="82" r="64" fill="none" stroke="#0a6b52" stroke-width="13" stroke-dasharray="357 402" stroke-dashoffset="100" stroke-linecap="round" transform="rotate(-90 82 82)"/>
+              <circle cx="82" cy="82" r="64" fill="none" stroke="#b07010" stroke-width="13" stroke-dasharray="44 402" stroke-dashoffset="-257" stroke-linecap="round" transform="rotate(-90 82 82)"/>
+            </svg>
+            <div class="ring-label">
+              <div class="ring-score">89%</div>
+              <div class="ring-sub">Compliant</div>
+            </div>
+          </div>
+          <div class="ring-date">Refreshed: 13 Apr 2026 · 09:42 UTC</div>
+          <div class="ring-legend">
+            <div class="rl-item"><div class="rl-dot" style="background:var(--teal)"></div>8 green</div>
+            <div class="rl-item"><div class="rl-dot" style="background:var(--amber)"></div>1 amber</div>
+            <div class="rl-item"><div class="rl-dot" style="background:var(--coral)"></div>0 red</div>
+          </div>
+        </div>
+
+        <div class="fw-grid">
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">EU AI Act</span><div class="fw-dot a"></div></div>
+            <div class="fw-art">Art. 6, 9, 13, 14, 17 · Annex III<br>High-risk obligations · Aug 2026</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill a" style="width:81%"></div></div>
+            <div class="fw-pct">81% · Art. 9 risk log overdue (M-04)</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">GDPR</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">Art. 22 automated decisions<br>Data residency · VPC-SC europe-west3</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:97%"></div></div>
+            <div class="fw-pct">97% · 2 pending SAR reviews within SLA</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">ISO 13485:2016</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">QMS · M-05 Asset IQ<br>SaMD risk management</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
+            <div class="fw-pct">100% · surveillance audit: Jun 2026</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">FDA 21 CFR 820</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">SaMD · M-05 Asset IQ<br>Design History File current</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:94%"></div></div>
+            <div class="fw-pct">94% · DHF &amp; software validation current</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">EU CSRD / ESRS E1</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">Scope 1–3 · M-06 GreenOps<br>Carbon Footprint API</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
+            <div class="fw-pct">100% · Q1 2026 ESRS E1 filed</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">ASC 606 / IFRS 15</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">RevRec AI · M-03<br>HITL-04/05/09 all approved</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:99%"></div></div>
+            <div class="fw-pct">99% · 1 pending Finance Controller review</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">ISO 27001</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">ISMS · VPC-SC · CMEK · BeyondCorp<br>Cloud Armor · Workload Identity</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
+            <div class="fw-pct">100% · cert. valid to Dec 2026</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">EU DORA</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">ICT resilience · Chaos Engineering<br>GKE Autopilot · Cloud Run</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:91%"></div></div>
+            <div class="fw-pct">91% · Q2 resilience test scheduled</div>
+          </div>
+          <div class="fw-card">
+            <div class="fw-head"><span class="fw-name">EU MDR 2017/745</span><div class="fw-dot g"></div></div>
+            <div class="fw-art">Medical Device Regulation<br>M-05 Asset IQ · CE mark</div>
+            <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:96%"></div></div>
+            <div class="fw-pct">96% · CE mark current · EUDAMED filed</div>
+          </div>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">ISO 13485:2016</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">QMS · M-05 Asset IQ<br>SaMD risk management</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
-        <div class="fw-pct">100% · Surveillance audit: Jun 2026</div>
+    </section>
+
+    <!-- §2 AI RISK REGISTER -->
+    <section class="section" id="register">
+      <h2 class="section-heading"><span class="section-num">§2</span> AI System Risk Register</h2>
+      <p class="body-text">All AI systems are classified per EU AI Act Art. 6 and Annex III. High-risk systems require a completed conformity assessment, current technical documentation, an operational HITL mechanism, and an active post-market monitoring plan before commercial deployment. <strong>Art. 9 mandates a continuous risk management system</strong> — not a one-time assessment.</p>
+
+      <div class="figure" id="fig-register">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">Annex III risk classification across all nine AE platform AI systems</div>
+        <div class="figure-body" style="padding: 0; overflow-x: auto;">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>AI System</th>
+                <th>Module</th>
+                <th>Pillar</th>
+                <th>Risk Tier</th>
+                <th>Conformity</th>
+                <th>Tech Docs</th>
+                <th>HITL</th>
+                <th>Post-Market Mon.</th>
+                <th>Basis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CCAI Sales Agent</td>
+                <td><span class="badge blue">M-01</span></td>
+                <td class="mono-note">Quote-to-Cash</td>
+                <td><span class="badge amber">Limited</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-01 Turn-11</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Art. 52 transparency · chatbot</td>
+              </tr>
+              <tr>
+                <td>ContractGuard (XGBoost)</td>
+                <td><span class="badge blue">M-02</span></td>
+                <td class="mono-note">Quote-to-Cash</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-02/03</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Annex III §5b — legal document AI</td>
+              </tr>
+              <tr>
+                <td>ContractGuard (Gemini 1.5 Pro)</td>
+                <td><span class="badge blue">M-02</span></td>
+                <td class="mono-note">Quote-to-Cash</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-02/03</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Art. 53 GPAI + Annex III §5b</td>
+              </tr>
+              <tr>
+                <td>RevRec AI (XGBoost)</td>
+                <td><span class="badge blue">M-03</span></td>
+                <td class="mono-note">Finance</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-04/05/09</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Annex III §5a — creditworthiness AI</td>
+              </tr>
+              <tr class="row-flag">
+                <td>FinRisk Sentinel (Isolation Forest)</td>
+                <td><span class="badge blue">M-04</span></td>
+                <td class="mono-note">Finance</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-08 Dual</td>
+                <td class="fail-text">⚠ Log overdue</td>
+                <td class="mono-note">Annex III §5b — anomaly detection</td>
+              </tr>
+              <tr>
+                <td>Asset IQ (RUL Regression)</td>
+                <td><span class="badge blue">M-05</span></td>
+                <td class="mono-note">Supply Chain</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-06/07</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Annex III §2a — medical device SaMD</td>
+              </tr>
+              <tr>
+                <td>Asset IQ (Isolation Forest)</td>
+                <td><span class="badge blue">M-05</span></td>
+                <td class="mono-note">Supply Chain</td>
+                <td><span class="badge red">High</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="ok-text">✓ HITL-06/07</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Annex III §2a — medical device SaMD</td>
+              </tr>
+              <tr>
+                <td>GreenOps Scheduler</td>
+                <td><span class="badge blue">M-06</span></td>
+                <td class="mono-note">Supply Chain</td>
+                <td><span class="badge teal">Minimal</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="mono-note">No HITL required</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">CSRD obligation only</td>
+              </tr>
+              <tr>
+                <td>Data Governance (TFX Validate)</td>
+                <td><span class="badge blue">M-08</span></td>
+                <td class="mono-note">All Pillars</td>
+                <td><span class="badge teal">Minimal</span></td>
+                <td class="ok-text">✓ Complete</td>
+                <td class="ok-text">✓ Current</td>
+                <td class="mono-note">Steward reinstatement</td>
+                <td class="ok-text">✓ Active</td>
+                <td class="mono-note">Art. 17 quality management system</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">FDA 21 CFR 820</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">SaMD · M-05 Asset IQ<br>Design History File current</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:94%"></div></div>
-        <div class="fw-pct">94% · DHF & software validation current</div>
+    </section>
+
+    <!-- §3 HITL AUDIT COVERAGE -->
+    <section class="section" id="hitl">
+      <h2 class="section-heading"><span class="section-num">§3</span> HITL Audit Coverage</h2>
+      <p class="body-text">EU AI Act Art. 14 mandates effective human oversight for all high-risk AI systems. Eleven HITL checkpoints are active across six modules. <strong>Design Principle #1</strong>: the SHAP explanation is committed to BigQuery before a HITL record is created, so the audit trail is structurally immutable — not policy-immutable. The SAP write guard (ADR-004) enforces the same pattern: a consequential action is architecturally unreachable without a committed HITL approval record.</p>
+
+      <div class="kpi-row">
+        <div class="kpi-cell">
+          <div class="kpi-label">HITL Coverage (30d)</div>
+          <div class="kpi-val" style="color:var(--teal)">98.7%</div>
+          <div class="kpi-delta delta-up">↑ 0.3pp vs prior 30 days</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Checkpoints Active</div>
+          <div class="kpi-val" style="color:var(--blue)">11</div>
+          <div class="kpi-delta delta-flat">Across M-01, 02, 03, 04, 05, 09</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">SLA Breaches (30d)</div>
+          <div class="kpi-val" style="color:var(--amber)">2</div>
+          <div class="kpi-delta delta-dn">↑ 1 vs prior period · M-02, M-04</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Avg Review Time</div>
+          <div class="kpi-val" style="color:var(--teal)">4.2h</div>
+          <div class="kpi-delta delta-up">↓ 0.8h improvement</div>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">EU CSRD / ESRS E1</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">Scope 1–3 · M-06 GreenOps<br>Carbon Footprint API</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
-        <div class="fw-pct">100% · Q1 2026 ESRS E1 filed</div>
+
+      <div class="figure" id="fig-hitl">
+        <div class="figure-label">Figure 2</div>
+        <div class="figure-sublabel">All eleven HITL checkpoints, coverage rate, and SLA performance over the trailing 30 days</div>
+        <div class="figure-body" style="padding: 0; overflow-x: auto;">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Checkpoint</th>
+                <th>Module</th>
+                <th>Article Basis</th>
+                <th>Coverage (30d)</th>
+                <th>Avg Review</th>
+                <th>SLA Status (24h)</th>
+                <th>Bypasses</th>
+                <th>SHAP Pre-commit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HITL-01 · Turn-11 escalation</td>
+                <td><span class="badge blue">M-01</span></td>
+                <td class="mono-note">Art. 14 §4</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">2.1h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-02 · Contract risk flag</td>
+                <td><span class="badge blue">M-02</span></td>
+                <td class="mono-note">Art. 14 §4</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:99%;background:var(--teal)"></span></div>99%</div></td>
+                <td class="mono-note">3.4h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-03 · Legal counter-position</td>
+                <td><span class="badge blue">M-02</span></td>
+                <td class="mono-note">Art. 14 §4</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">5.2h</td>
+                <td class="warn-text">⚠ 1 breach (28 Mar)</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-04 · Revenue classification</td>
+                <td><span class="badge blue">M-03</span></td>
+                <td class="mono-note">Art. 14 §4</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:99%;background:var(--teal)"></span></div>99%</div></td>
+                <td class="mono-note">3.8h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-05 · SAP journal post approval</td>
+                <td><span class="badge blue">M-03</span></td>
+                <td class="mono-note">Art. 14 §4 + ASC 606</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">2.9h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr class="row-flag">
+                <td>HITL-08 · Anomaly dual-reviewer</td>
+                <td><span class="badge blue">M-04</span></td>
+                <td class="mono-note">Art. 14 §5 (dual)</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:96%;background:var(--amber)"></span></div>96%</div></td>
+                <td class="mono-note">6.7h</td>
+                <td class="fail-text">✗ 1 breach (4 Apr, 29.4h)</td>
+                <td class="fail-text">3</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-06 · RUL maintenance gate</td>
+                <td><span class="badge blue">M-05</span></td>
+                <td class="mono-note">Art. 14 §4 + ISO 13485</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">1.9h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-07 · Parts dispatch approval</td>
+                <td><span class="badge blue">M-05</span></td>
+                <td class="mono-note">Art. 14 §4 + ISO 13485</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">2.4h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+              <tr>
+                <td>HITL-09 · Bulk revenue batch approval</td>
+                <td><span class="badge blue">M-03</span></td>
+                <td class="mono-note">Art. 14 §4 + ASC 606</td>
+                <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--teal)"></span></div>100%</div></td>
+                <td class="mono-note">4.1h</td>
+                <td class="ok-text">✓ 0 breaches</td>
+                <td class="mono-note">0</td>
+                <td class="ok-text">✓ Committed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">ASC 606 / IFRS 15</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">RevRec AI · M-03<br>HITL-04/05/09 all approved</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:99%"></div></div>
-        <div class="fw-pct">99% · 1 pending Finance Controller review</div>
+    </section>
+
+    <!-- §4 XAI / EXPLAINABILITY -->
+    <section class="section" id="xai">
+      <h2 class="section-heading"><span class="section-num">§4</span> XAI / Explainability Compliance</h2>
+      <p class="body-text">EU AI Act Art. 13 §3 requires that operators of high-risk AI systems provide meaningful information about the logic, significance, and intended consequences of outputs. <strong>ADR-005</strong> mandates SHAP TreeExplainer over LIME: deterministic, auditable, and structurally compatible with Firestore immutability. FinRisk Sentinel shows feature drift on <code>payment_velocity_7d</code> — currently under active review.</p>
+
+      <div class="xai-grid">
+        <div class="xai-card">
+          <div class="xai-model">XGBoost · ContractGuard</div>
+          <div class="xai-module">M-02 · Quote-to-Cash · Annex III §5b</div>
+          <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--teal)">100%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--teal)">Stable</span></div>
+          <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--teal)">✓ Met</span></div>
+          <div><span class="drift-chip stable">SHAP Stable</span></div>
+        </div>
+        <div class="xai-card">
+          <div class="xai-model">Gemini 1.5 Pro 1M · ContractGuard</div>
+          <div class="xai-module">M-02 · Quote-to-Cash · Art. 53 GPAI</div>
+          <div class="xai-row"><span class="xai-lbl">Grounding citation rate</span><span class="xai-val" style="color:var(--teal)">100%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Grounding stability</span><span class="xai-val" style="color:var(--teal)">Stable</span></div>
+          <div class="xai-row"><span class="xai-lbl">Hallucination rate (30d)</span><span class="xai-val" style="color:var(--teal)">0.00%</span></div>
+          <div><span class="drift-chip stable">Grounding Stable</span></div>
+        </div>
+        <div class="xai-card">
+          <div class="xai-model">XGBoost · RevRec AI</div>
+          <div class="xai-module">M-03 · Finance · Annex III §5a</div>
+          <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--teal)">99.6%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:99.6%;background:var(--teal)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--teal)">Stable</span></div>
+          <div class="xai-row"><span class="xai-lbl">SHAP determinism (ADR-005)</span><span class="xai-val" style="color:var(--teal)">✓ TreeExplainer</span></div>
+          <div><span class="drift-chip stable">SHAP Stable</span></div>
+        </div>
+        <div class="xai-card flag">
+          <div class="xai-model">Isolation Forest · FinRisk Sentinel</div>
+          <div class="xai-module">M-04 · Finance · Annex III §5b</div>
+          <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--amber)">94.1%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:94.1%;background:var(--amber)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--amber)">⚠ Drift alert</span></div>
+          <div class="xai-row"><span class="xai-lbl">Drifted feature</span><span class="xai-val" style="color:var(--amber)">payment_velocity_7d</span></div>
+          <div><span class="drift-chip warn">Drift Detected</span></div>
+        </div>
+        <div class="xai-card">
+          <div class="xai-model">RUL Regression · Asset IQ</div>
+          <div class="xai-module">M-05 · Supply Chain · Annex III §2a</div>
+          <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--teal)">100%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--teal)">Stable</span></div>
+          <div class="xai-row"><span class="xai-lbl">ISO 13485 XAI req.</span><span class="xai-val" style="color:var(--teal)">✓ DHF logged</span></div>
+          <div><span class="drift-chip stable">SHAP Stable</span></div>
+        </div>
+        <div class="xai-card">
+          <div class="xai-model">Isolation Forest · Asset IQ</div>
+          <div class="xai-module">M-05 · Supply Chain · Annex III §2a</div>
+          <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--teal)">100%</span></div>
+          <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--teal)">Stable</span></div>
+          <div class="xai-row"><span class="xai-lbl">ISO 13485 XAI req.</span><span class="xai-val" style="color:var(--teal)">✓ DHF logged</span></div>
+          <div><span class="drift-chip stable">SHAP Stable</span></div>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">ISO 27001</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">ISMS · VPC-SC · CMEK · BeyondCorp<br>Cloud Armor · Workload Identity</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:100%"></div></div>
-        <div class="fw-pct">100% · Cert. valid to Dec 2026</div>
+    </section>
+
+    <!-- §5 GDPR & DATA RIGHTS -->
+    <section class="section" id="gdpr">
+      <h2 class="section-heading"><span class="section-num">§5</span> GDPR &amp; Data Rights</h2>
+      <p class="body-text">GDPR Art. 22 prohibits solely automated decisions with significant legal or financial effects without human review. All eleven HITL checkpoints satisfy this requirement architecturally — the SAP write guard means a journal entry is structurally unreachable without a committed human approval record. Data residency is enforced by VPC-SC perimeter lock to europe-west3. All datasets at rest are CMEK-encrypted (ADR-007).</p>
+
+      <div class="kpi-row dk">
+        <div class="kpi-cell">
+          <div class="kpi-label">Open SAR Requests</div>
+          <div class="kpi-val" style="color:#7fc9ab">2</div>
+          <div class="kpi-delta">Within 30-day SLA · due 30 Apr</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Art. 22 Opt-Out Flags</div>
+          <div class="kpi-val" style="color:#7fc9ab">0</div>
+          <div class="kpi-delta">All decisions HITL-reviewed</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Quarantine Records (M-08)</div>
+          <div class="kpi-val" style="color:#e0b888">14</div>
+          <div class="kpi-delta">Pending data steward review</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">VPC-SC Perimeter</div>
+          <div class="kpi-val" style="color:#7fc9ab;font-size:20px">Active</div>
+          <div class="kpi-delta">europe-west3 · cross-region blocked</div>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">EU DORA</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">ICT resilience · Chaos Engineering<br>GKE Autopilot · Cloud Run</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:91%"></div></div>
-        <div class="fw-pct">91% · Q2 resilience test scheduled</div>
+
+      <div class="gdpr-pair">
+        <div class="gdpr-panel">
+          <div class="gdpr-panel-title">Data Residency &amp; Infrastructure Controls</div>
+          <div class="gdpr-row"><span class="gdpr-key">BigQuery data location</span><span class="gdpr-val">europe-west3 ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">CMEK encryption at rest</span><span class="gdpr-val">All datasets ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Firestore audit export</span><span class="gdpr-val">Real-time to BQ ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Cross-region API calls</span><span class="gdpr-val">VPC-SC blocked ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Workload Identity Federation</span><span class="gdpr-val">Active (all services) ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">BeyondCorp zero-trust</span><span class="gdpr-val">Enforced ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Cloud Armor WAF (ADR-014)</span><span class="gdpr-val">Active ✓</span></div>
+        </div>
+        <div class="gdpr-panel">
+          <div class="gdpr-panel-title">Consent, Rights &amp; Obligations</div>
+          <div class="gdpr-row"><span class="gdpr-key">Consent records current</span><span class="gdpr-val">100% ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Right to erasure requests</span><span class="gdpr-val">0 open ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">DPIA filed (M-04, M-05)</span><span class="gdpr-val">Apr 2026 ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Google DPA (data processor)</span><span class="gdpr-val">Current ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">BQ data retention lifecycle</span><span class="gdpr-val">Policy enforced ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">Right to explanation (Art. 22)</span><span class="gdpr-val">SHAP log available ✓</span></div>
+          <div class="gdpr-row"><span class="gdpr-key">DPO notification log</span><span class="gdpr-val">Current ✓</span></div>
+        </div>
       </div>
-      <div class="fw-card">
-        <div class="fw-head"><span class="fw-name">EU MDR 2017/745</span><div class="fw-dot g"></div></div>
-        <div class="fw-art">Medical Device Regulation<br>M-05 Asset IQ · CE mark</div>
-        <div class="fw-bar-bg"><div class="fw-bar-fill g" style="width:96%"></div></div>
-        <div class="fw-pct">96% · CE mark current · EUDAMED filed</div>
+    </section>
+
+    <!-- §6 REGULATORY CALENDAR -->
+    <section class="section" id="calendar">
+      <h2 class="section-heading"><span class="section-num">§6</span> Regulatory Obligation Calendar</h2>
+      <p class="body-text">Upcoming regulatory deadlines, certification renewals, and audit windows across all applicable frameworks, ordered by urgency. Red items require immediate C-suite action. The EU AI Act high-risk obligation deadline of August 2026 is the platform's primary forcing function, per <strong>ADR-016</strong>.</p>
+
+      <div class="cal-list">
+        <div class="cal-item flag-red">
+          <div class="cal-date">07 Apr 2026<span class="sub">6 days overdue</span></div>
+          <div>
+            <div class="cal-title">EU AI Act Art. 9 — FinRisk Sentinel (M-04) post-market monitoring log overdue</div>
+            <div class="cal-desc">Art. 9 requires a continuous risk management system including periodic post-market monitoring reports. The log for M-04 was due 07 Apr 2026 and is now 6 days overdue. CFO office must file immediately. If not resolved within 14 days of deadline, proactive notification to the relevant national supervisory authority may be required under Art. 62.</div>
+          </div>
+          <span class="cal-pill badge red">Overdue · P1</span>
+        </div>
+        <div class="cal-item flag-amber">
+          <div class="cal-date">30 Apr 2026<span class="sub">17 days remaining</span></div>
+          <div>
+            <div class="cal-title">GDPR Art. 12 — Subject Access Request deadline (2 open SARs)</div>
+            <div class="cal-desc">Two SARs received 31 Mar 2026. The 30-day statutory response deadline is 30 Apr 2026. Data Steward to review 14 quarantine records in M-08 and confirm no personal data is held beyond retention policy. Legal must approve the response template before dispatch.</div>
+          </div>
+          <span class="cal-pill badge amber">Due 30 Apr</span>
+        </div>
+        <div class="cal-item flag-amber">
+          <div class="cal-date">01 Aug 2026<span class="sub">109 days remaining</span></div>
+          <div>
+            <div class="cal-title">EU AI Act — High-Risk system obligations fully enforceable (Art. 9–17 for M-02, M-03, M-04, M-05)</div>
+            <div class="cal-desc">From 1 Aug 2026, all four high-risk AI systems must have: completed conformity assessment; registration in the EU AI Act database; operational HITL with immutable audit trail; active post-market monitoring plan; designated responsible person under Art. 25. ClaraVis H-1 is compliant on all fronts except the M-04 post-market log. ADR-016 phased adoption was designed explicitly around this deadline.</div>
+          </div>
+          <span class="cal-pill badge amber">109 Days</span>
+        </div>
+        <div class="cal-item flag-blue">
+          <div class="cal-date">15 Jun 2026<span class="sub">63 days remaining</span></div>
+          <div>
+            <div class="cal-title">ISO 13485:2016 Surveillance Audit — Asset IQ (M-05) · TÜV SÜD</div>
+            <div class="cal-desc">Annual surveillance audit for ISO 13485:2016 QMS certification covering M-05 Asset IQ as SaMD. Design History File, risk management file (ISO 14971), software validation records, and post-market surveillance data must be current. The GCP infrastructure evidence package (Vertex AI Pipelines, Feature Store lineage, Firestore audit trail) must be prepared for auditor review.</div>
+          </div>
+          <span class="cal-pill badge blue">Scheduled</span>
+        </div>
+        <div class="cal-item flag-blue">
+          <div class="cal-date">30 Jun 2026<span class="sub">78 days remaining</span></div>
+          <div>
+            <div class="cal-title">EU CSRD / ESRS E1 — Q2 2026 Scope 3 Emissions Report</div>
+            <div class="cal-desc">GreenOps Platform (M-06) to generate the Carbon Footprint API report for Q2 2026. ESRS E1 requires Scope 3 Category 11 (downstream use of sold products) for 12,000+ installed MRI/CT units across 34 countries. The hard-deadline bypass rule (Design Principle #4) ensures GreenOps batch jobs are never deferred by carbon scheduling.</div>
+          </div>
+          <span class="cal-pill badge blue">Scheduled</span>
+        </div>
+        <div class="cal-item flag-teal">
+          <div class="cal-date">30 Sep 2026<span class="sub">170 days remaining</span></div>
+          <div>
+            <div class="cal-title">FDA 21 CFR 820 — Annual Design History File Review (M-05 Asset IQ)</div>
+            <div class="cal-desc">Annual DHF review for SaMD classification. Software validation evidence, anomaly detection performance metrics, and HITL-06/07 audit records to be compiled. Vertex AI Pipelines model registry export is required, along with evidence that no changes have been made without a corresponding software change order.</div>
+          </div>
+          <span class="cal-pill badge teal">170 Days</span>
+        </div>
+        <div class="cal-item flag-teal">
+          <div class="cal-date">31 Dec 2026<span class="sub">261 days remaining</span></div>
+          <div>
+            <div class="cal-title">ISO 27001:2022 Certification Renewal — ISMS</div>
+            <div class="cal-desc">ISMS certification expires Dec 2026. Recertification audit to be scheduled Q3 2026. Evidence package: Cloud Armor WAF logs, VPC-SC audit logs, BeyondCorp access records, CMEK key rotation history, Workload Identity Federation configuration, IAM least-privilege review, Chaos Engineering test results, and Security Command Centre findings resolution log.</div>
+          </div>
+          <span class="cal-pill badge teal">261 Days</span>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ══════════════════════════════════════════
-     SECTION 2 — AI RISK REGISTER
-══════════════════════════════════════════ -->
-<section class="sec ap" id="register">
-  <div class="s-ey re">02 — AI System Risk Register</div>
-  <h2 class="s-h2">EU AI Act Annex III <em>Risk Classification</em></h2>
-  <p class="s-p">All AI systems classified per EU AI Act Art. 6 and Annex III. High-risk systems require a completed conformity assessment, current technical documentation, an operational HITL mechanism, and an active post-market monitoring plan before commercial deployment. Art. 9 mandates a continuous risk management system — not a one-time assessment.</p>
+    <!-- §7 INCIDENT LOG -->
+    <section class="section" id="incidents">
+      <h2 class="section-heading"><span class="section-num">§7</span> Compliance Incident &amp; Breach Log</h2>
+      <p class="body-text">All HITL bypasses, model drift alerts, SLA breaches, policy violations, and data quarantine events are recorded here. Records are written to Firestore with real-time export to BigQuery (europe-west3). Immutability is structural — Firestore documents are append-only; no update path exists for committed audit records. This satisfies EU AI Act Art. 12 (record-keeping) and Art. 17 (quality management system).</p>
 
-  <table class="ae-table">
-    <thead>
-      <tr>
-        <th>AI System</th>
-        <th>Module</th>
-        <th>Pillar</th>
-        <th>Risk Tier</th>
-        <th>Conformity Assessment</th>
-        <th>Technical Docs</th>
-        <th>HITL Mechanism</th>
-        <th>Post-Market Mon.</th>
-        <th>Annex III / Article Basis</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="cell-name">CCAI Sales Agent</span></td>
-        <td><span class="mod-badge">M-01</span></td>
-        <td class="cell-muted">Seller</td>
-        <td><span class="chip chip-limited">LIMITED</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-01 Turn-11</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Art. 52 transparency · chatbot</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">ContractGuard (XGBoost)</span></td>
-        <td><span class="mod-badge">M-02</span></td>
-        <td class="cell-muted">Seller</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-02/03</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Annex III §5b — legal document AI</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">ContractGuard (Gemini 1.5 Pro)</span></td>
-        <td><span class="mod-badge">M-02</span></td>
-        <td class="cell-muted">Seller</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-02/03</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Art. 53 GPAI + Annex III §5b</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">RevRec AI (XGBoost)</span></td>
-        <td><span class="mod-badge">M-03</span></td>
-        <td class="cell-muted">Finance</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-04/05/09</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Annex III §5a — creditworthiness AI</td>
-      </tr>
-      <tr style="background:rgba(217,48,37,.02)">
-        <td><span class="cell-name">FinRisk Sentinel (Isolation Forest)</span></td>
-        <td><span class="mod-badge">M-04</span></td>
-        <td class="cell-muted">Finance</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-08 Dual</td>
-        <td class="check-fail">⚠ LOG OVERDUE</td>
-        <td class="cell-muted">Annex III §5b — anomaly detection</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">Asset IQ (RUL Regression)</span></td>
-        <td><span class="mod-badge">M-05</span></td>
-        <td class="cell-muted">Supply Chain</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-06/07</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Annex III §2a — medical device SaMD</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">Asset IQ (Isolation Forest)</span></td>
-        <td><span class="mod-badge">M-05</span></td>
-        <td class="cell-muted">Supply Chain</td>
-        <td><span class="chip chip-high">HIGH</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="check-ok">✓ HITL-06/07</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Annex III §2a — medical device SaMD</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">GreenOps Scheduler</span></td>
-        <td><span class="mod-badge">M-06</span></td>
-        <td class="cell-muted">Supply Chain</td>
-        <td><span class="chip chip-minimal">MINIMAL</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="cell-muted">No HITL required</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">CSRD obligation only</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">Data Governance (TFX Validate)</span></td>
-        <td><span class="mod-badge">M-08</span></td>
-        <td class="cell-muted">All Pillars</td>
-        <td><span class="chip chip-minimal">MINIMAL</span></td>
-        <td class="check-ok">✓ Complete</td>
-        <td class="check-ok">✓ Current</td>
-        <td class="cell-muted">Steward reinstatement</td>
-        <td class="check-ok">✓ Active</td>
-        <td class="cell-muted">Art. 17 quality management system</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- ══════════════════════════════════════════
-     SECTION 3 — HITL AUDIT COVERAGE
-══════════════════════════════════════════ -->
-<section class="sec w ap" id="hitl">
-  <div class="s-ey am">03 — HITL Audit Coverage</div>
-  <h2 class="s-h2">Human-in-the-Loop <em>Compliance Audit</em></h2>
-  <p class="s-p">EU AI Act Art. 14 mandates effective human oversight for all High-Risk AI systems. Eleven HITL checkpoints are active across six modules. Design Principle #1: SHAP explanation is committed to BigQuery before a HITL record is created. The audit trail is structurally immutable — not policy-immutable. The SAP write guard (ADR-004) enforces the same pattern: a consequential action is architecturally unreachable without a committed HITL approval record.</p>
-
-  <div class="kpi-row">
-    <div class="kpi-cell">
-      <div class="kpi-label">HITL Coverage Rate (30d)</div>
-      <div class="kpi-val" style="color:var(--green)">98.7%</div>
-      <div class="kpi-delta delta-up">↑ 0.3pp vs prior 30 days</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Checkpoints Active</div>
-      <div class="kpi-val" style="color:var(--blue)">11</div>
-      <div class="kpi-delta delta-flat">Across M-01, 02, 03, 04, 05, 09</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">SLA Breaches (30d)</div>
-      <div class="kpi-val" style="color:var(--amber)">2</div>
-      <div class="kpi-delta delta-dn">↑ 1 vs prior period · M-02, M-04</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Avg Review Time</div>
-      <div class="kpi-val" style="color:var(--green)">4.2h</div>
-      <div class="kpi-delta delta-up">↓ 0.8h improvement</div>
-    </div>
-  </div>
-
-  <table class="ae-table">
-    <thead>
-      <tr>
-        <th>Checkpoint</th>
-        <th>Module</th>
-        <th>Article Basis</th>
-        <th>Coverage (30d)</th>
-        <th>Avg Review</th>
-        <th>SLA Status (24h)</th>
-        <th>Bypasses</th>
-        <th>SHAP Pre-commit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="cell-name">HITL-01 · Turn-11 escalation</span></td>
-        <td><span class="mod-badge">M-01</span></td>
-        <td class="cell-muted">Art. 14 §4</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">2.1h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-02 · Contract risk flag</span></td>
-        <td><span class="mod-badge">M-02</span></td>
-        <td class="cell-muted">Art. 14 §4</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:99%;background:var(--green)"></span></div>99%</div></td>
-        <td class="cell-muted">3.4h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-03 · Legal counter-position</span></td>
-        <td><span class="mod-badge">M-02</span></td>
-        <td class="cell-muted">Art. 14 §4</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">5.2h</td>
-        <td class="sla-warn">⚠ 1 breach (28 Mar)</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-04 · Revenue classification</span></td>
-        <td><span class="mod-badge">M-03</span></td>
-        <td class="cell-muted">Art. 14 §4</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:99%;background:var(--green)"></span></div>99%</div></td>
-        <td class="cell-muted">3.8h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-05 · SAP journal post approval</span></td>
-        <td><span class="mod-badge">M-03</span></td>
-        <td class="cell-muted">Art. 14 §4 + ASC 606</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">2.9h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr style="background:rgba(217,48,37,.02)">
-        <td><span class="cell-name">HITL-08 · Anomaly dual-reviewer</span></td>
-        <td><span class="mod-badge">M-04</span></td>
-        <td class="cell-muted">Art. 14 §5 (dual)</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:96%;background:#F9AB00"></span></div>96%</div></td>
-        <td class="cell-muted">6.7h</td>
-        <td class="sla-breach">✗ 1 breach (4 Apr, 29.4h)</td>
-        <td style="color:var(--red);font-family:var(--mono);font-size:11px">3</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-06 · RUL maintenance gate</span></td>
-        <td><span class="mod-badge">M-05</span></td>
-        <td class="cell-muted">Art. 14 §4 + ISO 13485</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">1.9h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-07 · Parts dispatch approval</span></td>
-        <td><span class="mod-badge">M-05</span></td>
-        <td class="cell-muted">Art. 14 §4 + ISO 13485</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">2.4h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-      <tr>
-        <td><span class="cell-name">HITL-09 · Bulk revenue batch approval</span></td>
-        <td><span class="mod-badge">M-03</span></td>
-        <td class="cell-muted">Art. 14 §4 + ASC 606</td>
-        <td><div class="prog-wrap"><div class="prog-bg"><span class="prog-fill" style="width:100%;background:var(--green)"></span></div>100%</div></td>
-        <td class="cell-muted">4.1h</td>
-        <td class="sla-ok">✓ 0 breaches</td>
-        <td style="color:var(--green);font-family:var(--mono);font-size:11px">0</td>
-        <td class="check-ok">✓ Committed</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- ══════════════════════════════════════════
-     SECTION 4 — XAI / EXPLAINABILITY
-══════════════════════════════════════════ -->
-<section class="sec ap" id="xai">
-  <div class="s-ey te">04 — XAI / Explainability Compliance</div>
-  <h2 class="s-h2">SHAP Explanation <em>Coverage &amp; Drift</em></h2>
-  <p class="s-p">EU AI Act Art. 13 §3 requires that operators of High-Risk AI systems provide meaningful information about the logic, significance, and intended consequences of outputs. ADR-005 mandates SHAP TreeExplainer over LIME: deterministic, auditable, and structurally compatible with Firestore immutability. FinRisk Sentinel shows feature drift on <code style="font-family:var(--mono);font-size:11px;background:var(--surface-2);padding:1px 5px">payment_velocity_7d</code> — under active review.</p>
-
-  <div class="xai-grid">
-    <div class="xai-card">
-      <div class="xai-model">XGBoost · ContractGuard</div>
-      <div class="xai-module">M-02 · Seller Pillar · Annex III §5b</div>
-      <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--green)">100%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--green)"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--green)">Stable</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--green)">✓ Met</span></div>
-      <div class="xai-row"><span class="xai-lbl">Hallucination rate</span><span class="xai-val" style="color:var(--green)">N/A</span></div>
-      <div><span class="drift-chip drift-stable">SHAP STABLE</span></div>
-    </div>
-    <div class="xai-card">
-      <div class="xai-model">Gemini 1.5 Pro 1M · ContractGuard</div>
-      <div class="xai-module">M-02 · Seller Pillar · Art. 53 GPAI</div>
-      <div class="xai-row"><span class="xai-lbl">Grounding citation rate</span><span class="xai-val" style="color:var(--green)">100%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--green)"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Grounding stability</span><span class="xai-val" style="color:var(--green)">Stable</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--green)">✓ Met</span></div>
-      <div class="xai-row"><span class="xai-lbl">Hallucination rate (30d)</span><span class="xai-val" style="color:var(--green)">0.00%</span></div>
-      <div><span class="drift-chip drift-stable">GROUNDING STABLE</span></div>
-    </div>
-    <div class="xai-card">
-      <div class="xai-model">XGBoost · RevRec AI</div>
-      <div class="xai-module">M-03 · Finance Pillar · Annex III §5a</div>
-      <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--green)">99.6%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:99.6%;background:var(--green)"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--green)">Stable</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--green)">✓ Met</span></div>
-      <div class="xai-row"><span class="xai-lbl">SHAP determinism (ADR-005)</span><span class="xai-val" style="color:var(--green)">✓ TreeExplainer</span></div>
-      <div><span class="drift-chip drift-stable">SHAP STABLE</span></div>
-    </div>
-    <div class="xai-card" style="border-color:rgba(176,96,0,.3)">
-      <div class="xai-model">Isolation Forest · FinRisk Sentinel</div>
-      <div class="xai-module">M-04 · Finance Pillar · Annex III §5b</div>
-      <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:#B06000">94.1%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:94.1%;background:#F9AB00"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:#B06000">⚠ Drift Alert</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:#B06000">⚠ Under Review</span></div>
-      <div class="xai-row"><span class="xai-lbl">Drifted feature</span><span class="xai-val" style="color:#B06000">payment_velocity_7d</span></div>
-      <div><span class="drift-chip drift-warn">DRIFT DETECTED</span></div>
-    </div>
-    <div class="xai-card">
-      <div class="xai-model">RUL Regression · Asset IQ</div>
-      <div class="xai-module">M-05 · Supply Chain · Annex III §2a</div>
-      <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--green)">100%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--green)"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--green)">Stable</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--green)">✓ Met</span></div>
-      <div class="xai-row"><span class="xai-lbl">ISO 13485 XAI req.</span><span class="xai-val" style="color:var(--green)">✓ DHF logged</span></div>
-      <div><span class="drift-chip drift-stable">SHAP STABLE</span></div>
-    </div>
-    <div class="xai-card">
-      <div class="xai-model">Isolation Forest · Asset IQ</div>
-      <div class="xai-module">M-05 · Supply Chain · Annex III §2a</div>
-      <div class="xai-row"><span class="xai-lbl">Explanation coverage (30d)</span><span class="xai-val" style="color:var(--green)">100%</span></div>
-      <div class="xai-bar-bg"><div class="xai-bar-fill" style="width:100%;background:var(--green)"></div></div>
-      <div class="xai-row"><span class="xai-lbl">Top feature stability</span><span class="xai-val" style="color:var(--green)">Stable</span></div>
-      <div class="xai-row"><span class="xai-lbl">Art. 13 §3 status</span><span class="xai-val" style="color:var(--green)">✓ Met</span></div>
-      <div class="xai-row"><span class="xai-lbl">ISO 13485 XAI req.</span><span class="xai-val" style="color:var(--green)">✓ DHF logged</span></div>
-      <div><span class="drift-chip drift-stable">SHAP STABLE</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     SECTION 5 — GDPR & DATA RIGHTS
-══════════════════════════════════════════ -->
-<section class="sec dk ap" id="gdpr">
-  <div class="s-ey go">05 — GDPR &amp; Data Rights</div>
-  <h2 class="s-h2">Data Governance &amp; <em>GDPR Posture</em></h2>
-  <p class="s-p">GDPR Art. 22 prohibits solely automated decisions with significant legal or financial effects without human review. All 11 HITL checkpoints satisfy this requirement architecturally — the SAP write guard means a journal entry is structurally unreachable without a committed human approval record. Data residency is enforced by VPC-SC perimeter lock to europe-west3. All datasets at rest are CMEK-encrypted (ADR-007).</p>
-
-  <div class="kpi-row dk">
-    <div class="kpi-cell">
-      <div class="kpi-label">Open SAR Requests</div>
-      <div class="kpi-val" style="color:#81C995">2</div>
-      <div class="kpi-delta" style="color:rgba(245,240,232,.35)">Within 30-day SLA · Due 30 Apr</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Art. 22 Opt-Out Flags</div>
-      <div class="kpi-val" style="color:#81C995">0</div>
-      <div class="kpi-delta" style="color:rgba(245,240,232,.35)">All decisions HITL-reviewed</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Quarantine Records (M-08)</div>
-      <div class="kpi-val" style="color:#FFD08A">14</div>
-      <div class="kpi-delta" style="color:rgba(245,240,232,.35)">Pending data steward review</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">VPC-SC Perimeter</div>
-      <div class="kpi-val" style="color:#81C995" style="font-size:20px">ACTIVE</div>
-      <div class="kpi-delta" style="color:rgba(245,240,232,.35)">europe-west3 · Cross-region blocked</div>
-    </div>
-  </div>
-
-  <div class="gdpr-pair">
-    <div class="gdpr-panel">
-      <div class="gdpr-panel-title">Data Residency &amp; Infrastructure Controls</div>
-      <div class="gdpr-row"><span class="gdpr-key">BigQuery data location</span><span class="gdpr-val">europe-west3 ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">CMEK encryption at rest</span><span class="gdpr-val">All datasets ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Firestore audit export</span><span class="gdpr-val">Real-time to BQ ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Cross-region API calls</span><span class="gdpr-val">VPC-SC blocked ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Workload Identity Federation</span><span class="gdpr-val">Active (all services) ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">BeyondCorp zero-trust</span><span class="gdpr-val">Enforced ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Cloud Armor WAF (ADR-014)</span><span class="gdpr-val">Active ✓</span></div>
-    </div>
-    <div class="gdpr-panel">
-      <div class="gdpr-panel-title">Consent, Rights &amp; Obligations</div>
-      <div class="gdpr-row"><span class="gdpr-key">Consent records current</span><span class="gdpr-val">100% ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Right to erasure requests</span><span class="gdpr-val">0 open ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">DPIA filed (M-04, M-05)</span><span class="gdpr-val">Apr 2026 ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Google DPA (data processor)</span><span class="gdpr-val">Current ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">BQ data retention lifecycle</span><span class="gdpr-val">Policy enforced ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">Right to explanation (Art. 22)</span><span class="gdpr-val">SHAP log available ✓</span></div>
-      <div class="gdpr-row"><span class="gdpr-key">DPO notification log</span><span class="gdpr-val">Current ✓</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     SECTION 6 — REGULATORY CALENDAR
-══════════════════════════════════════════ -->
-<section class="sec w ap" id="calendar">
-  <div class="s-ey am">06 — Regulatory Obligation Calendar</div>
-  <h2 class="s-h2">Deadlines, Audits &amp; <em>Certification Windows</em></h2>
-  <p class="s-p">Upcoming regulatory deadlines, certification renewals, and audit windows across all applicable frameworks. Items are ordered by urgency. Red items require immediate C-suite action. The EU AI Act high-risk obligation deadline of August 2026 is the platform's primary forcing function — per ADR-016.</p>
-
-  <div class="cal-list">
-    <div class="cal-item" style="border-left:4px solid var(--red)">
-      <div class="cal-date-col">07 Apr 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">6 days overdue</span></div>
-      <div class="cal-connector" style="background:var(--red)"></div>
-      <div class="cal-body">
-        <div class="cal-title">EU AI Act Art. 9 — FinRisk Sentinel (M-04) post-market monitoring log overdue</div>
-        <div class="cal-desc">Art. 9 requires a continuous risk management system including periodic post-market monitoring reports. The log for M-04 was due 07 Apr 2026 and is now 6 days overdue. CFO office must file immediately. If not resolved within 14 days of deadline, proactive notification to the relevant national supervisory authority may be required under Art. 62.</div>
+      <div class="figure" id="fig-incidents">
+        <div class="figure-label">Figure 3</div>
+        <div class="figure-sublabel">Append-only incident log, most recent entries first</div>
+        <div class="figure-body" style="padding: 0; overflow-x: auto;">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Timestamp (UTC)</th>
+                <th>Incident Description</th>
+                <th>Module</th>
+                <th>Framework / Article</th>
+                <th>Severity</th>
+                <th>Resolution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-flag">
+                <td class="mono-note">07 Apr 2026 14:22</td>
+                <td class="mono-note">Art. 9 post-market monitoring log not filed by deadline. M-04 FinRisk Sentinel risk management system log overdue by 6 days.</td>
+                <td><span class="badge blue">M-04</span></td>
+                <td class="mono-note">EU AI Act Art. 9</td>
+                <td><span class="badge red">P1</span></td>
+                <td><span class="badge red">Open</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">04 Apr 2026 09:11</td>
+                <td class="mono-note">HITL-08 SLA breach. Dual-reviewer timeout at 29.4h (SLA: 24h). CFO reviewer was primary; backup reviewer not auto-assigned on absence trigger.</td>
+                <td><span class="badge blue">M-04</span></td>
+                <td class="mono-note">EU AI Act Art. 14 §5</td>
+                <td><span class="badge amber">P2</span></td>
+                <td><span class="badge amber">In Review</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">01 Apr 2026 16:40</td>
+                <td class="mono-note">FinRisk Sentinel SHAP feature drift detected. Feature <code>payment_velocity_7d</code> SHAP importance shifted &gt;20% from baseline over a 14-day window. Art. 13 transparency obligation under review.</td>
+                <td><span class="badge blue">M-04</span></td>
+                <td class="mono-note">EU AI Act Art. 13 §3</td>
+                <td><span class="badge amber">P2</span></td>
+                <td><span class="badge amber">In Review</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">28 Mar 2026 11:05</td>
+                <td class="mono-note">HITL-03 SLA breach (26.8h). Legal reviewer OOO; backup reviewer not assigned in Firestore escalation config. Resolution: backup reviewer policy updated, config redeployed.</td>
+                <td><span class="badge blue">M-02</span></td>
+                <td class="mono-note">EU AI Act Art. 14 §4</td>
+                <td><span class="badge amber">P2</span></td>
+                <td><span class="badge teal">Resolved</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">22 Mar 2026 08:30</td>
+                <td class="mono-note">14 telemetry records quarantined by M-08 Data Governance (TFX Validate). Schema violation: <code>vibration_rms_hz</code> out-of-range float. Records preserved per Design Principle #3 (quarantine-then-review). ISO 13485 §7.5 — product preservation.</td>
+                <td><span class="badge blue">M-08</span></td>
+                <td class="mono-note">ISO 13485 §7.5</td>
+                <td><span class="badge gray">P3</span></td>
+                <td><span class="badge amber">In Review</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">15 Mar 2026 14:00</td>
+                <td class="mono-note">M-01 HITL-01 bypass logged in test environment. Traffic confirmed as non-production load testing. Firestore audit record created; flagged for compliance team review as procedure requires bypass justification even in test.</td>
+                <td><span class="badge blue">M-01</span></td>
+                <td class="mono-note">EU AI Act Art. 14 §4</td>
+                <td><span class="badge gray">P3</span></td>
+                <td><span class="badge teal">Resolved</span></td>
+              </tr>
+              <tr>
+                <td class="mono-note">02 Mar 2026 10:15</td>
+                <td class="mono-note">GreenOps (M-06) attempted to defer RUL batch job for carbon optimisation. Hard-deadline bypass rule triggered — job executed at the scheduled time. Design Principle #4 confirmed effective. No compliance impact; logged for evidence.</td>
+                <td><span class="badge blue">M-06</span></td>
+                <td class="mono-note">Design Principle #4 · ISO 13485</td>
+                <td><span class="badge gray">P3</span></td>
+                <td><span class="badge teal">Resolved</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <span class="cal-pill cp-overdue">OVERDUE · P1</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid #F9AB00">
-      <div class="cal-date-col">30 Apr 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">17 days remaining</span></div>
-      <div class="cal-connector" style="background:#F9AB00"></div>
-      <div class="cal-body">
-        <div class="cal-title">GDPR Art. 12 — Subject Access Request deadline (2 open SARs)</div>
-        <div class="cal-desc">Two SARs received 31 Mar 2026. The 30-day statutory response deadline is 30 Apr 2026. Data Steward to review 14 quarantine records in M-08 and confirm no personal data is held beyond retention policy. Legal must approve response template before dispatch.</div>
+    </section>
+
+    <!-- §8 ADRs -->
+    <section class="section" id="adrs">
+      <h2 class="section-heading"><span class="section-num">§8</span> Architecture Decision Records</h2>
+      <p class="body-text">Four ADRs were made specifically to satisfy EU AI Act and GDPR obligations. These are not preferences — they are regulatory requirements crystallised into irreversible architectural choices. A future team cannot change these decisions without reopening a regulatory compliance gap.</p>
+
+      <div class="adr-card" id="adr-017">
+        <div class="adr-header">
+          <span class="adr-id">ADR-017</span>
+          <span class="adr-title">Compliance Command Centre is read-only</span>
+          <span class="adr-status-badge accepted">Accepted · Apr 2026</span>
+        </div>
+        <div class="adr-body-block">
+          <p>The Compliance Command Centre reads from BigQuery materialised views across all modules. It has no write path to Firestore, SAP, Salesforce, or any operational system. This is an architectural constraint, not a UI convention. A compliance dashboard that could modify the audit trail it is reporting on would destroy the evidentiary value of that trail under EU AI Act Art. 12 and ISO 13485 §4.2.5. The read-only constraint is enforced at the IAM layer: the service account for M-09 has BigQuery Data Viewer only — no Editor, no Writer, no Admin.</p>
+          <p><strong>Alternatives considered:</strong> (1) Allow compliance officers to add annotations to incidents — rejected because annotations could be used to obfuscate original entries. (2) Allow bulk export to PDF — accepted as a read-only operation, not a write to the audit trail.</p>
+        </div>
       </div>
-      <span class="cal-pill cp-upcoming">DUE 30 APR</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid #F9AB00">
-      <div class="cal-date-col">01 Aug 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">109 days remaining</span></div>
-      <div class="cal-connector" style="background:#F9AB00"></div>
-      <div class="cal-body">
-        <div class="cal-title">EU AI Act — High-Risk system obligations fully enforceable (Art. 9–17 for M-02, M-03, M-04, M-05)</div>
-        <div class="cal-desc">From 1 Aug 2026, all four High-Risk AI systems must have: completed conformity assessment; registration in the EU AI Act database; operational HITL with immutable audit trail; active post-market monitoring plan; designated responsible person under Art. 25. ClaraVis H-1: all except M-04 post-market log are compliant. ADR-016 phased adoption was designed explicitly around this deadline.</div>
+
+      <div class="adr-card" id="adr-005">
+        <div class="adr-header">
+          <span class="adr-id">ADR-005</span>
+          <span class="adr-title">SHAP over LIME for the XAI layer</span>
+          <span class="adr-status-badge accepted">Accepted · Foundation</span>
+        </div>
+        <div class="adr-body-block">
+          <p>EU AI Act Art. 13 §3(b) requires that explanations enable meaningful human oversight. LIME produces approximation-based explanations that are non-deterministic: running the same explanation twice can produce different output. This means a LIME explanation logged at HITL checkpoint time cannot be verified retroactively by a regulator — it cannot be reproduced. SHAP TreeExplainer is deterministic: the same input always produces the same SHAP values. The immutability guarantee of Firestore only has regulatory value if the explanation logged there can be reproduced and verified. LIME breaks that guarantee.</p>
+        </div>
       </div>
-      <span class="cal-pill cp-upcoming">109 DAYS</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid var(--blue)">
-      <div class="cal-date-col">15 Jun 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">63 days remaining</span></div>
-      <div class="cal-connector" style="background:var(--blue)"></div>
-      <div class="cal-body">
-        <div class="cal-title">ISO 13485:2016 Surveillance Audit — Asset IQ (M-05) · TÜV SÜD</div>
-        <div class="cal-desc">Annual surveillance audit for ISO 13485:2016 QMS certification covering M-05 Asset IQ as SaMD. Design History File, risk management file (ISO 14971), software validation records, and post-market surveillance data must be current. GCP infrastructure evidence package (Vertex AI Pipelines, Feature Store lineage, Firestore audit trail) must be prepared for auditor review.</div>
+
+      <div class="adr-card" id="adr-004">
+        <div class="adr-header">
+          <span class="adr-id">ADR-004</span>
+          <span class="adr-title">Firestore for agent state and HITL audit</span>
+          <span class="adr-status-badge accepted">Accepted · Foundation</span>
+        </div>
+        <div class="adr-body-block">
+          <p>EU AI Act Art. 12 requires that high-risk AI system providers keep logs automatically generated by the system for a period of at least 6 months. The document model of Firestore maps natively to HITL event records, and no HITL record is ever deleted or updated — only new documents are appended. The BigQuery export pipeline (Firestore → Pub/Sub → Dataflow → BigQuery) produces an immutable secondary copy suitable for regulatory audit and SHAP replay. Redis — the rejected alternative — is an in-memory store with no durability guarantees and no native BigQuery export; it is architecturally incompatible with Art. 12.</p>
+        </div>
       </div>
-      <span class="cal-pill cp-scheduled">SCHEDULED</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid var(--blue)">
-      <div class="cal-date-col">30 Jun 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">78 days remaining</span></div>
-      <div class="cal-connector" style="background:var(--blue)"></div>
-      <div class="cal-body">
-        <div class="cal-title">EU CSRD / ESRS E1 — Q2 2026 Scope 3 Emissions Report</div>
-        <div class="cal-desc">GreenOps Platform (M-06) to generate Carbon Footprint API report for Q2 2026. ESRS E1 requires Scope 3 Category 11 (downstream use of sold products) for 12,000+ installed MRI/CT units across 34 countries. Hard-deadline bypass rule (Design Principle #4) ensures GreenOps batch jobs are never deferred by carbon scheduling.</div>
+
+      <div class="adr-card" id="adr-016">
+        <div class="adr-header">
+          <span class="adr-id">ADR-016</span>
+          <span class="adr-title">Phased adoption over big-bang deployment</span>
+          <span class="adr-status-badge accepted">Accepted · Foundation</span>
+        </div>
+        <div class="adr-body-block">
+          <p>The EU AI Act's phased enforcement timeline — prohibited practices Feb 2025, GPAI obligations Aug 2025, high-risk system obligations Aug 2026 — is the primary scheduling constraint for the AE Platform's deployment horizons H1, H2, H3. H1 modules (Data Governance, foundational infrastructure) must be live before H2 high-risk modules can be legally deployed. A big-bang deployment of all modules simultaneously would create a period where high-risk systems are operational before the HITL audit infrastructure is in place — an immediate regulatory violation. ADR-016 prevents this by making H1 completion a hard dependency for H2 go-live approval.</p>
+        </div>
       </div>
-      <span class="cal-pill cp-scheduled">SCHEDULED</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid var(--green)">
-      <div class="cal-date-col">30 Sep 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">170 days remaining</span></div>
-      <div class="cal-connector" style="background:var(--green)"></div>
-      <div class="cal-body">
-        <div class="cal-title">FDA 21 CFR 820 — Annual Design History File Review (M-05 Asset IQ)</div>
-        <div class="cal-desc">Annual DHF review for SaMD classification. Software validation evidence, anomaly detection performance metrics, and HITL-06/07 audit records to be compiled. Vertex AI Pipelines model registry export required. Evidence that no changes have been made without a corresponding software change order.</div>
+    </section>
+
+    <!-- §9 REBUTTALS -->
+    <section class="section" id="rebuttals">
+      <h2 class="section-heading"><span class="section-num">§9</span> Stakeholder Rebuttals</h2>
+      <p class="body-text">Four objections raised during the governance layer design review. Each rebuttal is grounded in regulatory text, architecture evidence, or commercial precedent — not opinion.</p>
+
+      <div class="rebuttal-grid">
+        <div class="rb-card caio">
+          <div class="rb-who">CAIO — Chief AI Officer</div>
+          <div class="rb-concern">Do we really need a ninth governance module? The Strategy Dashboard already shows compliance posture.</div>
+          <div class="rb-quote">"M-07 Strategy Dashboard already has a compliance panel. Isn't M-09 duplication?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">M-07 shows a single panel: a count of HITL checkpoints passing and a RAG status dot. It is a signal, not evidence. The EU AI Act Art. 12 record-keeping obligation requires that the AI provider be able to produce, on regulatory demand, the full audit trail — which human approved which decision, with what SHAP explanation, at what timestamp, with what SLA performance. M-07 cannot produce that. M-09 can. They serve fundamentally different consumers: M-07 is a C-suite signal dashboard; M-09 is a regulatory evidence platform.</div>
+          <div class="rb-ev">Art. 12 §1: "Providers of high-risk AI systems shall ensure that those systems have the technical capability to automatically generate logs." M-07 reads logs. M-09 exposes them for audit.</div>
+        </div>
+        <div class="rb-card clo">
+          <div class="rb-who">CLO — Chief Legal Officer</div>
+          <div class="rb-concern">We're not sure our EU AI Act risk classification is correct. What if regulators disagree with our Annex III mapping?</div>
+          <div class="rb-quote">"You've classified FinRisk Sentinel as High-Risk under §5b. Our legal team thinks it might be limited risk. Can we downgrade it?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">Annex III §5b covers AI systems used for creditworthiness assessment or credit scoring. FinRisk Sentinel analyses payment anomalies and flags transactions for CFO/Finance Controller review — it directly informs credit and payment risk decisions affecting the creditworthiness assessment of counterparties. The safer legal position is to classify conservatively and maintain the HITL plus post-market monitoring overhead than to classify as limited risk, reduce oversight, and face enforcement action post-Aug 2026. HITL-08 dual-reviewer adds 6.7 hours of review time; that is the cost of the conservative classification.</div>
+          <div class="rb-ev">The EU AI Act's enforcement regime for misclassification of high-risk systems includes fines up to €30M or 6% of global annual turnover — whichever is higher. The cost of HITL-08 is negligible by comparison.</div>
+        </div>
+        <div class="rb-card cfo">
+          <div class="rb-who">CFO — Chief Financial Officer</div>
+          <div class="rb-concern">SHAP explanations for every HITL decision sounds expensive. What does this cost us in BigQuery storage and Vertex AI compute?</div>
+          <div class="rb-quote">"How much does storing SHAP values for every single HITL decision actually cost at scale?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">A SHAP explanation for the XGBoost models (ContractGuard, RevRec AI) produces one float per feature per prediction. With 40–80 features per model and roughly 500 HITL decisions per month across all checkpoints, the monthly SHAP log volume is approximately 40,000 float values — under 2MB of BigQuery storage, costing less than €0.05/month. The Isolation Forest SHAP values for FinRisk are slightly larger (200 features) but remain under 10MB/month total. Vertex AI Pipelines compute for SHAP runs is included in the model inference cost, not billed separately. The compliance cost is immaterial relative to the regulatory fine exposure it eliminates.</div>
+          <div class="rb-ev">Total estimated SHAP storage cost across all models at current ClaraVis HITL volumes: &lt;€2/month. EU AI Act non-compliance fine ceiling for ClaraVis (€1.2B revenue): €72M. The ROI of this architecture decision does not require a spreadsheet.</div>
+        </div>
+        <div class="rb-card cpo">
+          <div class="rb-who">CPO — Chief Privacy Officer</div>
+          <div class="rb-concern">The GDPR Art. 22 right to explanation conflicts with our SHAP implementation. Can a SHAP value actually satisfy the Art. 22 obligation?</div>
+          <div class="rb-quote">"Art. 22 says individuals must receive 'meaningful information about the logic involved.' Does a SHAP value satisfy that? Our customers won't understand feature importance scores."</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">SHAP values are not the Art. 22 explanation — they are the data that powers it. The HITL UI translates SHAP values into plain-language explanations before presenting them to human reviewers. When an individual exercises their Art. 22 right, they receive a natural-language summary generated from the SHAP output, not the raw float values. The SHAP log is the audit evidence that the explanation was grounded in the model's actual computation — not a post-hoc rationalisation. This is the critical distinction: many Art. 22 obligations are satisfied by narratives with no computational basis. The AE platform's Art. 22 response is verifiable against the model's actual decision logic — a stronger compliance posture than industry standard, not a weaker one.</div>
+          <div class="rb-ev">WP29 Guidelines on Automated Decision-Making (2018) confirm that "meaningful information about the logic involved" does not require mathematical precision for data subjects — but it must be grounded in the actual algorithmic basis. SHAP provides that ground truth.</div>
+        </div>
       </div>
-      <span class="cal-pill cp-ok">170 DAYS</span>
-    </div>
-    <div class="cal-item" style="border-left:4px solid var(--green)">
-      <div class="cal-date-col">31 Dec 2026<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">261 days remaining</span></div>
-      <div class="cal-connector" style="background:var(--green)"></div>
-      <div class="cal-body">
-        <div class="cal-title">ISO 27001:2022 Certification Renewal — ISMS</div>
-        <div class="cal-desc">ISMS certification expires Dec 2026. Recertification audit to be scheduled Q3 2026. Evidence package: Cloud Armor WAF logs, VPC-SC audit logs, BeyondCorp access records, CMEK key rotation history, Workload Identity Federation configuration, IAM least-privilege review, Chaos Engineering test results, and Security Command Centre findings resolution log.</div>
+    </section>
+
+    <!-- ADJACENT MODULES -->
+    <section class="section">
+      <h2 class="section-heading"><span class="section-num">§10</span> Adjacent Modules</h2>
+      <div class="next-modules">
+        <a href="data-governance.html" class="next-mod-link">
+          <span class="next-mod-id">M-08</span>
+          <div>
+            <div class="next-mod-name">← Data Governance</div>
+            <div class="next-mod-desc">TFX Validate · Feature Store lineage · quarantine pipeline · Data Steward HITL</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="strategy-dashboard.html" class="next-mod-link">
+          <span class="next-mod-id">M-07</span>
+          <div>
+            <div class="next-mod-name">← Strategy Dashboard</div>
+            <div class="next-mod-desc">BigQuery materialised views · Looker Studio · 5 panels · C-suite signal layer</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-09.html" class="next-mod-link">
+          <span class="next-mod-id">PG 09</span>
+          <div>
+            <div class="next-mod-name">← AE Platform — Module Index</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
       </div>
-      <span class="cal-pill cp-ok">261 DAYS</span>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ══════════════════════════════════════════
-     SECTION 7 — INCIDENT LOG
-══════════════════════════════════════════ -->
-<section class="sec dk ap" id="incidents">
-  <div class="s-ey re">07 — Compliance Incident &amp; Breach Log</div>
-  <h2 class="s-h2">Immutable <em>Audit Record</em></h2>
-  <p class="s-p">All HITL bypasses, model drift alerts, SLA breaches, policy violations, and data quarantine events. Records are written to Firestore with real-time export to BigQuery (europe-west3). Immutability is structural — Firestore documents are append-only; no update path exists for committed audit records. This satisfies EU AI Act Art. 12 (record-keeping) and Art. 17 (quality management system).</p>
+  </div><!-- /content -->
 
-  <table class="ae-table dk">
-    <thead>
-      <tr>
-        <th>Timestamp (UTC)</th>
-        <th>Incident Description</th>
-        <th>Module</th>
-        <th>Framework / Article</th>
-        <th>Severity</th>
-        <th>Resolution</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">07 Apr 2026 14:22</td>
-        <td style="font-family:var(--mono);font-size:10px">Art. 9 post-market monitoring log not filed by deadline. M-04 FinRisk Sentinel risk management system log overdue by 6 days.</td>
-        <td><span class="mod-badge dk">M-04</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">EU AI Act Art. 9</td>
-        <td><span class="inc-sev isev-p1">P1</span></td>
-        <td><span class="inc-res ires-open">OPEN</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">04 Apr 2026 09:11</td>
-        <td style="font-family:var(--mono);font-size:10px">HITL-08 SLA breach. Dual-reviewer timeout at 29.4h (SLA: 24h). CFO reviewer was primary; backup reviewer not auto-assigned on absence trigger.</td>
-        <td><span class="mod-badge dk">M-04</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">EU AI Act Art. 14 §5</td>
-        <td><span class="inc-sev isev-p2">P2</span></td>
-        <td><span class="inc-res ires-review">IN REVIEW</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">01 Apr 2026 16:40</td>
-        <td style="font-family:var(--mono);font-size:10px">FinRisk Sentinel SHAP feature drift detected. Feature <code style="font-size:9px;background:rgba(255,255,255,.06);padding:1px 4px">payment_velocity_7d</code> SHAP importance shifted &gt;20% from baseline over 14-day window. Art. 13 transparency obligation under review.</td>
-        <td><span class="mod-badge dk">M-04</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">EU AI Act Art. 13 §3</td>
-        <td><span class="inc-sev isev-p2">P2</span></td>
-        <td><span class="inc-res ires-review">IN REVIEW</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">28 Mar 2026 11:05</td>
-        <td style="font-family:var(--mono);font-size:10px">HITL-03 SLA breach (26.8h). Legal reviewer OOO; backup reviewer not assigned in Firestore escalation config. Resolution: backup reviewer policy updated, config redeployed.</td>
-        <td><span class="mod-badge dk">M-02</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">EU AI Act Art. 14 §4</td>
-        <td><span class="inc-sev isev-p2">P2</span></td>
-        <td><span class="inc-res ires-closed">RESOLVED</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">22 Mar 2026 08:30</td>
-        <td style="font-family:var(--mono);font-size:10px">14 telemetry records quarantined by M-08 Data Governance (TFX Validate). Schema violation: <code style="font-size:9px;background:rgba(255,255,255,.06);padding:1px 4px">vibration_rms_hz</code> out-of-range float. Records preserved per Design Principle #3 (quarantine-then-review). ISO 13485 §7.5 — product preservation.</td>
-        <td><span class="mod-badge dk">M-08</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">ISO 13485 §7.5</td>
-        <td><span class="inc-sev isev-p3">P3</span></td>
-        <td><span class="inc-res ires-review">IN REVIEW</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">15 Mar 2026 14:00</td>
-        <td style="font-family:var(--mono);font-size:10px">M-01 HITL-01 bypass logged in test environment. Traffic confirmed as non-production load testing. Firestore audit record created; flagged for compliance team review as procedure requires bypass justification even in test.</td>
-        <td><span class="mod-badge dk">M-01</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">EU AI Act Art. 14 §4</td>
-        <td><span class="inc-sev isev-p3">P3</span></td>
-        <td><span class="inc-res ires-closed">RESOLVED</span></td>
-      </tr>
-      <tr>
-        <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">02 Mar 2026 10:15</td>
-        <td style="font-family:var(--mono);font-size:10px">GreenOps (M-06) attempted to defer RUL batch job for carbon optimisation. Hard-deadline bypass rule triggered — job executed at scheduled time. Design Principle #4 confirmed effective. No compliance impact; logged for evidence.</td>
-        <td><span class="mod-badge dk">M-06</span></td>
-        <td style="font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.35)">Design Principle #4 · ISO 13485</td>
-        <td><span class="inc-sev isev-p3">P3</span></td>
-        <td><span class="inc-res ires-closed">RESOLVED</span></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+  <footer class="doc-footer">
+    <span>Compliance Command Centre · Module 09 · Governance Layer · 2026</span>
+    <span>The Autonomous Enterprise Platform · © 2026 Siddharthan Rao</span>
+  </footer>
 
-<!-- ══════════════════════════════════════════
-     SECTION 8 — ADRs
-══════════════════════════════════════════ -->
-<section class="sec ap" id="adrs">
-  <div class="s-ey">08 — Architecture Decision Records</div>
-  <h2 class="s-h2">Compliance-Driven <em>Architecture Decisions</em></h2>
-  <p class="s-p">Four ADRs were made specifically to satisfy EU AI Act and GDPR obligations. These are not preferences — they are regulatory requirements crystallised into irreversible architectural choices. A future team cannot change these decisions without reopening a regulatory compliance gap.</p>
-
-  <div class="adr-col">
-    <div class="adr re">
-      <div class="adr-id">ADR-017 — Compliance Command Centre</div>
-      <div class="adr-title">M-09 is read-only. It writes nothing to any system of record.</div>
-      <div class="adr-body">The Compliance Command Centre reads from BigQuery materialised views across all modules. It has no write path to Firestore, SAP, Salesforce, or any operational system. This is an architectural constraint, not a UI convention. A compliance dashboard that could modify the audit trail it is reporting on would destroy the evidentiary value of that trail under EU AI Act Art. 12 and ISO 13485 §4.2.5. The read-only constraint is enforced at the IAM layer: the service account for M-09 has BigQuery Data Viewer only — no Editor, no Writer, no Admin.</div>
-      <div class="adr-body"><strong>Alternatives considered:</strong> (1) Allow compliance officers to add annotations to incidents — rejected because annotations could be used to obfuscate original entries. (2) Allow bulk export to PDF — accepted as a read-only operation; not a write to the audit trail.</div>
-      <span class="adr-status">ACCEPTED · Apr 2026</span>
-    </div>
-    <div class="adr bl">
-      <div class="adr-id">ADR-005 — SHAP over LIME for XAI Layer</div>
-      <div class="adr-title">TreeExplainer (SHAP) is the only permissible explanation method for High-Risk AI systems in the AE platform.</div>
-      <div class="adr-body">EU AI Act Art. 13 §3(b) requires that explanations enable meaningful human oversight. LIME produces approximation-based explanations that are non-deterministic: running the same explanation twice can produce different output. This means a LIME explanation logged at HITL checkpoint time cannot be verified retroactively by a regulator — it cannot be reproduced. SHAP TreeExplainer is deterministic: the same input always produces the same SHAP values. The immutability guarantee of Firestore only has regulatory value if the explanation logged there can be reproduced and verified. LIME breaks this guarantee.</div>
-      <span class="adr-status">ACCEPTED · Foundation</span>
-    </div>
-    <div class="adr gr">
-      <div class="adr-id">ADR-004 — Firestore for Agent State and HITL Audit</div>
-      <div class="adr-title">Firestore is the system of record for all HITL audit events. No HITL record is ever deleted or updated — only new documents are appended.</div>
-      <div class="adr-body">EU AI Act Art. 12 requires that High-Risk AI system providers keep logs automatically generated by the system for a period of at least 6 months. The document model of Firestore maps natively to HITL event records. The BigQuery export pipeline (Firestore → Pub/Sub → Dataflow → BigQuery) produces an immutable secondary copy suitable for regulatory audit and SHAP replay. Redis (the rejected alternative) is an in-memory store with no durability guarantees and no native BigQuery export — it is architecturally incompatible with Art. 12.</div>
-      <span class="adr-status">ACCEPTED · Foundation</span>
-    </div>
-    <div class="adr am">
-      <div class="adr-id">ADR-016 — Phased Adoption over Big-Bang Deployment</div>
-      <div class="adr-title">EU AI Act enforcement deadlines are the forcing function for the AE deployment horizon schedule.</div>
-      <div class="adr-body">The EU AI Act's phased enforcement timeline (prohibited practices: Feb 2025; GPAI obligations: Aug 2025; High-Risk system obligations: Aug 2026) is the primary scheduling constraint for the AE Platform deployment horizons H1, H2, H3. H1 modules (Data Governance, foundational infra) must be live before H2 High-Risk modules can be legally deployed. A big-bang deployment of all modules simultaneously would create a period where High-Risk systems are operational before the HITL audit infrastructure is in place — an immediate regulatory violation. ADR-016 prevents this by making H1 completion a hard dependency for H2 go-live approval.</div>
-      <span class="adr-status">ACCEPTED · Foundation</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     SECTION 9 — REBUTTALS
-══════════════════════════════════════════ -->
-<section class="sec w ap" id="rebuttals">
-  <div class="s-ey pu">09 — Stakeholder Rebuttals</div>
-  <h2 class="s-h2">C-Suite <em>Objections &amp; Responses</em></h2>
-  <p class="s-p">Four objections raised during the governance layer design review. Each rebuttal is grounded in regulatory text, architecture evidence, or commercial precedent — not opinion.</p>
-
-  <div class="rebuttal-grid">
-    <div class="rb caio">
-      <div class="rb-who">CAIO — Chief AI Officer</div>
-      <div class="rb-concern">Do we really need a ninth governance module? The Strategy Dashboard already shows compliance posture.</div>
-      <div class="rb-q">"M-07 Strategy Dashboard already has a compliance panel. Isn't M-09 duplication?"</div>
-      <div class="rb-rl">Architect Response</div>
-      <div class="rb-r">M-07 shows a single panel: a count of HITL checkpoints passing and a RAG status dot. It is a signal, not evidence. The EU AI Act Art. 12 record-keeping obligation requires that the AI provider be able to produce, on regulatory demand, the full audit trail: which human approved which decision, with what SHAP explanation, at what timestamp, with what SLA performance. M-07 cannot produce that. M-09 can. They serve fundamentally different consumers: M-07 is a C-suite signal dashboard; M-09 is a regulatory evidence platform.</div>
-      <div class="rb-ev">Art. 12 §1: "Providers of high-risk AI systems shall ensure that those systems have the technical capability to automatically generate logs." M-07 reads logs. M-09 exposes them for audit.</div>
-    </div>
-    <div class="rb clo">
-      <div class="rb-who">CLO — Chief Legal Officer</div>
-      <div class="rb-concern">We're not sure our EU AI Act risk classification is correct. What if regulators disagree with our Annex III mapping?</div>
-      <div class="rb-q">"You've classified FinRisk Sentinel as High-Risk under §5b. Our legal team thinks it might be limited risk. Can we downgrade it?"</div>
-      <div class="rb-rl">Architect Response</div>
-      <div class="rb-r">Annex III §5b covers AI systems used for creditworthiness assessment or credit scoring. FinRisk Sentinel analyses payment anomalies and flags transactions for CFO/Finance Controller review — it directly informs credit and payment risk decisions affecting the creditworthiness assessment of counterparties. The safer legal position is to classify conservatively and maintain the HITL + post-market monitoring overhead than to classify as limited risk, reduce oversight, and face enforcement action post-Aug 2026. HITL-08 dual-reviewer adds 6.7 hours of review time; that is the cost of the conservative classification.</div>
-      <div class="rb-ev">The EU AI Act's enforcement regime for misclassification of High-Risk systems includes fines up to €30M or 6% global annual turnover — whichever is higher. The cost of HITL-08 is negligible by comparison.</div>
-    </div>
-    <div class="rb cfo">
-      <div class="rb-who">CFO — Chief Financial Officer</div>
-      <div class="rb-concern">SHAP explanations for every HITL decision sounds expensive. What does this cost us in BigQuery storage and Vertex AI compute?</div>
-      <div class="rb-q">"How much does storing SHAP values for every single HITL decision actually cost at scale?"</div>
-      <div class="rb-rl">Architect Response</div>
-      <div class="rb-r">A SHAP explanation for the XGBoost models (ContractGuard, RevRec AI) produces one float per feature per prediction. With 40–80 features per model and roughly 500 HITL decisions per month across all checkpoints, the monthly SHAP log volume is approximately 40,000 float values — under 2MB of BigQuery storage, costing less than €0.05/month. The Isolation Forest SHAP values for FinRisk are slightly larger (200 features) but remain under 10MB/month total. Vertex AI Pipelines compute for SHAP runs is included in the model inference cost, not billed separately. The compliance cost is immaterial relative to the regulatory fine exposure it eliminates.</div>
-      <div class="rb-ev">Total estimated SHAP storage cost across all models at current ClaraVis HITL volumes: &lt;€2/month. EU AI Act non-compliance fine ceiling for ClaraVis (€1.2B revenue): €72M. The ROI of this architecture decision does not require a spreadsheet.</div>
-    </div>
-    <div class="rb cpo">
-      <div class="rb-who">CPO — Chief Privacy Officer</div>
-      <div class="rb-concern">The GDPR Art. 22 right to explanation conflicts with our SHAP implementation. Can a SHAP value actually satisfy the Art. 22 obligation?</div>
-      <div class="rb-q">"Art. 22 says individuals must receive 'meaningful information about the logic involved.' Does a SHAP value satisfy that? Our customers won't understand feature importance scores."</div>
-      <div class="rb-rl">Architect Response</div>
-      <div class="rb-r">SHAP values are not the Art. 22 explanation — they are the data that powers it. The HITL UI translates SHAP values into plain-language explanations before presenting them to human reviewers. When an individual exercises their Art. 22 right, they receive a natural-language summary generated from the SHAP output, not the raw float values. The SHAP log is the audit evidence that the explanation was grounded in the model's actual computation — not a post-hoc rationalisation. This is the critical distinction: many Art. 22 obligations are satisfied by narratives with no computational basis. The AE platform's Art. 22 response is verifiable against the model's actual decision logic. That is a stronger compliance posture than industry standard, not a weaker one.</div>
-      <div class="rb-ev">WP29 Guidelines on Automated Decision-Making (2018) confirm that "meaningful information about the logic involved" does not require mathematical precision for data subjects — but it must be grounded in the actual algorithmic basis. SHAP provides that ground truth.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ NAVIGATION LINKS ══ -->
-<div style="background:var(--ink);padding:28px var(--col)">
-  <div style="display:flex;flex-direction:column;gap:2px">
-    <a href="data-governance.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
-      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold-lt);letter-spacing:.07em">M-08</div>
-      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← Data Governance</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">TFX Validate · Feature Store lineage · quarantine pipeline · Data Steward HITL</div></div>
-      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
-    </a>
-    <a href="strategy-dashboard.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
-      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold-lt);letter-spacing:.07em">M-07</div>
-      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← Strategy Dashboard</div><div style="font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);margin-top:2px">BigQuery materialised views · Looker Studio · 5 panels · C-suite signal layer</div></div>
-      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
-    </a>
-    <a href="page-09.html" style="display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:12px;padding:16px 20px;background:var(--ink-2);text-decoration:none;border:1px solid transparent;transition:background .18s" onmouseover="this.style.background='#252420'" onmouseout="this.style.background='#1A1916'">
-      <div style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--gold-lt);letter-spacing:.07em">PG 09</div>
-      <div><div style="font-family:var(--display);font-size:14px;font-weight:600;color:var(--cream)">← AE Suite — Module Index</div></div>
-      <div style="font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.3)">→</div>
-    </a>
-  </div>
-</div>
-
-<footer>
-  <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
-  <div style="font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.2)">M-09 · Compliance Command Centre · Governance Layer · © 2026 Siddharthan Rao</div>
-</footer>
+</main>
+</div><!-- /page-wrap -->
 
 <script>
-/* Custom cursor */
-const c=document.getElementById('cur'),r=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-(function t(){c.style.left=mx+'px';c.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t)})();
-
-/* Scroll-reveal */
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.04});
-document.querySelectorAll('.ap').forEach(el=>io.observe(el));
-
-/* Sub-nav active state */
-const secs=['posture','register','hitl','xai','gdpr','calendar','incidents','adrs','rebuttals'];
-const sio=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      document.querySelectorAll('.sn').forEach(l=>l.classList.remove('act'));
-      const link=document.querySelector(`.sn[data-sec="${e.target.id}"]`);
-      if(link)link.classList.add('act');
-    }
+/* SIDEBAR ACTIVE STATE */
+const sections = document.querySelectorAll('section[id], header[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
   });
-},{threshold:.12,rootMargin:'-80px 0px -60% 0px'});
-secs.forEach(id=>{const el=document.getElementById(id);if(el)sio.observe(el)});
+}, { passive: true });
 </script>
 </body>
 </html>

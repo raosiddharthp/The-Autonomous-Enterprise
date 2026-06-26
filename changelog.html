@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Changelog · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* SUITE BAND */
+.suite-band { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0.9rem 2.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+.sb-label { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.sb-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.sb-pill { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text2); text-decoration: none; padding: 5px 12px; border: 1px solid var(--border); border-radius: 99px; transition: color 0.15s, border-color 0.15s; }
+.sb-pill:hover { color: var(--blue); border-color: var(--blue); }
+
+/* VERSION BLOCKS */
+.version-block { margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+.version-block:last-child { border-bottom: none; }
+.ver-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; flex-wrap: wrap; }
+.ver-num { font-family: var(--serif); font-size: 28px; color: var(--text); letter-spacing: -0.02em; }
+.ver-date { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.ver-tag { font-family: var(--mono); font-size: 9.5px; font-weight: 500; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.04em; }
+.vt-complete { background: var(--teal-bg); color: var(--teal); }
+.vt-milestone { background: var(--blue-bg); color: var(--blue); }
+.vt-addition { background: var(--amber-bg); color: var(--amber); }
+.vt-suite { background: var(--teal-bg); color: var(--teal); }
+.vt-governance { background: var(--purple-bg); color: var(--purple); }
+.ver-tagline { font-family: var(--serif); font-size: 18px; font-style: italic; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.4; }
+.change-group { margin-bottom: 1.1rem; }
+.cg-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
+.cg-label::before { content: ''; display: block; width: 14px; height: 1px; background: currentColor; }
+.changelog-item { font-size: 13px; color: var(--text2); line-height: 1.65; padding: 6px 0 6px 14px; border-left: 2px solid var(--border); margin-bottom: 4px; }
+.changelog-item strong { font-weight: 600; color: var(--text); }
+.changelog-item a { color: var(--blue); text-decoration: none; }
+.changelog-item a:hover { text-decoration: underline; }
+.changelog-item code { font-family: var(--mono); font-size: 11.5px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* PILLAR GRID */
+.pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1rem; }
+.pillar-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1rem 1.1rem; }
+.pc-label { font-family: var(--mono); font-size: 9px; font-weight: 500; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.pc-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.pc-url { font-family: var(--mono); font-size: 10.5px; color: var(--blue); text-decoration: none; }
+.pc-url:hover { text-decoration: underline; }
+.pc-desc { font-size: 11.5px; color: var(--text2); line-height: 1.55; margin-top: 6px; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid, .pillar-grid { grid-template-columns: 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise</div>
+  <div class="sidebar-project">Changelog</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#v2-0">v2.0.0 — Autonomous Suite</a></li>
+      <li><a href="#v1-5">v1.5.0 — Design Complete</a></li>
+      <li><a href="#v1-2">v1.2.0 — Pages 06–08</a></li>
+      <li><a href="#v1-1">v1.1.0 — Pages 03–05</a></li>
+      <li><a href="#v1-0">v1.0.0 — Initial Release</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Reference Docs</div>
+    <div class="stack-item"><strong><a href="adr-index.html" style="color:inherit;text-decoration:none">ADR Index</a></strong>every significant decision</div>
+    <div class="stack-item"><strong><a href="glossary.html" style="color:inherit;text-decoration:none">Glossary</a></strong>one sentence per term</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="index.html">the-autonomous-enterprise</a> / <a href="#">changelog</a>
+    </div>
+    <div class="topbar-right">
+      <a href="adr-index.html" class="topbar-tag" style="text-decoration:none">ADRs →</a>
+      <a href="glossary.html" class="topbar-tag" style="text-decoration:none">Glossary →</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:900px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">Reference Document &nbsp;·&nbsp; The Autonomous Enterprise &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">Changelog: <em>Design Decisions</em><br>Over Time</h1>
+      <div class="doc-byline">
+        <span>Governance platform · Autonomous Suite</span>
+        <span>From the initial ClaraVis concept through eight AE modules</span>
+      </div>
+    </header>
+
+    <div class="suite-band" style="margin: -1rem -2.5rem 2.5rem; border-radius: 0;">
+      <span class="sb-label">Autonomous Suite</span>
+      <div class="sb-pills">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" target="_blank" class="sb-pill">The Autonomous Quote-to-Cash →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" target="_blank" class="sb-pill">The Autonomous Finance Operations →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" target="_blank" class="sb-pill">The Autonomous Procure-to-Pay →</a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank" class="sb-pill">The Autonomous Supply Chain →</a>
+      </div>
+    </div>
+
+    <!-- v2.0 -->
+    <div class="version-block" id="v2-0">
+      <div class="ver-header">
+        <span class="ver-num">v2.0.0</span>
+        <span class="ver-date">2026-04-14</span>
+        <span class="ver-tag vt-suite">Autonomous Suite</span>
+        <span class="ver-tag vt-governance">Governance Layer</span>
+      </div>
+      <div class="ver-tagline">The Autonomous Enterprise formalised as the governance platform of the four-pillar Autonomous Suite.</div>
+
+      <div class="change-group">
+        <div class="cg-label">Suite Architecture</div>
+        <div class="changelog-item"><strong>Autonomous Enterprise Platform positioning established.</strong> The four process pillars — Quote-to-Cash, Finance Operations, Procure-to-Pay, Supply Chain — are formally documented as Platform members, each sharing the ClaraVis anchor client, GCP data fabric, HITL framework, and XAI/SHAP audit layer. The Autonomous Enterprise is the cross-cutting governance layer, not a fifth pillar.</div>
+        <div class="changelog-item"><strong>Shared data fabric contract formalised.</strong> All four pillar platforms write to a shared BigQuery dataset (<code>ae_governance</code>) via Pub/Sub event streams. The governance layer subscribes to these streams via the topics <code>ae.governance.dashboard.refresh</code>, <code>ae.governance.xai_audit</code>, and <code>ae.governance.hitl.events</code>. Pillar platforms are decoupled from the governance layer by the event bus (ADR-006).</div>
+        <div class="changelog-item"><strong>Suite navigation band added to all reference documents.</strong> A persistent navigation element on Changelog, Glossary, and ADR Index surfaces direct links to all four pillar sites, reinforcing the Suite relationship without modifying the core AE module page architecture.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Governance Layer — Strategy Dashboard (M-07)</div>
+        <div class="changelog-item"><strong>Five-panel architecture specified at pillar resolution.</strong> Each Strategy Dashboard panel now has an explicit data source assignment: Revenue Pipeline (Quote-to-Cash), Fleet Health (Supply Chain), Financial Risk (Finance Operations), Carbon Emissions (GreenOps, all pillars), Compliance Posture (all). Materialised BigQuery view refresh cycle: 15 minutes, triggered by Pub/Sub.</div>
+        <div class="changelog-item"><strong>Drill-through contract formalised.</strong> Every dashboard panel cell navigates to the source module's HITL queue or XAI explanation viewer. The Strategy Dashboard is explicitly a navigation layer — not a destination — preventing the common failure mode of dashboards becoming reporting dead-ends.</div>
+        <div class="changelog-item"><strong>München cross-module thread made visible at Strategy Dashboard level.</strong> Unit MRI-7T-MCH-0042 (Universitätsklinikum München) is the demo anchor for the fleet health panel, with drill-through linking back to the Asset IQ (M-05) HITL queue. This makes the five-module cross-pillar narrative observable in a single interface.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Governance Layer — Data Governance (M-08)</div>
+        <div class="changelog-item"><strong>H1 gate constraint formalised.</strong> Data Governance (M-08) is the sole Horizon 1 module. ADR-016 (phased adoption) is extended with an explicit dependency: no H2 ML module (<code>ae.ml.scoring.*</code> Cloud Run endpoints) may reach production until M-08 schema validation pipelines pass with a ≥99.5% SLA for 30 consecutive days. This is enforced as a Binary Authorization attestation requirement (ADR-015).</div>
+        <div class="changelog-item"><strong>Quarantine-then-review principle extended to all pillar data feeds.</strong> The TFX ExampleValidator quarantine pipeline now handles schema-violating records from all four pillar platforms, not only the Asset IQ telemetry feed. Quarantine bucket partitioned by <code>pillar_id</code>, <code>source_system</code>, <code>quarantine_timestamp</code>. Steward reinstatement HITL (HITL-11) SLA: 48 hours.</div>
+        <div class="changelog-item"><strong>Feature lineage graph extended to cover Procure-to-Pay and Quote-to-Cash feature groups.</strong> Vertex AI Feature Store feature groups <code>fg_qtc_opportunity</code> and <code>fg_p2p_supplier</code> added to the lineage graph. Data Governance dashboard now renders cross-pillar feature-to-model dependency paths.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Governance Layer — GreenOps (M-06)</div>
+        <div class="changelog-item"><strong>Hard-deadline bypass enforced at GKE admission controller.</strong> The workload annotation <code>ae.greenops/deferral-eligible: "false"</code> is required on all batch jobs that must not be deferred: the daily RUL scoring job (Asset IQ, M-05) and the FinRisk Sentinel model refresh (M-04). The GreenOps scheduler rejects deferral requests for annotated workloads at admission time — not as an application-layer check.</div>
+        <div class="changelog-item"><strong>Scope 3 attribution extended to Procure-to-Pay and Supply Chain pillar events.</strong> GreenOps now accounts for Scope 3 emissions from supplier logistics events (Procure-to-Pay) and installed unit lifecycle events (Supply Chain), satisfying EU CSRD §29a Category 11 (use of sold products) and Category 1 (purchased goods and services).</div>
+        <div class="changelog-item"><strong>CSRD disclosure report generation added.</strong> GreenOps generates a downloadable EU CSRD §29a–compliant disclosure on demand from the governance dashboard. Report is rendered as a PDF by a Cloud Run job, signed by Cloud KMS, and written to <code>gs://ae-governance-reports/csrd/</code> with CMEK encryption.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Documentation</div>
+        <div class="changelog-item"><strong>README.md rebuilt to Google OSS standards.</strong> Structured with 14 numbered sections following Google's open-source README conventions: Suite positioning, four-pillar table, governance platform capabilities, anchor client, architecture overview, governance dashboards, module index, navigation, ADR summary, design principles, regulatory posture, München narrative, infrastructure, and about. Semantic versioning badges added.</div>
+        <div class="changelog-item"><strong>Changelog upgraded to Keep a Changelog + SemVer format.</strong> v2.x releases distinguish Suite-level (MAJOR) from governance layer additions (MINOR) from module-level fixes (PATCH). All prior releases retroactively classified under v1.x.</div>
+        <div class="changelog-item"><strong>Glossary extended with 28 Suite-level and governance-specific terms.</strong> New sections: Autonomous Suite, Governance Layer, Compliance &amp; Regulatory, Data Platform. All cross-references updated to include pillar site links.</div>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-label">Why v2.0.0 and not v1.6?</div>
+        <div class="callout-body">The formalisation of the Autonomous Suite family relationship and the positioning of The Autonomous Enterprise as a governance platform — rather than a standalone portfolio piece — is a breaking conceptual change. The four pillar platforms are now first-class architectural elements referenced in the README, Glossary, Changelog, navigation, and ADR rationale. This warrants a major version increment under SemVer: the public interface of the documentation has fundamentally changed.</div>
+      </div>
+
+      <div class="pillar-grid">
+        <div class="pillar-card">
+          <div class="pc-label">Pillar 01 · Commercial</div>
+          <div class="pc-title">The Autonomous Quote-to-Cash</div>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" target="_blank" class="pc-url">raosiddharthp.github.io/The-Autonomous-Quote-to-Cash →</a>
+          <div class="pc-desc">ADK multi-agent · CCAI Sales Agent · ContractGuard · CPQ cycle 47d → 9d · EU AI Act Annex III</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pc-label">Pillar 02 · Financial</div>
+          <div class="pc-title">The Autonomous Finance Operations</div>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" target="_blank" class="pc-url">raosiddharthp.github.io/The-Autonomous-Finance-Operations →</a>
+          <div class="pc-desc">RevRec AI · ASC 606 · XGBoost · SHAP · Dual-reviewer HITL · SAP write guard</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pc-label">Pillar 03 · Procurement</div>
+          <div class="pc-title">The Autonomous Procure-to-Pay</div>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" target="_blank" class="pc-url">raosiddharthp.github.io/The-Autonomous-Procure-to-Pay →</a>
+          <div class="pc-desc">Document AI · Gemini 1.5 Pro · Supplier evaluation · Contract negotiation · Scope 3 Category 1</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pc-label">Pillar 04 · Operations</div>
+          <div class="pc-title">The Autonomous Supply Chain</div>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank" class="pc-url">raosiddharthp.github.io/The-Autonomous-Supply-Chain →</a>
+          <div class="pc-desc">Asset IQ · RUL regression · 12,000+ units · ISO 13485 · €40M warranty reserve optimisation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.5 -->
+    <div class="version-block" id="v1-5">
+      <div class="ver-header">
+        <span class="ver-num">v1.5.0</span>
+        <span class="ver-date">2026-03-17</span>
+        <span class="ver-tag vt-complete">Design Complete</span>
+      </div>
+      <div class="ver-tagline">All eight modules built. Reference documents complete. Portfolio frozen.</div>
+
+      <div class="change-group">
+        <div class="cg-label">Modules Added</div>
+        <div class="changelog-item"><strong>M-07 Strategy Dashboard</strong> — Five-panel Looker Studio–backed executive interface: Revenue Pipeline, Fleet Health, Financial Risk, Carbon Emissions, Compliance Posture. BigQuery materialised views. Drill-through to HITL queues. No HITL checkpoint on the dashboard itself — it is a read-only governance surface. München thread anchor: MRI-7T-MCH-0042 visible in fleet panel.</div>
+        <div class="changelog-item"><strong>M-08 Data Governance</strong> — TFX ExampleValidator pipeline. Vertex AI Feature Store lineage graph. Quarantine-then-review pattern for schema-violating records. Steward reinstatement HITL (HITL-11). The sole H1 module — contractual gate for all H2 ML deployments. ADRs DG-01 through DG-04 covering TFX vs Great Expectations, Feature Store vs manual feature engineering, quarantine vs discard, and steward SLA.</div>
+        <div class="changelog-item"><strong>M-06 GreenOps Platform</strong> — Carbon Footprint API integration. GKE intelligent job scheduling with hard-deadline bypass for RUL and FinRisk jobs. CSRD Scope 1/2/3 accounting. EU CSRD §29a disclosure generation. No HITL checkpoint — carbon accounting is fully automated; human review reserved for annual CSRD filing sign-off outside this system.</div>
+        <div class="changelog-item"><strong>M-04 FinRisk Sentinel</strong> — Isolation Forest anomaly detection on BigQuery streaming payment events. Dual-reviewer HITL-08 (CFO + Finance Controller — both must approve for a payment event to be cleared). TreeExplainer-generated feature contribution cards presented at HITL. ADR-011 (Isolation Forest over autoencoder) justified by SHAP TreeExplainer compatibility.</div>
+        <div class="changelog-item"><strong>M-05 Asset IQ</strong> — RUL regression model (XGBoost) + anomaly detection (Isolation Forest) on 12,000+ unit telemetry. HITL-06 (Field Service Manager, 4h SLA) and HITL-07 (Regional Service Director, 2h SLA for imminent failure). ISO 13485 Device History Record integration. München anchor unit MRI-7T-MCH-0042 reaches 8.4d RUL in the demo pathway.</div>
+        <div class="changelog-item"><strong>M-03 RevRec AI</strong> — XGBoost ASC 606 / IFRS 15 classification (SINGLE-ELEMENT, MULTI-ELEMENT, LEASE, SERVICE). SHAP explanation with top-5 features. HITL-04 (Finance Controller, 4h) and HITL-05 (VP Finance, 2h for &gt;€500K contracts). SAP write guard enforcing <code>hitl_id</code> parameter. München contract classified as MULTI-ELEMENT, €2.84M.</div>
+        <div class="changelog-item"><strong>M-01 CCAI Sales Agent</strong> and <strong>M-02 ContractGuard</strong> — See v1.3.0 and v1.4.0.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Reference Documents</div>
+        <div class="changelog-item"><strong><a href="adr-index.html">ADR Index</a></strong> — All 16 core ADRs + module-specific ADRs (M-01 through M-08). Each ADR with context, decision, alternatives considered, and consequences.</div>
+        <div class="changelog-item"><strong><a href="glossary.html">Glossary</a></strong> — One-sentence definitions for all technical terms. Alphabetically ordered, cross-referenced to modules and ADRs.</div>
+        <div class="changelog-item"><strong><a href="changelog.html">Changelog</a></strong> — This document. Full version history from concept to portfolio completion.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Design Patterns Locked</div>
+        <div class="changelog-item">Seven-section module page template locked: §01 System Context (C4 L1, light bg) → §02 Architecture (dark bg) → §03 State Machine(s) → §04 Data Flow/Sequence → §05 HITL UI mockup → §06 ADRs → §07 Rebuttals (6 stakeholder cards) → §08 Demo Pathway.</div>
+        <div class="changelog-item">Rebuttal format established: six cards per module, one per stakeholder persona, each with a quoted objection and a structured architectural response with evidence. Personas: CFO, CTO, Legal, CISO, Data Science Lead, Field Operations.</div>
+        <div class="changelog-item">Accessibility rules locked: dark text on light background for all pills and badges, WCAG AA minimum contrast, <code>role="img"</code> + <code>aria-label</code> on all functional SVG diagrams.</div>
+      </div>
+    </div>
+
+    <!-- v1.2 -->
+    <div class="version-block" id="v1-2">
+      <div class="ver-header">
+        <span class="ver-num">v1.2.0</span>
+        <span class="ver-date">2026-03-17</span>
+        <span class="ver-tag vt-addition">Pages 06–08</span>
+      </div>
+      <div class="ver-tagline">ML Engineering, Infrastructure, and Go-to-Market pages built.</div>
+
+      <div class="change-group">
+        <div class="cg-label">Pages Added</div>
+        <div class="changelog-item"><strong><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-06.html" target="_blank">Quote-to-Cash, Page 06 — ML Engineering &amp; MLOps</a></strong> — Five model cards (RevRec AI, ContractGuard, Asset IQ RUL, Asset IQ Anomaly, FinRisk Sentinel). Vertex AI Pipelines CI/CD. SHAP XAI layer design. Feature Store partitioning. Drift detection thresholds. Eight MLE design decisions covering data augmentation, Isolation Forest contamination parameter, feature store partitioning strategy, SHAP computation placement, and model versioning.</div>
+        <div class="changelog-item"><strong><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" target="_blank">Quote-to-Cash, Page 07 — Infrastructure &amp; GCP</a></strong> — Terraform IaC. Shared VPC (ADR-013). VPC-SC perimeter design. GKE Autopilot + Cloud Run separation of concerns (ADR-003 vs ADR-015). CMEK. BeyondCorp + Workload Identity Federation. Binary Authorization. Chaos Engineering programme (four game days). Runbook for P0 incidents. Seven infrastructure design decisions including Terraform state IAM, state locking, secret rotation cadence, VPC-SC and Salesforce webhook pattern, local apply prevention, module versioning constraints, and Binary Authorization attestation chain.</div>
+        <div class="changelog-item"><strong><a href="page-08.html">Page 08 — Go-to-Market Strategy</a></strong> — EU AI Act enforcement deadline as the commercial forcing function. Buyer map (5 personas × 5 columns: pain, trigger, message, proof, risk). Value by Horizon (H1/H2/H3 with "what makes the next horizon easier" logic). Four adoption risk cards. ADR-016 (phased adoption over big-bang).</div>
+      </div>
+    </div>
+
+    <!-- v1.1 -->
+    <div class="version-block" id="v1-1">
+      <div class="ver-header">
+        <span class="ver-num">v1.1.0</span>
+        <span class="ver-date">2026-03-17</span>
+        <span class="ver-tag vt-addition">Pages 03–05</span>
+      </div>
+      <div class="ver-tagline">TOGAF ADM, Delivery Design, and Agent Swarm pages built.</div>
+
+      <div class="change-group">
+        <div class="cg-label">Pages Added</div>
+        <div class="changelog-item"><strong><a href="page-03.html">Page 03 — TOGAF ADM: Phases A–F</a></strong> — Architecture Vision (Phase A), Business Architecture (Phase B), Information Architecture (Phase C), Application Architecture (Phase C), Technology Architecture (Phase D), Migration Planning (Phase E/F). Work products per phase. ADRs 001–006 documented. Horizon roadmap (H1/H2/H3) with migration sequence and EU AI Act deadline as forcing function for H1/H2 sequencing.</div>
+        <div class="changelog-item"><strong><a href="page-04.html">Page 04 — Delivery &amp; Product Design</a></strong> — SAFe ART structure (Commercial ART, Financial ART, Operations/Platform ART). PI-1 through PI-8 delivery plan. Nine stakeholder personas with pain points, current state metrics, and success criteria. FRD with 60+ functional requirements. Eleven HITL checkpoints defined: HITL-01 (CCAI turn-11 escalation) through HITL-11 (Data Governance steward reinstatement) — each with actor, SLA, trigger, timeout behaviour, and audit record format.</div>
+        <div class="changelog-item"><strong><a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">Quote-to-Cash, Page 05 — Agent Swarm Architecture</a></strong> — ADK multi-agent orchestration. A2A protocol specification (ADR-008). Five agent specifications with formal state machines: CCAI Sales Agent (11-state), ContractGuard (8-state), RevRec AI (7-state), Asset IQ (6-state), FinRisk Sentinel (5-state). Circuit breaker patterns (closed/open/half-open). Firestore state schema design. ADRs 007–009.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Foundational Design Decisions</div>
+        <div class="changelog-item">HITL-01 through HITL-11 named and formally specified — this framework is the structural spine of the AE Platform's EU AI Act Article 14 compliance posture. HITL checkpoints are state machine nodes, not process steps: they have formal entry conditions, presentation contracts, decision interfaces, timeout behaviours, and immutable audit records.</div>
+        <div class="changelog-item">EU AI Act Article 14 (human oversight) compliance approach defined. All Annex III high-risk modules require a HITL checkpoint. Dual-reviewer requirement (HITL-08) applies to financial anomaly decisions where unilateral approval creates a segregation of duties risk under SOX.</div>
+      </div>
+    </div>
+
+    <!-- v1.0 -->
+    <div class="version-block" id="v1-0">
+      <div class="ver-header">
+        <span class="ver-num">v1.0.0</span>
+        <span class="ver-date">2026-03-17</span>
+        <span class="ver-tag vt-milestone">Initial Release</span>
+      </div>
+      <div class="ver-tagline">Concept, anchor client, and portfolio structure established.</div>
+
+      <div class="change-group">
+        <div class="cg-label">Pages Added</div>
+        <div class="changelog-item"><strong><a href="index.html">Page 01 — The Autonomous Enterprise</a></strong> — Concept introduction. The four-layer architecture (Presentation, Agent Orchestration, Data/ML Platform, Infrastructure/Governance). Positioning statement: "Salesforce Einstein delivers intelligence within the Salesforce data model. The Autonomous Enterprise delivers intelligence across the enterprise."</div>
+        <div class="changelog-item"><strong><a href="page-02.html">Page 02 — ClaraVis: Client Brief &amp; Requirements</a></strong> — Anchor client defined: ClaraVis Medical Systems, €1.2B German MRI/CT OEM, 12,000+ installed units, 34 countries, 4,200 employees. Three pain points established (47-day CPQ cycle, EU AI Act compliance gap, €40M warranty over-reserve). Nine stakeholder personas mapped with role, pain, and success metric.</div>
+      </div>
+
+      <div class="change-group">
+        <div class="cg-label">Foundational Decisions</div>
+        <div class="changelog-item"><strong>Anchor client selection.</strong> ClaraVis provides a credible enterprise context spanning all three major AI use case categories (commercial, financial, operational/IoT) in a single company, enabling cross-module narrative continuity. Medical device regulatory context (EU AI Act Annex III, ISO 13485, FDA 21 CFR 820) sets the design bar at FAANG-portfolio level.</div>
+        <div class="changelog-item"><strong>GCP as sole cloud platform.</strong> Simplifies infrastructure design, maximises native integration (ADK, CCAI, Vertex AI, BigQuery), produces a coherent IAM and VPC-SC story. Multi-cloud was considered and rejected — added complexity does not serve the portfolio's demonstration objectives, and a single-cloud architecture is a more credible production design for a regulated EU enterprise of this size.</div>
+        <div class="changelog-item"><strong>Static GitHub Pages deployment.</strong> The portfolio IS the project — deploying it as a live site makes every design decision immediately verifiable. No build step, no framework, no backend. Deployment is a proof of simplicity, not a limitation.</div>
+        <div class="changelog-item"><strong>ClaraVis as a fictional entity.</strong> Avoids NDA, competitive intelligence, and client confidentiality constraints. All numbers (€1.2B revenue, 12,000 units, €40M warranty reserve, 47-day CPQ cycle) are calibrated to be plausible for an enterprise of the described scale and sector. No real company's data is represented.</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Changelog · The Autonomous Enterprise · © 2026 Siddharthan Rao</span>
+    <span><a href="adr-index.html" style="color:inherit;text-decoration:none">ADRs</a> · <a href="glossary.html" style="color:inherit;text-decoration:none">Glossary</a> · <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" target="_blank" style="color:inherit;text-decoration:none">Quote-to-Cash</a> · <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" target="_blank" style="color:inherit;text-decoration:none">Finance</a> · <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" target="_blank" style="color:inherit;text-decoration:none">Procure-to-Pay</a> · <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank" style="color:inherit;text-decoration:none">Supply Chain</a></span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('.version-block[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

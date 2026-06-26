@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lean Portfolio Management — Page 04 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* LPM TRIAD CARDS */
+.triad-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
+.triad-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.3rem 1.3rem; background: white; }
+.triad-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 10px; color: var(--amber); }
+.triad-title { font-family: var(--serif); font-size: 17px; color: var(--text); margin-bottom: 8px; }
+.triad-body { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+
+/* ART TOPOLOGY */
+.art-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.art-col { display: flex; flex-direction: column; gap: 4px; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); }
+.art-header { padding: 1.1rem 1.2rem; text-align: center; }
+.art-commercial { background: var(--blue-bg); }
+.art-financial { background: var(--teal-bg); }
+.art-operations { background: var(--teal-bg); }
+.art-platform { background: var(--amber-bg); }
+.art-label { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 4px; }
+.art-commercial .art-label { color: var(--blue); }
+.art-financial .art-label, .art-operations .art-label { color: var(--teal); }
+.art-platform .art-label { color: var(--amber); }
+.art-name { font-family: var(--sans); font-size: 15px; font-weight: 700; }
+.art-commercial .art-name { color: var(--blue); }
+.art-financial .art-name, .art-operations .art-name { color: var(--teal); }
+.art-platform .art-name { color: var(--amber); }
+.art-module { padding: 0.9rem 1rem; background: white; }
+.art-module-name { font-weight: 600; color: var(--text); font-size: 12.5px; }
+.art-module-sub { font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.art-horizon { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; margin-top: 6px; border-radius: 99px; letter-spacing: 0.05em; }
+.hz-1 { background: var(--blue-bg); color: var(--blue); }
+.hz-2 { background: var(--teal-bg); color: var(--teal); }
+.hz-3 { background: var(--amber-bg); color: var(--amber); }
+.art-module-consumes { padding: 0.9rem 1rem; background: var(--bg2); border-top: 1px solid var(--border); font-size: 10.5px; color: var(--text2); line-height: 1.6; }
+.art-module-consumes strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+
+/* SHARED ENABLERS BOX (light) */
+.shared-box { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; margin-top: 1rem; }
+.shared-box-title { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--amber); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.shared-box-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.shared-box-item { font-size: 11.5px; color: var(--text2); line-height: 1.55; }
+.shared-box-item strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+
+/* PI CADENCE STRIP */
+.pi-strip { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 0.5rem; }
+.pi-cell { padding: 10px 6px; text-align: center; border-radius: var(--r); border: 1px solid; }
+.pi-cell.h1 { background: var(--blue-bg); border-color: var(--blue-border); }
+.pi-cell.h2 { background: var(--teal-bg); border-color: var(--teal-border); }
+.pi-cell.h3 { background: var(--amber-bg); border-color: var(--amber-border); }
+.pi-num { font-family: var(--mono); font-size: 10px; font-weight: 600; }
+.pi-cell.h1 .pi-num { color: var(--blue); }
+.pi-cell.h2 .pi-num { color: var(--teal); }
+.pi-cell.h3 .pi-num { color: var(--amber); }
+.pi-sub { font-family: var(--mono); font-size: 8.5px; color: var(--text3); margin-top: 3px; line-height: 1.3; }
+.pi-legend { display: flex; gap: 18px; margin-top: 0.9rem; flex-wrap: wrap; }
+.pi-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.pi-legend-dot { width: 11px; height: 11px; border-radius: 2px; }
+
+/* ENABLER CARDS */
+.enabler-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 0.5rem; }
+.enabler-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.2rem 1.2rem; }
+.en-hitl { border-top-color: var(--coral); }
+.en-xai { border-top-color: var(--purple); }
+.en-data { border-top-color: var(--teal); }
+.en-sec { border-top-color: var(--amber); }
+.en-card-label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 8px; }
+.en-hitl .en-card-label { color: var(--coral); }
+.en-xai .en-card-label { color: var(--purple); }
+.en-data .en-card-label { color: var(--teal); }
+.en-sec .en-card-label { color: var(--amber); }
+.en-card-title { font-family: var(--sans); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 10px; letter-spacing: -0.005em; }
+.en-card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.en-card-depends { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 6px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.en-card-arts { display: flex; flex-wrap: wrap; gap: 5px; }
+.en-card-art { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; background: var(--bg2); border: 1px solid var(--border); color: var(--text2); border-radius: 99px; }
+.en-card-adr { font-family: var(--mono); font-size: 10px; color: var(--blue); margin-top: 10px; display: flex; align-items: center; gap: 4px; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .triad-grid, .art-grid, .shared-box-grid, .enabler-grid { grid-template-columns: 1fr 1fr; }
+  .pi-strip { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise / page 04</div>
+  <div class="sidebar-project">Lean Portfolio<br>Management</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#safe">LPM Overview</a></li>
+      <li><a href="#arts">Solution Trains</a></li>
+      <li><a href="#enablers">Shared Enablers</a></li>
+      <li><a href="#themes">Strategic Themes</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Scope Tags</div>
+    <div class="stack-item"><strong>SAFe 6.0</strong>Solution Train level</div>
+    <div class="stack-item"><strong>4 Agile Release Trains</strong>one per pillar</div>
+    <div class="stack-item"><strong>5 Buyer Personas</strong>across the Portfolio</div>
+    <div class="stack-item"><strong>8 Functional Requirements</strong>Portfolio-level</div>
+    <div class="stack-item"><strong>11 HITL Checkpoints</strong>shared enabler</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="page-03.html">← page-03</a> / <a href="index.html">the-autonomous-enterprise</a> / <a href="#">page-04</a>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html" class="topbar-tag" style="text-decoration:none">Overview</a>
+      <a href="page-03.html" class="topbar-tag" style="text-decoration:none">← Page 03</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:1020px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">The Autonomous Enterprise &nbsp;/&nbsp; Page 04 &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">Lean Portfolio Management: <em>Strategic Themes</em><br>· 4 Solution Trains · Shared Enablers</h1>
+      <div class="doc-byline">
+        <span>How the Portfolio decides what to fund, in what order, across four Solution Trains</span>
+        <span>Each Solution Train's own delivery detail lives on that pillar's own pages</span>
+      </div>
+      <div class="kw-row" style="margin-top:1rem;">
+        <span class="kw">SAFe 6.0 · Solution Train</span>
+        <span class="kw">4 Agile Release Trains</span>
+        <span class="kw">5 Buyer Personas</span>
+        <span class="kw">8 Functional Requirements</span>
+        <span class="kw">11 HITL Checkpoints</span>
+      </div>
+    </header>
+
+    <!-- §01 SAFe OVERVIEW -->
+    <section class="section" id="safe">
+      <h2 class="section-heading"><span class="section-num">§1</span> SAFe 6.0 · Lean Portfolio Management</h2>
+      <p class="body-text">TOGAF defines <em style="color:var(--teal)">what</em> to build. LPM defines how the Portfolio invests in it.</p>
+      <p class="body-text">The TOGAF ADM produced the Portfolio's architecture. SAFe's Lean Portfolio Management is the delivery governance model that organises investment and coordination across the four Solution Trains that implement it — one per pillar. They are complementary frameworks operating at different altitudes — architecture defines the target state, LPM defines the strategic themes, funding model, and cross-train dependency governance that gets the enterprise there. Each Solution Train's own ART decomposition is documented on that pillar's own SAFe page.</p>
+      <p class="body-text">The runway a Solution Train draws on is not self-certifying. The Enterprise Architecture Board, chartered in TOGAF Phase G (Page 03, §9), certifies Phase D's output sufficient before any Solution Train consumes it, and continuously checks that what each train ships still conforms to that runway — visible in real time on the <a href="ae-governance-dashboard.html" style="color:var(--blue);font-weight:500;">Governance Control Plane Dashboard →</a>. LPM funds against a runway; the EAB is what makes that runway trustworthy to fund against.</p>
+
+      <div class="triad-grid">
+        <div class="triad-card">
+          <div class="triad-eyebrow">TOGAF ADM</div>
+          <div class="triad-title">Architecture layer</div>
+          <div class="triad-body">Defines the target state — what systems, what data model, what technology choices, what principles. Produces Phase D artifacts that become the architecture runway for every Solution Train.</div>
+        </div>
+        <div class="triad-card">
+          <div class="triad-eyebrow" style="color:var(--blue)">Lean Portfolio Management</div>
+          <div class="triad-title">Investment layer</div>
+          <div class="triad-body">Organises four Solution Trains — Quote-to-Cash, Procure-to-Pay, Finance Operations, Supply Chain — under Strategic Themes and Portfolio-level funding. Coordinates cross-train enablers. Aligns investment cadence to migration horizons from TOGAF Phase F.</div>
+        </div>
+        <div class="triad-card">
+          <div class="triad-eyebrow" style="color:var(--teal)">Architecture Runway</div>
+          <div class="triad-title">The connection</div>
+          <div class="triad-body">TOGAF Phase D artifacts — the platform technology standards, canonical data model, ADRs — are delivered as architecture runway features at the Portfolio level. Every Solution Train pulls from the same runway, eliminating architecture-as-blocker across all four pillars simultaneously.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §02 ART TOPOLOGY -->
+    <section class="section" id="arts">
+      <h2 class="section-heading"><span class="section-num">§2</span> Portfolio Structure</h2>
+      <p class="body-text">Four Solution Trains. <em style="color:var(--teal)">One Portfolio.</em></p>
+      <p class="body-text">Each Solution Train owns one end-to-end business process and decomposes into its own ARTs internally — that decomposition is documented on each pillar's own SAFe page. At the Portfolio level, the LPM concern is investment sequencing and shared enablers, not individual module backlogs. The Portfolio's shared enablers (HITL Framework, XAI/SHAP layer, Data Governance, GreenOps) are funded and governed centrally — every Solution Train consumes them as architecture runway, none of them rebuilds them.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">Four Solution Trains, ART count, and Portfolio enabler consumption</div>
+        <div class="art-grid">
+          <!-- Quote-to-Cash Solution Train -->
+          <div class="art-col">
+            <div class="art-header art-commercial">
+              <div class="art-label">Solution Train</div>
+              <div class="art-name">Quote-to-Cash</div>
+            </div>
+            <div class="art-module">
+              <div class="art-module-name">3 ARTs</div>
+              <div class="art-module-sub">Sales Agent · ContractGuard · RevRec</div>
+              <span class="art-horizon hz-2">H2–H3</span>
+            </div>
+            <div class="art-module-consumes"><strong>Consumes from Portfolio:</strong>HITL Framework · XAI Layer</div>
+          </div>
+          <!-- Procure-to-Pay Solution Train -->
+          <div class="art-col">
+            <div class="art-header art-financial">
+              <div class="art-label">Solution Train</div>
+              <div class="art-name">Procure-to-Pay</div>
+            </div>
+            <div class="art-module">
+              <div class="art-module-name">4 ARTs</div>
+              <div class="art-module-sub">Sourcing · Contract · PO · 3-Way Match</div>
+              <span class="art-horizon hz-2">H2–H3</span>
+            </div>
+            <div class="art-module-consumes"><strong>Consumes from Portfolio:</strong>HITL Framework · XAI Layer · Canonical Data Model (Supplier/Contract)</div>
+          </div>
+          <!-- Finance Operations Solution Train -->
+          <div class="art-col">
+            <div class="art-header art-operations">
+              <div class="art-label">Solution Train</div>
+              <div class="art-name">Finance Operations</div>
+            </div>
+            <div class="art-module">
+              <div class="art-module-name">3 ARTs</div>
+              <div class="art-module-sub">Intercompany · Treasury · AP Exception</div>
+              <span class="art-horizon hz-2">H2</span>
+            </div>
+            <div class="art-module-consumes"><strong>Consumes from Portfolio:</strong>HITL Framework · Data Governance</div>
+          </div>
+          <!-- Supply Chain Solution Train -->
+          <div class="art-col">
+            <div class="art-header art-platform">
+              <div class="art-label">Solution Train</div>
+              <div class="art-name">Supply Chain</div>
+            </div>
+            <div class="art-module">
+              <div class="art-module-name">7 ARTs</div>
+              <div class="art-module-sub">DemandIQ · SupplierSentinel · ProcureGuard · +4 more</div>
+              <span class="art-horizon hz-2">H2–H3</span>
+            </div>
+            <div class="art-module-consumes" style="color:var(--amber)"><strong style="color:var(--amber)">Consumes from Portfolio:</strong>GreenOps · Data Governance · Canonical Data Model (Supplier/Contract)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio Shared Enablers -->
+      <div class="shared-box">
+        <div class="shared-box-title">Portfolio-Level Shared Enablers — Funded and Governed Centrally</div>
+        <div class="shared-box-grid">
+          <div class="shared-box-item"><strong>HITL Framework</strong>State machine + Firestore audit, consumed by all 4 trains</div>
+          <div class="shared-box-item"><strong>XAI / SHAP Layer</strong>Explanation contract, consumed by every ML model</div>
+          <div class="shared-box-item" style="grid-column:span 2;"><strong>Data Governance</strong>Schema, lineage, quality — the H1 foundation</div>
+          <div class="shared-box-item" style="grid-column:span 2;"><strong>GreenOps</strong>Carbon-aware scheduling across all compute</div>
+          <div class="shared-box-item" style="grid-column:span 2;"><strong>Canonical Data Model</strong>Seven shared entities (TOGAF Phase C, Page 03 §5) — Supplier and dual-origin Contract consumed by Procure-to-Pay and Supply Chain</div>
+        </div>
+      </div>
+
+      <!-- PI Cadence alignment -->
+      <div class="shared-box" style="margin-top:0.6rem;">
+        <div class="shared-box-title">PI Cadence — Aligned to TOGAF Phase F Migration Horizons</div>
+        <div class="pi-strip">
+          <div class="pi-cell h1"><div class="pi-num">PI-1</div><div class="pi-sub">Foundation</div></div>
+          <div class="pi-cell h1"><div class="pi-num">PI-2</div><div class="pi-sub">Compliance</div></div>
+          <div class="pi-cell h2"><div class="pi-num">PI-3</div><div class="pi-sub">Quote-to-Cash core</div></div>
+          <div class="pi-cell h2"><div class="pi-num">PI-4</div><div class="pi-sub">Finance Ops</div></div>
+          <div class="pi-cell h2"><div class="pi-num">PI-5</div><div class="pi-sub">Procure-to-Pay</div></div>
+          <div class="pi-cell h3"><div class="pi-num">PI-6</div><div class="pi-sub">Supply Chain core</div></div>
+          <div class="pi-cell h3"><div class="pi-num">PI-7</div><div class="pi-sub">GreenOps</div></div>
+          <div class="pi-cell h3"><div class="pi-num">PI-8</div><div class="pi-sub">Strategy Dashboard</div></div>
+          <div class="pi-cell h3"><div class="pi-num">PI-9</div><div class="pi-sub">Cert. readiness</div></div>
+        </div>
+        <div class="pi-legend">
+          <div class="pi-legend-item"><div class="pi-legend-dot" style="background:var(--blue-bg);border:1px solid var(--blue-border)"></div>Horizon 1 — Foundation &amp; Compliance (PI-1–2)</div>
+          <div class="pi-legend-item"><div class="pi-legend-dot" style="background:var(--teal-bg);border:1px solid var(--teal-border)"></div>Horizon 2 — Core Solution Trains (PI-3–5)</div>
+          <div class="pi-legend-item"><div class="pi-legend-dot" style="background:var(--amber-bg);border:1px solid var(--amber-border)"></div>Horizon 3 — Full Portfolio (PI-6–9)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §03 SHARED ENABLERS -->
+    <section class="section" id="enablers">
+      <h2 class="section-heading"><span class="section-num">§3</span> Portfolio Shared Enablers</h2>
+      <p class="body-text">Four enablers every Solution Train depends on — <em style="color:var(--teal)">owned by the Portfolio.</em></p>
+      <p class="body-text">Cross-cutting concerns that span multiple Solution Trains must be explicitly owned and explicitly governed at the Portfolio level. These four enablers are funded centrally and released as shared capabilities — no Solution Train rebuilds them, and no Solution Train can ship a compliant module without them. This is what makes the Portfolio coherent rather than four independent programmes discovering integration problems at the end.</p>
+
+      <div class="enabler-grid">
+        <div class="enabler-card en-hitl">
+          <div class="en-card-label">Enabler 01</div>
+          <div class="en-card-title">HITL Framework</div>
+          <div class="en-card-desc">The Firestore-backed state machine that every agent uses for human oversight checkpoints. Defines the state machine contract, the presentation interface, the decision record schema, and the timeout and escalation behaviour. No agent can implement a HITL checkpoint without this enabler being available.</div>
+          <div class="en-card-depends">All Solution Trains depend on this</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">Quote-to-Cash</span>
+            <span class="en-card-art">Procure-to-Pay</span>
+            <span class="en-card-art">Finance Operations</span>
+            <span class="en-card-art">Supply Chain</span>
+          </div>
+          <div class="en-card-adr">→ AR-02 · ADR-002 · EU AI Act Art. 14</div>
+        </div>
+        <div class="enabler-card en-xai">
+          <div class="en-card-label">Enabler 02</div>
+          <div class="en-card-title">XAI Layer</div>
+          <div class="en-card-desc">The SHAP explanation pipeline that every ML model in the Portfolio uses to produce human-readable feature attributions at inference time. Implements the explanation contract for each model, writes SHAP values to the BigQuery audit dataset before any downstream action executes, and generates the explanation object surfaced in the HITL UI.</div>
+          <div class="en-card-depends">All Solution Trains depend on this</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">Quote-to-Cash</span>
+            <span class="en-card-art">Finance Operations</span>
+            <span class="en-card-art">Supply Chain</span>
+          </div>
+          <div class="en-card-adr">→ AR-01 · ADR-003 · EU AI Act Art. 13</div>
+        </div>
+        <div class="enabler-card en-data">
+          <div class="en-card-label">Enabler 03</div>
+          <div class="en-card-title">Data Fabric</div>
+          <div class="en-card-desc">The BigQuery data fabric, Pub/Sub event bus, and Vertex AI Feature Store that all four Solution Trains share. Defines the canonical schema for the seven shared entities (Contract, Transaction, Device, Asset Event, Supplier, Agent Action, HITL Event), the event topic structure, and the feature store entity definitions. The shared data model that makes cross-pillar intelligence possible — Supplier and Contract's dual-origin design are what let Procure-to-Pay and Supply Chain consume the same schema as Quote-to-Cash.</div>
+          <div class="en-card-depends">All Solution Trains depend on this</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">All 4 Solution Trains</span>
+            <span class="en-card-art">All Modules</span>
+          </div>
+          <div class="en-card-adr">→ AR-11 · ADR-004 · Phase C Data Model</div>
+        </div>
+        <div class="enabler-card en-sec">
+          <div class="en-card-label">Enabler 04</div>
+          <div class="en-card-title">Security &amp; Compliance</div>
+          <div class="en-card-desc">VPC-SC perimeter, CMEK key management, IAM policy baseline, and Workload Identity Federation configuration. Provisioned via Terraform before any Solution Train begins building. No module deploys to production without the security baseline in place. Includes the Organisation Policy constraints that enforce data residency at the infrastructure layer.</div>
+          <div class="en-card-depends">All Solution Trains — pre-condition for build</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">Portfolio — H1</span>
+          </div>
+          <div class="en-card-adr">→ P-06 · P-11 · AR-06 · AR-07</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §04 STRATEGIC THEMES -->
+    <section class="section" id="themes">
+      <h2 class="section-heading"><span class="section-num">§4</span> Lean Portfolio Management — Strategic Themes</h2>
+      <p class="body-text">Three Strategic Themes. <em style="color:var(--teal)">One funding model.</em></p>
+      <p class="body-text">Strategic Themes connect the Portfolio's investment to ClaraVis's actual business strategy — they are the reason a Solution Train gets funded, not a restatement of its backlog. Each theme is owned by an Epic Owner and reviewed at the Portfolio Sync.</p>
+
+      <div class="enabler-grid">
+        <div class="enabler-card en-hitl">
+          <div class="en-card-label">Theme 01</div>
+          <div class="en-card-title">Cycle Time Compression</div>
+          <div class="en-card-desc">Collapse the time between a business event and its resolution across every pillar — the 47-day CPQ cycle, the 8–12 day close cycle, the manual sourcing-to-PO lag. Funds Quote-to-Cash and Finance Operations first, as the two Solution Trains with the largest documented cycle-time cost.</div>
+          <div class="en-card-depends">Epic Owner: VP Sales Operations</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">Quote-to-Cash</span>
+            <span class="en-card-art">Finance Operations</span>
+          </div>
+        </div>
+        <div class="enabler-card en-xai">
+          <div class="en-card-label">Theme 02</div>
+          <div class="en-card-title">Regulatory Readiness</div>
+          <div class="en-card-desc">Bring all production ML models into EU AI Act Annex III compliance before the Q2 2026 regulatory review. Funds the Portfolio's shared HITL and XAI enablers ahead of any individual Solution Train's feature backlog — this theme is why H1 is foundation-only across the entire Portfolio.</div>
+          <div class="en-card-depends">Epic Owner: Chief Compliance Officer</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">All 4 Solution Trains</span>
+          </div>
+        </div>
+        <div class="enabler-card en-data">
+          <div class="en-card-label">Theme 03</div>
+          <div class="en-card-title">Supply Chain Resilience</div>
+          <div class="en-card-desc">Reduce the cost of supplier and asset risk going undetected — the €95M inventory carrying cost, the 11-day-notice supplier disruption. Funds Supply Chain's risk-monitoring ARTs and the Portfolio-level GreenOps enabler that supports its scheduling decisions.</div>
+          <div class="en-card-depends">Epic Owner: VP Supply Chain</div>
+          <div class="en-card-arts">
+            <span class="en-card-art">Supply Chain</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:1.25rem;">
+        <div class="callout-label">Value Stream Funding — Portfolio Sync Cadence</div>
+        <div class="callout-body">Lean Budgets are allocated per Solution Train at each Portfolio Sync (quarterly), guardrailed against the Strategic Themes above rather than approved project-by-project. Each Solution Train's own SAFe page documents its PI Objectives and ART-level dependency board at the level of detail an implementing team needs — this page documents the level of detail a Portfolio investment decision needs, and no more.</div>
+      </div>
+    </section>
+
+    <!-- BRIDGE / NEXT -->
+    <section class="section">
+      <h2 class="section-heading"><span class="section-num">§5</span> Next in the Portfolio</h2>
+      <p class="body-text">Investment structure set. <em style="color:var(--teal)">Agent design follows — per pillar.</em></p>
+      <p class="body-text">The Strategic Themes and Solution Train structure on this page govern what gets funded and in what order. Each Solution Train's own Agent Swarm Architecture, FRD, and HITL specification — the implementation-level detail — is documented on that pillar's own design pages, linked throughout this portfolio.</p>
+
+      <div class="next-modules">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" class="next-mod-link">
+          <span class="next-mod-id">QTC</span>
+          <div>
+            <div class="next-mod-name">Agent Swarm Architecture →</div>
+            <div class="next-mod-desc">Quote-to-Cash's own ADK · A2A · State Machines</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-03.html" class="next-mod-link">
+          <span class="next-mod-id">PG 03</span>
+          <div>
+            <div class="next-mod-name">← TOGAF ADM — Preliminary through Phase G</div>
+            <div class="next-mod-desc">The architecture that this investment model funds</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Lean Portfolio Management · Page 04 · The Autonomous Enterprise · 2026</span>
+    <span>© 2026 Siddharth Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

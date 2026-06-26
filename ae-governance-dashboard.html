@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Governance Control Plane Dashboard · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* GOVERNANCE DASHBOARD */
+.gdash { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: white; margin: 1.5rem 0; }
+.gdash-bar { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.25rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.gdash-title { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--text); }
+.gdash-eab-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; padding: 2px 8px; background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); border-radius: 99px; }
+.gdash-live { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); }
+.gdash-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse-dot 1.6s infinite; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.gdash-ts { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+
+.gdash-kpis { display: grid; grid-template-columns: repeat(6, 1fr); border-bottom: 1px solid var(--border); }
+.gdash-kpi { padding: 1rem 1rem; border-right: 1px solid var(--border); }
+.gdash-kpi:last-child { border-right: none; }
+.gdash-kpi-lbl { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+.gdash-kpi-val { font-family: var(--serif); font-size: 24px; line-height: 1; margin-bottom: 4px; }
+.kv-ok { color: var(--teal); } .kv-warn { color: var(--amber); } .kv-info { color: var(--blue); } .kv-crit { color: var(--coral); }
+.gdash-kpi-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); }
+
+.gdash-panels { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.gdash-panel { border-right: 1px solid var(--border); }
+.gdash-panel:last-child { border-right: none; }
+.gdash-ph { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1.1rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.gdash-ph-title { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.gb { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
+.gb-ok { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.gb-warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.gb-crit { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+
+.slo-row { display: grid; grid-template-columns: 14px 1fr 90px 120px; align-items: center; gap: 10px; padding: 8px 1.1rem; border-bottom: 1px solid var(--border); }
+.slo-row:last-child { border-bottom: none; }
+.sd { width: 8px; height: 8px; border-radius: 50%; }
+.sd-ok { background: var(--teal); } .sd-warn { background: var(--amber); } .sd-crit { background: var(--coral); }
+.slo-name { font-size: 12px; color: var(--text); font-weight: 500; }
+.slo-val { font-family: var(--mono); font-size: 11px; font-weight: 600; margin-bottom: 3px; text-align: right; }
+.eb-track { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.eb-fill { height: 100%; border-radius: 99px; }
+.eb-ok { background: var(--teal); } .eb-warn { background: var(--amber); } .eb-crit { background: var(--coral); }
+.dtag { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.dtag-p { background: var(--purple-bg); color: var(--purple); }
+.dtag-s { background: var(--blue-bg); color: var(--blue); }
+.dtag-b { background: var(--amber-bg); color: var(--amber); }
+.dtag-f { background: var(--teal-bg); color: var(--teal); }
+.dtag-sc { background: var(--coral-bg); color: var(--coral); }
+
+.hitl-row { display: grid; grid-template-columns: 26px 1fr 110px 80px; align-items: center; gap: 10px; padding: 8px 1.1rem; border-bottom: 1px solid var(--border); }
+.hitl-row:last-child { border-bottom: none; }
+.hs { font-family: var(--mono); font-size: 9px; font-weight: 700; padding: 2px 0; text-align: center; border-radius: 3px; }
+.hs-p1 { background: var(--coral-bg); color: var(--coral); }
+.hs-p2 { background: var(--amber-bg); color: var(--amber); }
+.hi-name { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.hi-sub { font-family: var(--mono); font-size: 9.5px; color: var(--text3); }
+.hi-age { font-family: var(--mono); font-size: 10.5px; color: var(--text); text-align: right; line-height: 1.5; }
+
+.gdash-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.model-row { display: grid; grid-template-columns: 1fr 50px 80px 60px; align-items: center; gap: 8px; padding: 8px 1.1rem; border-bottom: 1px solid var(--border); }
+.model-row:last-child { border-bottom: none; }
+.mn { font-size: 11.5px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.mv { font-family: var(--mono); font-size: 9px; color: var(--text3); }
+.drift-row { display: grid; grid-template-columns: 1fr 80px 40px; align-items: center; gap: 8px; padding: 8px 1.1rem; border-bottom: 1px solid var(--border); }
+.drift-row:last-child { border-bottom: none; }
+.drift-name { font-size: 11px; color: var(--text2); }
+.db-track { height: 5px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.db-fill { height: 100%; border-radius: 99px; }
+.dp { font-family: var(--mono); font-size: 11px; font-weight: 600; text-align: right; }
+.gdash-foot { padding: 0.7rem 1.1rem; background: var(--bg2); border-top: 1px solid var(--border); }
+.gdash-foot-l { font-family: var(--mono); font-size: 9.5px; color: var(--text3); }
+.iac-grid-cell { background: var(--teal-bg); border: 1px solid var(--teal-border); padding: 7px 10px; font-family: var(--mono); font-size: 10px; color: var(--text2); border-radius: var(--r); }
+.iac-grid-cell .ok { color: var(--teal); font-weight: 700; }
+.go-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.go-row .hard { color: var(--teal); font-weight: 500; }
+.go-row .deferred { color: var(--blue); font-weight: 500; }
+.finops-cell { font-family: var(--mono); font-size: 10px; color: var(--text2); line-height: 1.6; }
+.finops-cell .amt { color: var(--blue); font-weight: 500; }
+.finops-cell .amt.under { color: var(--teal); font-weight: 500; }
+.gpanel-sublabel { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; padding: 12px 1.1rem 0; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .gdash-kpis { grid-template-columns: 1fr 1fr 1fr; }
+  .gdash-panels, .gdash-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise</div>
+  <div class="sidebar-project">Governance<br>Control Plane</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#dashboard">Control Plane Dashboard</a></li>
+      <li><a href="#slo">SLO Error Budgets</a></li>
+      <li><a href="#hitl">HITL Queue</a></li>
+      <li><a href="#registry">EU AI Act Registry</a></li>
+      <li><a href="#drift">Model Drift Monitor</a></li>
+      <li><a href="#iac">IaC · GreenOps · FinOps</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">EAB Operational View</div>
+    <div class="stack-item"><strong>4 / 4 domains</strong>online and healthy</div>
+    <div class="stack-item"><strong>7 active HITL items</strong>2 approaching SLA</div>
+    <div class="stack-item"><strong>10 / 11 SLO budgets</strong>1 warn · 0 crit</div>
+    <div class="stack-item"><strong>9 / 10 models</strong>registered · 1 review due</div>
+    <div class="stack-item"><strong>0 Terraform drift</strong>last scan 2h ago</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="index.html">the-autonomous-enterprise</a> / <a href="#">governance-dashboard</a>
+    </div>
+    <div class="topbar-right">
+      <a href="page-03.html#phase-g" class="topbar-tag" style="text-decoration:none">← Page 03, Phase G</a>
+      <span class="topbar-tag">EAB Operational View</span>
+      <span class="topbar-tag">Read-only · Control Plane</span>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:1080px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="dashboard">
+      <div class="doc-eyebrow">Control Plane Dashboard &nbsp;·&nbsp; EAB Operational View &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">The EAB's Single Screen. <em>Everything That Matters —</em><br>Nothing That Doesn't.</h1>
+      <div class="doc-byline">
+        <span>Governance health: SLO error budgets, HITL queue depth, EU AI Act model registry status</span>
+        <span>Terraform drift, cross-domain carbon efficiency</span>
+      </div>
+      <p class="body-text" style="margin-top:0.5rem;">Unlike M-07 which presents business signals to the C-suite, this surface presents governance health. It writes nothing. It surfaces what requires EAB attention.</p>
+
+      <div class="gdash">
+        <div class="gdash-bar">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div class="gdash-title">AE · Governance Control Plane</div>
+            <div class="gdash-eab-tag">EAB VIEW</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="gdash-live"><div class="gdash-live-dot"></div>LIVE</div>
+            <div class="gdash-ts" id="gd-time">Wed 15 Apr 2026 · 09:41 CET</div>
+          </div>
+        </div>
+
+        <div class="gdash-kpis">
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">Domains Online</div><div class="gdash-kpi-val kv-ok">4 / 4</div><div class="gdash-kpi-sub">all healthy</div></div>
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">Active HITL Items</div><div class="gdash-kpi-val kv-warn">7</div><div class="gdash-kpi-sub">2 approaching SLA</div></div>
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">SLO Budgets</div><div class="gdash-kpi-val kv-ok">10 / 11</div><div class="gdash-kpi-sub">1 warn · 0 crit</div></div>
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">Model Registry</div><div class="gdash-kpi-val kv-warn">9 / 10</div><div class="gdash-kpi-sub">1 review due</div></div>
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">Terraform Drift</div><div class="gdash-kpi-val kv-ok">0</div><div class="gdash-kpi-sub">last scan 2h ago</div></div>
+          <div class="gdash-kpi"><div class="gdash-kpi-lbl">Carbon Efficiency</div><div class="gdash-kpi-val kv-info">84%</div><div class="gdash-kpi-sub">GreenOps schedule</div></div>
+        </div>
+
+        <div class="gdash-panels" id="slo">
+          <div class="gdash-panel">
+            <div class="gdash-ph"><div class="gdash-ph-title">SLO Error Budget Status · All Domains</div><span class="gb gb-warn">1 WARN</span></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">Cross-Domain Audit Ledger</div></div><span class="dtag dtag-p">Platform</span><div><div class="slo-val kv-ok">98.4%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:4%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">RevRec AI · XGBoost endpoint</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div><div class="slo-val kv-ok">99.7%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:3%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-warn"></div><div><div class="slo-name">FinRisk Sentinel · model refresh</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div><div class="slo-val kv-warn">63%</div><div class="eb-track"><div class="eb-fill eb-warn" style="width:63%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">3-Way Match Agent · STR ≥ 90%</div></div><span class="dtag dtag-b">Procure-to-Pay</span><div><div class="slo-val kv-ok">91.4%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:12%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">Intercompany Recon · close day 3</div></div><span class="dtag dtag-f">Finance</span><div><div class="slo-val kv-ok">97.2%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:7%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">DemandIQ · daily 06:00 refresh</div></div><span class="dtag dtag-sc">SC</span><div><div class="slo-val kv-ok">99.1%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:2%"></div></div></div></div>
+            <div class="slo-row"><div class="sd sd-ok"></div><div><div class="slo-name">QualityTrace · MDR Art. 87 ≤ 72h</div></div><span class="dtag dtag-sc">SC</span><div><div class="slo-val kv-ok">100%</div><div class="eb-track"><div class="eb-fill eb-ok" style="width:1%"></div></div></div></div>
+          </div>
+          <div class="gdash-panel" id="hitl">
+            <div class="gdash-ph"><div class="gdash-ph-title">HITL Queue · Pending Approvals</div><span class="gb gb-warn">7 OPEN</span></div>
+            <div class="hitl-row"><div class="hs hs-p1">P1</div><div><div class="hi-name">FinRisk: Anomaly — MCH account</div><div class="hi-sub">CFO + Finance Controller · HITL-08 dual · score 0.88</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div class="hi-age">48 min<br><span style="color:var(--coral)">SLA: 12 min</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p1">P1</div><div><div class="hi-name">SupplierSentinel: Risk elevated</div><div class="hi-sub">CPO · A2A RFQ pending approval</div></div><span class="dtag dtag-sc">SC</span><div class="hi-age">22 min<br><span style="color:var(--amber)">SLA: 38 min</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p2">P2</div><div><div class="hi-name">ContractGuard: Clause flagged</div><div class="hi-sub">Legal Counsel · liability cap non-standard</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div class="hi-age">1h 04m<br><span style="color:var(--text3)">SLA: 4h</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p2">P2</div><div><div class="hi-name">Asset IQ: RUL 8.4 days — MRI-7T</div><div class="hi-sub">Field Service Manager · MCH-0042</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div class="hi-age">3h 12m<br><span style="color:var(--text3)">SLA: 8h</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p2">P2</div><div><div class="hi-name">RevRec: Multi-element txn</div><div class="hi-sub">Finance Controller · €2.84M · ASC 606</div></div><span class="dtag dtag-s">Quote-to-Cash</span><div class="hi-age">5h 44m<br><span style="color:var(--text3)">SLA: 24h</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p2">P2</div><div><div class="hi-name">3-Way Match: Exception — INV-8841</div><div class="hi-sub">AP Supervisor · tolerance breach €12k</div></div><span class="dtag dtag-b">Procure-to-Pay</span><div class="hi-age">2h 05m<br><span style="color:var(--text3)">SLA: 8h</span></div></div>
+            <div class="hitl-row"><div class="hs hs-p2">P2</div><div><div class="hi-name">Intercompany Recon: Mismatch</div><div class="hi-sub">Finance Controller · Entity DE-SG · €18k</div></div><span class="dtag dtag-f">Finance</span><div class="hi-age">6h 30m<br><span style="color:var(--text3)">SLA: 24h</span></div></div>
+          </div>
+        </div>
+
+        <div class="gdash-3">
+          <div class="gdash-panel" id="registry">
+            <div class="gdash-ph"><div class="gdash-ph-title">EU AI Act Annex III Registry</div><span class="gb gb-warn">1 REVIEW DUE</span></div>
+            <div class="model-row"><div><div class="mn">RevRec XGBoost v2.3</div><div class="mv">Quote-to-Cash · §5(b)</div></div><span class="dtag dtag-s" style="font-size:8px">HITL ✓</span><span class="gb gb-ok">CURRENT</span><div style="font-size:9px;color:var(--text3);text-align:right;font-family:var(--mono)">Jul 2026</div></div>
+            <div class="model-row"><div><div class="mn">FinRisk Isolation Forest v3.1</div><div class="mv">Quote-to-Cash · §5(b) dual</div></div><span class="dtag dtag-s" style="font-size:8px">HITL ✓</span><span class="gb gb-ok">CURRENT</span><div style="font-size:9px;color:var(--text3);text-align:right;font-family:var(--mono)">Jun 2026</div></div>
+            <div class="model-row"><div><div class="mn">Supplier Risk XGBoost v1.4</div><div class="mv">Procure-to-Pay · §8</div></div><span class="dtag dtag-b" style="font-size:8px">HITL ✓</span><span class="gb gb-warn">REVIEW DUE</span><div style="font-size:9px;color:var(--amber);text-align:right;font-family:var(--mono)">20 Apr</div></div>
+            <div class="model-row"><div><div class="mn">DemandIQ Ensemble v3.4</div><div class="mv">SC · §8</div></div><span class="dtag dtag-sc" style="font-size:8px">HITL ✓</span><span class="gb gb-ok">CURRENT</span><div style="font-size:9px;color:var(--text3);text-align:right;font-family:var(--mono)">Aug 2026</div></div>
+            <div class="model-row"><div><div class="mn">QualityTrace NCR Classifier v1.6</div><div class="mv">SC · §5(b) MDR</div></div><span class="dtag dtag-sc" style="font-size:8px">HITL ✓</span><span class="gb gb-ok">CURRENT</span><div style="font-size:9px;color:var(--text3);text-align:right;font-family:var(--mono)">Sep 2026</div></div>
+          </div>
+          <div class="gdash-panel" id="drift">
+            <div class="gdash-ph"><div class="gdash-ph-title">Model Drift Monitor · PSI</div><span class="gb gb-ok">STABLE</span></div>
+            <div class="drift-row"><div class="drift-name">RevRec XGBoost · transaction features</div><div class="db-track"><div class="db-fill" style="background:var(--teal);width:8%"></div></div><div class="dp kv-ok">0.04</div></div>
+            <div class="drift-row"><div class="drift-name">FinRisk IF · rolling baseline shift</div><div class="db-track"><div class="db-fill" style="background:var(--teal);width:14%"></div></div><div class="dp kv-ok">0.07</div></div>
+            <div class="drift-row"><div class="drift-name">ContractGuard · clause distribution</div><div class="db-track"><div class="db-fill" style="background:var(--teal);width:6%"></div></div><div class="dp kv-ok">0.03</div></div>
+            <div class="drift-row"><div class="drift-name">Supplier Risk · financial signals</div><div class="db-track"><div class="db-fill" style="background:var(--amber);width:38%"></div></div><div class="dp kv-warn">0.19</div></div>
+            <div class="drift-row"><div class="drift-name">DemandIQ · demand signal features</div><div class="db-track"><div class="db-fill" style="background:var(--teal);width:10%"></div></div><div class="dp kv-ok">0.05</div></div>
+            <div class="drift-row"><div class="drift-name">QualityTrace · defect distribution</div><div class="db-track"><div class="db-fill" style="background:var(--teal);width:4%"></div></div><div class="dp kv-ok">0.02</div></div>
+            <div style="padding:10px 1.1rem;font-size:9.5px;color:var(--text3);font-family:var(--mono);border-top:1px solid var(--border)">PSI &gt;0.20 → P2 retraining · PSI &gt;0.25 → P1 incident</div>
+          </div>
+          <div class="gdash-panel" id="iac" style="border-right:none">
+            <div class="gdash-ph"><div class="gdash-ph-title">IaC Drift · GreenOps · FinOps</div><span class="gb gb-ok">CLEAN</span></div>
+            <div style="padding:12px 1.1rem;border-bottom:1px solid var(--border)">
+              <div class="gpanel-sublabel" style="padding:0;margin-bottom:8px">Terraform Drift · Scan 09:12 CET</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                <div class="iac-grid-cell">ae-seller-prod<br><span class="ok">0 drift</span></div>
+                <div class="iac-grid-cell">ae-buyer-prod<br><span class="ok">0 drift</span></div>
+                <div class="iac-grid-cell">ae-finance-prod<br><span class="ok">0 drift</span></div>
+                <div class="iac-grid-cell">ae-sc-prod<br><span class="ok">0 drift</span></div>
+              </div>
+            </div>
+            <div style="padding:12px 1.1rem;border-bottom:1px solid var(--border)">
+              <div class="gpanel-sublabel" style="padding:0;margin-bottom:8px">GreenOps · Today's Schedule</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div class="go-row"><span>DemandIQ daily refresh</span><span class="hard">06:00 ✓ HARD</span></div>
+                <div class="go-row"><span>RevRec retraining pipeline</span><span class="deferred">02:30 deferred</span></div>
+                <div class="go-row"><span>Feature Store materialise (all)</span><span class="deferred">04:15 batched</span></div>
+                <div class="go-row"><span>CSRD Scope 3 consolidation</span><span class="deferred">Sat 01:00 defer</span></div>
+              </div>
+            </div>
+            <div style="padding:12px 1.1rem">
+              <div class="gpanel-sublabel" style="padding:0;margin-bottom:8px">FinOps · Month-to-Date</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <div class="finops-cell">Quote-to-Cash<br><span class="amt">€14,820 / €22k</span></div>
+                <div class="finops-cell">Procure-to-Pay<br><span class="amt under">€8,340 / €14k</span></div>
+                <div class="finops-cell">Finance<br><span class="amt under">€6,110 / €11k</span></div>
+                <div class="finops-cell">Supply Chain<br><span class="amt">€19,450 / €28k</span></div>
+              </div>
+            </div>
+            <div class="gdash-foot"><div class="gdash-foot-l">Refresh: SLO 5min · HITL 60s · Registry 1h · Drift 6h · FinOps 24h</div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="next-modules">
+      <a href="page-03.html#phase-g" class="next-mod-link">
+        <span class="next-mod-id">PG 03</span>
+        <div>
+          <div class="next-mod-name">← TOGAF ADM — Phase G, Implementation Governance</div>
+          <div class="next-mod-desc">The EAB charter and conformance gate this dashboard operates</div>
+        </div>
+        <span class="next-mod-arrow">→</span>
+      </a>
+      <a href="page-04.html" class="next-mod-link">
+        <span class="next-mod-id">PG 04</span>
+        <div>
+          <div class="next-mod-name">Lean Portfolio Management →</div>
+          <div class="next-mod-desc">What this dashboard's health signals are funded against</div>
+        </div>
+        <span class="next-mod-arrow">→</span>
+      </a>
+      <a href="adr-index.html" class="next-mod-link">
+        <span class="next-mod-id">ADR</span>
+        <div>
+          <div class="next-mod-name">Architecture Decision Records →</div>
+          <div class="next-mod-desc">The decisions this dashboard checks for conformance against</div>
+        </div>
+        <span class="next-mod-arrow">→</span>
+      </a>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Governance Control Plane · The Autonomous Enterprise · 2026</span>
+    <span>© 2026 Siddharth Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+(function(){
+  var el=document.getElementById('gd-time');
+  if(!el)return;
+  function u(){var n=new Date(),o={weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Berlin'};el.textContent=n.toLocaleString('en-GB',o).replace(',','')+' CET';}
+  u();setInterval(u,60000);
+})();
+/* SIDEBAR ACTIVE STATE */
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

@@ -1,1014 +1,1333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Autonomous Enterprise — AI Architecture Portfolio · Siddharthan Rao</title>
-<meta name="description" content="A portfolio-grade AI Solutions Architecture built on Google Cloud. Four intelligent pillars. Five C-Suite governance dashboards. EU AI Act compliant.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="A portfolio-grade AI Solutions Architecture built on Google Cloud. Four process pillars. Five C-Suite governance dashboards. EU AI Act compliant.">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-:root{
-  --ink:#0E0D0B;--ink-2:#1A1916;--ink-3:#252420;
-  --cream:#F5F0E8;--gold:#B8960C;--gold-lt:#D4AC1A;
-  --mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
-  --white:#FFFFFF;--surface:#FAFAFA;--surface-2:#F8F9FA;
-  --border:#DADCE0;--border-2:#E8EAED;
-  --text:#202124;--text-2:#5F6368;--text-3:#80868B;
-  --blue:#1A73E8;--blue-lt:#E8F0FE;--blue-dk:#1557B0;
-  --green:#137333;--green-lt:#E6F4EA;--green-dk:#0D5226;
-  --amber:#B06000;--amber-lt:#FEF3E2;--amber-dk:#7A4100;
-  --red:#D93025;--red-lt:#FCE8E6;--red-dk:#A50E0E;
-  --teal:#007B83;--teal-lt:#E4F7F7;--teal-dk:#005F67;
-  --purple:#6200EE;--purple-lt:#EDE7F6;--purple-dk:#3700B3;
-  --col:56px;
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
 }
-body{font-family:var(--display);background:var(--surface);color:var(--text);overflow-x:hidden;cursor:none}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
 
-#cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .15s,height .15s}
-#cur-r{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .25s,height .25s}
-body:has(a:hover,button:hover) #cur{width:13px;height:13px}
-body:has(a:hover,button:hover) #cur-r{width:44px;height:44px;opacity:.18}
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 
-/* ── Nav ── */
-.mnav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:15px var(--col);background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.mn-l{display:flex;align-items:center;gap:14px}
-.mn-brand{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.01em}
-.mn-brand span{color:var(--gold)}
-.mn-sep{width:1px;height:14px;background:var(--border)}
-.mn-tag{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
-.mn-r{display:flex;align-items:center;gap:20px}
-.mn-link{font-family:var(--mono);font-size:11px;color:var(--text-2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}.mn-link:hover{color:var(--blue)}
-.mn-gh{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--white);background:var(--ink);text-decoration:none;padding:7px 16px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}.mn-gh:hover{background:var(--blue)}
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
 
-/* ── Hero ── */
-.hero{min-height:100vh;background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--col) 80px;position:relative;overflow:hidden}
-.hero-grid{position:absolute;inset:0;pointer-events:none}
-.hero-grid svg{width:100%;height:100%;opacity:.035}
-.hero-eyebrow{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.35);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px}
-.hero-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:rgba(245,240,232,.25)}
-.hero-h1{font-family:var(--serif);font-size:clamp(44px,7vw,88px);font-weight:300;color:var(--cream);line-height:.97;letter-spacing:-.02em;margin-bottom:28px}
-.hero-h1 em{font-style:italic;color:var(--gold)}
-.hero-h1 strong{font-weight:600;display:block}
-.hero-sub{font-family:var(--mono);font-size:14px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.8;max-width:560px;margin-bottom:44px}
-.hero-stats{display:flex;gap:0;margin-bottom:52px;border-top:1px solid rgba(255,255,255,.07);padding-top:32px;flex-wrap:wrap}
-.hero-stat{padding-right:40px;margin-right:40px;border-right:1px solid rgba(255,255,255,.07)}
-.hero-stat:last-child{border-right:none;margin-right:0;padding-right:0}
-.hs-n{font-family:var(--serif);font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--cream);line-height:1}
-.hs-n em{color:var(--gold);font-style:normal}
-.hs-l{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.08em;text-transform:uppercase;margin-top:5px}
-.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
-.btn-primary{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink);background:var(--gold-lt);text-decoration:none;padding:13px 28px;letter-spacing:.08em;text-transform:uppercase;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary:hover{background:#EBC920;transform:translateY(-1px)}
-.btn-ghost{font-family:var(--mono);font-size:11px;font-weight:400;color:rgba(245,240,232,.5);border:1px solid rgba(255,255,255,.12);text-decoration:none;padding:13px 28px;letter-spacing:.08em;text-transform:uppercase;transition:color .2s,border-color .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-ghost:hover{color:var(--cream);border-color:rgba(255,255,255,.3)}
-.hero-scroll{position:absolute;bottom:32px;right:var(--col);font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.2);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;writing-mode:vertical-rl}
-.hero-scroll::after{content:'';width:1px;height:40px;background:rgba(245,240,232,.12);display:block;animation:scl 2.2s ease-in-out infinite}
-@keyframes scl{0%,100%{opacity:.15;transform:scaleY(.3)}50%{opacity:.5;transform:scaleY(1)}}
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
 
-/* ── Shared Section ── */
-.sec{padding:80px var(--col);background:var(--surface)}
-.sec.w{background:var(--white)}
-.sec.dk{background:var(--ink);padding:80px var(--col)}
-.s-ey{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.s-ey::before{content:'';display:block;width:18px;height:1px;background:currentColor}
-.s-ey.go{color:var(--gold-lt)}.sec.dk .s-ey{color:var(--gold-lt)}.sec.dk .s-ey::before{background:var(--gold-lt)}
-.s-ey.gr{color:var(--green)}.s-ey.te{color:var(--teal)}.s-ey.am{color:var(--amber)}.s-ey.pu{color:var(--purple)}.s-ey.re{color:var(--red)}
-.s-h2{font-family:var(--serif);font-size:clamp(28px,3.5vw,46px);font-weight:300;color:var(--text);line-height:1.05;margin-bottom:12px}
-.s-h2 em{font-style:italic;color:var(--gold)}.sec.dk .s-h2{color:var(--cream)}
-.s-p{font-family:var(--mono);font-size:13px;font-weight:300;color:var(--text-2);line-height:1.9;max-width:640px;margin-bottom:40px}
-.sec.dk .s-p{color:rgba(245,240,232,.45)}
-.ap{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}.ap.in{opacity:1;transform:none}
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
 
-/* ── Credentials Strip ── */
-.creds{background:var(--surface);border-top:1px solid var(--border-2);border-bottom:1px solid var(--border-2);padding:28px var(--col);display:flex;align-items:center;gap:32px;overflow-x:auto;scrollbar-width:none}
-.creds::-webkit-scrollbar{display:none}
-.cred{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.06em;white-space:nowrap;padding:6px 14px;border:1px solid var(--border-2);background:var(--white)}
-.cred-sep{width:1px;height:16px;background:var(--border);flex-shrink:0}
-.cred-label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;margin-right:4px}
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
 
-/* ── Architecture Diagram Section ── */
-.arch-diagram{background:var(--ink);padding:80px var(--col)}
-.arch-diagram-wrap{margin-top:48px;background:var(--ink-2);border:1px solid rgba(255,255,255,.06);padding:40px;max-width:960px}
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
 
-/* SVG diagram tokens for dark bg */
-.arch-diagram-wrap svg{--t:rgba(245,240,232,.7);--s:rgba(245,240,232,.35);--bg2:rgba(255,255,255,.04);--b:rgba(255,255,255,.1);--p:#8AB4F8;--font-sans:'IBM Plex Mono',monospace}
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
 
-/* ── Governance Band ── */
-.gov-band{background:var(--ink-2);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);padding:72px var(--col)}
-.gov-label{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.gov-label::before{content:'';display:block;width:24px;height:1px;background:var(--gold);opacity:.5}
-.gov-eyebrow{margin-bottom:36px}
-.gov-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:10px}
-.gov-h2 em{font-style:italic;color:var(--gold)}
-.gov-sub{font-family:var(--mono);font-size:12px;font-weight:300;color:rgba(245,240,232,.35);line-height:1.8;max-width:520px;margin-bottom:40px}
-.gov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.05)}
-.gov-card{background:var(--ink-2);padding:28px 22px 24px;transition:background .2s;cursor:pointer;text-decoration:none;display:block;position:relative;overflow:hidden}
-.gov-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0;transition:opacity .25s}
-.gov-card:hover{background:#201F1C}.gov-card:hover::before{opacity:1}
-.gov-card.finrisk::before{background:var(--red)}
-.gov-card.govdata::before{background:var(--blue)}
-.gov-card.compliance::before{background:var(--purple)}
-.gov-card.strategy::before{background:var(--gold-lt)}
-.gov-card.greenops::before{background:var(--green)}
-.gc-badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 8px;letter-spacing:.06em;margin-bottom:14px}
-.gc-badge.red{background:#FCE8E6;color:#A50E0E}.gc-badge.blue{background:#E8F0FE;color:#1557B0}
-.gc-badge.purple{background:#EDE7F6;color:#3700B3}.gc-badge.gold{background:#FEF3E2;color:#7A4100}.gc-badge.green{background:#E6F4EA;color:#0D5226}
-.gc-icon{width:32px;height:32px;margin-bottom:14px;display:flex;align-items:center;justify-content:center}
-.gc-icon svg{width:18px;height:18px}
-.gc-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);letter-spacing:.01em;margin-bottom:5px}
-.gc-sub{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.28);line-height:1.65;letter-spacing:.02em;margin-bottom:14px}
-.gc-sources{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.18);letter-spacing:.04em;line-height:1.7;margin-bottom:16px}
-.gc-link{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.2);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:5px;transition:color .2s}
-.gov-card:hover .gc-link{color:rgba(245,240,232,.55)}
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
 
-/* ── Pillars ── */
-.pillars{padding:80px var(--col);background:var(--surface)}
-.pillar-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:64px;align-items:end}
-.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border-2)}
-.pillar-card{background:var(--white);padding:44px 38px;position:relative;overflow:hidden;text-decoration:none;display:block;transition:background .2s}
-.pillar-card:hover{background:var(--surface)}
-.pc-num{position:absolute;top:28px;right:28px;font-family:var(--serif);font-size:80px;font-weight:300;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;user-select:none}
-.pc-domain{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.pc-domain::before{content:'';width:14px;height:1px;display:block}
-.pillar-card.q2c .pc-domain{color:var(--blue)}.pillar-card.q2c .pc-domain::before{background:var(--blue)}
-.pillar-card.p2p .pc-domain{color:var(--purple)}.pillar-card.p2p .pc-domain::before{background:var(--purple)}
-.pillar-card.sc .pc-domain{color:var(--teal)}.pillar-card.sc .pc-domain::before{background:var(--teal)}
-.pillar-card.fin .pc-domain{color:var(--green)}.pillar-card.fin .pc-domain::before{background:var(--green)}
-.pc-title{font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);font-weight:300;color:var(--text);line-height:1.05;margin-bottom:10px}
-.pc-title em{font-style:italic;color:var(--gold)}
-.pc-desc{font-family:var(--mono);font-size:12px;font-weight:300;color:var(--text-2);line-height:1.85;margin-bottom:22px;max-width:340px}
-.pc-modules{display:flex;flex-direction:column;gap:0;margin-bottom:24px;border:1px solid var(--border-2)}
-.pc-module-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border-2);text-decoration:none;transition:background .15s}
-.pc-module-row:last-child{border-bottom:none}
-.pc-module-row:hover{background:var(--surface-2)}
-.pm-label{font-family:var(--mono);font-size:10px;color:var(--text-2);letter-spacing:.03em}
-.pm-arrow{font-family:var(--mono);font-size:10px;color:var(--text-3);transition:color .15s,transform .15s;display:inline-block}
-.pc-module-row:hover .pm-arrow{transform:translate(2px,-1px)}
-.pillar-card.q2c .pc-module-row:hover .pm-arrow{color:var(--blue)}
-.pillar-card.p2p .pc-module-row:hover .pm-arrow{color:var(--purple)}
-.pillar-card.sc .pc-module-row:hover .pm-arrow{color:var(--teal)}
-.pillar-card.fin .pc-module-row:hover .pm-arrow{color:var(--green)}
-.pc-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-2);padding-top:18px}
-.pc-ext{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
-.pillar-card.q2c:hover .pc-ext{color:var(--blue)}.pillar-card.p2p:hover .pc-ext{color:var(--purple)}
-.pillar-card.sc:hover .pc-ext{color:var(--teal)}.pillar-card.fin:hover .pc-ext{color:var(--green)}
-.pc-tags{display:flex;gap:5px;flex-wrap:wrap}
-.pc-tag{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.04em;padding:2px 7px;background:var(--surface-2);border:1px solid var(--border-2)}
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
 
-/* ── Four Layer Stack ── */
-.arch-block{padding:80px var(--col);background:var(--ink)}
-.arch-stack{margin-top:48px;display:flex;flex-direction:column;gap:2px}
-.arch-layer{display:grid;grid-template-columns:220px 1fr;gap:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:background .2s}
-.arch-layer:hover{background:rgba(255,255,255,.05)}
-.al-label{padding:28px;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;justify-content:center}
-.al-num{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.2);letter-spacing:.1em;margin-bottom:8px}
-.al-name{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);line-height:1.3}
-.al-desc{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.3);margin-top:4px;line-height:1.5}
-.al-chips{padding:28px;display:flex;flex-wrap:wrap;gap:6px;align-content:center}
-.al-chip{font-family:var(--mono);font-size:10px;padding:4px 12px;letter-spacing:.04em;border:1px solid}
-.al-chip.blue{color:#8AB4F8;border-color:rgba(138,180,248,.2);background:rgba(138,180,248,.06)}
-.al-chip.green{color:#81C995;border-color:rgba(129,201,149,.2);background:rgba(129,201,149,.06)}
-.al-chip.amber{color:#FDD663;border-color:rgba(253,214,99,.2);background:rgba(253,214,99,.06)}
-.al-chip.teal{color:#78D9EC;border-color:rgba(120,217,236,.2);background:rgba(120,217,236,.06)}
-.al-chip.purple{color:#C58AF9;border-color:rgba(197,138,249,.2);background:rgba(197,138,249,.06)}
-.al-chip.gold{color:#D4AC1A;border-color:rgba(212,172,26,.2);background:rgba(212,172,26,.06)}
-.al-arrow{display:flex;align-items:center;justify-content:center;padding:6px;color:rgba(245,240,232,.1);font-family:var(--mono);font-size:11px}
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
 
-/* ── Principles ── */
-.principles{padding:80px var(--col);background:var(--white)}
-.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border:1px solid var(--border)}
-.pr-card{padding:34px 26px;border-right:1px solid var(--border)}
-.pr-card:last-child{border-right:none}
-.pr-n{font-family:var(--serif);font-size:48px;font-weight:300;color:rgba(0,0,0,.06);line-height:1;margin-bottom:14px}
-.pr-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--text);letter-spacing:.01em;margin-bottom:7px}
-.pr-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.8}
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
 
-/* ── Anchor Client ── */
-.client-block{padding:80px var(--col);background:var(--surface)}
-.client-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-.client-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:32px}
-.kpi{background:var(--white);padding:22px 18px}
-.kpi-val{font-family:var(--serif);font-size:clamp(20px,2.2vw,28px);font-weight:300;color:var(--text);line-height:1;margin-bottom:4px}
-.kpi-val em{font-style:italic;color:var(--red)}
-.kpi-label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.05em;line-height:1.5}
-.client-right{border-left:1px solid var(--border-2);padding-left:60px}
-.pain-item{margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border-2)}
-.pain-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.pain-num{font-family:var(--mono);font-size:9px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
-.pain-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
-.pain-body{font-family:var(--mono);font-size:11px;font-weight:300;color:var(--text-2);line-height:1.75}
-.pain-resolve{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;display:flex;align-items:center;gap:6px}
-.pain-resolve::before{content:'→'}
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
 
-/* ── Portfolio Nav ── */
-.portfolio-nav{padding:80px var(--col);background:var(--ink)}
-.pn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin-top:48px}
-.pn-card{background:var(--ink-2);padding:30px 26px;text-decoration:none;display:block;transition:background .2s;position:relative}
-.pn-card:hover{background:#201F1C}
-.pn-index{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.18);letter-spacing:.1em;margin-bottom:12px}
-.pn-title{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cream);margin-bottom:5px}
-.pn-desc{font-family:var(--mono);font-size:11px;font-weight:300;color:rgba(245,240,232,.28);line-height:1.7}
-.pn-arrow{position:absolute;top:26px;right:26px;font-family:var(--mono);font-size:13px;color:rgba(245,240,232,.12);transition:color .2s,transform .2s}
-.pn-card:hover .pn-arrow{color:var(--gold-lt);transform:translate(2px,-2px)}
-.pn-divider{grid-column:1/-1;padding:24px 0 8px;font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.18);letter-spacing:.12em;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.04)}
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-/* ── Footer ── */
-footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.05);padding:48px var(--col)}
-.ft-inner{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;align-items:start}
-.ft-brand{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--cream);line-height:1}
-.ft-brand em{font-style:italic;color:var(--gold)}
-.ft-sub{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.22);margin-top:8px;line-height:1.75;max-width:240px}
-.ft-col-head{font-family:var(--mono);font-size:9px;color:rgba(245,240,232,.22);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
-.ft-links{display:flex;flex-direction:column;gap:9px}
-.ft-link{font-family:var(--mono);font-size:11px;color:rgba(245,240,232,.28);text-decoration:none;letter-spacing:.03em;transition:color .2s}.ft-link:hover{color:var(--gold-lt)}
-.ft-copy{font-family:var(--mono);font-size:10px;color:rgba(245,240,232,.14);margin-top:48px;padding-top:28px;border-top:1px solid rgba(255,255,255,.04)}
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
 
-@media(max-width:900px){
-  :root{--col:24px}
-  .gov-grid{grid-template-columns:repeat(2,1fr)}
-  .pillar-grid,.pillar-intro{grid-template-columns:1fr;gap:32px}
-  .arch-layer{grid-template-columns:1fr}
-  .al-label{border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}
-  .pr-grid{grid-template-columns:repeat(2,1fr)}
-  .pr-card:nth-child(2){border-right:none}
-  .pr-card:nth-child(3){border-top:1px solid var(--border)}
-  .pr-card:nth-child(4){border-right:none;border-top:1px solid var(--border)}
-  .client-inner{grid-template-columns:1fr}
-  .client-right{border-left:none;padding-left:0;border-top:1px solid var(--border-2);padding-top:36px}
-  .pn-grid{grid-template-columns:1fr}
-  .ft-inner{grid-template-columns:1fr 1fr;gap:28px}
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* ADM TRACK */
+.adm-track { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 1.5rem; }
+.adm-phase { background: var(--bg2); padding: 1.1rem 1rem; border-radius: var(--r); border: 1px solid var(--border); transition: transform 0.18s; }
+.adm-phase:hover { transform: translateY(-2px); }
+.adm-phase.prelim { background: var(--bg3); }
+.adm-phase.reqs { background: var(--coral-bg); border-color: var(--coral-border); }
+.adm-p-label { font-family: var(--mono); font-size: 9px; font-weight: 500; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.adm-phase.reqs .adm-p-label { color: var(--coral); }
+.adm-p-name { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.2; }
+.adm-p-artifact { font-family: var(--mono); font-size: 9.5px; color: var(--text3); line-height: 1.4; }
+
+/* PHASE BLOCKS */
+.phase-block { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.phase-block-hdr { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 18px; }
+.ph-badge-pill { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+.pb-pa { background: var(--blue-bg); color: var(--blue); }
+.pb-pb { background: var(--teal-bg); color: var(--teal); }
+.pb-pc { background: var(--teal-bg); color: var(--teal); }
+.pb-pd { background: var(--purple-bg); color: var(--purple); }
+.pb-pef { background: var(--amber-bg); color: var(--amber); }
+.phase-block-title { font-family: var(--sans); font-size: 16px; font-weight: 700; color: var(--text); }
+.phase-block-output { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-left: auto; letter-spacing: 0.03em; }
+.phase-block-body { padding: 1.6rem; background: white; }
+
+/* PRINCIPLES GRID */
+.principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 0.5rem; }
+.principle-card { background: var(--bg2); border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.1rem 1.1rem; transition: border-top-color 0.2s, background 0.2s; }
+.principle-card:hover { background: white; border-top-color: var(--blue); }
+.pr-id { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 8px; }
+.pr-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.25; }
+.pr-rationale { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.pr-constraint { padding: 6px 9px; background: var(--blue-bg); font-size: 10.5px; color: var(--blue); line-height: 1.5; border-radius: var(--r); }
+
+/* DIAGRAM WRAPPER */
+.diagram-wrap { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-top: 0.5rem; }
+.diagram-wrap.dk-bg { background: var(--bg2); border-color: var(--border); }
+.diag-title { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.diag-title::before { content: ''; width: 3px; height: 14px; background: var(--blue); display: block; flex-shrink: 0; }
+.diagram-wrap.dk-bg .diag-title { color: var(--text); }
+.diagram-wrap.dk-bg .diag-title::before { background: var(--amber); }
+.diag-sub { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-bottom: 1.2rem; }
+.diagram-wrap.dk-bg .diag-sub { color: var(--text3); }
+.diag-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.diagram-wrap.dk-bg .diag-legend { border-top-color: var(--border); }
+.diag-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.diagram-wrap.dk-bg .diag-legend-item { color: var(--text2); }
+.dl-box { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* ENTITY TABLE (for canonical data model) */
+.entity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.entity-card { border: 2px solid; border-radius: var(--r); overflow: hidden; }
+.entity-hdr { padding: 8px 12px; font-family: var(--sans); font-size: 12px; font-weight: 700; color: white; text-align: center; }
+.entity-body { padding: 10px 12px; font-family: var(--mono); font-size: 9.5px; color: var(--text2); line-height: 1.7; background: white; }
+.entity-body .arrow-ref { font-weight: 600; display: block; margin-top: 4px; }
+
+/* PHASE DETAIL GRID */
+.phase-detail-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.pd-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1.1rem; }
+.pd-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.pd-val { font-size: 12px; color: var(--text); line-height: 1.55; }
+
+/* APP PORTFOLIO / 4-COL CARDS */
+.appcard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.appcard { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1rem; }
+.appcard-label { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 6px; }
+.appcard-body { font-family: var(--mono); font-size: 10.5px; color: var(--text2); line-height: 1.55; }
+
+/* PILLAR LINK CARDS */
+.pillar-link-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 1rem; }
+.pl-card { display: block; padding: 0.9rem 1.1rem; border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+.pl-card:hover { border-color: var(--blue); background: var(--blue-bg); }
+.pl-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+.pl-title { font-family: var(--serif); font-size: 15px; color: var(--text); margin-top: 2px; }
+
+/* WORK PACKAGE / TRACEABILITY TABLES (shared with comp-table) */
+
+/* ADR ROW (page-03 specific 4-up) */
+.adr-row-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 0.5rem; }
+.adr-mini-card { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--border2); border-radius: var(--r); padding: 1rem 1.2rem; }
+.adr-mini-card.green { border-left-color: var(--teal); }
+.adr-mini-card.teal { border-left-color: var(--teal); }
+.adr-mini-card.blue { border-left-color: var(--blue); }
+.adr-mini-card.amber { border-left-color: var(--amber); }
+.adr-mini-id { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.adr-mini-card.green .adr-mini-id, .adr-mini-card.teal .adr-mini-id { color: var(--teal); }
+.adr-mini-card.blue .adr-mini-id { color: var(--blue); }
+.adr-mini-card.amber .adr-mini-id { color: var(--amber); }
+.adr-mini-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.25; }
+.adr-mini-decision { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+/* POSITIONING */
+.pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1.5rem; }
+.pos-statement { background: var(--bg2); border: 1px solid var(--border); padding: 1.6rem 1.8rem; grid-column: 1/-1; border-radius: var(--r-lg); }
+.ps-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--amber); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+.ps-eyebrow::before { content: ''; display: block; width: 18px; height: 1px; background: var(--amber); }
+.ps-text { font-family: var(--serif); font-size: 19px; font-style: italic; color: var(--text); line-height: 1.6; max-width: 800px; }
+.ps-text strong { font-style: normal; font-weight: 600; }
+.ps-adr { display: inline-flex; align-items: center; gap: 8px; margin-top: 1.2rem; padding: 6px 12px; background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--r); font-family: var(--mono); font-size: 10px; color: var(--blue); letter-spacing: 0.05em; }
+.domain-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--blue); border-radius: var(--r); padding: 1.2rem 1.3rem; transition: transform 0.18s; }
+.domain-card:hover { transform: translateY(-2px); }
+.dom-num { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 8px; }
+.dom-title { font-family: var(--sans); font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.25; }
+.dom-body { font-size: 12px; color: var(--text2); line-height: 1.65; }
+.dom-verdict { margin-top: 10px; padding: 7px 10px; font-size: 11px; font-weight: 500; line-height: 1.5; border-radius: var(--r); background: var(--blue-bg); color: var(--blue); }
+
+/* INTEGRATION BAR */
+.integration-bar { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.4rem 1.6rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.ib-node { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; padding: 0 14px; min-width: 110px; }
+.ib-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; font-weight: 500; margin-bottom: 8px; flex-shrink: 0; }
+.ib-icon.sfdc { background: var(--blue-bg); color: var(--blue); border: 2px solid var(--blue); }
+.ib-icon.ae { background: var(--amber-bg); color: var(--amber); border: 2px solid var(--amber); }
+.ib-icon.sap { background: var(--amber-bg); color: var(--amber); border: 2px solid var(--amber); }
+.ib-icon.gcp { background: var(--teal-bg); color: var(--teal); border: 2px solid var(--teal); }
+.ib-label { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.ib-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); line-height: 1.4; }
+.ib-arrow { font-family: var(--mono); font-size: 18px; color: var(--text3); padding: 0 8px; flex-shrink: 0; align-self: center; margin-bottom: 18px; }
+.ib-arrow-label { font-family: var(--mono); font-size: 9px; color: var(--text3); text-align: center; line-height: 1.4; margin-bottom: 18px; align-self: center; flex-shrink: 0; max-width: 80px; }
+
+/* PROFILE CARDS */
+.profile-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.pcard { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.3rem 1.4rem; }
+.pc-lbl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.pc-row { display: grid; grid-template-columns: 170px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.pc-row:last-child { border-bottom: none; }
+.pc-k { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.pc-v { font-size: 11.5px; color: var(--text); line-height: 1.5; }
+
+/* ESTATE GRID */
+.estate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ec { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem 1.2rem; position: relative; }
+.ec-badge { position: absolute; top: 12px; right: 12px; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 8px; border-radius: 99px; letter-spacing: 0.06em; text-transform: uppercase; }
+.b-live { background: var(--teal-bg); color: var(--teal); }
+.b-risk { background: var(--coral-bg); color: var(--coral); }
+.b-legacy { background: var(--amber-bg); color: var(--amber); }
+.ec-name { font-family: var(--sans); font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 2px; }
+.ec-type { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+.ec-desc { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+.ec-flag { margin-top: 10px; padding: 7px 10px; font-size: 10.5px; line-height: 1.5; border-radius: var(--r); }
+.flag-r { background: var(--coral-bg); color: var(--coral); }
+.flag-b { background: var(--blue-bg); color: var(--blue); }
+.flag-a { background: var(--amber-bg); color: var(--amber); }
+
+/* STAKEHOLDER CARDS */
+.sh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sh-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.2rem 1.2rem; transition: transform 0.18s; }
+.sh-card:hover { transform: translateY(-2px); }
+.sh-card.sp { border-top-color: var(--blue); }
+.sh-card.tc { border-top-color: var(--teal); }
+.sh-card.co { border-top-color: var(--amber); }
+.sh-card.fi { border-top-color: var(--purple); }
+.sh-card.cl { border-top-color: var(--amber); }
+.sh-card.op { border-top-color: var(--coral); }
+.sh-idx { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.09em; margin-bottom: 6px; }
+.sh-role { font-family: var(--sans); font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 2px; }
+.sh-dept { font-size: 11px; color: var(--text2); margin-bottom: 1rem; }
+.sh-lbl { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; margin-top: 10px; }
+.sh-txt { font-size: 11.5px; color: var(--text); line-height: 1.6; }
+.sh-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.sh-tag { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; background: var(--blue-bg); color: var(--blue); border-radius: 99px; }
+
+/* SWIMLANE-AS-TABLE */
+.swimlane-pain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 1rem; }
+.pain-card { background: var(--coral-bg); border: 1px solid var(--coral-border); border-radius: var(--r); padding: 0.9rem 1rem; }
+.pain-title { font-family: var(--sans); font-size: 12px; font-weight: 700; color: var(--coral); margin-bottom: 6px; }
+.pain-body { font-size: 11px; color: var(--coral); line-height: 1.5; }
+.pain-total { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: var(--r); padding: 0.9rem 1rem; text-align: center; }
+.pain-total .num { font-family: var(--serif); font-size: 32px; color: var(--amber); line-height: 1; }
+.pain-total .lbl { font-family: var(--mono); font-size: 10px; color: var(--amber); margin-top: 4px; }
+
+/* SYSTEM LANDSCAPE GRID */
+.landscape-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 0.5rem; }
+.land-card { border-radius: var(--r); padding: 1rem 1.1rem; border: 1.5px solid; }
+.land-card.blue { background: var(--blue-bg); border-color: var(--blue); }
+.land-card.amber { background: var(--amber-bg); border-color: var(--amber); }
+.land-card.coral { background: var(--coral-bg); border-color: var(--coral); border-width: 2px; }
+.land-card.gray { background: var(--bg2); border-color: var(--border2); border-style: dashed; }
+.land-title { font-family: var(--sans); font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+.land-sub { font-family: var(--mono); font-size: 9.5px; margin-bottom: 8px; }
+.land-item { font-family: var(--mono); font-size: 9.5px; padding: 4px 7px; margin-bottom: 3px; border-radius: 3px; background: rgba(255,255,255,0.5); }
+
+/* REQUIREMENTS */
+.req-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0.5rem; }
+.rsum { padding: 1.2rem 1.4rem; border-radius: var(--r); border: 1px solid; }
+.rsum-br { background: var(--blue-bg); border-color: var(--blue-border); }
+.rsum-ar { background: var(--teal-bg); border-color: var(--teal-border); }
+.rsum-c { background: var(--amber-bg); border-color: var(--amber-border); }
+.rs-n { font-family: var(--serif); font-size: 36px; line-height: 1; margin-bottom: 3px; }
+.rsum-br .rs-n { color: var(--blue); } .rsum-ar .rs-n { color: var(--teal); } .rsum-c .rs-n { color: var(--amber); }
+.rs-lbl { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; }
+.rsum-br .rs-lbl { color: var(--blue); } .rsum-ar .rs-lbl { color: var(--teal); } .rsum-c .rs-lbl { color: var(--amber); }
+.rs-desc { font-size: 11px; line-height: 1.6; margin-top: 5px; }
+.rsum-br .rs-desc { color: var(--blue); } .rsum-ar .rs-desc { color: var(--teal); } .rsum-c .rs-desc { color: var(--amber); }
+
+.req-tabs { display: flex; border-bottom: 2px solid var(--border); margin-top: 1.5rem; }
+.rtab { font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 10px 20px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; letter-spacing: 0.05em; color: var(--text2); transition: color 0.18s, border-color 0.18s; user-select: none; text-transform: uppercase; }
+.rtab:hover { color: var(--blue); }
+.rtab.abr { color: var(--blue); border-color: var(--blue); }
+.rtab.aar { color: var(--teal); border-color: var(--teal); }
+.rtab.ac { color: var(--amber); border-color: var(--amber); }
+.rpanel { display: none; }
+.rpanel.show { display: block; }
+.rid { font-weight: 600; white-space: nowrap; font-size: 11px; }
+.rid.br { color: var(--blue); } .rid.ar { color: var(--teal); } .rid.c { color: var(--amber); }
+.mos { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 8px; letter-spacing: 0.05em; white-space: nowrap; border-radius: 99px; }
+.mM { background: var(--blue-bg); color: var(--blue); }
+.mS { background: var(--teal-bg); color: var(--teal); }
+.rmod { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 3px; }
+.desc-cell { font-size: 12px; color: var(--text2); line-height: 1.6; max-width: 420px; }
+
+/* AI READINESS */
+.rd-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.rd-card { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem 1rem; }
+.rd-dim { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+.rd-score { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+.rd-n { font-family: var(--serif); font-size: 30px; line-height: 1; }
+.rd-d { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.rd-track { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
+.rd-fill { height: 100%; border-radius: 2px; }
+.rd-text { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.rd-action { margin-top: 10px; padding: 7px 10px; font-size: 10.5px; line-height: 1.5; border-radius: var(--r); }
+.rd-card.sc1 .rd-n { color: var(--coral); } .rd-card.sc1 .rd-fill { background: var(--coral); } .rd-card.sc1 .rd-action { background: var(--coral-bg); color: var(--coral); }
+.rd-card.sc2 .rd-n, .rd-card.sc3 .rd-n { color: var(--amber); } .rd-card.sc2 .rd-fill, .rd-card.sc3 .rd-fill { background: var(--amber); } .rd-card.sc2 .rd-action, .rd-card.sc3 .rd-action { background: var(--amber-bg); color: var(--amber); }
+.rd-card.sc4 .rd-n, .rd-card.sc5 .rd-n { color: var(--teal); } .rd-card.sc4 .rd-fill, .rd-card.sc5 .rd-fill { background: var(--teal); } .rd-card.sc4 .rd-action, .rd-card.sc5 .rd-action { background: var(--teal-bg); color: var(--teal); }
+
+/* USE CASES */
+.uc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 0.5rem; }
+.uc-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--blue); border-radius: var(--r); padding: 1.1rem 1.1rem; transition: transform 0.18s; }
+.uc-card:hover { transform: translateY(-2px); }
+.uc-id { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.09em; margin-bottom: 8px; }
+.uc-module { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 8px; background: var(--blue-bg); color: var(--blue); border-radius: 99px; margin-bottom: 10px; }
+.uc-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.25; }
+.uc-prob { font-size: 11px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+.uc-sh { font-family: var(--mono); font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+.uc-sh::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
+.uc-risk { display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 99px; }
+.risk-hi { background: var(--coral-bg); color: var(--coral); }
+.risk-md { background: var(--amber-bg); color: var(--amber); }
+.risk-lo { background: var(--teal-bg); color: var(--teal); }
+
+/* SUCCESS CRITERIA */
+.suc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.suc-card { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 1.2rem 1.3rem; }
+.suc-module { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--blue); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 8px; }
+.suc-title { font-family: var(--sans); font-size: 14.5px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 10px; }
+.suc-criteria { display: flex; flex-direction: column; gap: 7px; }
+.suc-item { display: flex; align-items: flex-start; gap: 9px; font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+.suc-item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+
+/* ADR REF BOXES (2-up) */
+.adr-ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.adr-ref-box { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: var(--r); padding: 1.2rem 1.4rem; }
+.adr-ref-box.green { border-left-color: var(--teal); }
+.adr-ref-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--blue); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 8px; }
+.adr-ref-box.green .adr-ref-eyebrow { color: var(--teal); }
+.adr-ref-title { font-family: var(--sans); font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.adr-ref-body { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+/* HERO */
+.idx-hero { min-height: 60vh; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; justify-content: flex-end; padding: 0 2.5rem 3.5rem; position: relative; overflow: hidden; }
+.idx-hero-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 1.4rem; display: flex; align-items: center; gap: 12px; }
+.idx-hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--border2); }
+.idx-hero-h1 { font-family: var(--serif); font-size: clamp(40px, 6.5vw, 80px); font-weight: 400; color: var(--text); line-height: 0.98; letter-spacing: -0.02em; margin-bottom: 1.75rem; }
+.idx-hero-h1 em { font-style: italic; color: var(--teal); }
+.idx-hero-h1 strong { font-weight: 700; display: block; }
+.idx-hero-sub { font-family: var(--mono); font-size: 13.5px; font-weight: 300; color: var(--text2); line-height: 1.8; max-width: 560px; margin-bottom: 2.75rem; }
+.idx-hero-stats { display: flex; gap: 0; margin-bottom: 3.25rem; border-top: 1px solid var(--border); padding-top: 2rem; flex-wrap: wrap; }
+.idx-hero-stat { padding-right: 36px; margin-right: 36px; border-right: 1px solid var(--border); }
+.idx-hero-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.idx-hs-n { font-family: var(--serif); font-size: clamp(26px, 3.2vw, 38px); font-weight: 400; color: var(--text); line-height: 1; }
+.idx-hs-n em { color: var(--teal); font-style: normal; }
+.idx-hs-l { font-family: var(--mono); font-size: 9.5px; color: var(--text3); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 5px; }
+.idx-hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary-dk { font-family: var(--mono); font-size: 11px; font-weight: 500; color: white; background: var(--teal); text-decoration: none; padding: 12px 26px; letter-spacing: 0.07em; text-transform: uppercase; border-radius: var(--r); display: inline-flex; align-items: center; gap: 8px; }
+.btn-ghost-dk { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--text2); border: 1px solid var(--border2); text-decoration: none; padding: 12px 26px; letter-spacing: 0.07em; text-transform: uppercase; border-radius: var(--r); display: inline-flex; align-items: center; gap: 8px; }
+
+/* CREDENTIALS STRIP */
+.creds-strip { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.1rem 2.5rem; display: flex; align-items: center; gap: 1.5rem; overflow-x: auto; }
+.cred-chip { font-family: var(--mono); font-size: 10px; color: var(--text2); letter-spacing: 0.05em; white-space: nowrap; padding: 5px 12px; border: 1px solid var(--border); border-radius: 99px; background: white; }
+.cred-sep-line { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+.cred-label-text { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; white-space: nowrap; margin-right: 4px; }
+
+/* DARK SECTION (platform diagram, arch stack, portfolio nav) */
+.dk-section { background: var(--bg2); padding: 3.5rem 2.5rem; }
+.dk-section .doc-eyebrow { color: var(--text3); }
+.dk-section .section-heading { color: var(--text); }
+.dk-section .body-text { color: var(--text2); }
+
+/* PLATFORM LAYER SUMMARY (used for the platform diagram + arch stack) */
+.platform-layer-grid { display: flex; flex-direction: column; gap: 2px; margin-top: 1.5rem; }
+.platform-layer { display: grid; grid-template-columns: 220px 1fr; gap: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.pl-label-box { padding: 1.3rem; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+.pl-num { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+.pl-name { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.pl-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 4px; line-height: 1.5; }
+.pl-chips { padding: 1.3rem; display: flex; flex-wrap: wrap; gap: 6px; align-content: center; }
+.pl-chip { font-family: var(--mono); font-size: 9.5px; padding: 3px 10px; letter-spacing: 0.03em; border: 1px solid; border-radius: 99px; }
+.pl-chip.blue { color: var(--blue); border-color: var(--blue-border); background: var(--blue-bg); }
+.pl-chip.purple2 { color: var(--purple); border-color: var(--purple-border); background: var(--purple-bg); }
+.pl-chip.gold2 { color: var(--amber); border-color: var(--amber-border); background: var(--amber-bg); }
+.pl-chip.teal2 { color: var(--teal); border-color: var(--teal-border); background: var(--teal-bg); }
+.pl-arrow-row { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--text3); padding: 4px 0; }
+
+/* GOVERNANCE GRID */
+.gov-card-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin-top: 1.5rem; border-radius: var(--r-lg); overflow: hidden; }
+.gov-card-item { background: white; padding: 1.5rem 1.3rem; text-decoration: none; display: block; transition: background 0.2s; position: relative; border-top: 3px solid var(--border2); }
+.gov-card-item:hover { background: var(--bg2); }
+.gov-card-item.finrisk { border-top-color: var(--coral); }
+.gov-card-item.govdata { border-top-color: var(--blue); }
+.gov-card-item.compliance { border-top-color: var(--purple); }
+.gov-card-item.strategy { border-top-color: var(--amber); }
+.gov-card-item.greenops { border-top-color: var(--teal); }
+.gc-badge2 { display: inline-block; font-family: var(--mono); font-size: 9px; padding: 2px 9px; border-radius: 99px; letter-spacing: 0.06em; margin-bottom: 12px; }
+.gc-badge2.red2 { background: var(--coral-bg); color: var(--coral); }
+.gc-badge2.blue2 { background: var(--blue-bg); color: var(--blue); }
+.gc-badge2.purple3 { background: var(--purple-bg); color: var(--purple); }
+.gc-badge2.gold3 { background: var(--amber-bg); color: var(--amber); }
+.gc-badge2.green2 { background: var(--teal-bg); color: var(--teal); }
+.gc-title2 { font-family: var(--sans); font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 6px; }
+.gc-sub2 { font-family: var(--mono); font-size: 10.5px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.gc-sources2 { font-family: var(--mono); font-size: 9.5px; color: var(--text3); line-height: 1.6; margin-bottom: 14px; }
+.gc-link2 { font-family: var(--mono); font-size: 9.5px; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+
+/* PILLAR CARDS */
+.idx-pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--border); margin-top: 1.5rem; border-radius: var(--r-lg); overflow: hidden; }
+.idx-pillar-card { background: white; padding: 1.8rem 1.7rem; position: relative; overflow: hidden; text-decoration: none; display: block; transition: background 0.2s; }
+.idx-pillar-card:hover { background: var(--bg2); }
+.ipc-domain { font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.ipc-domain::before { content: ''; width: 14px; height: 1px; display: block; }
+.idx-pillar-card.q2c .ipc-domain { color: var(--blue); } .idx-pillar-card.q2c .ipc-domain::before { background: var(--blue); }
+.idx-pillar-card.p2p .ipc-domain { color: var(--purple); } .idx-pillar-card.p2p .ipc-domain::before { background: var(--purple); }
+.idx-pillar-card.sc .ipc-domain { color: var(--teal); } .idx-pillar-card.sc .ipc-domain::before { background: var(--teal); }
+.idx-pillar-card.fin .ipc-domain { color: #137333; } .idx-pillar-card.fin .ipc-domain::before { background: #137333; }
+.ipc-title { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--text); line-height: 1.1; margin-bottom: 10px; }
+.ipc-title em { font-style: italic; color: var(--amber); }
+.ipc-desc { font-size: 12px; color: var(--text2); line-height: 1.7; margin-bottom: 1.25rem; max-width: 360px; }
+.ipc-modules { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.ipc-module-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 13px; border-bottom: 1px solid var(--border); text-decoration: none; transition: background 0.15s; }
+.ipc-module-row:last-child { border-bottom: none; }
+.ipc-module-row:hover { background: var(--bg2); }
+.ipm-label { font-family: var(--mono); font-size: 10.5px; color: var(--text2); }
+.ipm-arrow { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.ipc-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 1rem; }
+.ipc-ext { font-family: var(--mono); font-size: 10px; color: var(--blue); letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+.ipc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ipc-tag { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.03em; padding: 2px 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 99px; }
+
+/* PRINCIPLES GRID 2 */
+.idx-principles-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 1.5rem; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.idx-pr-card { padding: 1.6rem 1.4rem; border-right: 1px solid var(--border); background: white; }
+.idx-pr-card:last-child { border-right: none; }
+.idx-pr-n { font-family: var(--serif); font-size: 42px; font-weight: 400; color: var(--border2); line-height: 1; margin-bottom: 12px; }
+.idx-pr-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); letter-spacing: 0.005em; margin-bottom: 8px; }
+.idx-pr-body { font-size: 11.5px; color: var(--text2); line-height: 1.7; }
+
+/* CLIENT KPIS */
+.client-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 1.5rem; border-radius: var(--r); overflow: hidden; }
+.client-kpi-cell { background: white; padding: 1.1rem 1rem; }
+.ckv { font-family: var(--serif); font-size: clamp(19px, 2vw, 26px); font-weight: 400; color: var(--text); line-height: 1; margin-bottom: 5px; }
+.ckv em { font-style: italic; color: var(--coral); }
+.ckl { font-family: var(--mono); font-size: 9.5px; color: var(--text3); letter-spacing: 0.04em; line-height: 1.5; }
+
+.client-pain-list { display: flex; flex-direction: column; }
+.client-pain-item { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.client-pain-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.cp-num { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 5px; }
+.cp-title { font-family: var(--sans); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.cp-body { font-size: 11.5px; color: var(--text2); line-height: 1.7; }
+.cp-resolve { font-family: var(--mono); font-size: 10px; color: var(--teal); margin-top: 7px; display: flex; align-items: flex-start; gap: 6px; }
+
+/* PORTFOLIO NAV GRID */
+.idx-pn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 1.5rem; border-radius: var(--r-lg); overflow: hidden; }
+.idx-pn-card { background: white; padding: 1.4rem 1.3rem; text-decoration: none; display: block; transition: background 0.2s; position: relative; }
+.idx-pn-card:hover { background: var(--bg2); }
+.idx-pn-index { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 12px; }
+.idx-pn-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.idx-pn-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text2); line-height: 1.6; }
+.idx-pn-arrow { position: absolute; top: 24px; right: 24px; font-family: var(--mono); font-size: 13px; color: var(--text3); }
+.idx-pn-divider { grid-column: 1/-1; padding: 1rem 1.3rem 0.5rem; font-family: var(--mono); font-size: 9.5px; color: var(--text3); letter-spacing: 0.09em; text-transform: uppercase; border-top: 1px solid var(--border); background: var(--bg2); }
+
+/* IDX FOOTER */
+.idx-footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 2.5rem 2.5rem; }
+.idx-ft-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; align-items: start; }
+.idx-ft-brand { font-family: var(--serif); font-size: 21px; font-weight: 400; color: var(--text); line-height: 1; }
+.idx-ft-brand em { font-style: italic; color: var(--teal); }
+.idx-ft-sub { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 8px; line-height: 1.7; max-width: 240px; }
+.idx-ft-colhead { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+.idx-ft-links { display: flex; flex-direction: column; gap: 8px; }
+.idx-ft-link { font-family: var(--mono); font-size: 10.5px; color: var(--text2); text-decoration: none; }
+.idx-ft-link:hover { color: var(--teal); }
+.idx-ft-copy { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .adm-track { grid-template-columns: repeat(3, 1fr); }
+  .principles-grid, .entity-grid, .appcard-grid, .adr-row-grid, .pillar-link-grid { grid-template-columns: 1fr 1fr; }
+  .pos-grid, .profile-cols, .estate-grid, .sh-grid, .rd-grid, .uc-grid, .suc-grid, .adr-ref-grid, .req-summary, .swimlane-pain-grid, .landscape-grid { grid-template-columns: 1fr 1fr; }
+  .gov-card-grid, .idx-pillar-grid, .idx-principles-grid, .client-kpi-grid, .idx-pn-grid, .idx-ft-inner { grid-template-columns: 1fr 1fr; }
+  .platform-layer { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-<div id="cur"></div>
-<div id="cur-r"></div>
+<div class="page-wrap">
 
-<!-- ═══ NAV ═══ -->
-<nav class="mnav">
-  <div class="mn-l">
-    <a href="index.html" class="mn-brand">AE <span>·</span> Platform</a>
-    <div class="mn-sep"></div>
-    <span class="mn-tag">Architecture Portfolio · 2025–2026</span>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html" style="color:inherit;text-decoration:none">ae · platform</a></div>
+  <div class="sidebar-project">The Autonomous<br>Enterprise</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#governance">Governance</a></li>
+      <li><a href="#pillars">Pillars</a></li>
+      <li><a href="#architecture">Architecture Stack</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#client">Anchor Client</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Built By</div>
+    <div class="stack-item"><strong>TOGAF 10 EA</strong>Google MLE · Cloud Architect</div>
+    <div class="stack-item"><strong>SAFe SA + SPC</strong>EU AI Act Annex III compliant</div>
+    <div class="stack-item"><strong>ISO 13485 · FDA 21 CFR 820</strong>ASC 606 · GDPR · CSRD</div>
   </div>
-  <div class="mn-r">
-    <a href="#platform" class="mn-link">Platform</a>
-    <a href="#governance" class="mn-link">Governance</a>
-    <a href="#pillars" class="mn-link">Pillars</a>
-    <a href="#portfolio" class="mn-link">Portfolio</a>
-    <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" class="mn-gh" target="_blank">GitHub →</a>
-  </div>
-</nav>
+</aside>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-grid" aria-hidden="true">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs><pattern id="gr" x="0" y="0" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M72 0 L0 0 0 72" fill="none" stroke="white" stroke-width=".5"/></pattern></defs>
-      <rect width="1440" height="900" fill="url(#gr)"/>
-      <line x1="0" y1="900" x2="600" y2="0" stroke="white" stroke-width=".3" opacity=".5"/>
-      <line x1="200" y1="900" x2="800" y2="0" stroke="white" stroke-width=".3" opacity=".3"/>
-      <line x1="900" y1="900" x2="1440" y2="200" stroke="white" stroke-width=".3" opacity=".4"/>
-    </svg>
-  </div>
-  <div class="hero-eyebrow">TOGAF 10 · Google Cloud · Vertex AI · EU AI Act · ADK Multi-Agent</div>
-  <h1 class="hero-h1">The<br><em>Autonomous</em><br><strong>Enterprise</strong></h1>
-  <p class="hero-sub">A portfolio-grade AI solutions architecture for regulated industry.<br>Four intelligent pillars. Five C-Suite governance dashboards.<br>Zero black-box decisions. Every inference explainable. Every action auditable.</p>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="hs-n"><em>4</em></div><div class="hs-l">Intelligent Pillars</div></div>
-    <div class="hero-stat"><div class="hs-n"><em>5</em></div><div class="hs-l">Governance Dashboards</div></div>
-    <div class="hero-stat"><div class="hs-n"><em>4</em></div><div class="hs-l">Architecture Layers</div></div>
-    <div class="hero-stat"><div class="hs-n"><em>0</em></div><div class="hs-l">Black-Box Decisions</div></div>
-    <div class="hero-stat"><div class="hs-n"><em>16</em></div><div class="hs-l">Architecture Decisions</div></div>
-  </div>
-  <div class="hero-cta">
-    <a href="#platform" class="btn-primary">Explore the Platform ↓</a>
-    <a href="#portfolio" class="btn-ghost">View Portfolio Pages →</a>
-  </div>
-  <div class="hero-scroll" aria-hidden="true">Scroll</div>
-</section>
-
-<!-- ═══ CREDENTIALS STRIP ═══ -->
-<div class="creds">
-  <span class="cred-label">Built by</span>
-  <span class="cred">TOGAF 10 EA</span>
-  <span class="cred">Google MLE</span>
-  <span class="cred">Google Cloud Architect</span>
-  <span class="cred">SAFe SA + SPC</span>
-  <div class="cred-sep"></div>
-  <span class="cred">EU AI Act — Annex III Compliant</span>
-  <span class="cred">ISO 13485 · FDA 21 CFR 820</span>
-  <span class="cred">ASC 606 · GDPR · CSRD</span>
-  <div class="cred-sep"></div>
-  <span class="cred">Vertex AI · ADK Multi-Agent · A2A</span>
-  <span class="cred">GKE · Cloud Run · VPC-SC · CMEK</span>
-  <span class="cred">BigQuery · Pub/Sub · Firestore</span>
-</div>
-
-<!-- ═══ PLATFORM ARCHITECTURE DIAGRAM ═══ -->
-<section class="arch-diagram" id="platform">
-  <div class="s-ey go ap">Platform Architecture</div>
-  <h2 class="s-h2 ap" style="color:var(--cream)">The full platform, <em>at a glance</em>.</h2>
-  <p class="s-p ap">Five governance dashboards sit above four autonomous pillars. Every pillar is a domain suite sharing a common four-layer contract — from HITL-enabled presentation surfaces down to a zero-trust GCP infrastructure that makes compliance structurally un-bypassable. Click any node to explore.</p>
-
-  <div class="arch-diagram-wrap ap">
-    <svg width="100%" viewBox="0 0 680 800" role="img"
-      style="--t:rgba(245,240,232,.65);--s:rgba(245,240,232,.32);--bg2:rgba(255,255,255,.05);--b:rgba(255,255,255,.1);font-family:'IBM Plex Mono',monospace">
-      <title>The Autonomous Enterprise — Platform Architecture Diagram</title>
-      <desc>Structural diagram showing five C-Suite governance dashboards above four autonomous pillars (Seller, Buyer, Supply Chain, Finance), each pillar containing named modules and sharing a four-layer GCP architecture.</desc>
-      <defs>
-        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </marker>
-      </defs>
-
-      <!-- Platform boundary -->
-      <rect x="10" y="10" width="660" height="778" rx="4" fill="none" stroke="rgba(245,240,232,.08)" stroke-width="1" stroke-dasharray="5 4"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="10" fill="rgba(245,240,232,.2)" x="22" y="26" letter-spacing="0.1em">THE AUTONOMOUS ENTERPRISE PLATFORM</text>
-
-      <!-- ── GOVERNANCE BAND ── -->
-      <rect x="22" y="36" width="636" height="96" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)" stroke-width="0.5"/>
-      <text font-family="'Syne',sans-serif" font-size="11" font-weight="600" fill="rgba(245,240,232,.7)" x="340" y="55" text-anchor="middle" letter-spacing="0.05em">C-SUITE GOVERNANCE LAYER</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(245,240,232,.25)" x="340" y="69" text-anchor="middle">Dashboards of dashboards · aggregated signal from all four pillars</text>
-
-      <!-- FinRisk tile -->
-      <a href="gov-finrisk.html">
-        <rect x="32" y="78" width="110" height="44" rx="4" fill="#FCE8E6" fill-opacity="0.08" stroke="#D93025" stroke-width="0.5" stroke-opacity="0.4"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#F28B82" x="87" y="97" text-anchor="middle">FinRisk</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(242,139,130,.5)" x="87" y="112" text-anchor="middle">Sentinel</text>
-      </a>
-      <!-- Data Gov tile -->
-      <a href="gov-data-governance.html">
-        <rect x="150" y="78" width="110" height="44" rx="4" fill="#E8F0FE" fill-opacity="0.06" stroke="#1A73E8" stroke-width="0.5" stroke-opacity="0.4"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#8AB4F8" x="205" y="97" text-anchor="middle">Data</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.5)" x="205" y="112" text-anchor="middle">Governance</text>
-      </a>
-      <!-- Compliance tile -->
-      <a href="gov-compliance.html">
-        <rect x="268" y="78" width="110" height="44" rx="4" fill="#EDE7F6" fill-opacity="0.07" stroke="#6200EE" stroke-width="0.5" stroke-opacity="0.4"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#C58AF9" x="323" y="97" text-anchor="middle">Compliance</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.5)" x="323" y="112" text-anchor="middle">Hub</text>
-      </a>
-      <!-- Strategy tile -->
-      <a href="gov-strategy.html">
-        <rect x="386" y="78" width="110" height="44" rx="4" fill="#FEF3E2" fill-opacity="0.07" stroke="#D4AC1A" stroke-width="0.5" stroke-opacity="0.4"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#FDD663" x="441" y="97" text-anchor="middle">Strategy</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(253,214,99,.5)" x="441" y="112" text-anchor="middle">Dashboard</text>
-      </a>
-      <!-- GreenOps tile -->
-      <a href="gov-greenops.html">
-        <rect x="504" y="78" width="142" height="44" rx="4" fill="#E6F4EA" fill-opacity="0.07" stroke="#137333" stroke-width="0.5" stroke-opacity="0.4"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="500" fill="#81C995" x="575" y="97" text-anchor="middle">GreenOps</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.5)" x="575" y="112" text-anchor="middle">Platform</text>
-      </a>
-
-      <!-- Signal arrows up from each pillar midpoint -->
-      <line x1="105" y1="590" x2="105" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-      <line x1="258" y1="590" x2="258" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-      <line x1="412" y1="590" x2="412" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-      <line x1="566" y1="590" x2="566" y2="133" stroke="rgba(245,240,232,.1)" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
-
-      <!-- ── PILLAR 1 — Seller ── -->
-      <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" target="_blank">
-        <rect x="22" y="148" width="152" height="454" rx="8" fill="rgba(138,180,248,.04)" stroke="#378ADD" stroke-width="0.6" stroke-opacity="0.35"/>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(138,180,248,.85)" x="98" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(138,180,248,.85)" x="98" y="188" text-anchor="middle" letter-spacing="0.04em">SELLER</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.4)" x="98" y="203" text-anchor="middle">Q2C · Quote-to-Cash</text>
-      </a>
-      <!-- Seller modules -->
-      <a href="page-09-m01.html">
-        <rect x="32" y="215" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="233" text-anchor="middle">M-01 · CCAI Sales Agent</text>
-      </a>
-      <a href="page-09-m02.html">
-        <rect x="32" y="249" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="267" text-anchor="middle">M-02 · ContractGuard</text>
-      </a>
-      <a href="page-09-m03.html">
-        <rect x="32" y="283" width="132" height="28" rx="3" fill="rgba(138,180,248,.06)" stroke="#378ADD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.7)" x="98" y="301" text-anchor="middle">M-03 · RevRec AI</text>
-      </a>
-      <!-- Seller layer separator + tech labels -->
-      <line x1="32" y1="325" x2="164" y2="325" stroke="rgba(138,180,248,.12)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="340" text-anchor="middle">ADK · Dialogflow CX</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="356" text-anchor="middle">XGBoost · SHAP</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.35)" x="98" y="372" text-anchor="middle">Vertex AI Pipelines</text>
-      <line x1="32" y1="386" x2="164" y2="386" stroke="rgba(138,180,248,.08)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.2)" x="98" y="400" text-anchor="middle">EU AI Act · ASC 606</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.2)" x="98" y="416" text-anchor="middle">ISO 13485 · GDPR</text>
-      <line x1="32" y1="430" x2="164" y2="430" stroke="rgba(138,180,248,.06)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="445" text-anchor="middle">GCP europe-west3</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="461" text-anchor="middle">VPC-SC · CMEK</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.14)" x="98" y="477" text-anchor="middle">Terraform IaC</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(138,180,248,.1)" x="98" y="512" text-anchor="middle">→ Seller portfolio</text>
-
-      <!-- ── PILLAR 2 — Buyer ── -->
-      <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" target="_blank">
-        <rect x="176" y="148" width="152" height="454" rx="8" fill="rgba(197,138,249,.04)" stroke="#7F77DD" stroke-width="0.6" stroke-opacity="0.35"/>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(197,138,249,.85)" x="252" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(197,138,249,.85)" x="252" y="188" text-anchor="middle" letter-spacing="0.04em">BUYER</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.4)" x="252" y="203" text-anchor="middle">P2P · Procure-to-Pay</text>
-      </a>
-      <a href="page-09-m04.html">
-        <rect x="186" y="215" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="233" text-anchor="middle">Procurement Intel</text>
-      </a>
-      <a href="page-09-m04.html">
-        <rect x="186" y="249" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="267" text-anchor="middle">Supplier Scoring</text>
-      </a>
-      <a href="page-09-m04.html">
-        <rect x="186" y="283" width="132" height="28" rx="3" fill="rgba(197,138,249,.06)" stroke="#7F77DD" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.7)" x="252" y="301" text-anchor="middle">AP Exception Agent</text>
-      </a>
-      <line x1="186" y1="325" x2="318" y2="325" stroke="rgba(197,138,249,.12)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="340" text-anchor="middle">ADK · MCP Tools</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="356" text-anchor="middle">Anomaly Detection</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.35)" x="252" y="372" text-anchor="middle">Vertex AI · SHAP</text>
-      <line x1="186" y1="386" x2="318" y2="386" stroke="rgba(197,138,249,.08)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.2)" x="252" y="400" text-anchor="middle">EU AI Act · GDPR</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.2)" x="252" y="416" text-anchor="middle">OECD · IFRS</text>
-      <line x1="186" y1="430" x2="318" y2="430" stroke="rgba(197,138,249,.06)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="445" text-anchor="middle">Apigee · Cloud Tasks</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="461" text-anchor="middle">Assured Workloads</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.14)" x="252" y="477" text-anchor="middle">VPC-SC · CMEK</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(197,138,249,.1)" x="252" y="512" text-anchor="middle">→ Buyer portfolio</text>
-
-      <!-- ── PILLAR 3 — Supply Chain ── -->
-      <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank">
-        <rect x="330" y="148" width="152" height="454" rx="8" fill="rgba(93,202,165,.04)" stroke="#1D9E75" stroke-width="0.6" stroke-opacity="0.35"/>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(93,202,165,.85)" x="406" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(93,202,165,.85)" x="406" y="188" text-anchor="middle" letter-spacing="0.04em">SUPPLY CHAIN</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.4)" x="406" y="203" text-anchor="middle">Ops · Field Service</text>
-      </a>
-      <a href="page-09-m05.html">
-        <rect x="340" y="215" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="233" text-anchor="middle">M-05 · Asset IQ</text>
-      </a>
-      <a href="page-09-m05.html">
-        <rect x="340" y="249" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="267" text-anchor="middle">Fleet Telemetry</text>
-      </a>
-      <a href="page-09-m05.html">
-        <rect x="340" y="283" width="132" height="28" rx="3" fill="rgba(93,202,165,.06)" stroke="#1D9E75" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.7)" x="406" y="301" text-anchor="middle">Demand Planning</text>
-      </a>
-      <line x1="340" y1="325" x2="472" y2="325" stroke="rgba(93,202,165,.12)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="340" text-anchor="middle">ADK · A2A Protocol</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="356" text-anchor="middle">RUL Regression</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.35)" x="406" y="372" text-anchor="middle">Isolation Forest</text>
-      <line x1="340" y1="386" x2="472" y2="386" stroke="rgba(93,202,165,.08)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.2)" x="406" y="400" text-anchor="middle">ISO 13485 · GDPR</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.2)" x="406" y="416" text-anchor="middle">FDA 21 CFR 820</text>
-      <line x1="340" y1="430" x2="472" y2="430" stroke="rgba(93,202,165,.06)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="445" text-anchor="middle">Pub/Sub · Firestore</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="461" text-anchor="middle">GKE · Cloud Run</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.14)" x="406" y="477" text-anchor="middle">BeyondCorp · IAM</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(93,202,165,.1)" x="406" y="512" text-anchor="middle">→ Supply Chain portfolio</text>
-
-      <!-- ── PILLAR 4 — Finance ── -->
-      <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" target="_blank">
-        <rect x="484" y="148" width="154" height="454" rx="8" fill="rgba(129,201,149,.04)" stroke="#137333" stroke-width="0.6" stroke-opacity="0.35"/>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(129,201,149,.85)" x="561" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
-        <text font-family="'Syne',sans-serif" font-size="11" font-weight="700" fill="rgba(129,201,149,.85)" x="561" y="188" text-anchor="middle" letter-spacing="0.04em">FINANCE</text>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.4)" x="561" y="203" text-anchor="middle">Finance · Treasury</text>
-      </a>
-      <a href="page-09-m04.html">
-        <rect x="494" y="215" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="233" text-anchor="middle">Intercompany Recon</text>
-      </a>
-      <a href="page-09-m04.html">
-        <rect x="494" y="249" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="267" text-anchor="middle">Treasury Visibility</text>
-      </a>
-      <a href="Finrisk_Sentinel.html">
-        <rect x="494" y="283" width="134" height="28" rx="3" fill="rgba(129,201,149,.06)" stroke="#137333" stroke-width="0.5" stroke-opacity="0.25"/>
-        <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.7)" x="561" y="301" text-anchor="middle">M-04 · FinRisk Agent</text>
-      </a>
-      <line x1="494" y1="325" x2="628" y2="325" stroke="rgba(129,201,149,.12)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="340" text-anchor="middle">ADK · SAP Connectors</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="356" text-anchor="middle">Cash Flow Forecast</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.35)" x="561" y="372" text-anchor="middle">Vertex AI · SHAP</text>
-      <line x1="494" y1="386" x2="628" y2="386" stroke="rgba(129,201,149,.08)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.2)" x="561" y="400" text-anchor="middle">EU AI Act · GDPR</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.2)" x="561" y="416" text-anchor="middle">CSRD · OECD · IFRS</text>
-      <line x1="494" y1="430" x2="628" y2="430" stroke="rgba(129,201,149,.06)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="445" text-anchor="middle">Spanner · BigQuery</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="461" text-anchor="middle">SWIFT gpi · Apigee</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.14)" x="561" y="477" text-anchor="middle">Assured Workloads</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(129,201,149,.1)" x="561" y="512" text-anchor="middle">→ Finance portfolio</text>
-
-      <!-- ── Pillar layer bracket labels (left) ── -->
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.18)" x="16" y="270" text-anchor="middle" transform="rotate(-90,16,270)" letter-spacing="0.08em">L01 · MODULES</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.12)" x="16" y="358" text-anchor="middle" transform="rotate(-90,16,358)" letter-spacing="0.08em">L02–L03</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.08)" x="16" y="458" text-anchor="middle" transform="rotate(-90,16,458)" letter-spacing="0.08em">L04 · GCP</text>
-
-      <!-- ── SHARED INFRA BAND ── -->
-      <rect x="22" y="622" width="636" height="76" rx="6" fill="rgba(120,217,236,.04)" stroke="rgba(120,217,236,.15)" stroke-width="0.5"/>
-      <text font-family="'Syne',sans-serif" font-size="10" font-weight="600" fill="rgba(120,217,236,.6)" x="340" y="641" text-anchor="middle" letter-spacing="0.06em">LAYER 04 — SHARED GCP INFRASTRUCTURE</text>
-
-      <!-- infra chips -->
-      <rect x="32" y="650" width="110" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="87" y="666" text-anchor="middle">VPC-SC · Zero Trust</text>
-
-      <rect x="150" y="650" width="100" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="200" y="666" text-anchor="middle">CMEK · Spanner</text>
-
-      <rect x="258" y="650" width="120" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="318" y="666" text-anchor="middle">Immutable Audit Log</text>
-
-      <rect x="386" y="650" width="106" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="439" y="666" text-anchor="middle">Workload Identity</text>
-
-      <rect x="500" y="650" width="148" height="24" rx="3" fill="rgba(120,217,236,.06)" stroke="rgba(120,217,236,.2)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(120,217,236,.6)" x="574" y="666" text-anchor="middle">Terraform · Cloud Build</text>
-
-      <!-- arrows pillar → infra -->
-      <line x1="105" y1="602" x2="105" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
-      <line x1="252" y1="602" x2="252" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
-      <line x1="406" y1="602" x2="406" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
-      <line x1="561" y1="602" x2="561" y2="622" stroke="rgba(245,240,232,.1)" stroke-width="0.5" marker-end="url(#arr)"/>
-
-      <!-- ── Legend ── -->
-      <line x1="22" y1="716" x2="658" y2="716" stroke="rgba(245,240,232,.08)" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.25)" x="22" y="732" letter-spacing="0.06em">LEGEND</text>
-      <rect x="70" y="723" width="10" height="10" rx="2" fill="rgba(138,180,248,.15)" stroke="#378ADD" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="85" y="732">Seller (Q2C)</text>
-      <rect x="155" y="723" width="10" height="10" rx="2" fill="rgba(197,138,249,.15)" stroke="#7F77DD" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="170" y="732">Buyer (P2P)</text>
-      <rect x="240" y="723" width="10" height="10" rx="2" fill="rgba(93,202,165,.15)" stroke="#1D9E75" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="255" y="732">Supply Chain</text>
-      <rect x="335" y="723" width="10" height="10" rx="2" fill="rgba(129,201,149,.15)" stroke="#137333" stroke-width="0.5"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.35)" x="350" y="732">Finance</text>
-      <line x1="400" y1="727" x2="420" y2="727" stroke="rgba(245,240,232,.2)" stroke-width="0.5" stroke-dasharray="3 2"/>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.25)" x="425" y="732">Signal flow to governance</text>
-      <text font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(245,240,232,.15)" x="22" y="756" letter-spacing="0.04em">All infrastructure · GCP europe-west3 · EU AI Act Annex III · SHAP before HITL · SAP write guard enforced · Click any node to navigate</text>
-    </svg>
-  </div>
-</section>
-
-<!-- ═══ GOVERNANCE BAND ═══ -->
-<section class="gov-band" id="governance">
-  <div class="gov-eyebrow ap">
-    <div class="gov-label">C-Suite Governance · Five Dashboard Domains</div>
-    <h2 class="gov-h2">Every domain. One <em>audit trail</em>.</h2>
-    <p class="gov-sub">Five independent dashboards — each a deep-dive into a single governance domain — that pull aggregated signal from all four pillars. Each dashboard is a standalone page with its own data sources, HITL constraints, regulatory obligations, and GCP architecture.</p>
-  </div>
-  <div class="gov-grid ap">
-
-    <a href="gov-finrisk.html" class="gov-card finrisk">
-      <div class="gc-badge red">Financial Risk</div>
-      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L16 14H2L9 2Z" stroke="#D93025" stroke-width="1.2"/><line x1="9" y1="7" x2="9" y2="10" stroke="#D93025" stroke-width="1.2"/><circle cx="9" cy="12" r=".7" fill="#D93025"/></svg></div>
-      <div class="gc-title">FinRisk Sentinel</div>
-      <div class="gc-sub">Real-time anomaly detection across all payment and settlement flows. Dual-reviewer HITL. Isolation Forest + BigQuery streaming.</div>
-      <div class="gc-sources">Sources: Payment streams · AP ledger · Treasury · Intercompany flows</div>
-      <div class="gc-link">View Dashboard →</div>
-    </a>
-
-    <a href="gov-data-governance.html" class="gov-card govdata">
-      <div class="gc-badge blue">Data Governance</div>
-      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="#1A73E8" stroke-width="1.2"/><line x1="6" y1="2" x2="6" y2="16" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="12" y1="2" x2="12" y2="16" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#1A73E8" stroke-width=".7" opacity=".5"/><line x1="2" y1="11" x2="16" y2="11" stroke="#1A73E8" stroke-width=".7" opacity=".5"/></svg></div>
-      <div class="gc-title">Data Governance</div>
-      <div class="gc-sub">TFX schema validation, Feature Store lineage, quarantine pipeline. Steward-gated reinstatement across all pillars.</div>
-      <div class="gc-sources">Sources: Feature Store · TFX pipelines · Quarantine queue · All pillar data</div>
-      <div class="gc-link">View Dashboard →</div>
-    </a>
-
-    <a href="gov-compliance.html" class="gov-card compliance">
-      <div class="gc-badge purple">Compliance</div>
-      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#6200EE" stroke-width="1.2"/><polyline points="5.5,9 8,11.5 12.5,6.5" stroke="#6200EE" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="gc-title">Compliance Hub</div>
-      <div class="gc-sub">EU AI Act Art. 14 HITL audit trail. Regulatory obligations encoded as write-path constraints, not documentation footnotes.</div>
-      <div class="gc-sources">Sources: HITL audit log · Model cards · SHAP records · All pillars</div>
-      <div class="gc-link">View Dashboard →</div>
-    </a>
-
-    <a href="gov-strategy.html" class="gov-card strategy">
-      <div class="gc-badge gold">Executive Strategy</div>
-      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><polyline points="2,13 6,8 9,10 13,5 16,7" stroke="#B8960C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="5" r="1.2" fill="#B8960C"/></svg></div>
-      <div class="gc-title">Strategy Dashboard</div>
-      <div class="gc-sub">BigQuery materialised views. Fleet panel, revenue pipeline, CPQ velocity across all pillars. Five C-Suite panels.</div>
-      <div class="gc-sources">Sources: Salesforce · SAP · Asset telemetry · All module KPIs</div>
-      <div class="gc-link">View Dashboard →</div>
-    </a>
-
-    <a href="gov-greenops.html" class="gov-card greenops">
-      <div class="gc-badge green">Sustainability</div>
-      <div class="gc-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 16C9 16 3 12 3 7C3 4.24 5.24 2 8 2C10 2 11.5 3 12.5 4.5C13.5 3 15 2.5 16 3C16 7 13 10 9 16Z" stroke="#137333" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-      <div class="gc-title">GreenOps Platform</div>
-      <div class="gc-sub">Carbon Footprint API, GKE workload scheduling, CSRD Scope 3 traceability. Real-time emissions across all cloud workloads.</div>
-      <div class="gc-sources">Sources: Carbon Footprint API · GKE metrics · CSRD Scope 3 feed</div>
-      <div class="gc-link">View Dashboard →</div>
-    </a>
-
-  </div>
-</section>
-
-<!-- ═══ FOUR PILLARS ═══ -->
-<section class="pillars" id="pillars">
-  <div class="pillar-intro ap">
-    <div>
-      <div class="s-ey go">The Four Pillars</div>
-      <h2 class="s-h2">Every domain. One <em>coherent</em> platform.</h2>
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="#">ae · platform</a> / <span>Architecture Portfolio · 2025–2026</span>
     </div>
-    <p class="s-p">Each pillar is a domain suite — a collection of AI modules sharing a common data governance spine, identity fabric, and audit ledger. Modules within a pillar communicate via A2A protocol. Every module is built on the same four-layer contract. Click any module row to navigate directly to its page.</p>
-  </div>
-
-  <div class="pillar-grid ap">
-
-    <!-- Pillar 01 — Seller -->
-    <div class="pillar-card q2c">
-      <div class="pc-num">01</div>
-      <div class="pc-domain">Q2C · Quote-to-Cash</div>
-      <h3 class="pc-title">The Autonomous <em>Seller</em></h3>
-      <p class="pc-desc">CCAI Sales Agent handles inbound qualification through turn 11, autonomously. ContractGuard extracts and risk-scores 200+ clause types. RevRec AI classifies multi-element arrangements before any GL entry posts.</p>
-      <div class="pc-modules">
-        <a href="page-09-m01.html" class="pc-module-row"><span class="pm-label">M-01 · CCAI Sales Agent</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m02.html" class="pc-module-row"><span class="pm-label">M-02 · ContractGuard</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m03.html" class="pc-module-row"><span class="pm-label">M-03 · RevRec AI</span><span class="pm-arrow">↗</span></a>
-      </div>
-      <div class="pc-footer">
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
-        <div class="pc-tags"><span class="pc-tag">ADK</span><span class="pc-tag">Dialogflow CX</span><span class="pc-tag">XGBoost</span></div>
-      </div>
-    </div>
-
-    <!-- Pillar 02 — Buyer -->
-    <div class="pillar-card p2p">
-      <div class="pc-num">02</div>
-      <div class="pc-domain">P2P · Procure-to-Pay</div>
-      <h3 class="pc-title">The Autonomous <em>Buyer</em></h3>
-      <p class="pc-desc">Intelligent procurement from requisition through payment. Supplier intelligence, contract compliance, spend analytics, and AP exception triage — governed by the same HITL and XAI framework as every AE module.</p>
-      <div class="pc-modules">
-        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Procurement Intelligence</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Supplier Scoring Agent</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">AP Exception Agent</span><span class="pm-arrow">↗</span></a>
-      </div>
-      <div class="pc-footer">
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
-        <div class="pc-tags"><span class="pc-tag">Vertex AI</span><span class="pc-tag">Pub/Sub</span><span class="pc-tag">SHAP</span></div>
-      </div>
-    </div>
-
-    <!-- Pillar 03 — Supply Chain -->
-    <div class="pillar-card sc">
-      <div class="pc-num">03</div>
-      <div class="pc-domain">Supply Chain · Operations</div>
-      <h3 class="pc-title">The Autonomous <em>Supply Chain</em></h3>
-      <p class="pc-desc">Asset IQ monitors 12,000+ deployed MRI units and predicts remaining useful life to the day. The €40M warranty over-reserve is an engineering problem, solvable with a unified telemetry pipeline and a well-specified RUL model.</p>
-      <div class="pc-modules">
-        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">M-05 · Asset IQ</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">Fleet Telemetry Pipeline</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m05.html" class="pc-module-row"><span class="pm-label">Demand Planning</span><span class="pm-arrow">↗</span></a>
-      </div>
-      <div class="pc-footer">
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
-        <div class="pc-tags"><span class="pc-tag">ISO 13485</span><span class="pc-tag">RUL Model</span><span class="pc-tag">Isolation Forest</span></div>
-      </div>
-    </div>
-
-    <!-- Pillar 04 — Finance -->
-    <div class="pillar-card fin">
-      <div class="pc-num">04</div>
-      <div class="pc-domain">Finance · Treasury · AP</div>
-      <h3 class="pc-title">The Autonomous <em>Finance</em></h3>
-      <p class="pc-desc">Three agents above SAP — not instead of it. Intercompany reconciliation, treasury visibility, and AP exception triage, each operating within a governed intelligence layer. CSRD Scope 3 is a native output of the settlement flow.</p>
-      <div class="pc-modules">
-        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Intercompany Recon Agent</span><span class="pm-arrow">↗</span></a>
-        <a href="page-09-m04.html" class="pc-module-row"><span class="pm-label">Treasury Visibility Agent</span><span class="pm-arrow">↗</span></a>
-        <a href="Finrisk_Sentinel.html" class="pc-module-row"><span class="pm-label">M-04 · FinRisk Sentinel</span><span class="pm-arrow">↗</span></a>
-      </div>
-      <div class="pc-footer">
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" class="pc-ext" target="_blank">Pillar Portfolio ↗</a>
-        <div class="pc-tags"><span class="pc-tag">Assured Workloads</span><span class="pc-tag">SWIFT gpi</span><span class="pc-tag">CSRD Scope 3</span></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ═══ ARCHITECTURE STACK ═══ -->
-<section class="arch-block">
-  <div class="s-ey go ap">Four-Layer Architecture</div>
-  <h2 class="s-h2 ap" style="color:var(--cream)">One <em>coherent</em> contract. Every pillar.</h2>
-  <p class="s-p ap">Each module across each pillar is designed against the same four-layer stack. Trust is enforced at the infrastructure layer — not the application layer — making compliance structurally un-bypassable.</p>
-  <div class="arch-stack ap">
-    <div class="arch-layer">
-      <div class="al-label"><div class="al-num">LAYER 01</div><div class="al-name">Experience &amp;<br>Presentation</div><div class="al-desc">What humans see, review, and approve</div></div>
-      <div class="al-chips">
-        <span class="al-chip blue">Portfolio Site</span><span class="al-chip blue">8 App Dashboards</span><span class="al-chip blue">HITL Approval UI</span><span class="al-chip blue">XAI Explanation Viewer</span><span class="al-chip blue">Audit Trail Dashboard</span><span class="al-chip blue">C-Suite Governance Layer</span><span class="al-chip blue">React · TypeScript</span><span class="al-chip blue">BeyondCorp · IAP</span>
-      </div>
-    </div>
-    <div class="al-arrow">↕ &nbsp; REST / gRPC / Pub/Sub events</div>
-    <div class="arch-layer">
-      <div class="al-label"><div class="al-num">LAYER 02</div><div class="al-name">Agent<br>Orchestration</div><div class="al-desc">Where intelligence acts</div></div>
-      <div class="al-chips">
-        <span class="al-chip purple">ADK Multi-Agent Swarm</span><span class="al-chip purple">CCAI Sales Agent</span><span class="al-chip purple">A2A Protocol</span><span class="al-chip purple">MCP Tool Manifest</span><span class="al-chip purple">Pub/Sub Orchestration</span><span class="al-chip purple">Agent State Machines</span><span class="al-chip purple">Circuit Breakers</span><span class="al-chip purple">Autonomy Boundaries</span><span class="al-chip purple">Firestore Agent State</span>
-      </div>
-    </div>
-    <div class="al-arrow">↕ &nbsp; Feature Store · Model Registry · XAI contracts</div>
-    <div class="arch-layer">
-      <div class="al-label"><div class="al-num">LAYER 03</div><div class="al-name">MLOps &amp;<br>Intelligence</div><div class="al-desc">Where ML infers and explains</div></div>
-      <div class="al-chips">
-        <span class="al-chip gold">Vertex AI Pipelines</span><span class="al-chip gold">Feature Store</span><span class="al-chip gold">SHAP · XAI Layer</span><span class="al-chip gold">Model Registry</span><span class="al-chip gold">Drift Detection</span><span class="al-chip gold">Model Cards</span><span class="al-chip gold">Retraining Pipelines</span><span class="al-chip gold">Confidence Scoring</span><span class="al-chip gold">BigQuery ML</span>
-      </div>
-    </div>
-    <div class="al-arrow">↕ &nbsp; VPC-native · CMEK-encrypted · IAM-bound</div>
-    <div class="arch-layer">
-      <div class="al-label"><div class="al-num">LAYER 04</div><div class="al-name">Infrastructure<br>&amp; Governance</div><div class="al-desc">Where trust is physically enforced</div></div>
-      <div class="al-chips">
-        <span class="al-chip teal">Terraform IaC</span><span class="al-chip teal">GKE Autopilot</span><span class="al-chip teal">Cloud Run</span><span class="al-chip teal">VPC-SC Zero-Trust</span><span class="al-chip teal">CMEK Encryption</span><span class="al-chip teal">BeyondCorp</span><span class="al-chip teal">Workload Identity</span><span class="al-chip teal">Immutable Audit Log</span><span class="al-chip teal">Cloud Build CI/CD</span><span class="al-chip teal">Assured Workloads</span><span class="al-chip teal">Cloud Armor · SCC</span><span class="al-chip teal">FinOps · GreenOps</span>
-      </div>
+    <div class="topbar-right">
+      <a href="#platform" class="topbar-tag" style="text-decoration:none">Platform</a>
+      <a href="#governance" class="topbar-tag" style="text-decoration:none">Governance</a>
+      <a href="#portfolio" class="topbar-tag" style="text-decoration:none">Portfolio</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
     </div>
   </div>
-</section>
 
-<!-- ═══ PRINCIPLES ═══ -->
-<section class="principles">
-  <div class="s-ey ap">Non-Negotiable Design Principles</div>
-  <h2 class="s-h2 ap">Architectural constraints,<br>not <em>guidelines</em>.</h2>
-  <div class="pr-grid ap">
-    <div class="pr-card"><div class="pr-n">I</div><div class="pr-title">SHAP Before HITL</div><p class="pr-body">Every SHAP explanation is written to BigQuery before the HITL checkpoint is created. The audit record cannot be retrospectively amended. XAI is not a dashboard you add after the model ships.</p></div>
-    <div class="pr-card"><div class="pr-n">II</div><div class="pr-title">SAP Write Guard</div><p class="pr-body">The sap.post_journal_entry() function requires a hitl_id parameter. The SAP write is structurally unreachable without a committed human approval record. Compliance enforced by the write path.</p></div>
-    <div class="pr-card"><div class="pr-n">III</div><div class="pr-title">Quarantine-Then-Review</div><p class="pr-body">Schema-violating records are quarantined, not discarded. Data loss in a sensor system is irreversible. Every quarantine event generates a steward notification and a reinstatement workflow.</p></div>
-    <div class="pr-card"><div class="pr-n">IV</div><div class="pr-title">Augment, Not Replace</div><p class="pr-body">Salesforce and SAP stay exactly where they are. The AE is the orchestration and intelligence layer above them. Every module has a defined autonomy boundary — below it, act. Above it, brief a human and wait.</p></div>
+  <!-- HERO -->
+  <section class="idx-hero">
+    <div class="idx-hero-eyebrow">TOGAF 10 · Google Cloud · Vertex AI · EU AI Act · ADK Multi-Agent</div>
+    <h1 class="idx-hero-h1">The<br><em>Autonomous</em><br><strong>Enterprise</strong></h1>
+    <p class="idx-hero-sub">The governance layer of The Autonomous Enterprise Platform — a portfolio-grade AI solutions architecture for regulated industry.<br>Four process pillars. Five C-Suite governance dashboards.<br>Zero black-box decisions. Every inference explainable. Every action auditable.</p>
+    <div class="idx-hero-stats">
+      <div class="idx-hero-stat"><div class="idx-hs-n"><em>4</em></div><div class="idx-hs-l">Process Pillars</div></div>
+      <div class="idx-hero-stat"><div class="idx-hs-n"><em>5</em></div><div class="idx-hs-l">Governance Dashboards</div></div>
+      <div class="idx-hero-stat"><div class="idx-hs-n"><em>4</em></div><div class="idx-hs-l">Architecture Layers</div></div>
+      <div class="idx-hero-stat"><div class="idx-hs-n"><em>0</em></div><div class="idx-hs-l">Black-Box Decisions</div></div>
+      <div class="idx-hero-stat"><div class="idx-hs-n"><em>16</em></div><div class="idx-hs-l">Architecture Decisions</div></div>
+    </div>
+    <div class="idx-hero-cta">
+      <a href="#platform" class="btn-primary-dk">Explore the Platform ↓</a>
+      <a href="#portfolio" class="btn-ghost-dk">View Portfolio Pages →</a>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS STRIP -->
+  <div class="creds-strip">
+    <span class="cred-label-text">Built by</span>
+    <span class="cred-chip">TOGAF 10 EA</span>
+    <span class="cred-chip">Google MLE</span>
+    <span class="cred-chip">Google Cloud Architect</span>
+    <span class="cred-chip">SAFe SA + SPC</span>
+    <div class="cred-sep-line"></div>
+    <span class="cred-chip">EU AI Act — Annex III Compliant</span>
+    <span class="cred-chip">ISO 13485 · FDA 21 CFR 820</span>
+    <span class="cred-chip">ASC 606 · GDPR · CSRD</span>
+    <div class="cred-sep-line"></div>
+    <span class="cred-chip">Vertex AI · ADK Multi-Agent · A2A</span>
+    <span class="cred-chip">GKE · Cloud Run · VPC-SC · CMEK</span>
+    <span class="cred-chip">BigQuery · Pub/Sub · Firestore</span>
   </div>
-</section>
 
-<!-- ═══ ANCHOR CLIENT ═══ -->
-<section class="client-block">
-  <div class="client-inner ap">
-    <div>
-      <div class="s-ey">Anchor Client</div>
-      <h2 class="s-h2">ClaraVis Medical <em>Systems</em></h2>
-      <p class="s-p">Munich, Germany · €1.2B Revenue · 4,200 Employees · MRI &amp; CT Imaging · 12,000+ Units · 34 Countries</p>
-      <div class="client-kpis">
-        <div class="kpi"><div class="kpi-val"><em>47</em> days</div><div class="kpi-label">avg. CPQ cycle across 9 silos</div></div>
-        <div class="kpi"><div class="kpi-val"><em>€40M</em></div><div class="kpi-label">annual warranty over-reserve</div></div>
-        <div class="kpi"><div class="kpi-val"><em>3.2×</em></div><div class="kpi-label">reactive vs predictive maint. cost</div></div>
-        <div class="kpi"><div class="kpi-val"><em>3</em> models</div><div class="kpi-label">EU AI Act non-compliant in production</div></div>
-        <div class="kpi"><div class="kpi-val"><em>6</em></div><div class="kpi-label">disconnected telemetry systems</div></div>
-        <div class="kpi"><div class="kpi-val"><em>34</em></div><div class="kpi-label">countries of operation</div></div>
+  <div class="content" style="max-width:1080px;">
+
+    <!-- PLATFORM ARCHITECTURE DIAGRAM -->
+    <section class="section" id="platform">
+      <h2 class="section-heading"><span class="section-num">§1</span> Platform Architecture</h2>
+      <p class="body-text">The full platform, <em style="color:var(--teal)">at a glance.</em></p>
+      <p class="body-text">Five governance dashboards sit above four process pillars. Every pillar shares a common four-layer contract — from HITL-enabled presentation surfaces down to a zero-trust GCP infrastructure that makes compliance structurally un-bypassable.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">C-Suite governance layer above four process pillars, each sharing the four-layer GCP architecture. Click any node to navigate.</div>
+        <div class="figure-body" style="padding:1.5rem;overflow-x:auto;">
+          <svg width="100%" viewBox="0 0 680 800" role="img" style="min-width:640px;font-family:var(--sans)">
+            <title>The Autonomous Enterprise — Platform Architecture Diagram</title>
+            <desc>Structural diagram showing five C-Suite governance dashboards above four process pillars (Quote-to-Cash, Procure-to-Pay, Supply Chain, Finance Operations), each pillar containing named modules and sharing a four-layer GCP architecture.</desc>
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+
+            <!-- Platform boundary -->
+            <rect x="10" y="10" width="660" height="778" rx="4" fill="none" stroke="var(--border2)" stroke-width="1" stroke-dasharray="5 4"/>
+            <text font-family="var(--mono)" font-size="10" fill="var(--text3)" x="22" y="26" letter-spacing="0.1em">THE AUTONOMOUS ENTERPRISE PLATFORM</text>
+
+            <!-- GOVERNANCE BAND -->
+            <rect x="22" y="36" width="636" height="96" rx="6" fill="var(--bg2)" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--serif)" font-size="13" font-weight="400" fill="var(--text)" x="340" y="56" text-anchor="middle" letter-spacing="0.02em">C-SUITE GOVERNANCE LAYER</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="340" y="70" text-anchor="middle">Dashboards of dashboards · aggregated signal from all four pillars</text>
+
+            <!-- FinRisk tile -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-FinRisk/" target="_blank">
+              <rect x="32" y="78" width="110" height="44" rx="4" fill="var(--coral-bg)" stroke="var(--coral-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="10" font-weight="500" fill="var(--coral)" x="87" y="97" text-anchor="middle">FinRisk</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--coral)" opacity="0.7" x="87" y="112" text-anchor="middle">Sentinel</text>
+            </a>
+            <!-- Data Gov tile -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Data-Governance/" target="_blank">
+              <rect x="150" y="78" width="110" height="44" rx="4" fill="var(--blue-bg)" stroke="var(--blue-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="10" font-weight="500" fill="var(--blue)" x="205" y="97" text-anchor="middle">Data</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--blue)" opacity="0.7" x="205" y="112" text-anchor="middle">Governance</text>
+            </a>
+            <!-- Compliance tile -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Compliance/" target="_blank">
+              <rect x="268" y="78" width="110" height="44" rx="4" fill="var(--purple-bg)" stroke="var(--purple-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="10" font-weight="500" fill="var(--purple)" x="323" y="97" text-anchor="middle">Compliance</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--purple)" opacity="0.7" x="323" y="112" text-anchor="middle">Hub</text>
+            </a>
+            <!-- Strategy tile -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Strategy-Dashboard/" target="_blank">
+              <rect x="386" y="78" width="110" height="44" rx="4" fill="var(--amber-bg)" stroke="var(--amber-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="10" font-weight="500" fill="var(--amber)" x="441" y="97" text-anchor="middle">Strategy</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--amber)" opacity="0.7" x="441" y="112" text-anchor="middle">Dashboard</text>
+            </a>
+            <!-- GreenOps tile -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-GreenOps/" target="_blank">
+              <rect x="504" y="78" width="142" height="44" rx="4" fill="var(--teal-bg)" stroke="var(--teal-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="10" font-weight="500" fill="var(--teal)" x="575" y="97" text-anchor="middle">GreenOps</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--teal)" opacity="0.7" x="575" y="112" text-anchor="middle">Platform</text>
+            </a>
+
+            <!-- Signal arrows up from each pillar midpoint -->
+            <line x1="105" y1="590" x2="105" y2="133" stroke="var(--border2)" stroke-width="0.75" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+            <line x1="258" y1="590" x2="258" y2="133" stroke="var(--border2)" stroke-width="0.75" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+            <line x1="412" y1="590" x2="412" y2="133" stroke="var(--border2)" stroke-width="0.75" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+            <line x1="566" y1="590" x2="566" y2="133" stroke="var(--border2)" stroke-width="0.75" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+
+            <!-- PILLAR 1 — Quote-to-Cash -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" target="_blank">
+              <rect x="22" y="148" width="152" height="454" rx="8" fill="var(--blue-bg)" fill-opacity="0.35" stroke="var(--blue-border)" stroke-width="1"/>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--blue)" x="98" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--blue)" x="98" y="188" text-anchor="middle" letter-spacing="0.04em">QUOTE-TO-CASH</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--blue)" opacity="0.6" x="98" y="203" text-anchor="middle">Q2C · Quote-to-Cash</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">
+              <rect x="32" y="215" width="132" height="28" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="98" y="233" text-anchor="middle">M-01 · CCAI Sales Agent</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">
+              <rect x="32" y="249" width="132" height="28" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="98" y="267" text-anchor="middle">M-02 · ContractGuard</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" target="_blank">
+              <rect x="32" y="283" width="132" height="28" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="98" y="301" text-anchor="middle">M-03 · RevRec AI</text>
+            </a>
+            <line x1="32" y1="325" x2="164" y2="325" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="98" y="340" text-anchor="middle">ADK · Dialogflow CX</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="98" y="356" text-anchor="middle">XGBoost · SHAP</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="98" y="372" text-anchor="middle">Vertex AI Pipelines</text>
+            <line x1="32" y1="386" x2="164" y2="386" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="98" y="400" text-anchor="middle">EU AI Act · ASC 606</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="98" y="416" text-anchor="middle">ISO 13485 · GDPR</text>
+            <line x1="32" y1="430" x2="164" y2="430" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="98" y="445" text-anchor="middle">GCP europe-west3</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="98" y="461" text-anchor="middle">VPC-SC · CMEK</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="98" y="477" text-anchor="middle">Terraform IaC</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="98" y="512" text-anchor="middle">→ Quote-to-Cash portfolio</text>
+
+            <!-- PILLAR 2 — Procure-to-Pay -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" target="_blank">
+              <rect x="176" y="148" width="152" height="454" rx="8" fill="var(--purple-bg)" fill-opacity="0.35" stroke="var(--purple-border)" stroke-width="1"/>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--purple)" x="252" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--purple)" x="252" y="188" text-anchor="middle" letter-spacing="0.04em">PROCURE-TO-PAY</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--purple)" opacity="0.6" x="252" y="203" text-anchor="middle">P2P · Procure-to-Pay</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/page-03.html" target="_blank">
+              <rect x="186" y="215" width="132" height="28" rx="3" fill="white" stroke="var(--purple-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--purple)" x="252" y="233" text-anchor="middle">Procurement Intel</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/page-04.html" target="_blank">
+              <rect x="186" y="249" width="132" height="28" rx="3" fill="white" stroke="var(--purple-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--purple)" x="252" y="267" text-anchor="middle">Supplier Scoring</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" target="_blank">
+              <rect x="186" y="283" width="132" height="28" rx="3" fill="white" stroke="var(--purple-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--purple)" x="252" y="301" text-anchor="middle">AP Exception Agent</text>
+            </a>
+            <line x1="186" y1="325" x2="318" y2="325" stroke="var(--purple-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="252" y="340" text-anchor="middle">ADK · MCP Tools</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="252" y="356" text-anchor="middle">Anomaly Detection</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="252" y="372" text-anchor="middle">Vertex AI · SHAP</text>
+            <line x1="186" y1="386" x2="318" y2="386" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="252" y="400" text-anchor="middle">EU AI Act · GDPR</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="252" y="416" text-anchor="middle">OECD · IFRS</text>
+            <line x1="186" y1="430" x2="318" y2="430" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="252" y="445" text-anchor="middle">Apigee · Cloud Tasks</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="252" y="461" text-anchor="middle">Assured Workloads</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="252" y="477" text-anchor="middle">VPC-SC · CMEK</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--purple)" x="252" y="512" text-anchor="middle">→ Procure-to-Pay portfolio</text>
+
+            <!-- PILLAR 3 — Supply Chain -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank">
+              <rect x="330" y="148" width="152" height="454" rx="8" fill="var(--teal-bg)" fill-opacity="0.35" stroke="var(--teal-border)" stroke-width="1"/>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--teal)" x="406" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--teal)" x="406" y="188" text-anchor="middle" letter-spacing="0.04em">SUPPLY CHAIN</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--teal)" opacity="0.6" x="406" y="203" text-anchor="middle">Ops · Field Service</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" target="_blank">
+              <rect x="340" y="215" width="132" height="28" rx="3" fill="white" stroke="var(--teal-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--teal)" x="406" y="233" text-anchor="middle">M-05 · Asset IQ</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/page-02.html" target="_blank">
+              <rect x="340" y="249" width="132" height="28" rx="3" fill="white" stroke="var(--teal-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--teal)" x="406" y="267" text-anchor="middle">Fleet Telemetry</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/page-02.html#demandiq" target="_blank">
+              <rect x="340" y="283" width="132" height="28" rx="3" fill="white" stroke="var(--teal-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--teal)" x="406" y="301" text-anchor="middle">Demand Planning</text>
+            </a>
+            <line x1="340" y1="325" x2="472" y2="325" stroke="var(--teal-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="406" y="340" text-anchor="middle">ADK · A2A Protocol</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="406" y="356" text-anchor="middle">RUL Regression</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="406" y="372" text-anchor="middle">Isolation Forest</text>
+            <line x1="340" y1="386" x2="472" y2="386" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="406" y="400" text-anchor="middle">ISO 13485 · GDPR</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="406" y="416" text-anchor="middle">FDA 21 CFR 820</text>
+            <line x1="340" y1="430" x2="472" y2="430" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="406" y="445" text-anchor="middle">Pub/Sub · Firestore</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="406" y="461" text-anchor="middle">GKE · Cloud Run</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="406" y="477" text-anchor="middle">BeyondCorp · IAM</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--teal)" x="406" y="512" text-anchor="middle">→ Supply Chain portfolio</text>
+
+            <!-- PILLAR 4 — Finance -->
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" target="_blank">
+              <rect x="484" y="148" width="154" height="454" rx="8" fill="var(--amber-bg)" fill-opacity="0.35" stroke="var(--amber-border)" stroke-width="1"/>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--amber)" x="561" y="172" text-anchor="middle" letter-spacing="0.04em">AUTONOMOUS</text>
+              <text font-family="var(--sans)" font-size="11" font-weight="700" fill="var(--amber)" x="561" y="188" text-anchor="middle" letter-spacing="0.04em">FINANCE</text>
+              <text font-family="var(--mono)" font-size="9" fill="var(--amber)" opacity="0.6" x="561" y="203" text-anchor="middle">Finance · Treasury</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/page-04.html" target="_blank">
+              <rect x="494" y="215" width="134" height="28" rx="3" fill="white" stroke="var(--amber-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--amber)" x="561" y="233" text-anchor="middle">Intercompany Recon</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/page-05.html" target="_blank">
+              <rect x="494" y="249" width="134" height="28" rx="3" fill="white" stroke="var(--amber-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--amber)" x="561" y="267" text-anchor="middle">Treasury Visibility</text>
+            </a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-FinRisk/" target="_blank">
+              <rect x="494" y="283" width="134" height="28" rx="3" fill="white" stroke="var(--amber-border)" stroke-width="0.75"/>
+              <text font-family="var(--mono)" font-size="9" fill="var(--amber)" x="561" y="301" text-anchor="middle">M-04 · FinRisk Agent</text>
+            </a>
+            <line x1="494" y1="325" x2="628" y2="325" stroke="var(--amber-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="561" y="340" text-anchor="middle">ADK · SAP Connectors</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="561" y="356" text-anchor="middle">Cash Flow Forecast</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text2)" x="561" y="372" text-anchor="middle">Vertex AI · SHAP</text>
+            <line x1="494" y1="386" x2="628" y2="386" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="561" y="400" text-anchor="middle">EU AI Act · GDPR</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="561" y="416" text-anchor="middle">CSRD · OECD · IFRS</text>
+            <line x1="494" y1="430" x2="628" y2="430" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="561" y="445" text-anchor="middle">Spanner · BigQuery</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="561" y="461" text-anchor="middle">SWIFT gpi · Apigee</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--text3)" x="561" y="477" text-anchor="middle">Assured Workloads</text>
+            <text font-family="var(--mono)" font-size="9" fill="var(--amber)" x="561" y="512" text-anchor="middle">→ Finance portfolio</text>
+
+            <!-- Layer bracket labels (left) -->
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="16" y="270" text-anchor="middle" transform="rotate(-90,16,270)" letter-spacing="0.08em">L01 · MODULES</text>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="16" y="358" text-anchor="middle" transform="rotate(-90,16,358)" letter-spacing="0.08em">L02–L03</text>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="16" y="458" text-anchor="middle" transform="rotate(-90,16,458)" letter-spacing="0.08em">L04 · GCP</text>
+
+            <!-- SHARED INFRA BAND -->
+            <rect x="22" y="622" width="636" height="76" rx="6" fill="var(--blue-bg)" fill-opacity="0.4" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--sans)" font-size="10" font-weight="600" fill="var(--blue)" x="340" y="641" text-anchor="middle" letter-spacing="0.06em">LAYER 04 — SHARED GCP INFRASTRUCTURE</text>
+
+            <rect x="32" y="650" width="110" height="24" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="87" y="666" text-anchor="middle">VPC-SC · Zero Trust</text>
+
+            <rect x="150" y="650" width="100" height="24" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="200" y="666" text-anchor="middle">CMEK · Spanner</text>
+
+            <rect x="258" y="650" width="120" height="24" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="318" y="666" text-anchor="middle">Immutable Audit Log</text>
+
+            <rect x="386" y="650" width="106" height="24" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="439" y="666" text-anchor="middle">Workload Identity</text>
+
+            <rect x="500" y="650" width="148" height="24" rx="3" fill="white" stroke="var(--blue-border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="9" fill="var(--blue)" x="574" y="666" text-anchor="middle">Terraform · Cloud Build</text>
+
+            <!-- arrows pillar to infra -->
+            <line x1="105" y1="602" x2="105" y2="622" stroke="var(--border2)" stroke-width="0.75" marker-end="url(#arr)"/>
+            <line x1="252" y1="602" x2="252" y2="622" stroke="var(--border2)" stroke-width="0.75" marker-end="url(#arr)"/>
+            <line x1="406" y1="602" x2="406" y2="622" stroke="var(--border2)" stroke-width="0.75" marker-end="url(#arr)"/>
+            <line x1="561" y1="602" x2="561" y2="622" stroke="var(--border2)" stroke-width="0.75" marker-end="url(#arr)"/>
+
+            <!-- Legend -->
+            <line x1="22" y1="716" x2="658" y2="716" stroke="var(--border)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="22" y="732" letter-spacing="0.06em">LEGEND</text>
+            <rect x="70" y="723" width="10" height="10" rx="2" fill="var(--blue-bg)" stroke="var(--blue)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text2)" x="85" y="732">Quote-to-Cash (Q2C)</text>
+            <rect x="155" y="723" width="10" height="10" rx="2" fill="var(--purple-bg)" stroke="var(--purple)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text2)" x="170" y="732">Procure-to-Pay (P2P)</text>
+            <rect x="240" y="723" width="10" height="10" rx="2" fill="var(--teal-bg)" stroke="var(--teal)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text2)" x="255" y="732">Supply Chain</text>
+            <rect x="335" y="723" width="10" height="10" rx="2" fill="var(--amber-bg)" stroke="var(--amber)" stroke-width="0.75"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text2)" x="350" y="732">Finance</text>
+            <line x1="400" y1="727" x2="420" y2="727" stroke="var(--text3)" stroke-width="0.75" stroke-dasharray="3 2"/>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="425" y="732">Signal flow to governance</text>
+            <text font-family="var(--mono)" font-size="8" fill="var(--text3)" x="22" y="756" letter-spacing="0.04em">All infrastructure · GCP europe-west3 · EU AI Act Annex III · SHAP before HITL · SAP write guard enforced · Click any node to navigate</text>
+          </svg>
+        </div>
+        <div class="figure-note">Signal flows up from each pillar to the governance layer. Trust is enforced at Layer 04 — the infrastructure layer — not the application layer.</div>
+      </div>
+    </section>
+
+    <!-- GOVERNANCE BAND -->
+    <section class="section" id="governance">
+      <h2 class="section-heading"><span class="section-num">§2</span> C-Suite Governance · Five Dashboard Domains</h2>
+      <p class="body-text">Every domain. One <em style="color:var(--teal)">audit trail.</em></p>
+      <p class="body-text">Five independent dashboards — each a deep-dive into a single governance domain — that pull aggregated signal from all four pillars. Each dashboard is a standalone page with its own data sources, HITL constraints, regulatory obligations, and GCP architecture.</p>
+
+      <div class="gov-card-grid">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-FinRisk/" class="gov-card-item finrisk" target="_blank">
+          <span class="gc-badge2 red2">Financial Risk</span>
+          <div class="gc-title2">FinRisk Sentinel</div>
+          <div class="gc-sub2">Real-time anomaly detection across all payment and settlement flows. Dual-reviewer HITL. Isolation Forest + BigQuery streaming.</div>
+          <div class="gc-sources2">Sources: Payment streams · AP ledger · Treasury · Intercompany flows</div>
+          <div class="gc-link2">View Dashboard →</div>
+        </a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Data-Governance/" class="gov-card-item govdata" target="_blank">
+          <span class="gc-badge2 blue2">Data Governance</span>
+          <div class="gc-title2">Data Governance</div>
+          <div class="gc-sub2">TFX schema validation, Feature Store lineage, quarantine pipeline. Steward-gated reinstatement across all pillars.</div>
+          <div class="gc-sources2">Sources: Feature Store · TFX pipelines · Quarantine queue · All pillar data</div>
+          <div class="gc-link2">View Dashboard →</div>
+        </a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Compliance/" class="gov-card-item compliance" target="_blank">
+          <span class="gc-badge2 purple3">Compliance</span>
+          <div class="gc-title2">Compliance Hub</div>
+          <div class="gc-sub2">EU AI Act Art. 14 HITL audit trail. Regulatory obligations encoded as write-path constraints, not documentation footnotes.</div>
+          <div class="gc-sources2">Sources: HITL audit log · Model cards · SHAP records · All pillars</div>
+          <div class="gc-link2">View Dashboard →</div>
+        </a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Strategy-Dashboard/" class="gov-card-item strategy" target="_blank">
+          <span class="gc-badge2 gold3">Executive Strategy</span>
+          <div class="gc-title2">Strategy Dashboard</div>
+          <div class="gc-sub2">BigQuery materialised views. Fleet panel, revenue pipeline, CPQ velocity across all pillars. Five C-Suite panels.</div>
+          <div class="gc-sources2">Sources: Salesforce · SAP · Asset telemetry · All module KPIs</div>
+          <div class="gc-link2">View Dashboard →</div>
+        </a>
+        <a href="https://raosiddharthp.github.io/The-Autonomous-GreenOps/" class="gov-card-item greenops" target="_blank">
+          <span class="gc-badge2 green2">Sustainability</span>
+          <div class="gc-title2">GreenOps Platform</div>
+          <div class="gc-sub2">Carbon Footprint API, GKE workload scheduling, CSRD Scope 3 traceability. Real-time emissions across all cloud workloads.</div>
+          <div class="gc-sources2">Sources: Carbon Footprint API · GKE metrics · CSRD Scope 3 feed</div>
+          <div class="gc-link2">View Dashboard →</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOUR PILLARS -->
+    <section class="section" id="pillars">
+      <h2 class="section-heading"><span class="section-num">§3</span> The Four Pillars</h2>
+      <p class="body-text">Every domain. One <em style="color:var(--teal)">coherent</em> platform.</p>
+      <p class="body-text">Each pillar is a collection of AI modules sharing a common data governance spine, identity fabric, and audit ledger. Modules within a pillar communicate via A2A protocol. Every module is built on the same four-layer contract.</p>
+
+      <div class="idx-pillar-grid">
+        <div class="idx-pillar-card q2c">
+          <div class="ipc-domain">Q2C · Quote-to-Cash</div>
+          <h3 class="ipc-title">The Autonomous <em>Quote-to-Cash</em></h3>
+          <p class="ipc-desc">CCAI Sales Agent handles inbound qualification through turn 11, autonomously. ContractGuard extracts and risk-scores 200+ clause types. RevRec AI classifies multi-element arrangements before any GL entry posts.</p>
+          <div class="ipc-modules">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" class="ipc-module-row" target="_blank"><span class="ipm-label">M-01 · CCAI Sales Agent</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" class="ipc-module-row" target="_blank"><span class="ipm-label">M-02 · ContractGuard</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-05.html" class="ipc-module-row" target="_blank"><span class="ipm-label">M-03 · RevRec AI</span><span class="ipm-arrow">↗</span></a>
+          </div>
+          <div class="ipc-footer">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" class="ipc-ext" target="_blank">Pillar Portfolio ↗</a>
+            <div class="ipc-tags"><span class="ipc-tag">ADK</span><span class="ipc-tag">Dialogflow CX</span><span class="ipc-tag">XGBoost</span></div>
+          </div>
+        </div>
+        <div class="idx-pillar-card p2p">
+          <div class="ipc-domain">P2P · Procure-to-Pay</div>
+          <h3 class="ipc-title">The Autonomous <em>Procure-to-Pay</em></h3>
+          <p class="ipc-desc">Intelligent procurement from requisition through payment. Supplier intelligence, contract compliance, spend analytics, and AP exception triage — governed by the same HITL and XAI framework as every AE module.</p>
+          <div class="ipc-modules">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/page-03.html" class="ipc-module-row" target="_blank"><span class="ipm-label">Procurement Intelligence</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/page-04.html" class="ipc-module-row" target="_blank"><span class="ipm-label">Supplier Scoring Agent</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" class="ipc-module-row" target="_blank"><span class="ipm-label">AP Exception Agent</span><span class="ipm-arrow">↗</span></a>
+          </div>
+          <div class="ipc-footer">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" class="ipc-ext" target="_blank">Pillar Portfolio ↗</a>
+            <div class="ipc-tags"><span class="ipc-tag">Vertex AI</span><span class="ipc-tag">Pub/Sub</span><span class="ipc-tag">SHAP</span></div>
+          </div>
+        </div>
+        <div class="idx-pillar-card sc">
+          <div class="ipc-domain">Supply Chain · Operations</div>
+          <h3 class="ipc-title">The Autonomous <em>Supply Chain</em></h3>
+          <p class="ipc-desc">Asset IQ monitors 12,000+ deployed MRI units and predicts remaining useful life to the day. The €40M warranty over-reserve is an engineering problem, solvable with a unified telemetry pipeline and a well-specified RUL model.</p>
+          <div class="ipc-modules">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="ipc-module-row" target="_blank"><span class="ipm-label">M-05 · Asset IQ</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/page-02.html" class="ipc-module-row" target="_blank"><span class="ipm-label">Fleet Telemetry Pipeline</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/page-02.html#demandiq" class="ipc-module-row" target="_blank"><span class="ipm-label">Demand Planning</span><span class="ipm-arrow">↗</span></a>
+          </div>
+          <div class="ipc-footer">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="ipc-ext" target="_blank">Pillar Portfolio ↗</a>
+            <div class="ipc-tags"><span class="ipc-tag">ISO 13485</span><span class="ipc-tag">RUL Model</span><span class="ipc-tag">Isolation Forest</span></div>
+          </div>
+        </div>
+        <div class="idx-pillar-card fin">
+          <div class="ipc-domain">Finance · Treasury · AP</div>
+          <h3 class="ipc-title">The Autonomous <em>Finance Operations</em></h3>
+          <p class="ipc-desc">Three agents above SAP — not instead of it. Intercompany reconciliation, treasury visibility, and AP exception triage, each operating within a governed intelligence layer. CSRD Scope 3 is a native output of the settlement flow.</p>
+          <div class="ipc-modules">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/page-04.html" class="ipc-module-row" target="_blank"><span class="ipm-label">Intercompany Recon Agent</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/page-05.html" class="ipc-module-row" target="_blank"><span class="ipm-label">Treasury Visibility Agent</span><span class="ipm-arrow">↗</span></a>
+            <a href="https://raosiddharthp.github.io/The-Autonomous-FinRisk/" class="ipc-module-row" target="_blank"><span class="ipm-label">M-04 · FinRisk Sentinel</span><span class="ipm-arrow">↗</span></a>
+          </div>
+          <div class="ipc-footer">
+            <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" class="ipc-ext" target="_blank">Pillar Portfolio ↗</a>
+            <div class="ipc-tags"><span class="ipc-tag">Assured Workloads</span><span class="ipc-tag">SWIFT gpi</span><span class="ipc-tag">CSRD Scope 3</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE STACK -->
+    <section class="section" id="architecture">
+      <h2 class="section-heading"><span class="section-num">§4</span> Four-Layer Architecture</h2>
+      <p class="body-text">One <em style="color:var(--teal)">coherent</em> contract. Every pillar.</p>
+      <p class="body-text">Each module across each pillar is designed against the same four-layer stack. Trust is enforced at the infrastructure layer — not the application layer — making compliance structurally un-bypassable.</p>
+
+      <div class="platform-layer-grid">
+        <div class="platform-layer">
+          <div class="pl-label-box"><div class="pl-num">LAYER 01</div><div class="pl-name">Experience &amp;<br>Presentation</div><div class="pl-desc">What humans see, review, and approve</div></div>
+          <div class="pl-chips">
+            <span class="pl-chip blue">Portfolio Site</span><span class="pl-chip blue">8 App Dashboards</span><span class="pl-chip blue">HITL Approval UI</span><span class="pl-chip blue">XAI Explanation Viewer</span><span class="pl-chip blue">Audit Trail Dashboard</span><span class="pl-chip blue">C-Suite Governance Layer</span><span class="pl-chip blue">React · TypeScript</span><span class="pl-chip blue">BeyondCorp · IAP</span>
+          </div>
+        </div>
+        <div class="pl-arrow-row">↕ REST / gRPC / Pub/Sub events</div>
+        <div class="platform-layer">
+          <div class="pl-label-box"><div class="pl-num">LAYER 02</div><div class="pl-name">Agent<br>Orchestration</div><div class="pl-desc">Where intelligence acts</div></div>
+          <div class="pl-chips">
+            <span class="pl-chip purple2">ADK Multi-Agent Swarm</span><span class="pl-chip purple2">CCAI Sales Agent</span><span class="pl-chip purple2">A2A Protocol</span><span class="pl-chip purple2">MCP Tool Manifest</span><span class="pl-chip purple2">Pub/Sub Orchestration</span><span class="pl-chip purple2">Agent State Machines</span><span class="pl-chip purple2">Circuit Breakers</span><span class="pl-chip purple2">Autonomy Boundaries</span><span class="pl-chip purple2">Firestore Agent State</span>
+          </div>
+        </div>
+        <div class="pl-arrow-row">↕ Feature Store · Model Registry · XAI contracts</div>
+        <div class="platform-layer">
+          <div class="pl-label-box"><div class="pl-num">LAYER 03</div><div class="pl-name">MLOps &amp;<br>Intelligence</div><div class="pl-desc">Where ML infers and explains</div></div>
+          <div class="pl-chips">
+            <span class="pl-chip gold2">Vertex AI Pipelines</span><span class="pl-chip gold2">Feature Store</span><span class="pl-chip gold2">SHAP · XAI Layer</span><span class="pl-chip gold2">Model Registry</span><span class="pl-chip gold2">Drift Detection</span><span class="pl-chip gold2">Model Cards</span><span class="pl-chip gold2">Retraining Pipelines</span><span class="pl-chip gold2">Confidence Scoring</span><span class="pl-chip gold2">BigQuery ML</span>
+          </div>
+        </div>
+        <div class="pl-arrow-row">↕ VPC-native · CMEK-encrypted · IAM-bound</div>
+        <div class="platform-layer">
+          <div class="pl-label-box"><div class="pl-num">LAYER 04</div><div class="pl-name">Infrastructure<br>&amp; Governance</div><div class="pl-desc">Where trust is physically enforced</div></div>
+          <div class="pl-chips">
+            <span class="pl-chip teal2">Terraform IaC</span><span class="pl-chip teal2">GKE Autopilot</span><span class="pl-chip teal2">Cloud Run</span><span class="pl-chip teal2">VPC-SC Zero-Trust</span><span class="pl-chip teal2">CMEK Encryption</span><span class="pl-chip teal2">BeyondCorp</span><span class="pl-chip teal2">Workload Identity</span><span class="pl-chip teal2">Immutable Audit Log</span><span class="pl-chip teal2">Cloud Build CI/CD</span><span class="pl-chip teal2">Assured Workloads</span><span class="pl-chip teal2">Cloud Armor · SCC</span><span class="pl-chip teal2">FinOps · GreenOps</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES -->
+    <section class="section" id="principles">
+      <h2 class="section-heading"><span class="section-num">§5</span> Non-Negotiable Design Principles</h2>
+      <p class="body-text">Architectural constraints, not <em style="color:var(--teal)">guidelines.</em></p>
+
+      <div class="idx-principles-grid">
+        <div class="idx-pr-card">
+          <div class="idx-pr-n">I</div>
+          <div class="idx-pr-title">SHAP Before HITL</div>
+          <p class="idx-pr-body">Every SHAP explanation is written to BigQuery before the HITL checkpoint is created. The audit record cannot be retrospectively amended. XAI is not a dashboard you add after the model ships.</p>
+        </div>
+        <div class="idx-pr-card">
+          <div class="idx-pr-n">II</div>
+          <div class="idx-pr-title">SAP Write Guard</div>
+          <p class="idx-pr-body">The <code>sap.post_journal_entry()</code> function requires a <code>hitl_id</code> parameter. The SAP write is structurally unreachable without a committed human approval record. Compliance enforced by the write path.</p>
+        </div>
+        <div class="idx-pr-card">
+          <div class="idx-pr-n">III</div>
+          <div class="idx-pr-title">Quarantine-Then-Review</div>
+          <p class="idx-pr-body">Schema-violating records are quarantined, not discarded. Data loss in a sensor system is irreversible. Every quarantine event generates a steward notification and a reinstatement workflow.</p>
+        </div>
+        <div class="idx-pr-card">
+          <div class="idx-pr-n">IV</div>
+          <div class="idx-pr-title">Augment, Not Replace</div>
+          <p class="idx-pr-body">Salesforce and SAP stay exactly where they are. The AE is the orchestration and intelligence layer above them. Every module has a defined autonomy boundary — below it, act. Above it, brief a human and wait.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANCHOR CLIENT -->
+    <section class="section" id="client">
+      <h2 class="section-heading"><span class="section-num">§6</span> Anchor Client</h2>
+      <p class="body-text">ClaraVis Medical <em style="color:var(--teal)">Systems.</em></p>
+      <p class="body-text">Munich, Germany · €1.2B Revenue · 4,200 Employees · MRI &amp; CT Imaging · 12,000+ Units · 34 Countries</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;margin-top:1.5rem;">
+        <div>
+          <div class="client-kpi-grid">
+            <div class="client-kpi-cell"><div class="ckv"><em>47</em> days</div><div class="ckl">avg. CPQ cycle across 9 silos</div></div>
+            <div class="client-kpi-cell"><div class="ckv"><em>€40M</em></div><div class="ckl">annual warranty over-reserve</div></div>
+            <div class="client-kpi-cell"><div class="ckv"><em>3.2×</em></div><div class="ckl">reactive vs predictive maint. cost</div></div>
+            <div class="client-kpi-cell"><div class="ckv"><em>3</em> models</div><div class="ckl">EU AI Act non-compliant in production</div></div>
+            <div class="client-kpi-cell"><div class="ckv"><em>6</em></div><div class="ckl">disconnected telemetry systems</div></div>
+            <div class="client-kpi-cell"><div class="ckv"><em>34</em></div><div class="ckl">countries of operation</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="doc-eyebrow" style="margin-bottom:0.75rem;">Three Structural Pain Points</div>
+          <div class="client-pain-list">
+            <div class="client-pain-item">
+              <div class="cp-num">Pain 01</div>
+              <div class="cp-title">Manual Quote-to-Cash Across 9 Silos</div>
+              <p class="cp-body">Sequential handoffs between Sales, Applications Engineering, Legal, Service, Finance, Revenue Recognition, Logistics, and Post-Sales. Each handoff is a human, an email, and a 3–5 day delay.</p>
+              <div class="cp-resolve">→ CPQ cycle under 9 days via M-01 + M-02. Revenue close reduced by 31 days.</div>
+            </div>
+            <div class="client-pain-item">
+              <div class="cp-num">Pain 02</div>
+              <div class="cp-title">EU AI Act Exposure on Three Live Models</div>
+              <p class="cp-body">Revenue recognition, asset failure prediction, and contract risk scoring — all Annex III high-risk. None produce a human-reviewable explanation. A Q3 2025 compliance audit flagged all three.</p>
+              <div class="cp-resolve">→ HITL as state machine node. SHAP at inference. Article 14 satisfied structurally.</div>
+            </div>
+            <div class="client-pain-item">
+              <div class="cp-num">Pain 03</div>
+              <div class="cp-title">12,000 Units. No Unified Telemetry.</div>
+              <p class="cp-body">MRI units send DICOM service events to 6 different regional systems with no common schema. Predictive maintenance is impossible. The €40M reserve exists because nobody can predict failures.</p>
+              <div class="cp-resolve">→ Unified asset event pipeline → RUL model → 40% reduction in unplanned downtime.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO NAVIGATION -->
+    <section class="section" id="portfolio">
+      <h2 class="section-heading"><span class="section-num">§7</span> Complete Portfolio</h2>
+      <p class="body-text">Every page, <em style="color:var(--teal)">every decision.</em></p>
+
+      <div class="idx-pn-grid">
+        <div class="idx-pn-divider">Architecture Portfolio — Platform-Level Design Pages</div>
+        <a href="page-02.html" class="idx-pn-card">
+          <div class="idx-pn-index">PAGE 02</div>
+          <div class="idx-pn-title">ClaraVis: Client Brief</div>
+          <p class="idx-pn-desc">Requirements, stakeholders, pain points, regulatory exposure. The anchor client that drives every design decision in the portfolio.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+        <a href="page-03.html" class="idx-pn-card">
+          <div class="idx-pn-index">PAGE 03</div>
+          <div class="idx-pn-title">TOGAF ADM: Phases A–F</div>
+          <p class="idx-pn-desc">Platform-wide architecture principles, the four-layer technology standard, and ADRs 001–004 that bind every Solution Train. Each pillar's own GCP reference architecture is linked, not duplicated.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+        <a href="page-04.html" class="idx-pn-card">
+          <div class="idx-pn-index">PAGE 04</div>
+          <div class="idx-pn-title">Lean Portfolio Management</div>
+          <p class="idx-pn-desc">Four Solution Trains, Portfolio-level shared enablers, and the Strategic Themes that govern what gets funded and in what order.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+        <a href="page-08.html" class="idx-pn-card">
+          <div class="idx-pn-index">PAGE 08</div>
+          <div class="idx-pn-title">Go-to-Market Strategy</div>
+          <p class="idx-pn-desc">Portfolio-wide adoption sequencing across all four Solution Trains, horizon value, and the EU AI Act deadline as the forcing function.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+
+        <div class="idx-pn-divider">Reference Documents</div>
+        <a href="adr-index.html" class="idx-pn-card">
+          <div class="idx-pn-index">REF-01</div>
+          <div class="idx-pn-title">ADR Index · All 16 Decisions</div>
+          <p class="idx-pn-desc">Every architecture decision record with alternatives considered, full rationale, and consequences — the complete decision log.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+        <a href="glossary.html" class="idx-pn-card">
+          <div class="idx-pn-index">REF-02</div>
+          <div class="idx-pn-title">Glossary</div>
+          <p class="idx-pn-desc">One-sentence definitions for every technical term used across the portfolio. EU AI Act, TOGAF, GCP, and ML terminology.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+        <a href="changelog.html" class="idx-pn-card">
+          <div class="idx-pn-index">REF-03</div>
+          <div class="idx-pn-title">Changelog</div>
+          <p class="idx-pn-desc">Version history, design evolution, and rationale for significant architectural changes across the portfolio lifecycle.</p>
+          <span class="idx-pn-arrow">↗</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer class="idx-footer">
+    <div class="idx-ft-inner">
+      <div>
+        <div class="idx-ft-brand">The <em>Autonomous</em> Enterprise</div>
+        <p class="idx-ft-sub">A portfolio-grade AI solutions architecture. TOGAF 10 · Vertex AI · Google ADK · EU AI Act compliant. GCP europe-west3.</p>
+      </div>
+      <div>
+        <div class="idx-ft-colhead">Governance</div>
+        <div class="idx-ft-links">
+          <a href="https://raosiddharthp.github.io/The-Autonomous-FinRisk/" class="idx-ft-link" target="_blank">FinRisk Sentinel</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Data-Governance/" class="idx-ft-link" target="_blank">Data Governance</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Compliance/" class="idx-ft-link" target="_blank">Compliance Hub</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Strategy-Dashboard/" class="idx-ft-link" target="_blank">Strategy Dashboard</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-GreenOps/" class="idx-ft-link" target="_blank">GreenOps Platform</a>
+        </div>
+      </div>
+      <div>
+        <div class="idx-ft-colhead">Pillars</div>
+        <div class="idx-ft-links">
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" class="idx-ft-link" target="_blank">Autonomous Quote-to-Cash →</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" class="idx-ft-link" target="_blank">Autonomous Procure-to-Pay →</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="idx-ft-link" target="_blank">Autonomous Supply Chain →</a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" class="idx-ft-link" target="_blank">Autonomous Finance Operations →</a>
+        </div>
+      </div>
+      <div>
+        <div class="idx-ft-colhead">Portfolio</div>
+        <div class="idx-ft-links">
+          <a href="adr-index.html" class="idx-ft-link">ADR Index</a>
+          <a href="glossary.html" class="idx-ft-link">Glossary</a>
+          <a href="changelog.html" class="idx-ft-link">Changelog</a>
+          <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" class="idx-ft-link" target="_blank">GitHub →</a>
+        </div>
       </div>
     </div>
-    <div class="client-right">
-      <div class="s-ey">Three Structural Pain Points</div>
-      <div class="pain-item">
-        <div class="pain-num">Pain 01</div>
-        <div class="pain-title">Manual Quote-to-Cash Across 9 Silos</div>
-        <p class="pain-body">Sequential handoffs between Sales, Applications Engineering, Legal, Service, Finance, Revenue Recognition, Logistics, and Post-Sales. Each handoff is a human, an email, and a 3–5 day delay.</p>
-        <div class="pain-resolve">CPQ cycle under 9 days via M-01 + M-02. Revenue close reduced by 31 days.</div>
-      </div>
-      <div class="pain-item">
-        <div class="pain-num">Pain 02</div>
-        <div class="pain-title">EU AI Act Exposure on Three Live Models</div>
-        <p class="pain-body">Revenue recognition, asset failure prediction, and contract risk scoring — all Annex III high-risk. None produce a human-reviewable explanation. A Q3 2025 compliance audit flagged all three.</p>
-        <div class="pain-resolve">HITL as state machine node. SHAP at inference. Article 14 satisfied structurally.</div>
-      </div>
-      <div class="pain-item">
-        <div class="pain-num">Pain 03</div>
-        <div class="pain-title">12,000 Units. No Unified Telemetry.</div>
-        <p class="pain-body">MRI units send DICOM service events to 6 different regional systems with no common schema. Predictive maintenance is impossible. The €40M reserve exists because nobody can predict failures.</p>
-        <div class="pain-resolve">Unified asset event pipeline → RUL model → 40% reduction in unplanned downtime.</div>
-      </div>
+    <div class="idx-ft-copy">
+      © 2026 Siddharthan Rao · TOGAF EA · Google MLE · Google Cloud Architect · SAFe SA + SPC · Built as an architecture portfolio. Not affiliated with Anthropic, Google, or SAP SE.
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- ═══ PORTFOLIO NAVIGATION ═══ -->
-<section class="portfolio-nav" id="portfolio">
-  <div class="s-ey go ap">Complete Portfolio</div>
-  <h2 class="s-h2 ap" style="color:var(--cream)">Every page, <em>every decision</em>.</h2>
-
-  <div class="pn-grid ap">
-
-    <!-- Governance Dashboards -->
-    <div class="pn-divider">Governance Dashboards — C-Suite Layer</div>
-
-    <a href="gov-finrisk.html" class="pn-card">
-      <div class="pn-index">GOV-01</div>
-      <div class="pn-title">FinRisk Sentinel Dashboard</div>
-      <p class="pn-desc">Design, data sources, anomaly model, dual-reviewer HITL, regulatory constraints, and GCP architecture for the financial risk governance dashboard.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="gov-data-governance.html" class="pn-card">
-      <div class="pn-index">GOV-02</div>
-      <div class="pn-title">Data Governance Dashboard</div>
-      <p class="pn-desc">TFX schema validation, Feature Store lineage, quarantine pipeline, steward reinstatement workflow, and cross-pillar data quality monitoring.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="gov-compliance.html" class="pn-card">
-      <div class="pn-index">GOV-03</div>
-      <div class="pn-title">Compliance Hub Dashboard</div>
-      <p class="pn-desc">EU AI Act Article 14 HITL audit trail, model card registry, SHAP conformance log, regulatory obligation mapping, and cross-pillar compliance posture.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="gov-strategy.html" class="pn-card">
-      <div class="pn-index">GOV-04</div>
-      <div class="pn-title">Strategy Dashboard</div>
-      <p class="pn-desc">BigQuery materialised views, fleet panel, revenue pipeline, CPQ velocity, cross-module KPI aggregation. Five C-Suite panels pulling from all pillars.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="gov-greenops.html" class="pn-card">
-      <div class="pn-index">GOV-05</div>
-      <div class="pn-title">GreenOps Platform Dashboard</div>
-      <p class="pn-desc">Carbon Footprint API, GKE workload scheduling, CSRD Scope 3 traceability, real-time emissions telemetry, and hard-deadline bypass constraints.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-
-    <!-- spacer -->
-    <div style="background:transparent"></div>
-
-    <!-- Architecture Portfolio -->
-    <div class="pn-divider">Architecture Portfolio — Nine Design Pages</div>
-
-    <a href="page-02.html" class="pn-card">
-      <div class="pn-index">PAGE 02</div>
-      <div class="pn-title">ClaraVis: Client Brief</div>
-      <p class="pn-desc">Requirements, stakeholders, pain points, regulatory exposure. The anchor client that drives every design decision in the portfolio.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-03.html" class="pn-card">
-      <div class="pn-index">PAGE 03</div>
-      <div class="pn-title">TOGAF ADM: Phases A–F</div>
-      <p class="pn-desc">Architecture work products, migration horizons, and ADRs 001–006 across six formal TOGAF design phases.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-04.html" class="pn-card">
-      <div class="pn-index">PAGE 04</div>
-      <div class="pn-title">Delivery &amp; Product Design</div>
-      <p class="pn-desc">SAFe ARTs, personas, FRD, and eleven HITL checkpoints specifying every human oversight moment in the platform.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-05.html" class="pn-card">
-      <div class="pn-index">PAGE 05</div>
-      <div class="pn-title">Agent Swarm Architecture</div>
-      <p class="pn-desc">ADK multi-agent design, A2A protocol, five agent specs with state machines, circuit breakers, and formal autonomy boundaries.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-06.html" class="pn-card">
-      <div class="pn-index">PAGE 06</div>
-      <div class="pn-title">ML Engineering &amp; MLOps</div>
-      <p class="pn-desc">Five model cards. Vertex AI Pipelines. SHAP XAI layer. Drift detection and retraining. EU AI Act conformance documentation.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-07.html" class="pn-card">
-      <div class="pn-index">PAGE 07</div>
-      <div class="pn-title">Infrastructure &amp; GCP</div>
-      <p class="pn-desc">Terraform IaC, VPC-SC, GKE, Cloud Run, CMEK, Chaos engineering runbook, and BeyondCorp zero-trust mesh.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-08.html" class="pn-card">
-      <div class="pn-index">PAGE 08</div>
-      <div class="pn-title">Go-to-Market Strategy</div>
-      <p class="pn-desc">Buyer map, horizon value, adoption risks, and ADR-016: phased adoption as the EU Act deadline forcing function.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-09.html" class="pn-card">
-      <div class="pn-index">PAGE 09</div>
-      <div class="pn-title">AE Suite — Module Index</div>
-      <p class="pn-desc">All eight modules, dependency matrix, demo pathway index. The München narrative across five modules.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-
-    <!-- Module Pages -->
-    <div class="pn-divider">Module Pages — Deep Dives</div>
-
-    <a href="page-09-m01.html" class="pn-card">
-      <div class="pn-index">M-01</div>
-      <div class="pn-title">CCAI Sales Agent</div>
-      <p class="pn-desc">ADK multi-agent · CCAI · Dialogflow CX · HITL-01 turn-11 escalation. Full agent state machine and demo pathway.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-09-m02.html" class="pn-card">
-      <div class="pn-index">M-02</div>
-      <div class="pn-title">ContractGuard</div>
-      <p class="pn-desc">Document AI · Gemini 1.5 Pro · XGBoost · Vector Store. 200+ clause types. HITL-02/03 legal reviewer workflow.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-09-m03.html" class="pn-card">
-      <div class="pn-index">M-03</div>
-      <div class="pn-title">RevRec AI</div>
-      <p class="pn-desc">XGBoost · SHAP · Salesforce + SAP. ASC 606 multi-element classification. HITL-04/05/09 Finance Controller approval.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="Finrisk_Sentinel.html" class="pn-card">
-      <div class="pn-index">M-04</div>
-      <div class="pn-title">FinRisk Sentinel</div>
-      <p class="pn-desc">Isolation Forest · BigQuery streaming · dual-reviewer HITL-08. Real-time anomaly detection across payment flows.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="page-09-m05.html" class="pn-card">
-      <div class="pn-index">M-05</div>
-      <div class="pn-title">Asset IQ</div>
-      <p class="pn-desc">RUL regression · Isolation Forest · 12K units · ISO 13485. HITL-06/07 Field Service Manager maintenance scheduling.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="greenops.html" class="pn-card">
-      <div class="pn-index">M-06</div>
-      <div class="pn-title">GreenOps Platform</div>
-      <p class="pn-desc">Carbon Footprint API · GKE scheduling · CSRD Scope 3. Hard-deadline bypass. No HITL — infrastructure governance only.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="strategy-dashboard.html" class="pn-card">
-      <div class="pn-index">M-07</div>
-      <div class="pn-title">Strategy Dashboard</div>
-      <p class="pn-desc">BigQuery materialised views · Looker Studio · 5 panels. Fleet, pipeline, velocity, and cross-module KPI aggregation.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="data-governance.html" class="pn-card">
-      <div class="pn-index">M-08</div>
-      <div class="pn-title">Data Governance</div>
-      <p class="pn-desc">TFX Validate · Feature Store lineage · quarantine pipeline. Steward-gated reinstatement. H1 horizon — foundational.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-
-    <!-- Reference -->
-    <div class="pn-divider">Reference Documents</div>
-
-    <a href="adr-index.html" class="pn-card">
-      <div class="pn-index">REF-01</div>
-      <div class="pn-title">ADR Index · All 16 Decisions</div>
-      <p class="pn-desc">Every architecture decision record with alternatives considered, full rationale, and consequences — the complete decision log.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="glossary.html" class="pn-card">
-      <div class="pn-index">REF-02</div>
-      <div class="pn-title">Glossary</div>
-      <p class="pn-desc">One-sentence definitions for every technical term used across the portfolio. EU AI Act, TOGAF, GCP, and ML terminology.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-    <a href="changelog.html" class="pn-card">
-      <div class="pn-index">REF-03</div>
-      <div class="pn-title">Changelog</div>
-      <p class="pn-desc">Version history, design evolution, and rationale for significant architectural changes across the portfolio lifecycle.</p>
-      <span class="pn-arrow">↗</span>
-    </a>
-
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="ft-inner">
-    <div>
-      <div class="ft-brand">The <em>Autonomous</em> Enterprise</div>
-      <p class="ft-sub">A portfolio-grade AI solutions architecture. TOGAF 10 · Vertex AI · Google ADK · EU AI Act compliant. GCP europe-west3.</p>
-    </div>
-    <div>
-      <div class="ft-col-head">Governance</div>
-      <div class="ft-links">
-        <a href="gov-finrisk.html" class="ft-link">FinRisk Sentinel</a>
-        <a href="gov-data-governance.html" class="ft-link">Data Governance</a>
-        <a href="gov-compliance.html" class="ft-link">Compliance Hub</a>
-        <a href="gov-strategy.html" class="ft-link">Strategy Dashboard</a>
-        <a href="gov-greenops.html" class="ft-link">GreenOps Platform</a>
-      </div>
-    </div>
-    <div>
-      <div class="ft-col-head">Pillars</div>
-      <div class="ft-links">
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Seller/" class="ft-link" target="_blank">Autonomous Seller →</a>
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Buyer/" class="ft-link" target="_blank">Autonomous Buyer →</a>
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="ft-link" target="_blank">Autonomous Supply Chain →</a>
-        <a href="https://raosiddharthp.github.io/The-Autonomous-Finance/index.html" class="ft-link" target="_blank">Autonomous Finance →</a>
-      </div>
-    </div>
-    <div>
-      <div class="ft-col-head">Portfolio</div>
-      <div class="ft-links">
-        <a href="page-09.html" class="ft-link">Module Index</a>
-        <a href="adr-index.html" class="ft-link">ADR Index</a>
-        <a href="glossary.html" class="ft-link">Glossary</a>
-        <a href="changelog.html" class="ft-link">Changelog</a>
-        <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" class="ft-link" target="_blank">GitHub →</a>
-      </div>
-    </div>
-  </div>
-  <div class="ft-copy">
-    © 2026 Siddharthan Rao · TOGAF EA · Google MLE · Google Cloud Architect · SAFe SA + SPC · Built as an architecture portfolio. Not affiliated with Anthropic, Google, or SAP SE.
-  </div>
-</footer>
+</main>
+</div><!-- /page-wrap -->
 
 <script>
-const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function a(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.ap').forEach(el=>obs.observe(el));
-document.querySelectorAll('.gov-grid,.pillar-grid,.arch-stack,.pr-grid,.client-kpis,.pn-grid').forEach(grid=>{
-  Array.from(grid.children).forEach((child,i)=>{
-    if(child.classList.contains('pn-divider'))return;
-    child.style.transitionDelay=(i*0.05)+'s';
-    if(!child.classList.contains('ap'))child.classList.add('ap');
-    obs.observe(child);
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
   });
-});
+}, { passive: true });
 </script>
 </body>
 </html>

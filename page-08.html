@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Go-to-Market Strategy — Page 08 · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* SCOPE NOTE */
+.scope-note { background: var(--amber-bg); border: 1px solid var(--amber-border); border-left: 4px solid var(--amber); padding: 1.1rem 1.4rem; border-radius: var(--r); }
+.sn-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--amber); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.sn-body { font-size: 13px; color: var(--amber); line-height: 1.7; }
+
+/* ARGUMENT FRAME */
+.frame { background: var(--bg2); padding: 1.8rem 2rem; margin: 1.5rem 0; position: relative; border-radius: var(--r-lg); border: 1px solid var(--border); }
+.frame::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--amber); border-radius: 4px 0 0 4px; }
+.frame-text { font-family: var(--serif); font-size: 19px; font-style: italic; color: var(--text); line-height: 1.55; max-width: 760px; }
+.frame-text strong { font-style: normal; font-weight: 600; color: var(--amber); }
+.frame-attr { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 1rem; letter-spacing: 0.04em; }
+
+/* 3-COL REASON CARDS */
+.reason-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 1.5rem 0; }
+.reason-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.1rem 1.2rem; }
+.reason-card.blue { border-top-color: var(--blue); }
+.reason-card.teal { border-top-color: var(--teal); }
+.reason-card.amber { border-top-color: var(--amber); }
+.reason-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 8px; }
+.reason-card.blue .reason-eyebrow { color: var(--blue); }
+.reason-card.teal .reason-eyebrow { color: var(--teal); }
+.reason-card.amber .reason-eyebrow { color: var(--amber); }
+.reason-title { font-family: var(--serif); font-size: 17px; color: var(--text); margin-bottom: 10px; line-height: 1.25; }
+.reason-body { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+
+/* BUYER MAP TABLE */
+.bm-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 12.5px; }
+.bm-table th { background: var(--bg2); color: var(--text3); font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+.bm-table td { padding: 12px 14px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+.bm-table tr:last-child td { border-bottom: none; }
+.bm-table tr:hover td { background: var(--bg2); }
+.bm-persona { font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
+.hz-pill { display: inline-block; font-family: var(--mono); font-size: 9.5px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
+.hp1 { background: var(--blue-bg); color: var(--blue); }
+.hp2 { background: var(--teal-bg); color: var(--teal); }
+.hp3 { background: var(--amber-bg); color: var(--amber); }
+
+/* HORIZON CARDS */
+.hz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 0.5rem; }
+.hz-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.4rem 1.3rem; }
+.hz-card.h1 { background: var(--blue-bg); border-color: var(--blue-border); }
+.hz-card.h2 { background: var(--teal-bg); border-color: var(--teal-border); }
+.hz-card.h3 { background: var(--amber-bg); border-color: var(--amber-border); }
+.hzc-label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.hz-card.h1 .hzc-label { color: var(--blue); }
+.hz-card.h2 .hzc-label { color: var(--teal); }
+.hz-card.h3 .hzc-label { color: var(--amber); }
+.hzc-period { font-family: var(--serif); font-size: 22px; margin-bottom: 2px; }
+.hz-card.h1 .hzc-period { color: var(--blue); }
+.hz-card.h2 .hzc-period { color: var(--teal); }
+.hz-card.h3 .hzc-period { color: var(--amber); }
+.hzc-name { font-family: var(--mono); font-size: 11.5px; font-weight: 500; margin-bottom: 1rem; }
+.hz-card.h1 .hzc-name { color: var(--blue); }
+.hz-card.h2 .hzc-name { color: var(--teal); }
+.hz-card.h3 .hzc-name { color: var(--amber); }
+.hzc-delivered { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.hz-card.h1 .hzc-delivered { color: var(--blue); }
+.hz-card.h2 .hzc-delivered { color: var(--teal); }
+.hz-card.h3 .hzc-delivered { color: var(--amber); }
+.hzc-items { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1rem; }
+.hzc-item { font-size: 12px; line-height: 1.55; display: flex; align-items: flex-start; gap: 7px; }
+.hz-card.h1 .hzc-item { color: var(--blue); }
+.hz-card.h2 .hzc-item { color: var(--teal); }
+.hz-card.h3 .hzc-item { color: var(--amber); }
+.hzc-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; background: currentColor; }
+.hzc-feels { border-top: 1px solid rgba(0,0,0,0.08); padding-top: 0.8rem; font-size: 11.5px; line-height: 1.6; }
+.hz-card.h1 .hzc-feels { color: var(--blue); }
+.hz-card.h2 .hzc-feels { color: var(--teal); }
+.hz-card.h3 .hzc-feels { color: var(--amber); }
+.hzc-feels strong { font-weight: 600; display: block; margin-bottom: 3px; }
+.hzc-gate { margin-top: 0.7rem; padding: 8px 10px; font-size: 11px; line-height: 1.55; border-radius: var(--r); }
+.hz-card.h1 .hzc-gate { background: rgba(26,115,232,0.1); color: var(--blue); }
+.hz-card.h2 .hzc-gate { background: rgba(10,107,82,0.1); color: var(--teal); }
+.hz-card.h3 .hzc-gate { background: rgba(176,112,16,0.1); color: var(--amber); }
+.hzc-gate strong { font-weight: 600; }
+
+/* RISK CARDS */
+.risk-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 0.5rem; }
+.risk-card { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.2rem 1.3rem; }
+.rc-label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 8px; color: var(--coral); }
+.rc-title { font-family: var(--serif); font-size: 17px; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.rc-risk { font-size: 12.5px; color: var(--text2); line-height: 1.65; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--coral-border); }
+.rc-mit-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rc-mit { font-size: 12.5px; color: var(--text2); line-height: 1.65; padding-left: 12px; border-left: 2px solid var(--teal-border); }
+.rc-arch-ref { font-family: var(--mono); font-size: 10px; color: var(--blue); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+
+/* ADR SINGLE */
+.adr-single { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: var(--r); padding: 1.6rem 1.6rem; margin-top: 0.5rem; }
+.adr-single-id { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--blue); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.adr-single-title { font-family: var(--serif); font-size: 21px; color: var(--text); margin-bottom: 1.2rem; line-height: 1.25; }
+.adr-fields-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.adr-field-box { padding: 0.9rem 1rem; background: white; border: 1px solid var(--border); border-radius: var(--r); }
+.af-label { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.af-body { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+.adr-status-pill { display: inline-block; font-family: var(--mono); font-size: 9.5px; font-weight: 500; padding: 3px 9px; background: var(--teal-bg); color: var(--teal); border-radius: 99px; margin-top: 1.2rem; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid, .reason-grid, .hz-grid, .risk-grid { grid-template-columns: 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .adr-fields-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise / page 08</div>
+  <div class="sidebar-project">Go-to-Market<br>Strategy</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#argument">The Argument</a></li>
+      <li><a href="#sequencing">Adoption Sequencing</a></li>
+      <li><a href="#horizons">Value by Horizon</a></li>
+      <li><a href="#risks">Adoption Risks</a></li>
+      <li><a href="#adr">ADR-005</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Scope Tags</div>
+    <div class="stack-item"><strong>5 Buyer Personas</strong>across four Solution Trains</div>
+    <div class="stack-item"><strong>3 Adoption Horizons</strong>H1 → H2 → H3</div>
+    <div class="stack-item"><strong>4 Risk Mitigations</strong>each architecturally grounded</div>
+    <div class="stack-item"><strong>ADR-005</strong>phased adoption decision</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="page-04.html">← page-04</a> / <a href="index.html">the-autonomous-enterprise</a> / <a href="#">page-08</a>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html" class="topbar-tag" style="text-decoration:none">Overview</a>
+      <a href="page-04.html" class="topbar-tag" style="text-decoration:none">← Page 04</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:980px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">The Autonomous Enterprise &nbsp;/&nbsp; Page 08 &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">Go-to-Market Strategy <em>— architecturally grounded.</em></h1>
+      <div class="doc-byline">
+        <span>The architecture is complete across Pages 01–07</span>
+        <span>Every claim on this page traces back to an artifact already designed</span>
+      </div>
+      <p class="body-text" style="margin-top:0.75rem;">This page answers the one remaining question: how does it reach the business? Not a sales playbook — an adoption strategy with architectural foundations.</p>
+      <div class="kw-row" style="margin-top:1rem;">
+        <span class="kw">5 Buyer Personas</span>
+        <span class="kw">3 Adoption Horizons</span>
+        <span class="kw">4 Risk Mitigations</span>
+        <span class="kw">ADR-005</span>
+      </div>
+    </header>
+
+    <!-- SCOPE NOTE -->
+    <div class="scope-note" style="margin-bottom:2.5rem;">
+      <div class="sn-label">Scope boundary — this page</div>
+      <div class="sn-body">Go-to-market strategy is supporting context in an architecture portfolio — not the core deliverable. This page demonstrates that the architecture was designed with adoption in mind, not in isolation from it. What this page does not contain: pricing models, competitive analysis, sales playbooks, market sizing, or revenue projections. Those are commercial decisions that belong to ClaraVis's commercial team. What this page does contain: the adoption argument, the buyer map, the value-by-horizon view, and the adoption risks with architectural mitigations. Each of these is a natural extension of the architecture work already documented on Pages 02–07.</div>
+    </div>
+
+    <!-- §01 THE ARGUMENT -->
+    <section class="section" id="argument">
+      <h2 class="section-heading"><span class="section-num">§1</span> The Adoption Argument</h2>
+      <p class="body-text" style="font-family:var(--serif);font-size:20px;font-style:italic;color:var(--text2);line-height:1.4;margin-bottom:1rem;">Enterprise AI fails at the <em style="color:var(--teal)">organisational boundary</em> — not the technical one.</p>
+      <p class="body-text">The architecture on Pages 01–04 is sound. The more important question is whether ClaraVis can actually adopt it — across twelve stakeholders, three regulatory obligations, three legacy systems, and a Finance team that has been doing manual ASC 606 classification for fifteen years. The AE is designed to answer that question architecturally, not commercially.</p>
+
+      <div class="frame">
+        <div class="frame-text">Enterprise AI adoption fails when it asks too much of the organisation at once — when the compliance posture, the change management load, and the integration complexity all land simultaneously. The AE avoids this by design: <strong>each horizon delivers standalone value before the next begins.</strong> ClaraVis does not need to commit to all eight modules. It needs to commit to three — and see the results — before the next three become an easy decision rather than a leap of faith.</div>
+        <div class="frame-attr">Derived from: TOGAF Phase F Migration Horizons (Page 03) · LPM PI cadence (Page 04) · Requirements C-05 (Page 02)</div>
+      </div>
+
+      <div class="reason-grid">
+        <div class="reason-card blue">
+          <div class="reason-eyebrow">Why phased adoption works here</div>
+          <div class="reason-title">The EU AI Act deadline is a forcing function</div>
+          <div class="reason-body">ClaraVis has three production ML models with no EU AI Act compliance posture and a regulatory review in Q2 2026. Horizon 1 — the HITL framework, XAI layer, and Model Cards for those three models — delivers compliance before the review. That single outcome justifies the entire Horizon 1 investment without any discussion of the broader AE vision. Horizons 2 and 3 follow because Horizon 1 built the platform they run on.</div>
+        </div>
+        <div class="reason-card teal">
+          <div class="reason-eyebrow">Why it doesn't disrupt existing systems</div>
+          <div class="reason-title">Salesforce, SAP, and Ariba stay exactly where they are</div>
+          <div class="reason-body">ADR-002 (Page 03) is the adoption argument in architectural form: the AE augments existing systems — it never replaces them. Salesforce remains the system of record. SAP remains the ERP. Ariba remains the procurement network. The AE is the orchestration and intelligence layer that sits above them. ClaraVis's existing Salesforce, SAP, and Ariba implementations are not touched, re-platformed, or migrated. The adoption risk that kills most enterprise AI programmes — the system migration — does not exist here.</div>
+        </div>
+        <div class="reason-card amber">
+          <div class="reason-eyebrow">Why trust is built in</div>
+          <div class="reason-title">Every consequential decision has a human in the loop</div>
+          <div class="reason-body">The HITL checkpoints specified across each Solution Train's own delivery pages are not a compliance feature — they are an adoption feature. The Finance Controller who has been classifying ASC 606 transactions manually for fifteen years will not trust an ML model on day one. The HITL framework gives them the control to verify the model's reasoning before it posts to SAP. Trust is earned checkpoint by checkpoint. The architecture is designed for that journey, not for the destination.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §02 SEQUENCING -->
+    <section class="section" id="sequencing">
+      <h2 class="section-heading"><span class="section-num">§2</span> Portfolio Adoption Sequencing</h2>
+      <p class="body-text">Four Solution Trains. <em style="color:var(--teal)">One deliberate order.</em></p>
+      <p class="body-text">Sequencing which Solution Train goes first is itself an architectural decision, not a commercial one — it is driven by which pillar carries the largest documented cost of inaction and the lowest integration risk relative to existing systems.</p>
+
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="bm-table">
+            <thead><tr><th style="width:160px">Solution Train</th><th style="width:130px">Adoption Order</th><th>Why This Sequence</th><th style="width:90px">Horizon</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="bm-persona">Quote-to-Cash</span></td>
+                <td><span class="hz-pill hp1">1st</span></td>
+                <td>Largest documented cycle-time cost (47-day CPQ) and the account thread (München) that proves cross-module coherence end to end. Lowest integration risk — augments Salesforce without replacing it.</td>
+                <td><span class="hz-pill hp2">H2–H3</span></td>
+              </tr>
+              <tr>
+                <td><span class="bm-persona">Finance Operations</span></td>
+                <td><span class="hz-pill hp1">2nd</span></td>
+                <td>EU AI Act Q2 2026 deadline applies directly to the three existing production models this Solution Train governs — the regulatory forcing function makes this the second-highest-priority train, not the first.</td>
+                <td><span class="hz-pill hp2">H2</span></td>
+              </tr>
+              <tr>
+                <td><span class="bm-persona">Procure-to-Pay</span></td>
+                <td><span class="hz-pill hp2">3rd</span></td>
+                <td>Lower documented cost of inaction than Quote-to-Cash or Finance Operations. Benefits directly from the HITL and XAI enablers already proven in production by trains 1 and 2.</td>
+                <td><span class="hz-pill hp2">H2–H3</span></td>
+              </tr>
+              <tr>
+                <td><span class="bm-persona">Supply Chain</span></td>
+                <td><span class="hz-pill hp3">4th</span></td>
+                <td>Largest Solution Train by ART count (7) and the most dependent on the Portfolio's GreenOps and Data Governance enablers reaching maturity first — sequenced last to inherit a proven platform, not absorb its early instability.</td>
+                <td><span class="hz-pill hp3">H3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-body"><strong>Note on CTO and CISO:</strong> The CTO and CISO are Portfolio-level sponsors and approvers, not users of any single Solution Train. Their adoption requirements — architecture coherence, security posture, data sovereignty — are addressed structurally by the Portfolio's shared enablers (Page 04), not by a pillar-specific feature.</div>
+      </div>
+    </section>
+
+    <!-- §03 VALUE BY HORIZON -->
+    <section class="section" id="horizons">
+      <h2 class="section-heading"><span class="section-num">§3</span> Value by Horizon</h2>
+      <p class="body-text">Each horizon delivers <em style="color:var(--teal)">before</em> the next begins.</p>
+      <p class="body-text">The three horizons from TOGAF Phase F (Page 03) are restated here through an adoption lens. Each card answers: what is delivered, who feels it first, and what makes the next horizon an easier approval than the current one.</p>
+
+      <div class="hz-grid">
+        <div class="hz-card h1">
+          <div class="hzc-label">Horizon 1</div>
+          <div class="hzc-period">Months 1–3</div>
+          <div class="hzc-name">Foundation &amp; Compliance</div>
+          <div class="hzc-delivered">Delivered</div>
+          <div class="hzc-items">
+            <div class="hzc-item">GCP infrastructure — Terraform, VPC-SC, IAM, CMEK, all security controls live</div>
+            <div class="hzc-item">HITL framework — state machine + Firestore audit store deployed and tested</div>
+            <div class="hzc-item">XAI layer — SHAP integrated on all 3 existing production ML models</div>
+            <div class="hzc-item">Model Cards — Article 11 documentation complete for all 3 models</div>
+            <div class="hzc-item">Unified asset telemetry pipeline — 6 regional systems on one schema</div>
+            <div class="hzc-item">Salesforce Developer Edition — integration live and tested</div>
+            <div class="hzc-item">Canonical data model — Supplier entity live, Ariba and SAP IBP integration patterns established</div>
+          </div>
+          <div class="hzc-feels"><strong>Who feels it first</strong>CCO (S-02) — compliance posture established before Q2 2026 review. The EAB (Page 03, §9) — a runway it can certify against and continuously monitor, for the first time.</div>
+          <div class="hzc-gate"><strong>What makes H2 easier:</strong> The platform H2 builds on already exists and has been running in production. H2 modules are features on a proven infrastructure, not a new system.</div>
+        </div>
+
+        <div class="hz-card h2">
+          <div class="hzc-label">Horizon 2</div>
+          <div class="hzc-period">Months 4–8</div>
+          <div class="hzc-name">Core Module Deployment</div>
+          <div class="hzc-delivered">Delivered</div>
+          <div class="hzc-items">
+            <div class="hzc-item">ContractGuard — clause scoring + Legal HITL operational</div>
+            <div class="hzc-item">RevRec AI — ASC 606 classification + Finance Controller HITL + SAP write</div>
+            <div class="hzc-item">Asset IQ — RUL model + fleet anomaly detection in production</div>
+            <div class="hzc-item">FinRisk Sentinel — streaming anomaly monitoring live</div>
+            <div class="hzc-item">Vertex AI MLOps — pipelines, drift detection, Model Registry for all new models</div>
+            <div class="hzc-item">App dashboards — UI for all four deployed modules</div>
+          </div>
+          <div class="hzc-feels"><strong>Who feels it first</strong>Finance Controller — first month-end close with ML-assisted classification. Field Service Manager — first predictive maintenance alert with SHAP sensor context.</div>
+          <div class="hzc-gate"><strong>What makes H3 easier:</strong> Finance and Field Service have now experienced the HITL workflow. Trust in the models is established through observed decisions. H3 modules (Sales Agent, GreenOps) are lower-risk because the organisation has internalised the pattern.</div>
+        </div>
+
+        <div class="hz-card h3">
+          <div class="hzc-label">Horizon 3</div>
+          <div class="hzc-period">Months 9–18</div>
+          <div class="hzc-name">Full AE Platform &amp; Optimisation</div>
+          <div class="hzc-delivered">Delivered</div>
+          <div class="hzc-items">
+            <div class="hzc-item">CCAI Sales Agent — full ADK deployment, Salesforce integration, AE escalation flow</div>
+            <div class="hzc-item">GreenOps Platform — carbon-aware scheduling, ESG metrics, CSRD reporting</div>
+            <div class="hzc-item">Strategy Dashboard — unified view live for Quote-to-Cash; Procure-to-Pay and Supply Chain panels on its own roadmap as those pillars reach the same data-fabric contract</div>
+            <div class="hzc-item">Data Governance module — quality, lineage, schema validation</div>
+            <div class="hzc-item">Cross-module optimisation — shared feature pipelines, joint drift monitoring</div>
+            <div class="hzc-item">EU AI Act full compliance certification readiness</div>
+          </div>
+          <div class="hzc-feels"><strong>Who feels it first</strong>Account Executive — first deal where the agent handled qualification and the AE entered with a complete briefing. CTO (S-01) — Strategy Dashboard provides the unified view that was previously 4 manual data pulls.</div>
+          <div class="hzc-gate"><strong>End state:</strong> The complete Autonomous Enterprise — all four Solution Trains operational, full audit trail, EU AI Act compliance posture demonstrable on demand, and every architecture decision documented in the ADR index.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §04 ADOPTION RISKS -->
+    <section class="section" id="risks">
+      <h2 class="section-heading"><span class="section-num">§4</span> Adoption Risks</h2>
+      <p class="body-text">Four risks. <em style="color:var(--coral)">Each with an architectural mitigation.</em></p>
+      <p class="body-text">These are the risks that cause enterprise AI programmes to stall or fail — not the technical risks (those are addressed in the architecture) but the organisational and process risks that no diagram can eliminate on its own. Each one has a specific architectural design decision that reduces it.</p>
+
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="rc-label">Risk 01 — Change Management</div>
+          <div class="rc-title">The Finance team has been doing this manually for fifteen years</div>
+          <div class="rc-risk">The Finance Controller and their team have fifteen years of muscle memory around manual ASC 606 classification. An AI system that replaces their judgment without warning will be rejected — not because the model is wrong, but because it bypasses the trust-building process entirely. This is the most common failure mode in enterprise AI adoption.</div>
+          <div class="rc-mit-label">Architectural Mitigation</div>
+          <div class="rc-mit">The HITL framework — specified per Solution Train, with the Portfolio-level contract on Page 04 — is the change management strategy encoded in architecture. RevRec AI never posts to SAP without Finance Controller approval — not in Horizon 2, not in Horizon 3, not ever. The model earns trust by presenting its reasoning (SHAP explanation, comparable transactions, confidence score) and waiting for human confirmation. The override rate metric (tracked in Vertex AI Monitoring) is the adoption progress indicator — as overrides decline, trust is growing. The transition from human-in-the-loop to human-on-the-loop happens at the Finance team's pace, not the project plan's.</div>
+          <div class="rc-arch-ref">→ HITL-04 · Page 04 · Vertex AI Monitoring · Drift detection documented per pillar</div>
+        </div>
+
+        <div class="risk-card">
+          <div class="rc-label">Risk 02 — Data Quality</div>
+          <div class="rc-title">Six regional asset systems with no common schema and unknown data quality</div>
+          <div class="rc-risk">The Asset IQ module depends on telemetry from 6 regional systems that have never been unified. The assumption that these systems produce clean, consistent, complete data is almost certainly wrong. Garbage-in, garbage-out is not a data engineering cliché — it is the operational reality of every OEM that has grown through acquisition. A model trained on clean demo data that fails on live production telemetry destroys trust faster than no model at all.</div>
+          <div class="rc-mit-label">Architectural Mitigation</div>
+          <div class="rc-mit">The Horizon 1 data fabric deliverable (Page 03, Phase F) is specifically sequenced to address this before any ML model touches production data. The Pub/Sub ingestion pipeline with schema validation, the Data Governance module with quarantine logic, and the Feature Store lineage tags are all Horizon 1 — not Horizon 2. The Asset IQ RUL model is not deployed until the Vertex AI Feature Store can demonstrate that every feature value has a validated source event behind it. The data quality score threshold for inclusion in ML pipelines, documented in Supply Chain's own FRD, must be met before training begins — not after.</div>
+          <div class="rc-arch-ref">→ Data Governance · Feature Store lineage · documented per pillar</div>
+        </div>
+
+        <div class="risk-card">
+          <div class="rc-label">Risk 03 — Regulatory Approval Timeline</div>
+          <div class="rc-title">EU AI Act Annex III compliance cannot be certified on the day of the review</div>
+          <div class="rc-risk">EU AI Act compliance is not a box to tick before a regulatory review — it is a documented posture that must be demonstrable at any point in time. A compliance dashboard that went green two days before the Q2 2026 review will not satisfy an auditor. The audit trail, the HITL records, the Model Cards, and the SHAP explanations need to have been accumulating for long enough to be credible as a systematic practice, not an emergency preparation.</div>
+          <div class="rc-mit-label">Architectural Mitigation</div>
+          <div class="rc-mit">The Horizon 1 sequencing places the compliance infrastructure — HITL framework, XAI layer, Model Cards — at the start of the programme, not at the end. By the time the Q2 2026 review arrives, the HITL audit trail will have months of immutable records in Firestore and BigQuery, the SHAP explanations will have been running on every production inference, and the Model Cards will have been through at least one HITL-11 promotion review. The compliance posture is established through consistent architectural practice — not through documentation written the week before the review.</div>
+          <div class="rc-arch-ref">→ HITL-11 · Model Cards (documented per pillar) · EU AI Act Art. 9 · Horizon 1 sequencing · Page 03</div>
+        </div>
+
+        <div class="risk-card">
+          <div class="rc-label">Risk 04 — Integration Complexity</div>
+          <div class="rc-title">Salesforce, SAP, and Ariba integrations are where enterprise AI projects go to die</div>
+          <div class="rc-risk">The AE touches three of the most complex enterprise systems in existence — Salesforce CPQ, SAP S/4HANA, and four regional Ariba instances. Integration projects involving these systems are notorious for scope creep, timeline overruns, and late-discovered data model mismatches. A real-time ML inference layer that depends on all three for its input data and writes back to them for its outputs has a high surface area for integration failure.</div>
+          <div class="rc-mit-label">Architectural Mitigation</div>
+          <div class="rc-mit">Three design decisions directly address this, and a fourth extends the same pattern to Ariba. First, ADR-001 (Salesforce Developer Edition REST API) means the Salesforce integration is validated in a free, permanent sandbox before any production credentials are involved — integration failures are discovered in dev, not in front of the CCO. Second, the SAP write for RevRec AI is the only irreversible AE action, and it is protected by a mandatory HITL approval record ID as a parameter — the integration cannot be called without a documented human decision preceding it. Third, the Pub/Sub event fabric (ADR-004) decouples the AE from both systems — the AE reads events from topics, not from direct system APIs, which means a Salesforce or SAP outage does not cascade into AE failures. Fourth, Ariba follows the same sandbox-first pattern as Salesforce (C-08, Page 02) — the developer/sandbox account validates the integration before any production supplier data is involved.</div>
+          <div class="rc-arch-ref">→ ADR-001 · ADR-004 · AR-13 · C-08 · Page 03 · SAP write guard documented in Quote-to-Cash's own Agent Swarm Architecture</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §05 ADR -->
+    <section class="section" id="adr">
+      <h2 class="section-heading"><span class="section-num">§5</span> Architecture Decision Record</h2>
+      <p class="body-text">One GTM decision worth <em style="color:var(--teal)">documenting.</em></p>
+      <p class="body-text">Only one GTM decision rises to the level of an ADR — the phased adoption approach itself. Every other commercial decision (pricing, packaging, sales motion) belongs to ClaraVis's commercial team, not the architecture record.</p>
+
+      <div class="adr-single">
+        <div class="adr-single-id">ADR-005</div>
+        <div class="adr-single-title">Phased adoption over big-bang full-suite deployment</div>
+        <div class="adr-fields-grid">
+          <div class="adr-field-box">
+            <div class="af-label">Status</div>
+            <div class="af-body">Accepted · Phase GTM Design</div>
+          </div>
+          <div class="adr-field-box">
+            <div class="af-label">Context</div>
+            <div class="af-body">ClaraVis has a hard regulatory deadline (Q2 2026 EU AI Act review), limited internal change management capacity, three complex legacy system integrations (Salesforce, SAP, Ariba), and 12 stakeholders with different adoption readiness levels. Full suite deployment in a single programme would require all of these to be addressed simultaneously.</div>
+          </div>
+          <div class="adr-field-box">
+            <div class="af-label">Decision</div>
+            <div class="af-body">Deploy in three horizons. H1 delivers the compliance infrastructure and data foundation. H2 delivers the core business modules on that foundation. H3 delivers the full suite on the proven platform. Each horizon is independently valuable — ClaraVis can pause after H1 or H2 and retain the value already delivered.</div>
+          </div>
+          <div class="adr-field-box">
+            <div class="af-label">Alternative Considered</div>
+            <div class="af-body">Full AE suite deployed as a single programme. Rejected because: (1) the EU AI Act deadline cannot wait for the full programme to complete; (2) change management load across all 12 stakeholders simultaneously is organisationally untenable; (3) if the programme stalls, there is no partial value delivered — the entire investment is at risk.</div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:0.8rem;">
+          <div class="callout-label">Consequences</div>
+          <div class="callout-body">The phased approach requires that the Horizon 1 infrastructure is designed to support H2 and H3 modules from the start — not retrofitted later. This is why the Terraform modules, VPC-SC perimeter, and Pub/Sub event bus are H1 deliverables even though they are not user-visible. This forward-compatibility claim is not self-certifying: the EAB (Page 03, §9) re-verifies it at each horizon boundary, rather than it being assumed once at H1's start. The architecture absorbs the upfront design cost in exchange for eliminating the integration risk that big-bang deployments accumulate at the end. Every subsequent horizon is an extension of a proven platform, not a new system.</div>
+        </div>
+        <span class="adr-status-pill">Accepted · Phase GTM Design</span>
+      </div>
+    </section>
+
+    <!-- BRIDGE / NEXT -->
+    <section class="section">
+      <h2 class="section-heading"><span class="section-num">§6</span> End of the Portfolio Document</h2>
+      <p class="body-text">Strategy complete. <em style="color:var(--teal)">Module depth lives per pillar.</em></p>
+      <p class="body-text">This page closes the Portfolio-level architecture record. Every module's full-depth design — system context, agent state machines, ML model cards, ADRs, stakeholder rebuttals, and demo pathways — is documented on that module's own pillar or governance crown site, linked throughout this document.</p>
+
+      <div class="next-modules">
+        <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/" target="_blank" class="next-mod-link">
+          <span class="next-mod-id">QTC</span>
+          <div>
+            <div class="next-mod-name">The Autonomous Quote-to-Cash →</div>
+            <div class="next-mod-desc">First Solution Train — full module depth</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-04.html" class="next-mod-link">
+          <span class="next-mod-id">PG 04</span>
+          <div>
+            <div class="next-mod-name">← Lean Portfolio Management</div>
+            <div class="next-mod-desc">The investment model this adoption strategy implements</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Go-to-Market Strategy · Page 08 · The Autonomous Enterprise · 2026</span>
+    <span>© 2026 Siddharth Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

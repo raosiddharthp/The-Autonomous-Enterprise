@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FinRisk Sentinel — Module 04 · The Autonomous Enterprise Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: #16150f; border-color: #2a281f; }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: #16150f; border-right: 1px solid #2a281f; }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: #8a8870; }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: #8a8870; }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* HITL MOCKUP */
+.hitl-mockup { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: white; margin: 1.5rem 0; box-shadow: 0 4px 24px rgba(0,0,0,0.05); }
+.hm-titlebar { background: var(--bg2); padding: 0.7rem 1.1rem; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
+.hm-dot { width: 9px; height: 9px; border-radius: 50%; }
+.hm-title { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-left: 6px; }
+.hm-body { display: grid; grid-template-columns: 1fr 270px; }
+.hm-main { padding: 1.25rem; border-right: 1px solid var(--border); }
+.hm-sidebar { padding: 1.1rem; background: var(--bg2); }
+.hm-sec-label { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; margin-top: 1rem; }
+.hm-sec-label:first-child { margin-top: 0; }
+.anomaly-header { background: #16150f; border-radius: var(--r); padding: 0.9rem 1.1rem; margin-bottom: 0.9rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.ah-label { font-family: var(--mono); font-size: 9px; color: #8a8870; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.ah-value { font-family: var(--serif); font-size: 22px; line-height: 1; }
+.ah-sub { font-family: var(--mono); font-size: 9px; color: #8a8870; margin-top: 3px; }
+.severity-badge { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 4px 10px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1rem; border-radius: 99px; }
+.sev-high { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.sparkline-wrap { background: var(--bg2); border: 1px solid var(--border); padding: 0.9rem; margin-bottom: 0.9rem; border-radius: var(--r); }
+.sparkline-label { font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.tx-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 10.5px; margin-bottom: 0.9rem; }
+.tx-table th { background: var(--bg2); color: var(--text3); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--border); font-size: 9px; }
+.tx-table td { padding: 6px 9px; border-bottom: 1px solid var(--border); color: var(--text2); }
+.tx-table tr:last-child td { border-bottom: none; }
+.tx-anomaly td { background: var(--coral-bg) !important; font-weight: 500; color: var(--coral) !important; }
+.shap-strip { display: flex; flex-direction: column; gap: 4px; padding: 0.9rem; background: var(--bg2); border-radius: var(--r); margin-bottom: 0.9rem; }
+.shap-row { display: grid; grid-template-columns: 165px 1fr 50px; gap: 8px; align-items: center; }
+.shap-feat { font-family: var(--mono); font-size: 10px; color: var(--text2); text-align: right; }
+.shap-track { height: 11px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.shap-pos { height: 100%; border-radius: 2px; background: var(--coral); }
+.shap-num { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--coral); }
+.shap-detail { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 6px; padding-left: 173px; }
+.dual-reviewer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 0.9rem; }
+.dr-card { border: 1px solid var(--border); padding: 0.75rem; border-radius: var(--r); }
+.dr-card.acting { border-color: var(--teal-border); background: var(--teal-bg); }
+.dr-card.waiting { border-color: var(--border); background: white; }
+.dr-name { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.dr-status { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 99px; display: inline-block; background: var(--amber-bg); color: var(--amber); }
+.dr-detail { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; line-height: 1.4; }
+.hm-actions { display: flex; gap: 8px; margin-top: 0.9rem; }
+.hm-btn-approve { flex: 1; padding: 0.6rem; background: var(--teal); color: white; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-align: center; border-radius: var(--r); }
+.hm-btn-escalate { flex: 1; padding: 0.6rem; background: white; color: var(--coral); font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; border: 1px solid var(--coral-border); text-align: center; border-radius: var(--r); }
+.hm-btn-defer { padding: 0.6rem 0.8rem; background: white; color: var(--text2); font-family: var(--mono); font-size: 11px; font-weight: 500; border: 1px solid var(--border); text-align: center; border-radius: var(--r); }
+.hm-sla { font-family: var(--mono); font-size: 10.5px; color: var(--coral); background: var(--coral-bg); padding: 8px 10px; margin-top: 0.7rem; text-align: center; border-radius: var(--r); }
+.hm-cf-label { font-family: var(--mono); font-size: 9.5px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 10px; margin-bottom: 2px; }
+.hm-cf-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+.hm-note { margin-top: 0.7rem; padding: 8px 10px; border-radius: var(--r); font-family: var(--mono); font-size: 10.5px; line-height: 1.5; }
+.hm-note.amber { background: var(--amber-bg); color: var(--amber); }
+.hm-note.coral { background: var(--coral-bg); color: var(--coral); }
+
+/* DEMO STEPS */
+.demo-steps { display: flex; flex-direction: column; gap: 8px; margin: 1.5rem 0; }
+.ds-step { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.3rem; display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: start; }
+.ds-step.flag { border-color: var(--coral-border); background: var(--coral-bg); }
+.ds-num { font-family: var(--serif); font-size: 26px; color: var(--border2); line-height: 1; }
+.ds-step.flag .ds-num { color: var(--coral); }
+.ds-label { font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; color: var(--text3); }
+.ds-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.ds-body { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+.ds-say { margin-top: 0.7rem; padding: 8px 12px; background: var(--bg2); border-left: 2px solid var(--border2); font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--text2); line-height: 1.6; }
+.ds-step.flag .ds-say { background: white; border-left-color: var(--coral); color: var(--coral); font-style: normal; font-family: var(--mono); font-size: 11px; }
+.ds-services { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.ds-svc { font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 7px; background: var(--teal-bg); color: var(--teal); border-radius: 99px; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid, .hm-body, .dual-reviewer, .anomaly-header, .ds-step { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">ae platform / module 04</div>
+  <div class="sidebar-project">FinRisk<br>Sentinel</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#context">System Context</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#statemachine">State Machine</a></li>
+      <li><a href="#dataflow">Data Flow</a></li>
+      <li><a href="#hitl">HITL-08 UI</a></li>
+      <li><a href="#adrs">ADRs</a></li>
+      <li><a href="#rebuttals">Rebuttals</a></li>
+      <li><a href="#demo">Demo Pathway</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <ul class="sidebar-nav">
+      <li><a href="#adr-011" class="sub">ADR-011 Isolation Forest</a></li>
+      <li><a href="#adr-fr01" class="sub">ADR-FR01 Streaming over batch</a></li>
+      <li><a href="#adr-fr02" class="sub">ADR-FR02 Dual-reviewer HITL</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Stack</div>
+    <div class="stack-item"><strong>Isolation Forest</strong>Vertex AI endpoint · sub-200ms</div>
+    <div class="stack-item"><strong>Sliding window layer</strong>90d rolling stats · peer-group</div>
+    <div class="stack-item"><strong>SHAP TreeExplainer</strong>top-3 attribution · pre-HITL write</div>
+    <div class="stack-item"><strong>Firestore</strong>dual-doc HITL-08 · optimistic lock</div>
+    <div class="stack-item"><strong>Cloud Run</strong>stateless agent · min 2 instances</div>
+    <div class="stack-item"><strong>BigQuery</strong>ae_audit · anomaly_events</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="page-09.html">ae-platform</a> / <a href="#">module-04</a> · financial domain · H2 · PI-5
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-tag">EU AI Act · High-Risk</span>
+      <span class="topbar-tag">HITL-08 · Dual-reviewer · 1h SLA</span>
+      <span class="topbar-tag">Streaming · Always-on</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="abstract">
+      <div class="doc-eyebrow">Module 04 &nbsp;·&nbsp; Financial Domain &nbsp;·&nbsp; H2 · PI-5 &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">FinRisk Sentinel: <em>Financial Anomaly Detection</em><br>Streaming, Dual-Reviewer, 1-Hour SLA</h1>
+      <div class="doc-byline">
+        <span>Design Documentation &nbsp;·&nbsp; Financial Domain Reference</span>
+        <span>Architecture Portfolio &nbsp;·&nbsp; 2026</span>
+        <span>Sub-5min event latency · always-on</span>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-value teal">18s</div>
+          <div class="stat-label">payment to dual HITL alert<br>streaming pipeline, not batch</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value amber">0.87</div>
+          <div class="stat-label">anomaly score, München case<br>85.8σ above 90-day baseline</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value coral">1h</div>
+          <div class="stat-label">SLA on HIGH severity alerts<br>CFO + Finance Controller, simultaneous</div>
+        </div>
+      </div>
+
+      <div class="abstract-grid">
+        <div class="abstract-label">Abstract</div>
+        <div class="abstract-body">
+          <p>FinRisk Sentinel monitors the live financial event stream continuously — not in batch. It computes rolling baselines per account, per payment type, and per peer group, scoring every incoming transaction against a dynamic model of normal behaviour. The architectural distinction from Asset IQ's streaming anomaly detector is the sliding-window aggregation layer: FinRisk computes population statistics — rolling mean, rolling standard deviation, Z-score against a 90-day baseline, peer-group deviation — before any anomaly model sees the event.</p>
+          <p>High-severity anomalies reach the CFO and Finance Controller simultaneously through a dual-reviewer HITL-08 checkpoint. Both see the same data; either can act. The first decision closes both queues via an optimistic lock — no coordination required, no double-action possible. SHAP attribution is written to BigQuery before the HITL record is created, so the audit trail is grounded in the model's actual computation from the moment of scoring.</p>
+          <div class="kw-row">
+            <span class="kw">Isolation Forest</span>
+            <span class="kw">streaming anomaly detection</span>
+            <span class="kw">Z-score enrichment</span>
+            <span class="kw">peer-group baseline</span>
+            <span class="kw">SHAP TreeExplainer</span>
+            <span class="kw">dual-reviewer HITL</span>
+            <span class="kw">optimistic lock</span>
+            <span class="kw">EU AI Act Art. 13 / 14</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- §1 SYSTEM CONTEXT -->
+    <section class="section" id="context">
+      <h2 class="section-heading"><span class="section-num">§1</span> System Context</h2>
+      <p class="body-text">FinRisk Sentinel's context is defined by what feeds it and what it produces. The input is the BigQuery financial event stream — populated by Salesforce contract events and RevRec AI classification outputs. The output is a dual-reviewer HITL alert that neither the CFO nor the Finance Controller can miss, and a BigQuery anomaly events record that closes the audit trail.</p>
+
+      <div class="figure" id="fig-context">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">System context (C4 Level 1) — streaming input, dual-reviewer HITL output, always-on, 1-hour SLA on high-severity alerts</div>
+        <div class="figure-body" style="padding: 1.5rem;">
+          <svg width="100%" viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="ctx2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#8a8880" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <rect x="280" y="90" width="300" height="200" rx="6" fill="#e8f5f0" stroke="#0a6b52" stroke-width="1.5"/>
+            <text x="430" y="118" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#0a6b52" text-anchor="middle">FinRisk Sentinel</text>
+            <text x="430" y="134" font-family="IBM Plex Mono,monospace" font-size="9" fill="#0a6b52" text-anchor="middle">Module 04 · Financial Domain</text>
+            <text x="430" y="152" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">Sliding window feature computation</text>
+            <text x="430" y="166" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">Isolation Forest anomaly scoring</text>
+            <text x="430" y="180" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">Z-score enrichment vs 90d baseline</text>
+            <text x="430" y="194" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">Peer-group deviation computation</text>
+            <text x="430" y="208" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">SHAP TreeExplainer attribution</text>
+            <text x="430" y="222" font-family="Inter,sans-serif" font-size="9" fill="#0a6b52" text-anchor="middle">HITL-08 dual-reviewer manager</text>
+            <text x="430" y="240" font-family="IBM Plex Mono,monospace" font-size="8" fill="#0a6b52" text-anchor="middle">Cloud Run · Vertex AI · Firestore · BigQuery</text>
+            <text x="430" y="254" font-family="IBM Plex Mono,monospace" font-size="8" fill="#0a6b52" text-anchor="middle">europe-west3 · VPC-SC · always-on</text>
+            <text x="430" y="270" font-family="IBM Plex Mono,monospace" font-size="8" fill="#0a6b52" text-anchor="middle">Sub-5min event latency</text>
+            <rect x="20" y="40" width="185" height="72" rx="4" fill="#e8f5f0" stroke="#0a6b52" stroke-width="1.5"/>
+            <text x="112" y="64" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#0a6b52" text-anchor="middle">BigQuery · Financial Events</text>
+            <text x="112" y="78" font-family="Inter,sans-serif" font-size="8" fill="#0a6b52" text-anchor="middle">Salesforce contract events</text>
+            <text x="112" y="90" font-family="Inter,sans-serif" font-size="8" fill="#0a6b52" text-anchor="middle">RevRec AI classification outputs</text>
+            <text x="112" y="102" font-family="IBM Plex Mono,monospace" font-size="8" fill="#0a6b52" text-anchor="middle">Pub/Sub ae-financial-events</text>
+            <line x1="205" y1="76" x2="280" y2="180" stroke="#0a6b52" stroke-width="1.5" marker-end="url(#ctx2)"/>
+            <rect x="20" y="150" width="185" height="60" rx="4" fill="#f0effe" stroke="#4a40b0" stroke-width="1.5"/>
+            <text x="112" y="174" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#4a40b0" text-anchor="middle">Vertex AI Feature Store</text>
+            <text x="112" y="188" font-family="Inter,sans-serif" font-size="8" fill="#4a40b0" text-anchor="middle">Account baseline features</text>
+            <text x="112" y="200" font-family="Inter,sans-serif" font-size="8" fill="#4a40b0" text-anchor="middle">90d rolling stats · peer groups</text>
+            <line x1="205" y1="180" x2="280" y2="195" stroke="#4a40b0" stroke-width="1.5" marker-end="url(#ctx2)"/>
+            <rect x="20" y="250" width="185" height="72" rx="4" fill="#fdf0ec" stroke="#b03820" stroke-width="1.5"/>
+            <text x="112" y="274" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#b03820" text-anchor="middle">CFO · Finance Controller</text>
+            <text x="112" y="288" font-family="Inter,sans-serif" font-size="9" fill="#b03820" text-anchor="middle">HITL-08 · dual reviewers</text>
+            <text x="112" y="302" font-family="IBM Plex Mono,monospace" font-size="8" fill="#b03820" text-anchor="middle">Simultaneous · either can act</text>
+            <text x="112" y="314" font-family="IBM Plex Mono,monospace" font-size="8" fill="#b03820" text-anchor="middle">1-hour SLA · auto-escalate</text>
+            <line x1="205" y1="286" x2="280" y2="265" stroke="#b03820" stroke-width="1.5" marker-end="url(#ctx2)"/>
+            <line x1="280" y1="278" x2="205" y2="304" stroke="#b03820" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ctx2)"/>
+            <rect x="650" y="90" width="185" height="72" rx="4" fill="#e8f5f0" stroke="#0a6b52" stroke-width="1.5"/>
+            <text x="742" y="114" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#0a6b52" text-anchor="middle">BigQuery · Anomaly Events</text>
+            <text x="742" y="128" font-family="IBM Plex Mono,monospace" font-size="8" fill="#0a6b52" text-anchor="middle">ae_audit.anomaly_events</text>
+            <text x="742" y="141" font-family="Inter,sans-serif" font-size="8" fill="#0a6b52" text-anchor="middle">SHAP + HITL + decision</text>
+            <text x="742" y="153" font-family="Inter,sans-serif" font-size="8" fill="#0a6b52" text-anchor="middle">Immutable · CMEK</text>
+            <line x1="580" y1="190" x2="650" y2="126" stroke="#0a6b52" stroke-width="1.5" marker-end="url(#ctx2)"/>
+            <rect x="650" y="200" width="185" height="60" rx="4" fill="#eaf2fe" stroke="#1850a0" stroke-width="1.5"/>
+            <text x="742" y="224" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#1850a0" text-anchor="middle">Salesforce Account</text>
+            <text x="742" y="238" font-family="Inter,sans-serif" font-size="8" fill="#1850a0" text-anchor="middle">Activity log entry</text>
+            <text x="742" y="251" font-family="Inter,sans-serif" font-size="8" fill="#1850a0" text-anchor="middle">Anomaly alert ref attached</text>
+            <line x1="580" y1="220" x2="650" y2="230" stroke="#1850a0" stroke-width="1.5" marker-end="url(#ctx2)"/>
+            <rect x="650" y="300" width="185" height="56" rx="4" fill="#fdf0ec" stroke="#b03820" stroke-width="1" stroke-dasharray="5 3"/>
+            <text x="742" y="322" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#b03820" text-anchor="middle">EU AI Act · Annex III</text>
+            <text x="742" y="336" font-family="IBM Plex Mono,monospace" font-size="8" fill="#b03820" text-anchor="middle">High Risk · Art. 13 · Art. 14</text>
+            <text x="742" y="348" font-family="Inter,sans-serif" font-size="8" fill="#b03820" text-anchor="middle">Dual-reviewer = Art. 14 compliance</text>
+          </svg>
+        </div>
+        <div class="figure-note">FinRisk Sentinel boundary (teal) · financial event stream input (teal) · dual-reviewer HITL-08, CFO + FC (coral) · Feature Store baselines (purple) · Salesforce output (blue).</div>
+      </div>
+    </section>
+
+    <!-- §2 ARCHITECTURE -->
+    <section class="section" id="architecture">
+      <h2 class="section-heading"><span class="section-num">§2</span> Architecture — Streaming Pipeline</h2>
+      <p class="body-text">FinRisk Sentinel's architectural distinction from Asset IQ's streaming anomaly detector is the sliding-window aggregation layer. Asset IQ scores individual sensor readings; FinRisk computes population statistics — rolling mean, rolling standard deviation, Z-score against a 90-day baseline, peer-group deviation — before any anomaly model sees the event. <strong>The model scores against a dynamic baseline that updates with every new transaction.</strong></p>
+
+      <div class="figure" id="fig-architecture">
+        <div class="figure-label">Figure 2</div>
+        <div class="figure-sublabel">Pub/Sub → sliding window → Isolation Forest → SHAP → severity router → dual-reviewer HITL-08</div>
+        <div class="figure-body" style="padding: 1.25rem; overflow-x: auto;">
+          <table class="comp-table">
+            <thead><tr><th>Stage</th><th>Component</th><th>Function</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Pub/Sub <code>ae-financial-events</code></td><td class="mono-note">Streaming ingestion from Salesforce + RevRec AI</td><td class="mono-note">Raw payment event</td></tr>
+              <tr><td>2</td><td>FinRisk Agent (Cloud Run, min 2 instances)</td><td class="mono-note">Concurrent Pub/Sub pull · SA: finrisk-sa@ · WIF auth</td><td class="mono-note">Event accepted for scoring</td></tr>
+              <tr><td>3</td><td>Sliding window layer</td><td class="mono-note">90d rolling mean/std · Z-score · peer-group deviation (Feature Store online)</td><td class="mono-note">Enriched feature vector</td></tr>
+              <tr><td>4</td><td>Isolation Forest (Vertex AI endpoint)</td><td class="mono-note">finrisk-anomaly@v1.2 · synchronous, sub-200ms</td><td class="mono-note">anomaly_score 0–1</td></tr>
+              <tr><td>5</td><td>SHAP TreeExplainer</td><td class="mono-note">Top-3 feature attribution · deterministic, synchronous</td><td class="mono-note">SHAP values</td></tr>
+              <tr class="row-flag"><td>6</td><td>BigQuery SHAP write</td><td class="mono-note"><code>ae_audit.shap_explanations</code> · written before HITL · EU AI Act Art. 13</td><td class="mono-note">Immutable SHAP record</td></tr>
+              <tr><td>7</td><td>Severity router</td><td class="mono-note">&lt;0.50 Log Only · 0.50–0.75 Alerting (no HITL) · ≥0.75 HITL-08</td><td class="mono-note">Routed outcome</td></tr>
+              <tr class="row-flag"><td>8</td><td>Firestore HITL-08</td><td class="mono-note">Two docs: CFO + FC, simultaneous · either decision closes both · 1h SLA</td><td class="mono-note">Dual-reviewer checkpoint</td></tr>
+              <tr><td>9</td><td>BigQuery anomaly events</td><td class="mono-note"><code>ae_audit.anomaly_events</code> · every decision, HITL ref, SHAP ref</td><td class="mono-note">Closed audit record + Salesforce Activity entry</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-note">Score &lt; 0.50 routes to Log Only; 0.50–0.75 to Alerting (Cloud Monitoring, no HITL); ≥ 0.75 to HITL-08 dual-reviewer with severity-dependent SLA.</div>
+      </div>
+    </section>
+
+    <!-- §3 STATE MACHINE -->
+    <section class="section" id="statemachine">
+      <h2 class="section-heading"><span class="section-num">§3</span> Agent State Machine</h2>
+      <p class="body-text">The FinRisk Sentinel state machine is distinguished by two features not present in other modules: four-tier severity branching from SCORING, and concurrent-decision handling in HITL-08. When two reviewers can both act, the state machine must correctly handle simultaneous action, action before the SLA, and the case where neither acts before the SLA.</p>
+
+      <div class="figure" id="fig-statemachine">
+        <div class="figure-label">Figure 3</div>
+        <div class="figure-sublabel">IDLE → STREAMING → WINDOWING → SCORING, then four severity branches converging at POSTING → COMPLETE</div>
+        <div class="figure-body" style="padding: 0; overflow-x: auto;">
+          <table class="comp-table">
+            <thead><tr><th>State</th><th>Trigger</th><th>Detail</th></tr></thead>
+            <tbody>
+              <tr><td>IDLE → STREAMING</td><td class="mono-note">agent start</td><td class="mono-note">Pub/Sub pull · always-on</td></tr>
+              <tr><td>STREAMING → WINDOWING</td><td class="mono-note">event received</td><td class="mono-note">90d rolling stats · Z-score · peer-group deviation · Feature Store online</td></tr>
+              <tr><td>WINDOWING → SCORING</td><td class="mono-note">features ready</td><td class="mono-note">Isolation Forest + Z-score · anomaly_score 0–1</td></tr>
+              <tr><td>SCORING → LOG ONLY</td><td class="mono-note">score &lt; 0.50</td><td class="mono-note">BQ write · no alert</td></tr>
+              <tr><td>SCORING → ALERTING</td><td class="mono-note">0.50–0.75</td><td class="mono-note">Cloud Monitoring · no HITL</td></tr>
+              <tr class="row-flag"><td>SCORING → SHAP → HITL-08 HIGH</td><td class="mono-note">0.75–0.90</td><td class="mono-note">CFO + FC · simultaneous · 1h SLA · optimistic lock</td></tr>
+              <tr class="row-flag"><td>SCORING → SHAP → HITL-08 CRITICAL</td><td class="mono-note">score &gt; 0.90</td><td class="mono-note">CFO + FC + immediate escalation · 30min SLA · phone alert · auto-freeze pending review</td></tr>
+              <tr><td>SCORING → ERROR</td><td class="mono-note">Vertex AI timeout</td><td class="mono-note">HITL fallback</td></tr>
+              <tr><td>HITL-08 → POSTING</td><td class="mono-note">decision committed</td><td class="mono-note">BQ anomaly_event + Salesforce Activity</td></tr>
+              <tr><td>POSTING → COMPLETE</td><td class="mono-note">write confirmed</td><td class="mono-note">Audit trail closed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-note">Optimistic lock: the first decision commits to Firestore; the second write detects the version conflict; both queues auto-close. No double-action is possible. SHAP is written to BigQuery before HITL-08 is created — Firestore is immutable at every state transition.</div>
+      </div>
+    </section>
+
+    <!-- §4 DATA FLOW -->
+    <section class="section" id="dataflow">
+      <h2 class="section-heading"><span class="section-num">§4</span> Data Flow &amp; Sequence</h2>
+      <p class="body-text">The Universitätsklinikum München account — the same account whose contract was processed by ContractGuard, whose revenue was recognised by RevRec AI, and whose MRI unit is monitored by Asset IQ — makes a payment significantly above its 90-day baseline. FinRisk scores it at <strong>0.87</strong> and creates a simultaneous HITL-08 for both the CFO and Finance Controller.</p>
+
+      <div class="figure" id="fig-sequence">
+        <div class="figure-label">Figure 4</div>
+        <div class="figure-sublabel">Sequence: €2.84M payment → dual HITL-08 → Finance Controller acts first at t+22min</div>
+        <div class="figure-body" style="padding: 0; overflow-x: auto;">
+          <table class="comp-table">
+            <thead><tr><th>Time</th><th>Actor</th><th>Event</th></tr></thead>
+            <tbody>
+              <tr><td>t+0</td><td class="mono-note">Salesforce → Pub/Sub</td><td class="mono-note">payment_event · €2,840,000 published to ae-financial-events</td></tr>
+              <tr><td>t+2s</td><td class="mono-note">FinRisk Agent → Feature Store</td><td class="mono-note">get_online_features(UKM_account) + sliding_window()</td></tr>
+              <tr><td>t+4s</td><td class="mono-note">Feature Store → Agent</td><td class="mono-note">90d_mean: €184K · std: €31K · Z: 85.8</td></tr>
+              <tr><td>t+6s</td><td class="mono-note">Agent → Vertex AI</td><td class="mono-note">isolation_forest.score(enriched_feature_vector)</td></tr>
+              <tr><td>t+8s</td><td class="mono-note">Vertex AI → Agent</td><td class="mono-note">anomaly_score: 0.87 · severity: HIGH</td></tr>
+              <tr><td>t+10s</td><td class="mono-note">Agent → SHAP</td><td class="mono-note">shap_values(enriched_feature_vector)</td></tr>
+              <tr class="row-flag"><td>t+12s</td><td class="mono-note">Agent → BigQuery</td><td class="mono-note">BQ write: shap_explanations(UKM_payment_202603) before HITL · EU AI Act Art. 13</td></tr>
+              <tr class="row-flag"><td>t+14s</td><td class="mono-note">Agent → Firestore</td><td class="mono-note">hitl.create_dual(HITL-08, score=0.87, shap, baseline, transactions[5])</td></tr>
+              <tr><td>t+18s</td><td class="mono-note">Firestore → CFO + FC</td><td class="mono-note">HITL-08 queue (HIGH) delivered simultaneously to both reviewers</td></tr>
+              <tr><td>t+22min</td><td class="mono-note">Finance Controller</td><td class="mono-note">decision: Approve · reason: legitimate Q1 early payment · FC acts first</td></tr>
+              <tr><td>t+22min</td><td class="mono-note">Firestore</td><td class="mono-note">optimistic lock · CFO queue auto-closed</td></tr>
+              <tr><td>t+23min</td><td class="mono-note">Agent → BigQuery + Salesforce</td><td class="mono-note">BQ anomaly_event committed · hitl_ref · shap_ref · Salesforce Activity updated</td></tr>
+              <tr><td>t+23min</td><td class="mono-note">State</td><td class="mono-note">Complete · audit trail closed · CFO queue closed by optimistic lock</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §5 HITL-08 UI -->
+    <section class="section" id="hitl">
+      <h2 class="section-heading"><span class="section-num">§5</span> HITL-08 Presentation</h2>
+      <p class="body-text">HITL-08 is the most urgent HITL in the suite. The CFO and Finance Controller receive the same alert simultaneously — a sparkline for visual context, a transaction table for the numbers, SHAP for the model's reasoning, and a dual-reviewer status panel showing whether the other reviewer has already acted. <strong>The first decision closes both queues.</strong></p>
+
+      <div class="hitl-mockup">
+        <div class="hm-titlebar">
+          <div class="hm-dot" style="background:#e8907c"></div>
+          <div class="hm-dot" style="background:#e8c870"></div>
+          <div class="hm-dot" style="background:#80c8a0"></div>
+          <div class="hm-title">FinRisk Sentinel — HITL-08 HIGH · Universitätsklinikum München · SLA: 47m · CFO also reviewing</div>
+        </div>
+        <div class="hm-body">
+          <div class="hm-main">
+            <div class="hm-sec-label">Anomaly Summary</div>
+            <div class="anomaly-header">
+              <div><div class="ah-label">Anomaly Score</div><div class="ah-value" style="color:#e89090">0.87</div><div class="ah-sub">HIGH severity · &gt; 0.75 threshold</div></div>
+              <div><div class="ah-label">Z-Score</div><div class="ah-value" style="color:#e0b860">85.8σ</div><div class="ah-sub">2.8σ above 90d mean</div></div>
+              <div><div class="ah-label">Payment Amount</div><div class="ah-value" style="color:#80c8c0">€2.84M</div><div class="ah-sub">vs 90d mean €184K</div></div>
+            </div>
+            <span class="severity-badge sev-high">High Severity · HITL-08 · Dual Reviewer</span>
+
+            <div class="hm-sec-label">90-Day Payment Baseline vs Anomalous Event</div>
+            <div class="sparkline-wrap">
+              <div class="sparkline-label">Rolling 90-Day Payment History · Universitätsklinikum München</div>
+              <svg width="100%" viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="40" width="490" height="18" rx="2" fill="#e8f5f0" stroke="#80c8b0" stroke-width="1" stroke-dasharray="4 3"/>
+                <text x="22" y="52" font-family="IBM Plex Mono,monospace" font-size="7" fill="#0a6b52">Normal range</text>
+                <polyline points="20,52 50,50 80,48 110,52 140,49 170,51 200,50 230,47 260,51 290,48 320,52 350,49 380,51 410,50 440,48 470,52 500,44 530,5" fill="none" stroke="#0a6b52" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="530" cy="5" r="5" fill="#b03820"/>
+                <line x1="530" y1="10" x2="530" y2="55" stroke="#b03820" stroke-width="1" stroke-dasharray="3 2"/>
+                <text x="530" y="68" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b03820" text-anchor="middle" font-weight="500">€2.84M</text>
+                <text x="20" y="73" font-family="IBM Plex Mono,monospace" font-size="7" fill="#8a8880">90d ago</text>
+                <text x="275" y="73" font-family="IBM Plex Mono,monospace" font-size="7" fill="#8a8880" text-anchor="middle">45d ago</text>
+                <text x="530" y="73" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b03820" text-anchor="end" font-weight="500">Today</text>
+                <line x1="20" y1="51" x2="510" y2="51" stroke="#80c8b0" stroke-width="1" stroke-dasharray="6 3"/>
+                <text x="512" y="54" font-family="IBM Plex Mono,monospace" font-size="7" fill="#0a6b52">mean €184K</text>
+              </svg>
+            </div>
+
+            <div class="hm-sec-label">Recent Transactions — Last 5</div>
+            <table class="tx-table">
+              <thead><tr><th>Date</th><th>Amount</th><th>Type</th><th>Z-Score</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>2026-02-28</td><td>€164,320</td><td>Invoice payment</td><td>−0.6σ</td><td style="color:var(--teal);font-weight:500">Normal</td></tr>
+                <tr><td>2026-02-14</td><td>€201,840</td><td>Invoice payment</td><td>+0.6σ</td><td style="color:var(--teal);font-weight:500">Normal</td></tr>
+                <tr><td>2026-01-31</td><td>€178,500</td><td>Invoice payment</td><td>−0.2σ</td><td style="color:var(--teal);font-weight:500">Normal</td></tr>
+                <tr><td>2026-01-15</td><td>€221,750</td><td>Invoice payment</td><td>+1.2σ</td><td style="color:var(--teal);font-weight:500">Normal</td></tr>
+                <tr class="tx-anomaly"><td>2026-03-15</td><td>€2,840,000</td><td>Payment (type: unspecified)</td><td>+85.8σ</td><td>⚠ Anomaly</td></tr>
+              </tbody>
+            </table>
+
+            <div class="hm-sec-label">SHAP Attribution — Top 3 Features</div>
+            <div class="shap-strip">
+              <div class="shap-row"><div class="shap-feat">payment_to_baseline_ratio</div><div class="shap-track"><div class="shap-pos" style="width:74%"></div></div><div class="shap-num">+0.52</div></div>
+              <div class="shap-detail">val: 15.4× baseline (2,840K ÷ 184K)</div>
+              <div class="shap-row"><div class="shap-feat">z_score_deviation</div><div class="shap-track"><div class="shap-pos" style="width:41%"></div></div><div class="shap-num">+0.29</div></div>
+              <div class="shap-detail">val: 85.8σ — highest ever for this account</div>
+              <div class="shap-row"><div class="shap-feat">payment_frequency_anomaly</div><div class="shap-track"><div class="shap-pos" style="width:16%"></div></div><div class="shap-num">+0.11</div></div>
+              <div class="shap-detail" style="margin-bottom:0">val: payment 13 days after last (normal: 14–16 day cycle)</div>
+            </div>
+
+            <div class="hm-sec-label">Dual Reviewer Status</div>
+            <div class="dual-reviewer">
+              <div class="dr-card acting">
+                <div class="dr-name">Finance Controller (you)</div>
+                <span class="dr-status">Reviewing</span>
+                <div class="dr-detail">Your decision will close this alert and auto-close the CFO queue via optimistic lock.</div>
+              </div>
+              <div class="dr-card waiting">
+                <div class="dr-name">CFO</div>
+                <span class="dr-status">Also reviewing</span>
+                <div class="dr-detail">CFO notified at the same time. If CFO acts first, your queue will close automatically.</div>
+              </div>
+            </div>
+
+            <div class="hm-actions">
+              <div class="hm-btn-approve">✓ Approve — Legitimate Payment</div>
+              <div class="hm-btn-escalate">⚠ Escalate — Suspicious</div>
+              <div class="hm-btn-defer">↷ Defer 15min</div>
+            </div>
+            <div class="hm-sla">⏱ SLA: 47 minutes remaining · timeout → CEO + Risk Committee auto-alert · decision immutably recorded · SHAP already in BigQuery</div>
+          </div>
+
+          <div class="hm-sidebar">
+            <div class="hm-sec-label">Account Context</div>
+            <div class="hm-cf-label">Account</div><div class="hm-cf-val">Universitätsklinikum München</div>
+            <div class="hm-cf-label">Account tier</div><div class="hm-cf-val">Tier-1 Hospital · EMEA-North</div>
+            <div class="hm-cf-label">Relationship</div><div class="hm-cf-val">Active · 8 years · Contract CV2026-0042 signed 2026-03-15</div>
+            <div class="hm-cf-label">Payment history</div><div class="hm-cf-val">42 payments · 0 disputes · avg. payment cycle: 15.2 days</div>
+            <div class="hm-cf-label">Anomaly score</div><div class="hm-cf-val" style="color:var(--coral);font-weight:500">0.87 · High<br>Above HITL-08 threshold (0.75)</div>
+            <div class="hm-cf-label">HITL checkpoint</div><div class="hm-cf-val">HITL-08 · 1h SLA<br>Dual-reviewer (CFO + FC)</div>
+            <div class="hm-cf-label">SHAP record</div><div class="hm-cf-val" style="font-size:11px">Written to BigQuery before this queue was created · EU AI Act Art. 13 ✓</div>
+            <div class="hm-note amber"><strong>Context note.</strong> This account signed a new €2.84M contract on 2026-03-15 (same day). Early full-contract payment is possible but atypical. Recommend Approve if payment matches contract reference.</div>
+            <div class="hm-note coral"><strong>Concurrent reviewer.</strong> CFO has this same queue open. First decision wins. Second decision triggers optimistic lock — no double-action.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §6 ADRs -->
+    <section class="section" id="adrs">
+      <h2 class="section-heading"><span class="section-num">§6</span> Architecture Decision Records</h2>
+      <p class="body-text">Three FinRisk decisions, every alternative documented.</p>
+
+      <div class="adr-card" id="adr-011">
+        <div class="adr-header">
+          <span class="adr-id">ADR-011</span>
+          <span class="adr-title">Isolation Forest over ARIMA / statistical threshold (restated for FinRisk Sentinel)</span>
+          <span class="adr-status-badge accepted">Accepted · ML Design</span>
+        </div>
+        <div class="adr-body-block">
+          <p>BigQuery ML's ARIMA_PLUS model was evaluated — a natural choice for financial time-series anomaly detection given that payments are temporal events with seasonality. It was rejected for three reasons. <strong>(1)</strong> ARIMA models require a minimum history length per entity before they can produce reliable forecasts — new accounts or accounts with irregular payment schedules produce poor ARIMA fits. Isolation Forest requires only that a normal operating period exists, not a minimum number of observations; ClaraVis has accounts that pay quarterly, annually, or on irregular project schedules. <strong>(2)</strong> ARIMA_PLUS operates in batch mode in BigQuery ML — it is not a streaming model. For a financial anomaly system with a 1-hour HITL SLA, a batch model requires scheduling infrastructure that introduces latency; Isolation Forest runs on the Vertex AI endpoint as a synchronous REST call with sub-200ms response. <strong>(3)</strong> The deterministic SHAP TreeExplainer requirement applies equally here — ARIMA does not produce structured SHAP attributions. The CFO asking "why was this payment flagged?" needs a feature-level explanation, not an ARIMA residual value. A Z-score enrichment layer alongside Isolation Forest produces a human-readable metric ("+85.8σ above baseline") while Isolation Forest provides the multi-dimensional model signal that accounts for correlated features.</p>
+        </div>
+      </div>
+
+      <div class="adr-card" id="adr-fr01">
+        <div class="adr-header">
+          <span class="adr-id">ADR-FR01</span>
+          <span class="adr-title">Streaming Pub/Sub scoring over scheduled BigQuery batch detection</span>
+          <span class="adr-status-badge accepted">Accepted · Agent Design</span>
+        </div>
+        <div class="adr-body-block">
+          <p>The alternative design was to run FinRisk as a scheduled BigQuery query — every 15 minutes, query the transactions table, compute Z-scores in SQL, and alert on outliers. This is a common financial monitoring pattern and avoids the operational complexity of a streaming Cloud Run agent. It was rejected because: <strong>(1)</strong> a 15-minute batch window means a payment anomaly can sit undetected for up to 15 minutes before any alert fires — operationally unacceptable for a high-severity financial event such as a potentially fraudulent payment or a wire transfer error. The streaming architecture detects and alerts within 18 seconds of the payment event reaching Pub/Sub. <strong>(2)</strong> BigQuery SQL cannot call a Vertex AI Isolation Forest endpoint synchronously — the batch approach would require either BigQuery ML (rejected above) or a scheduled Cloud Function bridge that replicates the streaming agent's complexity without the latency advantage. <strong>(3)</strong> the sliding window feature computation (90-day rolling stats, peer-group deviation) requires maintaining state across events — natural in a streaming agent with in-memory state, but requiring materialised views or intermediate tables in batch SQL, adding query cost and maintenance overhead. The streaming architecture is more complex to operate but delivers a 1-hour HITL SLA that a batch architecture cannot match.</p>
+        </div>
+      </div>
+
+      <div class="adr-card" id="adr-fr02">
+        <div class="adr-header">
+          <span class="adr-id">ADR-FR02</span>
+          <span class="adr-title">Dual-reviewer HITL-08 over single-reviewer for high-severity financial alerts</span>
+          <span class="adr-status-badge accepted">Accepted · Product Design</span>
+        </div>
+        <div class="adr-body-block">
+          <p>Single-reviewer HITL — either CFO or Finance Controller, not both — was the initial design for simplicity. It was replaced with dual-reviewer for three reasons. <strong>(1) Separation of duties:</strong> for high-severity financial alerts (score ≥ 0.75, potentially indicating fraud or error), requiring only one reviewer creates a single point of control. Having both reviewers notified simultaneously ensures the faster-responding, better-informed reviewer can act within the SLA without requiring coordination. <strong>(2)</strong> EU AI Act Article 14 requires adequate human oversight proportionate to the risk; for a system flagging potential financial fraud in a regulated medical device company, "adequate oversight" for high-severity alerts is documented as dual-reviewer — matching the four-eyes principle already applied to financial authorisations above a threshold at ClaraVis. <strong>(3)</strong> the optimistic lock mechanism resolves the concurrent-decision problem cleanly: Firestore's transaction model guarantees the first committed decision is final, the second write detects the conflict via the document version check, and both queues close automatically. No coordination between reviewers is required.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- §7 REBUTTALS -->
+    <section class="section" id="rebuttals">
+      <h2 class="section-heading"><span class="section-num">§7</span> Stakeholder Rebuttals</h2>
+      <p class="body-text">Six objections raised during the FinRisk design review. Each rebuttal is grounded in architectural evidence, not opinion.</p>
+
+      <div class="rebuttal-grid">
+        <div class="rb-card cpo" style="border-top-color:var(--purple)">
+          <div class="rb-who">CTO · S-01</div>
+          <div class="rb-concern">Why not BigQuery ML ARIMA — it's already in the data warehouse?</div>
+          <div class="rb-quote">"ClaraVis already uses BigQuery, and BigQuery ML has ARIMA_PLUS. Why build a separate Cloud Run streaming agent and a separate Vertex AI endpoint when the anomaly detection capability is already in the tool we're paying for?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">ARIMA_PLUS is a batch forecasting model — it runs in scheduled query mode, not in a streaming, sub-second scoring mode. ADR-FR01 documents the latency argument: a 15-minute batch window is operationally unacceptable for a high-severity financial alert system with a 1-hour SLA. By the time a batch model fires an alert, 15 minutes have already elapsed; the streaming architecture detects and alerts in 18 seconds. ARIMA also does not produce structured SHAP attributions that satisfy EU AI Act Article 13. The CFO and Finance Controller need to see "this payment was 15.4× the account baseline and 85.8σ above the rolling mean" — not an ARIMA residual value. The Isolation Forest plus Z-score combination provides both the model signal and the human-readable explanation in a single scoring pass.</div>
+          <div class="rb-ev" style="background:var(--purple-bg);color:var(--purple)"><strong>Evidence:</strong> ADR-FR01 (streaming over batch) · ADR-011 (Isolation Forest over ARIMA) · HITL-08 UI (Z-score human-readable + SHAP) · EU AI Act Art. 13</div>
+        </div>
+        <div class="rb-card cfo">
+          <div class="rb-who">CFO · S-03</div>
+          <div class="rb-concern">What's the false positive rate — every spurious alert wastes senior executive time?</div>
+          <div class="rb-quote">"Every HIGH severity alert lands in my queue and requires my attention within the hour. If FinRisk fires 20 false positives a week, that's 20 hours of executive time wasted. What is the expected alert volume?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">At ClaraVis's transaction volume (approximately 340 invoiced payments per month across all accounts), the Isolation Forest model with a 0.75 HIGH threshold and Z-score enrichment is calibrated to fire HIGH alerts on approximately 1–3 events per month — not per week. The model's contamination parameter is set to 0.005 (0.5% expected anomaly rate). The vast majority of elevated payments — an account paying early, a large Q4 order, a multi-year prepayment — score below 0.75 and route to Alerting (no HITL) or Log Only. The sidebar context note shows the account's contract activity on the same date, allowing the CFO to approve a legitimate early payment in under 60 seconds. The dual-reviewer design means that if the Finance Controller acts first, the CFO queue closes automatically — eliminating the CFO's time cost entirely for false positives the FC recognises immediately.</div>
+          <div class="rb-ev"><strong>Evidence:</strong> FinRisk Model Card (contamination parameter 0.005) · HITL-08 UI context note · ADR-FR02 (dual-reviewer, first-act closes both)</div>
+        </div>
+        <div class="rb-card clo">
+          <div class="rb-who">Finance Controller</div>
+          <div class="rb-concern">How does FinRisk distinguish genuine anomalies from planned large payments?</div>
+          <div class="rb-quote">"At quarter-end, some of our largest accounts make bulk payments covering 3–6 months of invoices simultaneously. These are expected — but they'll look like massive anomalies to a model that only knows the 90-day rolling mean. Won't FinRisk flood us with false positives at Q1 and Q4 close?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">Two mechanisms address this specifically. First, the Feature Store account baseline features include a <code>payment_seasonality_flag</code> set for accounts with documented Q1/Q4 bulk payment patterns — the Isolation Forest model is trained on data that includes these seasonal payments, so the contamination rate accounts for them. The <code>payment_frequency_anomaly</code> SHAP feature captures whether the payment arrived on schedule or out-of-cycle. Second, the HITL-08 sidebar context shows the account's contract and invoice history alongside CRM notes — a Finance Controller reviewing a Q4 bulk payment sees immediately that it matches three outstanding invoices, and the approval takes 30 seconds, not 30 minutes. The system is designed to make every HIGH alert reviewable in under five minutes with full context, so genuine anomalies are caught and false positives are dismissed quickly.</div>
+          <div class="rb-ev"><strong>Evidence:</strong> FinRisk Feature Store (payment_seasonality_flag) · HITL-08 UI (account context sidebar) · ADR-011 (Isolation Forest trained on seasonal data)</div>
+        </div>
+        <div class="rb-card cpo">
+          <div class="rb-who">Enterprise Architect · S-08</div>
+          <div class="rb-concern">How does the sliding window handle sparse payment schedules for smaller accounts?</div>
+          <div class="rb-quote">"A small account that pays annually has maybe 1–2 payments in 90 days. The rolling statistics will be meaningless or undefined. How does FinRisk handle this?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">Accounts with fewer than 5 payment events in the rolling 90-day window fall back to peer-group-level baseline statistics rather than account-level statistics. The peer group is defined by account tier (Small, Mid, Enterprise), industry vertical, and region — accounts with similar payment frequency profiles. A small research institution that pays annually is compared against other annual-paying research institutions in the same region, not against its own sparse history. This fallback is explicit in the Feature Store account baseline features: the feature vector includes a <code>baseline_source</code> field (Account or Peer Group) that the SHAP attribution reports, and the HITL-08 interface shows which baseline source is being used.</div>
+          <div class="rb-ev"><strong>Evidence:</strong> FinRisk Feature Store (baseline_source feature, peer-group fallback) · HITL-08 UI SHAP section (baseline source displayed) · Isolation Forest contamination parameter</div>
+        </div>
+        <div class="rb-card cpo">
+          <div class="rb-who">CISO · S-09</div>
+          <div class="rb-concern">Financial transaction data — what access controls apply?</div>
+          <div class="rb-quote">"The ae-financial-events topic carries actual payment amounts, account identifiers, and transaction references. This is classified financial data. Who has read access to this topic and the downstream BigQuery tables?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">The <code>ae-financial-events</code> topic has three principals with subscription access: the FinRisk SA (pull subscription only), the RevRec AI SA (publish only), and the Data Governance SA (schema validation only). No developer SA has subscription access. The <code>anomaly_events</code> table in <code>ae_audit</code> is governed by the same IAM policy as the SHAP explanations table: Finance Controller (read), CFO (read), FinRisk SA (write), audit SA (read for compliance queries). Raw Pub/Sub payloads are not persisted in BigQuery — only the processed anomaly record is written, and the full transaction reference is stored as a hash, not plain text. The plain-text reference is only accessible via the Salesforce Account record, with its own IAM-governed access control.</div>
+          <div class="rb-ev"><strong>Evidence:</strong> Pub/Sub topic IAM (three SA principals) · BigQuery ae_audit access policy · CMEK configuration · transaction reference hashing</div>
+        </div>
+        <div class="rb-card caio">
+          <div class="rb-who">CCO · S-02</div>
+          <div class="rb-concern">Does FinRisk fall under EU AI Act given it flags financial transactions?</div>
+          <div class="rb-quote">"Annex III includes AI systems used in creditworthiness assessment and financial access decisions. Is FinRisk a high-risk system under that classification, and what are the obligations if it is?"</div>
+          <div class="rb-rl">Architect Response</div>
+          <div class="rb-r">FinRisk Sentinel monitors ClaraVis's own incoming financial transactions for anomalies — it does not assess counterparties' creditworthiness or make access-to-financial-services decisions, so it does not fall cleanly under Annex III Category 5b. The conservative position adopted in the architecture is to treat FinRisk as High Risk regardless of the precise Annex III category, because the consequences of a false negative (a missed fraudulent transaction) or a mishandled false positive (freezing a legitimate payment) are material. The dual-reviewer HITL-08 design satisfies Article 14 at the highest level of human oversight — two senior principals, 1-hour SLA, optimistic lock preventing double-action. The SHAP attribution per alert satisfies Article 13; the Model Card in Vertex AI Model Registry satisfies Article 11.</div>
+          <div class="rb-ev"><strong>Evidence:</strong> FinRisk Model Card (EU AI Act classification) · HITL-08 dual-reviewer design (ADR-FR02) · SHAP attribution (Art. 13) · VPC-SC + CMEK (Art. 15 robustness)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §8 DEMO PATHWAY -->
+    <section class="section" id="demo">
+      <h2 class="section-heading"><span class="section-num">§8</span> Demo Pathway</h2>
+      <p class="body-text">Three minutes. One payment. Two reviewers. Eighteen seconds to alert. The München hospital account makes a payment that FinRisk flags. The pathway below shows the streaming pipeline in action, the simultaneous dual-reviewer HITL-08, and the optimistic lock when the Finance Controller acts before the CFO.</p>
+
+      <div class="demo-steps">
+        <div class="ds-step">
+          <div class="ds-num">00</div>
+          <div>
+            <div class="ds-label">Setup · 30s before</div>
+            <div class="ds-title">Show the FinRisk monitoring dashboard — live event stream</div>
+            <div class="ds-body">Open the FinRisk Sentinel monitoring dashboard in Cloud Monitoring. Show the live Pub/Sub message rate on <code>ae-financial-events</code>, the Cloud Run instance count, and the rolling anomaly score distribution for the past 24 hours — mostly Log Only (green), a few Alerting (amber), zero High. This establishes that the system runs continuously and that HIGH alerts are genuinely rare.</div>
+            <div class="ds-services"><span class="ds-svc">Cloud Monitoring</span><span class="ds-svc">Pub/Sub monitoring</span><span class="ds-svc">Cloud Run dashboard</span></div>
+          </div>
+        </div>
+        <div class="ds-step">
+          <div class="ds-num">01</div>
+          <div>
+            <div class="ds-label">Payment Event · 0:00</div>
+            <div class="ds-title">Publish a synthetic payment event — watch the pipeline respond</div>
+            <div class="ds-body">Publish a synthetic payment event to <code>ae-financial-events</code> via the Pub/Sub Console: account_id UKM_MCH_001, amount €2,840,000.00, payment_date 2026-03-15. The Cloud Run logs show: "Event received," "Fetching baseline features…," "Z-score computed: 85.8," "Isolation Forest score: 0.87 · severity: HIGH" — all in under 10 seconds.</div>
+            <div class="ds-say">"I'm publishing a payment event directly to the Pub/Sub topic — simulating the Salesforce trigger. Watch the Cloud Run agent respond. The event lands, the baseline is fetched, Z-score computed, anomaly scored — all in under 10 seconds."</div>
+            <div class="ds-services"><span class="ds-svc">Pub/Sub publish</span><span class="ds-svc">Cloud Run logs</span><span class="ds-svc">Feature Store online</span><span class="ds-svc">Vertex AI endpoint</span></div>
+          </div>
+        </div>
+        <div class="ds-step">
+          <div class="ds-num">02</div>
+          <div>
+            <div class="ds-label">SHAP + BigQuery · 0:20</div>
+            <div class="ds-title">SHAP computed and written to BigQuery before HITL</div>
+            <div class="ds-body">The Cloud Run logs continue: "SHAP computed · payment_to_baseline_ratio +0.52 · z_score_deviation +0.29 · payment_frequency_anomaly +0.11," "Writing SHAP to BigQuery before HITL creation…," "SHAP written · creating HITL-08 dual-reviewer checkpoint…" A quick SELECT on <code>ae_audit.shap_explanations</code> shows the row already exists before the HITL queue appears.</div>
+            <div class="ds-say">"The SHAP explanation is in BigQuery before the HITL queue exists. This is the EU AI Act Article 13 design — the explanation is part of the audit trail from the moment of scoring, not created retrospectively when someone asks for it."</div>
+            <div class="ds-services"><span class="ds-svc">SHAP TreeExplainer</span><span class="ds-svc">BigQuery shap_explanations</span><span class="ds-svc">Firestore HITL-08</span></div>
+          </div>
+        </div>
+        <div class="ds-step flag">
+          <div class="ds-num">03</div>
+          <div>
+            <div class="ds-label">HITL-08 · 0:35 — the moment</div>
+            <div class="ds-title">Open both reviewer queues simultaneously — the dual-reviewer interface</div>
+            <div class="ds-body">Two browser windows side by side: the Finance Controller's HITL-08 queue and the CFO's. Both show the same alert — the anomaly header (score 0.87, Z-score 85.8σ, €2.84M), the sparkline, the highlighted anomaly row, the SHAP strip, and the dual-reviewer status panel showing both reviewers are currently reviewing.</div>
+            <div class="ds-say">"Both reviewers see the same interface at the same time — the sparkline shows the pattern, the transaction table shows the numbers, SHAP shows why the model flagged it. The sidebar shows the account signed a new €2.84M contract on the same date — context the Finance Controller recognises immediately as a likely early full-contract payment. Click Approve in the Finance Controller window."</div>
+            <div class="ds-services"><span class="ds-svc">HITL-08 dual interface</span><span class="ds-svc">Sparkline SVG</span><span class="ds-svc">Transaction table</span><span class="ds-svc">SHAP strip</span></div>
+          </div>
+        </div>
+        <div class="ds-step">
+          <div class="ds-num">04</div>
+          <div>
+            <div class="ds-label">Optimistic Lock · 1:30</div>
+            <div class="ds-title">The CFO queue auto-closes via optimistic lock</div>
+            <div class="ds-body">After the Finance Controller approves, the CFO browser window shows the queue status changing to "Resolved — Finance Controller approved at 14:07:22 · reason: legitimate Q1 early payment." The Cloud Run logs show: "HITL-08 decision committed · FC · optimistic lock version 2 → CFO queue closed · state: COMPLETE."</div>
+            <div class="ds-say">"The Finance Controller approved. The CFO's queue closed automatically — no action required. The optimistic lock in Firestore handled the concurrency: the FC's decision committed at version 1, and when the system tried to mark the CFO's copy as requiring action, it found version 2 already committed, so it auto-closes. No double-action, no coordination, no race condition."</div>
+            <div class="ds-services"><span class="ds-svc">Firestore optimistic lock</span><span class="ds-svc">CFO queue auto-close</span><span class="ds-svc">Cloud Run logs</span></div>
+          </div>
+        </div>
+        <div class="ds-step">
+          <div class="ds-num">05</div>
+          <div>
+            <div class="ds-label">Audit Trail · 2:10</div>
+            <div class="ds-title">Query the complete anomaly audit trail</div>
+            <div class="ds-body">In BigQuery, the audit join query — <code>ae_audit.shap_explanations</code> joined to <code>ae_audit.anomaly_events</code> on transaction_id — returns the three SHAP values, the anomaly score, the FC's decision and timestamp, and the CFO's auto-close record. This is the complete EU AI Act Article 13 + 14 evidence package for this financial anomaly event — the same BigQuery pattern as every other module in the suite.</div>
+            <div class="ds-say">"Four modules now — ContractGuard, RevRec AI, Asset IQ, FinRisk Sentinel — and every one of them produces the same audit query pattern. That's what a shared platform looks like."</div>
+            <div class="ds-services"><span class="ds-svc">BigQuery ae_audit</span><span class="ds-svc">anomaly_events join</span><span class="ds-svc">shap_explanations join</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADJACENT MODULES -->
+    <section class="section">
+      <h2 class="section-heading"><span class="section-num">§9</span> Adjacent Modules</h2>
+      <p class="body-text">Financial domain complete — four modules done. ContractGuard, RevRec AI, and FinRisk Sentinel complete the Financial domain within the Quote-to-Cash pillar. All three share the same München account narrative, the same BigQuery audit pattern, and the same SHAP-before-HITL design discipline.</p>
+      <div class="next-modules">
+        <a href="page-09.html" class="next-mod-link">
+          <span class="next-mod-id">PG 09</span>
+          <div>
+            <div class="next-mod-name">← AE Platform Index</div>
+            <div class="next-mod-desc">All 8 modules · dependency matrix · demo pathway index</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-09-m03.html" class="next-mod-link">
+          <span class="next-mod-id">M-03</span>
+          <div>
+            <div class="next-mod-name">RevRec AI — Module 03</div>
+            <div class="next-mod-desc">Same München account · revenue recognition</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-09-m05.html" class="next-mod-link">
+          <span class="next-mod-id">M-05</span>
+          <div>
+            <div class="next-mod-name">Asset IQ — Module 05</div>
+            <div class="next-mod-desc">Same München MRI unit · predictive maintenance</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>FinRisk Sentinel · Module 04 · Financial Domain · 2026</span>
+    <span>The Autonomous Enterprise Platform · © 2026 Siddharthan Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+/* SIDEBAR ACTIVE STATE */
+const sections = document.querySelectorAll('section[id], header[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TOGAF ADM — Phases A–F · The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* ADM TRACK */
+.adm-track { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 1.5rem; }
+.adm-phase { background: var(--bg2); padding: 1.1rem 1rem; border-radius: var(--r); border: 1px solid var(--border); transition: transform 0.18s; }
+.adm-phase:hover { transform: translateY(-2px); }
+.adm-phase.prelim { background: var(--bg3); }
+.adm-phase.reqs { background: var(--coral-bg); border-color: var(--coral-border); }
+.adm-p-label { font-family: var(--mono); font-size: 9px; font-weight: 500; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.adm-phase.reqs .adm-p-label { color: var(--coral); }
+.adm-p-name { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.2; }
+.adm-p-artifact { font-family: var(--mono); font-size: 9.5px; color: var(--text3); line-height: 1.4; }
+
+/* PHASE BLOCKS */
+.phase-block { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.phase-block-hdr { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 18px; }
+.ph-badge-pill { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+.pb-pa { background: var(--blue-bg); color: var(--blue); }
+.pb-pb { background: var(--teal-bg); color: var(--teal); }
+.pb-pc { background: var(--teal-bg); color: var(--teal); }
+.pb-pd { background: var(--purple-bg); color: var(--purple); }
+.pb-pef { background: var(--amber-bg); color: var(--amber); }
+.phase-block-title { font-family: var(--sans); font-size: 16px; font-weight: 700; color: var(--text); }
+.phase-block-output { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-left: auto; letter-spacing: 0.03em; }
+.phase-block-body { padding: 1.6rem; background: white; }
+
+/* PRINCIPLES GRID */
+.principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 0.5rem; }
+.principle-card { background: var(--bg2); border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.1rem 1.1rem; transition: border-top-color 0.2s, background 0.2s; }
+.principle-card:hover { background: white; border-top-color: var(--blue); }
+.pr-id { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 8px; }
+.pr-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.25; }
+.pr-rationale { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.pr-constraint { padding: 6px 9px; background: var(--blue-bg); font-size: 10.5px; color: var(--blue); line-height: 1.5; border-radius: var(--r); }
+
+/* DIAGRAM WRAPPER */
+.diagram-wrap { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-top: 0.5rem; }
+.diagram-wrap.dk-bg { background: var(--bg2); border-color: var(--border); }
+.diag-title { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.diag-title::before { content: ''; width: 3px; height: 14px; background: var(--blue); display: block; flex-shrink: 0; }
+.diagram-wrap.dk-bg .diag-title { color: var(--text); }
+.diagram-wrap.dk-bg .diag-title::before { background: var(--amber); }
+.diag-sub { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-bottom: 1.2rem; }
+.diagram-wrap.dk-bg .diag-sub { color: var(--text3); }
+.diag-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.diagram-wrap.dk-bg .diag-legend { border-top-color: var(--border); }
+.diag-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.diagram-wrap.dk-bg .diag-legend-item { color: var(--text2); }
+.dl-box { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* ENTITY TABLE (for canonical data model) */
+.entity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.entity-card { border: 2px solid; border-radius: var(--r); overflow: hidden; }
+.entity-hdr { padding: 8px 12px; font-family: var(--sans); font-size: 12px; font-weight: 700; color: white; text-align: center; }
+.entity-body { padding: 10px 12px; font-family: var(--mono); font-size: 9.5px; color: var(--text2); line-height: 1.7; background: white; }
+.entity-body .arrow-ref { font-weight: 600; display: block; margin-top: 4px; }
+
+/* PHASE DETAIL GRID */
+.phase-detail-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.pd-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1.1rem; }
+.pd-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.pd-val { font-size: 12px; color: var(--text); line-height: 1.55; }
+
+/* APP PORTFOLIO / 4-COL CARDS */
+.appcard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.appcard { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1rem; }
+.appcard-label { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 6px; }
+.appcard-body { font-family: var(--mono); font-size: 10.5px; color: var(--text2); line-height: 1.55; }
+
+/* PILLAR LINK CARDS */
+.pillar-link-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 1rem; }
+.pl-card { display: block; padding: 0.9rem 1.1rem; border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+.pl-card:hover { border-color: var(--blue); background: var(--blue-bg); }
+.pl-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+.pl-title { font-family: var(--serif); font-size: 15px; color: var(--text); margin-top: 2px; }
+
+/* WORK PACKAGE / TRACEABILITY TABLES (shared with comp-table) */
+
+/* ADR ROW (page-03 specific 4-up) */
+.adr-row-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 0.5rem; }
+.adr-mini-card { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--border2); border-radius: var(--r); padding: 1rem 1.2rem; }
+.adr-mini-card.green { border-left-color: var(--teal); }
+.adr-mini-card.teal { border-left-color: var(--teal); }
+.adr-mini-card.blue { border-left-color: var(--blue); }
+.adr-mini-card.amber { border-left-color: var(--amber); }
+.adr-mini-id { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.adr-mini-card.green .adr-mini-id, .adr-mini-card.teal .adr-mini-id { color: var(--teal); }
+.adr-mini-card.blue .adr-mini-id { color: var(--blue); }
+.adr-mini-card.amber .adr-mini-id { color: var(--amber); }
+.adr-mini-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.25; }
+.adr-mini-decision { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.adr-mini-status { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 500; padding: 2px 8px; background: var(--teal-bg); color: var(--teal); border-radius: 99px; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .adm-track { grid-template-columns: repeat(3, 1fr); }
+  .principles-grid, .entity-grid, .appcard-grid, .adr-row-grid, .pillar-link-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* HORIZON CARDS (Phase F) */
+.hz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 0.5rem; }
+.hz-card { border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r-lg); padding: 1.2rem 1.3rem; background: white; }
+.hz-card.h1 { border-top-color: var(--blue); }
+.hz-card.h2 { border-top-color: var(--teal); }
+.hz-card.h3 { border-top-color: var(--amber); }
+.hzc-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.hz-card.h1 .hzc-label { color: var(--blue); }
+.hz-card.h2 .hzc-label { color: var(--teal); }
+.hz-card.h3 .hzc-label { color: var(--amber); }
+.hzc-period { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 6px; }
+.hzc-name { font-family: var(--sans); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.25; }
+.hzc-items { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.hzc-item { font-size: 11.5px; color: var(--text2); line-height: 1.55; padding-left: 12px; border-left: 2px solid var(--border2); }
+.hzc-gate { font-size: 11px; color: var(--text2); line-height: 1.55; padding: 8px 10px; background: var(--bg2); border-radius: var(--r); }
+.hzc-gate strong { color: var(--text); }
+.hzc-feels { font-size: 11px; color: var(--text2); line-height: 1.55; padding: 8px 10px; background: var(--bg2); border-radius: var(--r); margin-bottom: 6px; }
+.hzc-feels strong { display: block; color: var(--text); margin-bottom: 2px; }
+
+/* PI STRIP (boundary-only, Phase F) */
+.pi-strip-mini { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 0.75rem; }
+.pi-cell-mini { padding: 8px 4px; text-align: center; border-radius: var(--r); border: 1px solid; font-family: var(--mono); font-size: 9.5px; font-weight: 600; }
+.pi-cell-mini.h1 { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue); }
+.pi-cell-mini.h2 { background: var(--teal-bg); border-color: var(--teal-border); color: var(--teal); }
+.pi-cell-mini.h3 { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
+
+/* PRINCIPLE HEADLINE BADGE */
+.pr-headline-badge { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* POINTER MAP (Phase A / B thin sections) */
+.pointer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 1rem; }
+.pointer-card { border: 1px solid var(--border); border-radius: var(--r); padding: 1rem 1.1rem; background: var(--bg2); }
+.pointer-label { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.pointer-target { font-family: var(--sans); font-size: 12.5px; font-weight: 500; color: var(--blue); }
+.pointer-target a { color: var(--blue); text-decoration: none; }
+.pointer-target a:hover { text-decoration: underline; }
+
+/* EAB GATE TABLE (§1) */
+.gate-table-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 11.5px; }
+.gate-table-row:last-child { border-bottom: none; }
+.gate-phase-lbl { font-family: var(--mono); font-size: 10.5px; font-weight: 600; color: var(--text); }
+.gate-check-txt { color: var(--text2); }
+
+/* DECISION FLOW (Phase E / Phase G) */
+.flow-box { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 1rem 0; font-family: var(--mono); font-size: 11px; }
+.flow-node { padding: 8px 12px; border-radius: var(--r); border: 1px solid var(--border2); background: white; color: var(--text2); }
+.flow-node.decision { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); font-weight: 600; }
+.flow-node.pass { background: var(--teal-bg); border-color: var(--teal-border); color: var(--teal); font-weight: 600; }
+.flow-node.fail { background: var(--coral-bg); border-color: var(--coral-border); color: var(--coral); font-weight: 600; }
+.flow-arrow { color: var(--text3); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise / page 03</div>
+  <div class="sidebar-project">TOGAF ADM<br>Phases A–G</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#adm-overview">ADM Overview</a></li>
+      <li><a href="#preliminary">Preliminary</a></li>
+      <li><a href="#phase-a">Phase A</a></li>
+      <li><a href="#phase-b">Phase B</a></li>
+      <li><a href="#phase-c">Phase C</a></li>
+      <li><a href="#phase-d">Phase D</a></li>
+      <li><a href="#phase-e">Phase E</a></li>
+      <li><a href="#phase-f">Phase F</a></li>
+      <li><a href="#phase-g">Phase G</a></li>
+      <li><a href="#requirements-mgmt">Requirements Mgmt</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Scope Tags</div>
+    <div class="stack-item"><strong>TOGAF 10 · ADM</strong>full method, Preliminary → G</div>
+    <div class="stack-item"><strong>12 Architecture Principles</strong>4 platform headline · 8 supporting</div>
+    <div class="stack-item"><strong>7 Canonical Entities</strong>shared data model, Phase C</div>
+    <div class="stack-item"><strong>EAB · Phase G</strong>conformance, chartered</div>
+    <div class="stack-item"><strong>3 Migration Horizons</strong>H1 → H2 → H3</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="page-02.html">← page-02</a> / <a href="index.html">the-autonomous-enterprise</a> / <a href="#">page-03</a>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html" class="topbar-tag" style="text-decoration:none">Overview</a>
+      <a href="page-02.html" class="topbar-tag" style="text-decoration:none">← Page 02</a>
+      <a href="https://github.com/raosiddharthp/The-Autonomous-Enterprise" target="_blank" class="topbar-tag" style="text-decoration:none">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:1080px;">
+
+    <!-- HEADER -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">The Autonomous Enterprise &nbsp;/&nbsp; Page 03 &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">TOGAF ADM: <em>Architecture Development Method</em><br>Preliminary through Phase G</h1>
+      <div class="doc-byline">
+        <span>The TOGAF 10 Architecture Development Method applied to the ClaraVis Autonomous Enterprise engagement</span>
+        <span>Upstream of Lean Portfolio Management (Page 04) and Go-to-Market Strategy (Page 08) — both consume what this page produces</span>
+      </div>
+      <p class="body-text" style="margin-top:0.75rem;">This is not a textbook summary — it is a working architecture engagement record, governed end to end by the Enterprise Architecture Board.</p>
+      <div class="kw-row" style="margin-top:1rem;">
+        <span class="kw">TOGAF 10 · ADM</span>
+        <span class="kw">12 Architecture Principles</span>
+        <span class="kw">7 Canonical Entities</span>
+        <span class="kw">EAB · Phase G</span>
+        <span class="kw">3 Migration Horizons</span>
+      </div>
+    </header>
+
+    <!-- ADM OVERVIEW -->
+    <section class="section" id="adm-overview">
+      <h2 class="section-heading"><span class="section-num">§1</span> Architecture Development Method</h2>
+      <p class="body-text">The ADM, governed end to end. <em style="color:var(--teal)">Not just walked through.</em></p>
+      <p class="body-text">Each phase below produces a specific artifact for the ClaraVis engagement. The Enterprise Architecture Board (EAB) — chartered in Phase G, §9 — owns the gate between every phase: no Solution Train consumes a Phase D artifact as architecture runway until the EAB has certified it sufficient, and no work package enters delivery until its build-vs-buy decision is recorded. Requirements Management is continuous — every requirement from Page 02 is live throughout every phase.</p>
+
+      <p class="body-text">Every decision this page produces becomes an input two pages downstream consume without re-deriving: Lean Portfolio Management (Page 04) funds Solution Trains against the runway certified here, and the Go-to-Market adoption argument (Page 08) cites the ADRs recorded here by number. This page is upstream of both — get the gate wrong here, and every page after it inherits the error.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">The nine-phase ADM cycle, with Requirements Management as a continuous cross-cutting phase</div>
+        <div class="adm-track">
+          <div class="adm-phase prelim">
+            <div class="adm-p-label">Prelim</div>
+            <div class="adm-p-name">Preliminary</div>
+            <div class="adm-p-artifact">Architecture Principles · Governance model · Tailoring decisions</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase A</div>
+            <div class="adm-p-name">Architecture Vision</div>
+            <div class="adm-p-artifact">Statement of Architecture Work · Stakeholder map · Solution concept</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase B</div>
+            <div class="adm-p-name">Business Architecture</div>
+            <div class="adm-p-artifact">To-Be value stream · Capability model · Business interaction map</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase C</div>
+            <div class="adm-p-name">IS Architecture</div>
+            <div class="adm-p-artifact">Canonical data model · Application portfolio · Integration catalog</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase D</div>
+            <div class="adm-p-name">Technology Architecture</div>
+            <div class="adm-p-artifact">GCP reference architecture · Network topology · Security zones</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase E</div>
+            <div class="adm-p-name">Opportunities &amp; Solutions</div>
+            <div class="adm-p-artifact">Gap analysis · Work package definitions · Implementation options</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase F</div>
+            <div class="adm-p-name">Migration Planning</div>
+            <div class="adm-p-artifact">3-horizon roadmap · Transition architectures · Priority ranking</div>
+          </div>
+          <div class="adm-phase">
+            <div class="adm-p-label">Phase G</div>
+            <div class="adm-p-name">Implementation Governance</div>
+            <div class="adm-p-artifact">Architecture contracts · Compliance reviews · Change requests</div>
+          </div>
+          <div class="adm-phase reqs">
+            <div class="adm-p-label">Continuous</div>
+            <div class="adm-p-name">Requirements Management</div>
+            <div class="adm-p-artifact">BR · AR · C from Page 02 — live throughout every phase</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="figure" style="margin-top:1.5rem;">
+        <div class="figure-label">Figure 2</div>
+        <div class="figure-sublabel">What the EAB checks at each gate before the next phase is allowed to begin</div>
+        <div class="figure-body">
+          <div class="gate-table-row"><div class="gate-phase-lbl">Preliminary</div><div class="gate-check-txt">Principles ratified before any design begins</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase A</div><div class="gate-check-txt">Vision and stakeholder map accepted (Page 02)</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase B</div><div class="gate-check-txt">Business architecture traceable to a requirement (Page 02)</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase C</div><div class="gate-check-txt">Canonical data model has no orphan entities</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase D</div><div class="gate-check-txt">Technology runway certified sufficient for all four pillars</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase E</div><div class="gate-check-txt">Every work package has a recorded build-vs-buy decision</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase F</div><div class="gate-check-txt">Horizon sequencing matches cost-of-inaction / integration-risk evidence (Page 02, §4a)</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Phase G</div><div class="gate-check-txt">Continuous — live on the Governance Control Plane Dashboard</div></div>
+          <div class="gate-table-row"><div class="gate-phase-lbl">Req. Mgmt</div><div class="gate-check-txt">Every BR / AR / C still traces to an active phase output</div></div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The Preliminary Phase is where the EAB's authority — and the principles it enforces — are established first.</p>
+    </section>
+
+    <!-- PRELIMINARY -->
+    <section class="section" id="preliminary">
+      <h2 class="section-heading"><span class="section-num">§2</span> Preliminary Phase</h2>
+      <p class="body-text">Architecture Principles — the rules the design <em style="color:var(--teal)">cannot break.</em></p>
+      <p class="body-text">Twelve principles established before any architecture work begins. These are not aspirational guidelines — they are binding constraints on every design decision that follows. Four are load-bearing enough to appear, unchanged, as the platform's headline commitments on Page 1: SHAP Before HITL, SAP Write Guard, Quarantine-Then-Review, Augment Not Replace. That repetition is deliberate — a principle that only matters at the documentation level and never surfaces where a CTO or hiring manager actually looks isn't load-bearing. The other eight govern decisions that are real but operate one layer down. Any component that violates a principle requires a formal ADR documenting the exception and its consequences.</p>
+
+      <div class="principles-grid">
+        <div class="principle-card">
+          <span class="pr-headline-badge">Platform Headline · Page 1</span>
+          <div class="pr-id">P-01</div>
+          <div class="pr-title">Explainability is engineered in, not added on</div>
+          <div class="pr-rationale">Every ML model is designed with its explanation contract before training begins. SHAP values are generated at inference time and written to the audit log before any downstream action executes. Post-hoc explanation is not acceptable. This is the platform's "SHAP Before HITL" commitment.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> EU AI Act Annex III · AR-01</div>
+        </div>
+        <div class="principle-card">
+          <span class="pr-headline-badge">Platform Headline · Page 1</span>
+          <div class="pr-id">P-02</div>
+          <div class="pr-title">Human oversight is enforced at the write path, not the policy layer</div>
+          <div class="pr-rationale">HITL checkpoints are formal states in every agent's state machine — with a defined entry condition, presentation contract, decision interface, timeout behaviour, and immutable audit record. Where an agent action is irreversible, the write function itself requires a committed HITL approval ID as a parameter — the platform's SAP Write Guard pattern. Human oversight is structurally unbypassable, not configured.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> EU AI Act Art. 14 · AR-02 · AR-14</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-03</div>
+          <div class="pr-title">Compliance obligations are write-path constraints</div>
+          <div class="pr-rationale">Regulatory obligations — EU AI Act, FDA 21 CFR 820, ASC 606 — are encoded as constraints in the data model and enforced by the write path. Compliance is a structural property of every transaction, not a reporting posture applied retrospectively.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> BR-02 · AR-08 · AR-09</div>
+        </div>
+        <div class="principle-card">
+          <span class="pr-headline-badge">Platform Headline · Page 1</span>
+          <div class="pr-id">P-04</div>
+          <div class="pr-title">The AE augments existing systems — it does not replace them</div>
+          <div class="pr-rationale">Salesforce, SAP, and Ariba remain systems of record. The AE is the orchestration and intelligence layer that operates across them. No design decision requires decommissioning or re-platforming an existing system. Integration is additive. This is the platform's "Augment, Not Replace" commitment.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> ADR-002 · C-06</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-05</div>
+          <div class="pr-title">Every significant architectural decision is documented</div>
+          <div class="pr-rationale">Architecture Decision Records are produced for every significant design choice — technology selection, integration pattern, data model decision. Each ADR states the decision, the alternatives considered, and the consequences. No undocumented decisions.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> AR-10 · TOGAF ADM standard</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-06</div>
+          <div class="pr-title">Data sovereignty is enforced at the infrastructure layer</div>
+          <div class="pr-rationale">Data residency constraints are implemented as VPC-SC perimeter rules and Organisation Policy constraints provisioned via Terraform. They cannot be overridden by application configuration, network policy changes, or ad-hoc IAM grants.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> GDPR · BR-10 · AR-06 · C-04</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-07</div>
+          <div class="pr-title">Every agent has a documented autonomy boundary</div>
+          <div class="pr-rationale">Each agent in the swarm has a formally specified set of actions it executes autonomously and a set that require human approval. The boundary is defined before implementation, expressed in the state machine specification, and enforced by the HITL checkpoint architecture. This extends to agent-to-agent negotiation: standard terms are autonomous, but jurisdiction, liability, and IP deviations halt and route to Legal HITL.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> EU AI Act Art. 14 · AR-02 · AR-14</div>
+        </div>
+        <div class="principle-card">
+          <span class="pr-headline-badge">Platform Headline · Page 1</span>
+          <div class="pr-id">P-08</div>
+          <div class="pr-title">Invalid data is quarantined, never discarded</div>
+          <div class="pr-rationale">A record that fails schema or quality validation is held with full provenance, not dropped silently. Every pillar's ingestion pipeline writes failures to a quarantine store and notifies a human steward — reinstatement or permanent discard is a human decision, never an automatic one. Data loss in a field-sensor or financial-event stream is operationally irreversible; silent discard is not an acceptable failure mode anywhere in the platform. This is the platform's "Quarantine-Then-Review" commitment.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> AR-03 · Data Governance (M-08) ADR-DG02</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-09</div>
+          <div class="pr-title">The event fabric is the integration bus</div>
+          <div class="pr-rationale">All cross-system events are published to Pub/Sub topics before downstream systems consume them. This decouples producers from consumers, enables event replay for audit purposes, and provides the foundation for the streaming ML feature pipeline. No direct system-to-system synchronous calls for data that can be event-driven.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> AR-11 · BR-05</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-10</div>
+          <div class="pr-title">Model Cards are versioned artifacts, not documentation afterthoughts</div>
+          <div class="pr-rationale">Every ML model has a Model Card created before training begins and updated with actual evaluation results before promotion. Model Cards are version-controlled alongside the model in Vertex AI Model Registry and are required inputs to the HITL promotion checkpoint.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> EU AI Act Art. 11 · AR-05</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-11</div>
+          <div class="pr-title">Security is zero-trust — no implicit network trust</div>
+          <div class="pr-rationale">All service-to-service authentication is via Workload Identity Federation. No service account key files. No network-based trust. BeyondCorp enforces identity verification at every access request regardless of network location. Secrets are managed exclusively through Secret Manager.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> ISO 27001 · AR-07 · CISO requirement</div>
+        </div>
+        <div class="principle-card">
+          <div class="pr-id">P-12</div>
+          <div class="pr-title">Cost allocation is tagged from day one</div>
+          <div class="pr-rationale">Every GCP resource carries a module-level cost allocation label from the first terraform apply. FinOps visibility is not a Phase 2 concern — it is provisioned in the same Terraform run as the resource itself. Budget alerts are configured before any workload is deployed.</div>
+          <div class="pr-constraint"><strong>ClaraVis constraint:</strong> CFO requirement · C-01</div>
+        </div>
+      </div>
+
+      <div class="figure" style="margin-top:1.5rem;">
+        <div class="figure-label">Figure 3</div>
+        <div class="figure-sublabel">Principles-to-constraint traceability — every principle's binding reference, at a glance</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th style="width:60px">ID</th><th style="width:260px">Principle</th><th>Constraint Reference</th></tr></thead>
+            <tbody>
+              <tr><td>P-01</td><td>Explainability engineered in</td><td class="mono-note">EU AI Act Annex III · AR-01</td></tr>
+              <tr><td>P-02</td><td>Human oversight at the write path</td><td class="mono-note">EU AI Act Art. 14 · AR-02 · AR-14</td></tr>
+              <tr><td>P-03</td><td>Compliance as write-path constraints</td><td class="mono-note">BR-02 · AR-08 · AR-09</td></tr>
+              <tr><td>P-04</td><td>Augment, don't replace</td><td class="mono-note">ADR-002 · C-06</td></tr>
+              <tr><td>P-05</td><td>Every decision documented</td><td class="mono-note">AR-10 · TOGAF ADM standard</td></tr>
+              <tr><td>P-06</td><td>Data sovereignty at infrastructure layer</td><td class="mono-note">GDPR · BR-10 · AR-06 · C-04</td></tr>
+              <tr><td>P-07</td><td>Every agent has an autonomy boundary</td><td class="mono-note">EU AI Act Art. 14 · AR-02 · AR-14</td></tr>
+              <tr><td>P-08</td><td>Invalid data is quarantined, never discarded</td><td class="mono-note">AR-03 · ADR-DG02</td></tr>
+              <tr><td>P-09</td><td>Event fabric is the integration bus</td><td class="mono-note">AR-11 · BR-05</td></tr>
+              <tr><td>P-10</td><td>Model Cards are versioned artifacts</td><td class="mono-note">EU AI Act Art. 11 · AR-05</td></tr>
+              <tr><td>P-11</td><td>Zero-trust security</td><td class="mono-note">ISO 27001 · AR-07</td></tr>
+              <tr><td>P-12</td><td>Cost allocation tagged day one</td><td class="mono-note">CFO requirement · C-01</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-note">AR-06 is reinforced by both P-06 and P-11 — data sovereignty and zero-trust security are independently enforced, not the same control wearing two names.</div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The principles are binding. Phase A is where they first get tested against a real stakeholder's real question.</p>
+    </section>
+
+    <!-- PHASE A -->
+    <section class="section" id="phase-a">
+      <h2 class="section-heading"><span class="section-num">§3</span> Phase A — Architecture Vision</h2>
+      <p class="body-text">Phase A is fully elaborated on Page 02 — <em style="color:var(--teal)">not duplicated here.</em></p>
+      <p class="body-text">The full nine-stakeholder register has grown to twelve, and the As-Is/To-Be positioning argument now spans all four pillars. Both live on Page 02, at platform scope, in more depth than a TOGAF methodology page should attempt to hold. This section states what Phase A produced and points to where each artifact actually lives.</p>
+
+      <div class="phase-block">
+        <div class="phase-block-hdr">
+          <span class="ph-badge-pill pb-pa">Phase A</span>
+          <div class="phase-block-title">Architecture Vision</div>
+          <div class="phase-block-output">Output: Statement of Architecture Work</div>
+        </div>
+        <div class="phase-block-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:1.5rem;">
+            <div>
+              <div class="doc-eyebrow" style="margin-bottom:8px;">Architecture Vision Statement</div>
+              <div style="font-family:var(--serif);font-size:19px;font-style:italic;color:var(--text);line-height:1.55;border-left:2px solid var(--amber-border);padding-left:14px;">To deliver a TOGAF-aligned, explainability-first enterprise AI architecture for ClaraVis that orchestrates the full Quote-to-Cash-to-Field-to-Compliance lifecycle — with human oversight engineered into every consequential decision — satisfying EU AI Act Annex III, FDA 21 CFR 820, and ISO 13485 simultaneously.</div>
+            </div>
+            <div>
+              <div class="doc-eyebrow" style="margin-bottom:8px;">Statement of Architecture Work</div>
+              <div class="phase-detail-grid">
+                <div class="pd-card"><div class="pd-label">Scope</div><div class="pd-val">All four Solution Trains — Quote-to-Cash, Procure-to-Pay, Finance Operations, Supply Chain. Salesforce, SAP, and Ariba integration in scope. PHI processing out of scope.</div></div>
+                <div class="pd-card"><div class="pd-label">Architecture Sponsor</div><div class="pd-val">CTO (S-01) — primary sign-off. CCO (S-02) — compliance co-sponsor. CFO (S-03) — financial outcomes sponsor.</div></div>
+                <div class="pd-card"><div class="pd-label">Time Constraint</div><div class="pd-val">EU AI Act Annex III compliance for 3 existing production models required before Q2 2026 regulatory review. Hard deadline driving Horizon 1 scope.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="figure">
+            <div class="figure-label">Figure 4</div>
+            <div class="figure-sublabel">Where each Phase A output actually lives</div>
+            <div class="pointer-grid">
+              <div class="pointer-card">
+                <div class="pointer-label">Vision Statement</div>
+                <div class="pointer-target">Stays on this page — short enough not to duplicate</div>
+              </div>
+              <div class="pointer-card">
+                <div class="pointer-label">Stakeholder Map</div>
+                <div class="pointer-target"><a href="page-02.html#stakeholders">Page 02, §3 — 12 stakeholders, full register →</a></div>
+              </div>
+              <div class="pointer-card">
+                <div class="pointer-label">Solution Concept</div>
+                <div class="pointer-target"><a href="page-02.html#positioning">Page 02, §1 — Positioning, As-Is/To-Be diagram pair →</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The vision is set. Phase B turns it into a value stream ClaraVis can actually run.</p>
+    </section>
+
+    <!-- PHASE B -->
+    <section class="section" id="phase-b">
+      <h2 class="section-heading"><span class="section-num">§4</span> Phase B — Business Architecture</h2>
+      <p class="body-text">Phase B is fully elaborated on Page 02, §4a — <em style="color:var(--teal)">not duplicated here.</em></p>
+      <p class="body-text">The To-Be value stream, the four-pillar comparison, the Time/Money/Effort incommensurability table, and the cost-of-inaction sequencing map all live there — Business Architecture at platform scope means comparing four pillars' value streams against each other, work that belongs at the requirements layer, not restated at the methodology layer.</p>
+
+      <div class="phase-block">
+        <div class="phase-block-hdr">
+          <span class="ph-badge-pill pb-pb">Phase B</span>
+          <div class="phase-block-title">Business Architecture</div>
+          <div class="phase-block-output">Output: Capability Model</div>
+        </div>
+        <div class="phase-block-body">
+          <p class="body-text">One sentence is true across all four pillars, regardless of which one a reader opens next: every manual handoff in every pillar's value stream is replaced by an agent-mediated state transition with a defined SLA and an audit record. The capability model below is the one Phase B artifact that doesn't live anywhere else — a value stream is pillar-specific by nature, but a capability model spans all four at once.</p>
+
+          <!-- Capability model -->
+          <div class="appcard-grid" style="margin-top:1rem;">
+            <div class="appcard" style="background:var(--blue-bg);border-color:var(--blue-border);">
+              <div class="appcard-label" style="color:var(--blue);">Commercial</div>
+              <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--blue);margin-bottom:6px;">Quote-to-Cash</div>
+              <div class="appcard-body" style="color:var(--blue);">Opportunity · CPQ · Contract · Order · Revenue</div>
+            </div>
+            <div class="appcard" style="background:var(--teal-bg);border-color:var(--teal-border);">
+              <div class="appcard-label" style="color:var(--teal);">Operational</div>
+              <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--teal);margin-bottom:6px;">Asset Management</div>
+              <div class="appcard-body" style="color:var(--teal);">Telemetry · RUL · Anomaly · Maintenance · DHR</div>
+            </div>
+            <div class="appcard" style="background:var(--amber-bg);border-color:var(--amber-border);">
+              <div class="appcard-label" style="color:var(--amber);">Financial</div>
+              <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--amber);margin-bottom:6px;">Revenue &amp; Risk</div>
+              <div class="appcard-body" style="color:var(--amber);">ASC 606 · IFRS 15 · Anomaly detection · FinRisk</div>
+            </div>
+            <div class="appcard" style="background:var(--coral-bg);border-color:var(--coral-border);">
+              <div class="appcard-label" style="color:var(--coral);">Compliance</div>
+              <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--coral);margin-bottom:6px;">Governance &amp; Audit</div>
+              <div class="appcard-body" style="color:var(--coral);">EU AI Act · ISO 13485 · HITL · XAI · Audit trail</div>
+            </div>
+          </div>
+
+          <div class="figure" style="margin-top:1.5rem;">
+            <div class="figure-label">Figure 5</div>
+            <div class="figure-sublabel">Where each Phase B value-stream output actually lives</div>
+            <div class="pointer-grid">
+              <div class="pointer-card">
+                <div class="pointer-label">To-Be Quote-to-Cash Value Stream</div>
+                <div class="pointer-target"><a href="page-02.html#asis-streams">Page 02, §4a, Diagram 01 →</a></div>
+              </div>
+              <div class="pointer-card">
+                <div class="pointer-label">Four-Pillar Value Stream Comparison</div>
+                <div class="pointer-target"><a href="page-02.html#asis-streams">Page 02, §4a, Diagram 02 →</a></div>
+              </div>
+              <div class="pointer-card">
+                <div class="pointer-label">Cost-of-Inaction Sequencing</div>
+                <div class="pointer-target"><a href="page-02.html#asis-streams">Page 02, §4a, Diagram 04 →</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The business architecture is defined. Phase C is where it becomes a data model every module can share.</p>
+    </section>
+
+    <!-- PHASE C -->
+    <section class="section" id="phase-c">
+      <h2 class="section-heading"><span class="section-num">§5</span> Phase C — Information Systems Architecture</h2>
+      <div class="phase-block">
+        <div class="phase-block-hdr">
+          <span class="ph-badge-pill pb-pc">Phase C</span>
+          <div class="phase-block-title">Information Systems Architecture</div>
+          <div class="phase-block-output">Output: Canonical Data Model · Application Portfolio</div>
+        </div>
+        <div class="phase-block-body">
+          <p class="body-text">The canonical data model — seven entities, shared across every module in every pillar. This is the one structural proof that the AE is a coherent system, not eight applications that happen to share a brand. No module reads or writes outside this schema; no pillar invents its own version of Contract, Transaction, Supplier, or HITL Event.</p>
+
+          <!-- Canonical Data Model -->
+          <div class="diagram-wrap">
+            <div class="diag-title">Canonical Data Model — Seven Shared Entities Across All Four Pillars</div>
+            <div class="diag-sub">Every module references at least two · Supplier added to reflect Procure-to-Pay and Supply Chain's shared corpus · Contract revised to dual-origin</div>
+            <div class="entity-grid">
+              <div class="entity-card" style="border-color:var(--blue);grid-column:span 2;">
+                <div class="entity-hdr" style="background:var(--blue);">Contract (dual-origin)</div>
+                <div class="entity-body">contract_id · PK<br>sfdc_contract_id · FK (customer contracts)<br>supplier_id · FK (supplier MSAs)<br>status · clauses[] · risk_score · shap_ref<br>hitl_event_id · FK<span class="arrow-ref" style="color:var(--blue);">→ ContractGuard · RevRec · Contract Agent (P2P) · ContractIntelligence (SC)</span></div>
+              </div>
+              <div class="entity-card" style="border-color:var(--teal);grid-column:span 2;">
+                <div class="entity-hdr" style="background:var(--teal);">Transaction</div>
+                <div class="entity-body">transaction_id · PK<br>sap_doc_id · contract_id<br>recognition_type · ASC606<br>perf_obligation_tags[]<br>hitl_event_id · shap_ref<span class="arrow-ref" style="color:var(--teal);">→ RevRec AI · FinRisk</span></div>
+              </div>
+              <div class="entity-card" style="border-color:#137333;">
+                <div class="entity-hdr" style="background:#137333;">Device</div>
+                <div class="entity-body">device_id · serial_num<br>model_sku · install_date<br>region · hospital_id<br>rul_score · last_event_ts<br>dhr_ref · contract_id<span class="arrow-ref" style="color:#137333;">→ Asset IQ · ISO 13485</span></div>
+              </div>
+              <div class="entity-card" style="border-color:var(--amber);">
+                <div class="entity-hdr" style="background:var(--amber);">Asset Event</div>
+                <div class="entity-body">event_id · device_id · FK<br>event_type · severity<br>sensor_payload · ts<br>dicom_code · region<br>pubsub_msg_id<span class="arrow-ref" style="color:var(--amber);">→ Asset IQ · GreenOps</span></div>
+              </div>
+              <div class="entity-card" style="border-color:var(--purple2, var(--purple));grid-column:span 2;">
+                <div class="entity-hdr" style="background:var(--purple);">Supplier (new)</div>
+                <div class="entity-body">supplier_id · PK · ariba_supplier_id · FK<br>region · country · risk_tier<br>financial_distress_score · concentration_flag<br>contract_id[] · FK · last_reviewed_ts<span class="arrow-ref" style="color:var(--purple);">→ Procure-to-Pay · SupplierSentinel · ContractIntelligence</span></div>
+              </div>
+              <div class="entity-card" style="border-color:var(--purple);grid-column:span 2;">
+                <div class="entity-hdr" style="background:var(--purple);">Agent Action (central audit entity)</div>
+                <div class="entity-body">action_id · agent_id · action_type · status<br>input_ref · output_ref · shap_explanation_id<br>hitl_event_id · ts · confidence_score<span class="arrow-ref" style="color:var(--purple);">→ All modules · XAI Layer · triggers HITL Event</span></div>
+              </div>
+              <div class="entity-card" style="border-color:var(--coral);grid-column:span 2;">
+                <div class="entity-hdr" style="background:var(--coral);">HITL Event (immutable)</div>
+                <div class="entity-body">hitl_id · agent_action_id · approver_id · role<br>decision · reason_code · shap_presented · ts<br>timeout_at · escalated · immutable · Firestore<span class="arrow-ref" style="color:var(--coral);">→ All HITL checkpoints</span></div>
+              </div>
+            </div>
+            <div class="diag-legend">
+              <div class="diag-legend-item"><div class="dl-box" style="background:var(--blue)"></div>Contract</div>
+              <div class="diag-legend-item"><div class="dl-box" style="background:var(--teal)"></div>Transaction</div>
+              <div class="diag-legend-item"><div class="dl-box" style="background:#137333"></div>Device</div>
+              <div class="diag-legend-item"><div class="dl-box" style="background:var(--amber)"></div>Asset Event</div>
+              <div class="diag-legend-item"><div class="dl-box" style="background:var(--purple)"></div>Supplier / Agent Action</div>
+              <div class="diag-legend-item"><div class="dl-box" style="background:var(--coral)"></div>HITL Event (immutable)</div>
+            </div>
+            <div class="figure-note">FK relationships: Supplier → Contract (one supplier, many MSAs) · Supplier → Agent Action (every SupplierSentinel/ProcureGuard evaluation is itself an Agent Action) · Contract → Agent Action · Transaction → Agent Action · Device → Asset Event · Agent Action → HITL Event.</div>
+          </div>
+
+          <!-- Application portfolio -->
+          <div class="diagram-wrap" style="margin-top:1rem;">
+            <div class="doc-eyebrow" style="margin-bottom:1rem;">Application Portfolio — Data Ownership by Application</div>
+            <div class="appcard-grid">
+              <div class="appcard">
+                <div class="appcard-label" style="color:var(--blue);">Salesforce</div>
+                <div class="appcard-body">Owns: Account, Opportunity, Quote, Contract object<br>Reads: Agent Action results, HITL outcomes</div>
+              </div>
+              <div class="appcard">
+                <div class="appcard-label" style="color:var(--amber);">SAP S/4HANA</div>
+                <div class="appcard-body">Owns: Transaction (GL), Logistics order<br>Reads: RevRec classification post-HITL approval</div>
+              </div>
+              <div class="appcard" style="grid-column:span 2;">
+                <div class="appcard-label" style="color:var(--purple);">AE Agent Layer</div>
+                <div class="appcard-body">Owns: Agent Action, HITL Event, SHAP output<br>Orchestrates: all cross-system flows, across every pillar</div>
+              </div>
+              <div class="appcard" style="grid-column:span 2;">
+                <div class="appcard-label" style="color:#137333;">GCP Data Fabric</div>
+                <div class="appcard-body">Owns: Device, Asset Event, Supplier ML features<br>Serves: all modules via BigQuery + Feature Store</div>
+              </div>
+              <div class="appcard" style="grid-column:span 2;">
+                <div class="appcard-label" style="color:var(--purple);">Ariba</div>
+                <div class="appcard-body">Owns: Supplier record, sourcing/PO data<br>Reads: SupplierSentinel risk score post-evaluation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE D -->
+    <section class="section" id="phase-d">
+      <h2 class="section-heading"><span class="section-num">§6</span> Phase D — Technology Architecture</h2>
+      <p class="body-text">The architecture runway — certified once, consumed by every Solution Train. <em style="color:var(--teal)">Layer naming reconciled with Page 1.</em></p>
+      <p class="body-text">This is the artifact Lean Portfolio Management (Page 04, §1) calls "architecture runway" without re-deriving it: the four-layer contract every module in every pillar is built against. Get this wrong here, and four Solution Trains inherit the error independently, each discovering it at a different, more expensive moment. The concept overview establishes the four-layer model and the principal services. The full technical diagram on each pillar's own page shows every named GCP service, the VPC-SC perimeter, network topology, IAM boundaries, and data flow paths.</p>
+
+      <!-- Diagram 1: Concept overview -->
+      <div class="diagram-wrap dk-bg">
+        <div class="diag-title">Phase D — Concept: Four-Layer Architecture Overview</div>
+        <div class="diag-sub">Principal services per layer · Data flow direction · HITL and XAI integration points</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;background:var(--bg2);border:1px solid var(--border);">
+          <table class="comp-table" style="background:var(--bg2);">
+            <thead><tr style="background:var(--bg2);"><th style="color:var(--text3);">Layer</th><th style="color:var(--text3);">Principal Services</th><th style="color:var(--text3);">Flow to Next Layer</th></tr></thead>
+            <tbody>
+              <tr style="background:var(--white);"><td style="color:var(--blue);font-weight:600;">01 · Presentation &amp; Experience</td><td style="color:var(--text2);">Portfolio Site · 8 App Dashboards · HITL Approval UI · XAI Explanation Viewer · Architecture Explorer · Audit Trail Dashboard</td><td style="color:var(--text3);font-family:var(--mono);font-size:10.5px;">REST / gRPC</td></tr>
+              <tr style="background:var(--white);"><td style="color:var(--amber);font-weight:600;">02 · Agent Orchestration</td><td style="color:var(--text2);">CCAI Sales Agent (ADK) · ContractGuard Agent · RevRec AI Agent (ADK) · Asset IQ Agent (ADK) · FinRisk Sentinel · Orchestrator (A2A Protocol, MCP Tool Manifest) · HITL State Machine (Firestore)</td><td style="color:var(--text3);font-family:var(--mono);font-size:10.5px;">Pub/Sub · VPC-native</td></tr>
+              <tr style="background:var(--white);"><td style="color:var(--teal);font-weight:600;">03 · MLOps &amp; Intelligence</td><td style="color:var(--text2);">Vertex AI Pipelines + Models · BigQuery Data Fabric + Audit · Pub/Sub Event Fabric · Feature Store (Vertex AI FS) · SHAP / XAI Explanation Layer · Model Registry + Cards · Drift Detection</td><td style="color:var(--text3);font-family:var(--mono);font-size:10.5px;">CMEK · IAM · VPC-SC</td></tr>
+              <tr style="background:var(--white);"><td style="color:var(--amber);font-weight:600;">04 · Infrastructure &amp; Governance</td><td style="color:var(--text2);">Terraform IaC · VPC-SC · BeyondCorp · CMEK · KMS · IAM · WIF · GKE · Cloud Run · Cloud Build CI/CD</td><td style="color:var(--text3);font-family:var(--mono);font-size:10.5px;">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout" style="margin-top:1rem;background:rgba(217,48,37,0.1);border-color:rgba(217,48,37,0.3);">
+          <div class="callout-body" style="color:#e09090;">VPC-SC PERIMETER · europe-west3 · ClaraVis data boundary — Layers 02 through 04 sit entirely within the perimeter.</div>
+        </div>
+        <div class="diag-legend">
+          <div class="diag-legend-item"><div class="dl-box" style="background:rgba(26,115,232,0.3);border:1px solid #1A73E8"></div>Layer 01 — Presentation</div>
+          <div class="diag-legend-item"><div class="dl-box" style="background:rgba(184,150,12,0.3);border:1px solid #B8960C"></div>Layer 02 — Agent Orchestration</div>
+          <div class="diag-legend-item"><div class="dl-box" style="background:rgba(19,115,51,0.3);border:1px solid #137333"></div>Layer 03 — MLOps &amp; Intelligence</div>
+          <div class="diag-legend-item"><div class="dl-box" style="background:rgba(176,96,0,0.3);border:1px solid #B06000"></div>Layer 04 — Infrastructure</div>
+        </div>
+      </div>
+
+      <!-- Phase D — Platform-Level Technology Architecture -->
+      <div class="diagram-wrap dk-bg" style="margin-top:0.6rem;">
+        <div class="diag-title">Phase D — Technology Standards Across the Portfolio</div>
+        <div class="diag-sub">What every pillar shares, by mandate — not what any one pillar builds</div>
+        <p style="font-family:var(--mono);font-size:12.5px;font-weight:300;color:var(--text2);line-height:1.8;margin-top:0.75rem;">Every Solution Train in the Portfolio is required to build on the same four-layer model and the same shared services shown in the concept diagram above — GCP as the sole cloud provider, the HITL state machine and XAI/SHAP contract as non-negotiable platform standards, and a single VPC-SC perimeter per pillar rather than four independent security postures. Each pillar's specific GCP reference architecture — every named service, IAM boundary, and network topology for its own workload — is documented in full on that pillar's own Infrastructure &amp; GCP Architecture page:</p>
+        <div class="pillar-link-grid">
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Quote-to-Cash/page-07.html" class="pl-card" style="background:white;border-color:var(--border);" target="_blank">
+            <div class="pl-eyebrow" style="color:var(--text3);">Quote-to-Cash</div>
+            <div class="pl-title" style="color:var(--text);">Infrastructure &amp; GCP Architecture →</div>
+          </a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Procure-to-Pay/" class="pl-card" style="background:white;border-color:var(--border);" target="_blank">
+            <div class="pl-eyebrow" style="color:var(--text3);">Procure-to-Pay</div>
+            <div class="pl-title" style="color:var(--text);">Infrastructure &amp; GCP Architecture →</div>
+          </a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Finance-Operations/" class="pl-card" style="background:white;border-color:var(--border);" target="_blank">
+            <div class="pl-eyebrow" style="color:var(--text3);">Finance Operations</div>
+            <div class="pl-title" style="color:var(--text);">Infrastructure &amp; GCP Architecture →</div>
+          </a>
+          <a href="https://raosiddharthp.github.io/The-Autonomous-Supply-Chain/" class="pl-card" style="background:white;border-color:var(--border);" target="_blank">
+            <div class="pl-eyebrow" style="color:var(--text3);">Supply Chain</div>
+            <div class="pl-title" style="color:var(--text);">Infrastructure &amp; GCP Architecture →</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The runway is certified. Phase E is where the EAB decides what gets built once, centrally, and what each pillar builds for itself.</p>
+    </section>
+
+    <!-- PHASE E -->
+    <section class="section" id="phase-e">
+      <h2 class="section-heading"><span class="section-num">§7</span> Phase E — Opportunities &amp; Solutions</h2>
+      <p class="body-text">The build-vs-buy gate, decided once. <em style="color:var(--teal)">Not re-litigated per pillar.</em></p>
+      <p class="body-text">Every work package below was tested against the same question before it entered the migration roadmap: does a GCP-managed service already solve this, or does ClaraVis's specific regulatory and architectural requirement mean it has to be built? The pattern that recurs across every row — build the orchestration and the audit trail, buy the commodity signal underneath it — is the EAB's standing rule, not a one-off judgment call made fresh for each package.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 6</div>
+        <div class="figure-sublabel">The build-vs-buy decision rule, applied consistently across every work package</div>
+        <div class="flow-box">
+          <div class="flow-node">Does a GCP-managed service satisfy this need?</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node decision">YES, fully</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node pass">BUY</div>
+        </div>
+        <div class="flow-box">
+          <div class="flow-node" style="visibility:hidden;">Does a GCP-managed service satisfy this need?</div>
+          <span class="flow-arrow" style="visibility:hidden;">→</span>
+          <div class="flow-node decision">YES, partially</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node pass">BUY the signal, BUILD the integration / audit layer</div>
+        </div>
+        <div class="flow-box">
+          <div class="flow-node" style="visibility:hidden;">Does a GCP-managed service satisfy this need?</div>
+          <span class="flow-arrow" style="visibility:hidden;">→</span>
+          <div class="flow-node decision">NO equivalent at the required granularity</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node fail">BUILD</div>
+        </div>
+        <div class="figure-note">Example of each path: GreenOps buys the Carbon Footprint API outright. SHAP buys the library, builds the BigQuery-before-HITL ordering. The HITL Framework and the VPC-SC + CMEK combination are built — no commercial product encodes ClaraVis's specific Article 14 requirement.</div>
+      </div>
+
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th style="width:200px">Work Package</th><th>Decision</th><th style="width:140px">Owner</th><th style="width:90px">Horizon</th></tr></thead>
+            <tbody>
+              <tr><td><strong>WP-01</strong> · GCP Foundation</td><td>Build — see <a href="adr-index.html#ADR-002" style="color:var(--blue);">ADR-002</a></td><td>Portfolio</td><td><span class="badge purple">H1</span></td></tr>
+              <tr><td><strong>WP-02</strong> · Data Governance</td><td>Build on TFX — see <a href="adr-index.html#ADR-DG01" style="color:var(--blue);">ADR-DG01</a></td><td>Portfolio</td><td><span class="badge purple">H1</span></td></tr>
+              <tr><td><strong>WP-03</strong> · HITL Framework</td><td>Build — no commercial product encodes Article 14's requirements; see Preliminary Phase P-02</td><td>Portfolio</td><td><span class="badge purple">H1</span></td></tr>
+              <tr><td><strong>WP-04</strong> · XAI / SHAP Layer</td><td>Buy the library, build the integration — see <a href="adr-index.html#ADR-003" style="color:var(--blue);">ADR-003</a></td><td>Portfolio</td><td><span class="badge purple">H1</span></td></tr>
+              <tr><td><strong>WP-05</strong> · Quote-to-Cash agents</td><td>Build — domain-specific agent logic, documented on Quote-to-Cash's own pages</td><td>Quote-to-Cash</td><td><span class="badge blue">H2</span></td></tr>
+              <tr><td><strong>WP-06</strong> · GreenOps scheduling</td><td>Build the scheduler, buy the signal — see <a href="adr-index.html#ADR-GO02" style="color:var(--blue);">ADR-GO02</a></td><td>Portfolio</td><td><span class="badge amber">H3</span></td></tr>
+              <tr><td><strong>WP-07</strong> · Strategy Dashboard</td><td>Buy the rendering layer, build the views — see <a href="adr-index.html#ADR-SD01" style="color:var(--blue);">ADR-SD01</a></td><td>Portfolio</td><td><span class="badge amber">H3</span></td></tr>
+              <tr><td><strong>WP-08</strong> · Remaining Solution Trains</td><td>Build — Procure-to-Pay, Finance Operations, and Supply Chain each build their own ARTs on the Portfolio's H1 foundation, including the Ariba and SAP IBP integration patterns (see AR-13). Documented on each pillar's own pages.</td><td>Per pillar</td><td><span class="badge teal">H2–H3</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="body-text" style="margin-top:1rem;">The build-vs-buy pattern that recurs across every work package: <strong>build the orchestration and the audit trail, buy the commodity signal underneath it.</strong> No work package proposes building a substitute for a Google-managed service the Portfolio already has access to.</p>
+    </section>
+
+    <!-- PHASE F -->
+    <section class="section" id="phase-f">
+      <h2 class="section-heading"><span class="section-num">§8</span> Phase F — Migration Planning</h2>
+      <p class="body-text">Three horizons, one sequence — <em style="color:var(--teal)">the single source of truth every other page points back to.</em></p>
+      <p class="body-text">This is the definition LPM's PI cadence (Page 04) expands into nine Programme Increments, and the definition GTM's adoption argument (Page 08) restates through an adoption lens. Both pages reference H1/H2/H3 by name; neither redefines them. If this section changes, both of those pages' framing changes with it.</p>
+
+      <div class="hz-grid">
+        <div class="hz-card h1">
+          <div class="hzc-label">Horizon 1</div>
+          <div class="hzc-period">Months 1–3</div>
+          <div class="hzc-name">Foundation &amp; Compliance</div>
+          <div class="hzc-items">
+            <div class="hzc-item">GCP infrastructure — Terraform, VPC-SC, IAM, CMEK (WP-01)</div>
+            <div class="hzc-item">Data Governance — schema validation, lineage, quarantine (WP-02)</div>
+            <div class="hzc-item">HITL Framework — state machine + Firestore audit store (WP-03)</div>
+            <div class="hzc-item">XAI layer — SHAP integrated on all 3 existing production ML models (WP-04)</div>
+            <div class="hzc-item">Canonical data model — Supplier entity live, Ariba and SAP IBP integration patterns established (AR-13)</div>
+          </div>
+          <div class="hzc-gate"><strong>Why H1 first:</strong> ClaraVis has a Q2 2026 EU AI Act Annex III compliance deadline on three existing production models. None of the four Solution Trains can ship a compliant feature until the Portfolio's HITL and XAI enablers exist — this is the forcing function for the entire sequence.</div>
+        </div>
+        <div class="hz-card h2">
+          <div class="hzc-label">Horizon 2</div>
+          <div class="hzc-period">Months 4–8</div>
+          <div class="hzc-name">Core Solution Trains</div>
+          <div class="hzc-items">
+            <div class="hzc-item">Quote-to-Cash — ContractGuard, RevRec AI live in production (WP-05)</div>
+            <div class="hzc-item">Finance Operations — Intercompany, Treasury, AP Exception live</div>
+            <div class="hzc-item">FinRisk Sentinel — pillar-level and governance-level scopes live</div>
+            <div class="hzc-item">Procure-to-Pay — core ARTs begin build on the H1 foundation (WP-08)</div>
+          </div>
+          <div class="hzc-gate"><strong>Why H2 follows H1:</strong> Every H2 feature is built on infrastructure and enablers that have already been proven in production during H1 — not a new system absorbing new risk simultaneously with new compliance obligations.</div>
+        </div>
+        <div class="hz-card h3">
+          <div class="hzc-label">Horizon 3</div>
+          <div class="hzc-period">Months 9–18</div>
+          <div class="hzc-name">Full Portfolio &amp; Optimisation</div>
+          <div class="hzc-items">
+            <div class="hzc-item">Quote-to-Cash Sales Agent ART — full ADK deployment (WP-05)</div>
+            <div class="hzc-item">GreenOps — carbon-aware scheduling, CSRD reporting live (WP-06)</div>
+            <div class="hzc-item">Strategy Dashboard — unified C-suite view across all 4 Solution Trains (WP-07)</div>
+            <div class="hzc-item">Supply Chain — full 7-ART Solution Train live (WP-08)</div>
+          </div>
+          <div class="hzc-gate"><strong>End state:</strong> All four Solution Trains operational, full audit trail, EU AI Act compliance posture demonstrable on demand, and every architecture decision documented in the ADR index.</div>
+        </div>
+      </div>
+
+      <div class="callout amber" style="margin-top:1.25rem;">
+        <div class="callout-label">PI Cadence</div>
+        <div class="callout-body">The PI-by-PI sequencing of this roadmap — which Solution Train builds in which Programme Increment — is the Lean Portfolio Management view on Page 04. This page defines <em>what</em> the three horizons contain; Page 04 governs <em>how the Portfolio funds and sequences</em> the work across PI-1 through PI-9.</div>
+      </div>
+
+      <div class="figure" style="margin-top:1rem;">
+        <div class="figure-label">Figure 7</div>
+        <div class="figure-sublabel">Horizon boundaries only — the PI-by-PI content roster is Page 04's, not restated here</div>
+        <div class="pi-strip-mini">
+          <div class="pi-cell-mini h1">PI-1</div>
+          <div class="pi-cell-mini h1">PI-2</div>
+          <div class="pi-cell-mini h2">PI-3</div>
+          <div class="pi-cell-mini h2">PI-4</div>
+          <div class="pi-cell-mini h2">PI-5</div>
+          <div class="pi-cell-mini h3">PI-6</div>
+          <div class="pi-cell-mini h3">PI-7</div>
+          <div class="pi-cell-mini h3">PI-8</div>
+          <div class="pi-cell-mini h3">PI-9</div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The horizons are sequenced. Phase G is where the EAB keeps every Solution Train honest against this sequence as it executes.</p>
+    </section>
+
+    <!-- PHASE G -->
+    <section class="section" id="phase-g">
+      <h2 class="section-heading"><span class="section-num">§9</span> Phase G — Implementation Governance</h2>
+      <p class="body-text">The EAB, chartered. <em style="color:var(--teal)">Not designing — certifying.</em></p>
+      <p class="body-text">Every certification this page has made — the runway in §6, the build-vs-buy ownership in §7, the horizon sequencing in §8 — is only as good as the body that keeps checking it's still true after the ink dries. The Enterprise Architecture Board is that body. It does not design architecture; Phases A through F already did that. It certifies that what's being built still matches what was designed, continuously, for as long as the platform runs.</p>
+
+      <div class="phase-block">
+        <div class="phase-block-hdr">
+          <span class="ph-badge-pill pb-pc" style="background:var(--coral-bg);color:var(--coral);">Phase G</span>
+          <div class="phase-block-title">Implementation Governance</div>
+          <div class="phase-block-output">Output: EAB Charter · Conformance Gate</div>
+        </div>
+        <div class="phase-block-body">
+          <div class="doc-eyebrow" style="margin-bottom:8px;">EAB Charter</div>
+          <div class="phase-detail-grid">
+            <div class="pd-card"><div class="pd-label">Composition</div><div class="pd-val">Enterprise Architect (chair, S-08) plus one architecture representative per Solution Train. Not the Epic Owners from Lean Portfolio Management — they own business outcomes, not conformance. Not the CTO alone — Phase A's vision sponsor is a different function from ongoing checking.</div></div>
+            <div class="pd-card"><div class="pd-label">What it certifies</div><div class="pd-val">Runway sufficiency before a Solution Train draws on it (§6) · build-vs-buy ownership before a work package enters delivery (§7) · cross-pillar conformance — no Solution Train's HITL state machine or integration pattern drifts from the certified standard · horizon forward-compatibility, re-verified at each boundary.</div></div>
+          </div>
+
+          <div class="figure" style="margin-top:1.5rem;">
+            <div class="figure-label">Figure 8</div>
+            <div class="figure-sublabel">The conformance gate every shipped feature passes through</div>
+            <div class="flow-box">
+              <div class="flow-node">Solution Train ships a feature</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node decision">EAB conformance gate</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node pass">Pass — live status on Governance Control Plane Dashboard</div>
+            </div>
+            <div class="flow-box">
+              <div class="flow-node" style="visibility:hidden;">Solution Train ships a feature</div>
+              <span class="flow-arrow" style="visibility:hidden;">→</span>
+              <div class="flow-node decision" style="visibility:hidden;">EAB conformance gate</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node fail">Fail — returned with the specific principle or ADR violated, logged as a Phase G finding</div>
+            </div>
+          </div>
+
+          <div class="doc-eyebrow" style="margin-top:1.5rem;margin-bottom:8px;">EAB in Operation</div>
+          <p class="body-text">Phase G is not a quarterly review cycle here — it runs continuously, and the evidence is the <a href="ae-governance-dashboard.html" style="color:var(--blue);font-weight:500;">Governance Control Plane Dashboard →</a>: live SLO error budgets, HITL queue depth, EU AI Act Model Registry currency, model drift, Terraform drift, and FinOps spend, across all four pillars.</p>
+          <div class="callout amber">
+            <div class="callout-label">Reading the dashboard honestly</div>
+            <div class="callout-body">The dashboard currently shows one finding open — Supplier Risk XGBoost's Annex III review is due. That's Phase G working as designed: a finding surfaced before it becomes an incident, not evidence the platform is non-compliant.</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1rem;">The EAB watches conformance. Requirements Management watches whether the requirements themselves are still the right ones.</p>
+    </section>
+
+    <!-- REQUIREMENTS MANAGEMENT -->
+    <section class="section" id="requirements-mgmt">
+      <h2 class="section-heading"><span class="section-num">§10</span> Requirements Management</h2>
+      <p class="body-text">Continuous, not a phase you pass through once. <em style="color:var(--teal)">Every requirement, traced.</em></p>
+      <p class="body-text">Every BR, AR, and Constraint from Page 02 stays live across every phase above — this section is the traceability record proving each one actually landed somewhere, rather than being captured in Phase A and quietly forgotten by Phase F. Where the EAB (§9) checks whether the <em>build</em> still matches the <em>design</em>, Requirements Management checks whether the <em>design</em> still matches the <em>requirement</em> — a different failure mode, equally fatal if no one's watching for it.</p>
+
+      <div class="subsection-heading">Business Requirements — 11 of 11 traced</div>
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th style="width:70px">ID</th><th style="width:230px">Requirement</th><th style="width:90px">Phase</th><th style="width:200px">Artifact</th><th>Implementing Module</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge blue">BR-01</span></td><td>Quote-to-Cash cycle acceleration</td><td><span class="badge purple">Phase B</span></td><td class="mono-note">To-Be Value Stream (Page 02, §4a, Diag. 01)</td><td class="mono-note">CCAI Sales Agent · ContractGuard · RevRec AI</td></tr>
+              <tr><td><span class="badge blue">BR-02</span></td><td>ASC 606 revenue recognition automation</td><td><span class="badge purple">Phase B/D</span></td><td class="mono-note">Value Stream · Transaction entity (§5)</td><td class="mono-note">RevRec AI · Finance HITL · SAP integration</td></tr>
+              <tr><td><span class="badge blue">BR-03</span></td><td>Customer contract clause intelligence</td><td><span class="badge purple">Phase B/D</span></td><td class="mono-note">Value Stream · GCP Architecture (§6)</td><td class="mono-note">ContractGuard · Document AI · Gemini 1.5 Pro</td></tr>
+              <tr><td><span class="badge blue">BR-04</span></td><td>CCAI Sales Agent for inbound inquiries</td><td><span class="badge purple">Phase B</span></td><td class="mono-note">To-Be Value Stream (Page 02, §4a)</td><td class="mono-note">CCAI Sales Agent · Salesforce Integration</td></tr>
+              <tr><td><span class="badge blue">BR-05</span></td><td>Unified asset telemetry and predictive maintenance</td><td><span class="badge purple">Phase C</span></td><td class="mono-note">Device · Asset Event entities (§5)</td><td class="mono-note">Asset IQ · Pub/Sub Pipeline</td></tr>
+              <tr><td><span class="badge blue">BR-06</span></td><td>Procure-to-Pay straight-through automation</td><td><span class="badge purple">Phase B/E</span></td><td class="mono-note">Value Stream (Page 02, Diag. 02) · WP-08 (§7)</td><td class="mono-note">Sourcing · Contract · PO · 3-Way Match Agents</td></tr>
+              <tr><td><span class="badge blue">BR-07</span></td><td>Continuous supply chain risk and demand intelligence</td><td><span class="badge purple">Phase C/E</span></td><td class="mono-note">Supplier entity (§5) · WP-08 (§7)</td><td class="mono-note">DemandIQ · SupplierSentinel · ProcureGuard · InventoryOrchestrator</td></tr>
+              <tr><td><span class="badge blue">BR-08</span></td><td>MDR Article 87 vigilance automation</td><td><span class="badge purple">Phase B/F</span></td><td class="mono-note">Value Stream (Diag. 02) · H2 horizon (§8)</td><td class="mono-note">QualityTrace</td></tr>
+              <tr><td><span class="badge blue">BR-09</span></td><td>EU AI Act compliance — all models</td><td><span class="badge purple">Prelim/G</span></td><td class="mono-note">P-01 · P-02 (§2) · EAB gate (§9)</td><td class="mono-note">RevRec AI · Asset IQ · ContractGuard · XAI Layer (platform-wide)</td></tr>
+              <tr><td><span class="badge blue">BR-10</span></td><td>Data sovereignty</td><td><span class="badge purple">Prelim/D</span></td><td class="mono-note">P-06 (§2) · Layer 04 (§6)</td><td class="mono-note">Layer 04 Infrastructure · VPC-SC</td></tr>
+              <tr><td><span class="badge blue">BR-11</span></td><td>Executive strategy dashboard, full-platform OKR</td><td><span class="badge purple">Phase F</span></td><td class="mono-note">H3 horizon (§8)</td><td class="mono-note">Strategy Dashboard · BigQuery</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection-heading" style="margin-top:2rem;">Architecture Requirements — 14 of 14 traced</div>
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th style="width:70px">ID</th><th style="width:230px">Requirement</th><th style="width:90px">Phase</th><th style="width:200px">Artifact</th><th>Regulatory / Reference Basis</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge teal">AR-01</span></td><td>SHAP explanation per ML inference</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-01 principle (§2)</td><td class="mono-note">EU AI Act Art. 13 &amp; 14</td></tr>
+              <tr><td><span class="badge teal">AR-02</span></td><td>HITL checkpoint as state machine node</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-02 principle, revised (§2)</td><td class="mono-note">EU AI Act Art. 14</td></tr>
+              <tr><td><span class="badge teal">AR-03</span></td><td>Immutable audit trail for all agent actions</td><td><span class="badge purple">Prelim/C</span></td><td class="mono-note">P-08 principle, revised (§2) · Agent Action entity (§5)</td><td class="mono-note">EU AI Act Art. 12 · ISO 13485</td></tr>
+              <tr><td><span class="badge teal">AR-04</span></td><td>Salesforce as system of record</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-04 principle (§2)</td><td class="mono-note">ADR-001 · ADR-002</td></tr>
+              <tr><td><span class="badge teal">AR-05</span></td><td>Model Cards for every ML model</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-10 principle (§2)</td><td class="mono-note">EU AI Act Art. 11</td></tr>
+              <tr><td><span class="badge teal">AR-06</span></td><td>VPC-SC perimeter for data sovereignty</td><td><span class="badge purple">Prelim/D</span></td><td class="mono-note">P-06 principle (§2) · Layer 04 (§6)</td><td class="mono-note">GDPR · EU DPDP · BR-10</td></tr>
+              <tr><td><span class="badge teal">AR-07</span></td><td>CMEK encryption — key custody</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-11 principle (§2)</td><td class="mono-note">ISO 27001 · GDPR</td></tr>
+              <tr><td><span class="badge teal">AR-08</span></td><td>ASC 606 rules as write-path constraints</td><td><span class="badge purple">Prelim/C</span></td><td class="mono-note">P-03 principle (§2) · Transaction entity (§5)</td><td class="mono-note">ASC 606 · IFRS 15 · BR-02</td></tr>
+              <tr><td><span class="badge teal">AR-09</span></td><td>Device History Record atomic write</td><td><span class="badge purple">Phase C</span></td><td class="mono-note">Device entity (§5)</td><td class="mono-note">FDA 21 CFR 820 · ISO 13485</td></tr>
+              <tr><td><span class="badge teal">AR-10</span></td><td>ADR documentation for every decision</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-05 principle (§2)</td><td class="mono-note">TOGAF ADM · adr-index.html</td></tr>
+              <tr><td><span class="badge teal">AR-11</span></td><td>Pub/Sub event fabric as integration bus</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-09 principle, corrected (§2)</td><td class="mono-note">Architecture Principle · BR-05</td></tr>
+              <tr><td><span class="badge teal">AR-12</span></td><td>Drift detection and retraining trigger</td><td><span class="badge purple">Phase G</span></td><td class="mono-note">EAB gate — Model Drift Monitor (§9, dashboard)</td><td class="mono-note">EU AI Act Art. 9 · MLOps Standard</td></tr>
+              <tr><td><span class="badge teal">AR-13</span></td><td>Ariba and SAP IBP as systems of record</td><td><span class="badge purple">Prelim/C</span></td><td class="mono-note">P-04 principle (§2) · Supplier entity (§5)</td><td class="mono-note">ADR-002 · AR-04 (parallel pattern)</td></tr>
+              <tr><td><span class="badge teal">AR-14</span></td><td>A2A mandate boundary for agent negotiation</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-02/P-07 principle, revised (§2)</td><td class="mono-note">EU AI Act Art. 14</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection-heading" style="margin-top:2rem;">Constraints — 8 of 8 traced</div>
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th style="width:70px">ID</th><th style="width:230px">Constraint</th><th style="width:90px">Phase</th><th style="width:200px">Artifact</th><th>Source</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge amber">C-01</span></td><td>Zero additional software licensing cost</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-12 principle (§2)</td><td class="mono-note">Portfolio Constraint</td></tr>
+              <tr><td><span class="badge amber">C-02</span></td><td>Salesforce Developer Edition pattern</td><td><span class="badge purple">Prelim/A</span></td><td class="mono-note">P-12 · ADR-001 (§2/§3)</td><td class="mono-note">ADR-001 · C-01</td></tr>
+              <tr><td><span class="badge amber">C-03</span></td><td>SAP integration via middleware</td><td><span class="badge purple">Phase E</span></td><td class="mono-note">WP-08 build-vs-buy (§7)</td><td class="mono-note">C-01 · ADR-002</td></tr>
+              <tr><td><span class="badge amber">C-04</span></td><td>EU data residency — europe-west3</td><td><span class="badge purple">Prelim/D</span></td><td class="mono-note">P-06 principle (§2) · Layer 04 (§6)</td><td class="mono-note">GDPR · BR-10 · AR-06</td></tr>
+              <tr><td><span class="badge amber">C-05</span></td><td>MVP-plus build standard</td><td><span class="badge purple">Phase E/F</span></td><td class="mono-note">WP scope (§7) · Horizon definitions (§8)</td><td class="mono-note">Portfolio Scope</td></tr>
+              <tr><td><span class="badge amber">C-06</span></td><td>Existing SFDC/SAP/Ariba investments preserved</td><td><span class="badge purple">Prelim</span></td><td class="mono-note">P-04 principle (§2)</td><td class="mono-note">ADR-002 · BR-10</td></tr>
+              <tr><td><span class="badge amber">C-07</span></td><td>SAFe delivery governance — light touch</td><td><span class="badge purple">Phase F</span></td><td class="mono-note">H1–H3 horizons (§8) · LPM (Page 04)</td><td class="mono-note">SAFe Page 04</td></tr>
+              <tr><td><span class="badge amber">C-08</span></td><td>Ariba developer/sandbox pattern</td><td><span class="badge purple">Phase A</span></td><td class="mono-note">C-02 parallel pattern (§3)</td><td class="mono-note">C-01 · parallel pattern to C-02</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top:1.25rem;">Every requirement is traced. Every decision is governed. What gets funded next is Page 04's question to answer.</p>
+    </section>
+
+    <!-- BRIDGE / NEXT -->
+
+    <section class="section">
+      <h2 class="section-heading"><span class="section-num">§11</span> Next in the Portfolio</h2>
+      <p class="body-text">The method is complete. <em style="color:var(--teal)">Investment and adoption follow.</em></p>
+      <p class="body-text">Every artifact this page produces — the runway (§6), the build-vs-buy ownership (§7), the horizon sequence (§8), the EAB's conformance authority (§9) — is now a settled input. Lean Portfolio Management funds against it. The Go-to-Market strategy adopts against it. Neither page re-derives what's already been decided here.</p>
+
+      <div class="next-modules">
+        <a href="page-04.html" class="next-mod-link">
+          <span class="next-mod-id">PG 04</span>
+          <div>
+            <div class="next-mod-name">Lean Portfolio Management →</div>
+            <div class="next-mod-desc">Strategic Themes · 4 Solution Trains · Shared Enablers</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-08.html" class="next-mod-link">
+          <span class="next-mod-id">PG 08</span>
+          <div>
+            <div class="next-mod-name">Go-to-Market Strategy →</div>
+            <div class="next-mod-desc">Adoption argument · Horizon-by-horizon value · Risk mitigations</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="adr-index.html" class="next-mod-link">
+          <span class="next-mod-id">ADR</span>
+          <div>
+            <div class="next-mod-name">Architecture Decision Records →</div>
+            <div class="next-mod-desc">Every decision this page made, recorded with alternatives</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="ae-governance-dashboard.html" class="next-mod-link">
+          <span class="next-mod-id">EAB</span>
+          <div>
+            <div class="next-mod-name">Governance Control Plane Dashboard →</div>
+            <div class="next-mod-desc">The EAB's authority, operating live</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+        <a href="page-02.html" class="next-mod-link">
+          <span class="next-mod-id">PG 02</span>
+          <div>
+            <div class="next-mod-name">← ClaraVis Client Brief &amp; Requirements</div>
+            <div class="next-mod-desc">The input document this entire ADM cycle traces back to</div>
+          </div>
+          <span class="next-mod-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>TOGAF ADM — Preliminary through Phase G · Page 03 · The Autonomous Enterprise · 2026</span>
+    <span>© 2026 Siddharth Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

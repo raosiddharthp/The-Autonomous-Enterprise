@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Day 2 Design — The Autonomous Enterprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8; --bg2: #f2f0eb; --bg3: #e8e5de;
+  --text: #1a1917; --text2: #5a5852; --text3: #8a8880;
+  --border: #d8d5ce; --border2: #c8c5be;
+  --amber: #b07010; --amber-bg: #fdf4e3; --amber-border: #e8c870;
+  --teal: #0a6b52; --teal-bg: #e8f5f0; --teal-border: #80c8b0;
+  --purple: #4a40b0; --purple-bg: #f0effe; --purple-border: #b0a8e8;
+  --coral: #b03820; --coral-bg: #fdf0ec; --coral-border: #e8a090;
+  --blue: #1850a0; --blue-bg: #eaf2fe; --blue-border: #90b8e8;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r: 6px; --r-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+.page-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 0;
+}
+.sidebar-logo { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.sidebar-project { font-family: var(--serif); font-size: 18px; color: var(--text); margin-bottom: 2rem; line-height: 1.2; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a { display: block; font-size: 12px; color: var(--text2); text-decoration: none; padding: 5px 8px; border-radius: var(--r); transition: background 0.15s, color 0.15s; }
+.sidebar-nav a:hover { background: var(--bg3); color: var(--text); }
+.sidebar-nav a.active { background: var(--text); color: var(--bg); }
+.sidebar-nav .sub { padding-left: 20px; font-size: 11px; color: var(--text3); }
+.sidebar-nav .sub:hover { color: var(--text2); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.stack-block { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.stack-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+.stack-item { font-size: 11px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+.stack-item strong { display: block; color: var(--text); font-weight: 500; font-size: 11px; }
+
+/* MAIN */
+.main { padding: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2.5rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(250,250,248,0.95); backdrop-filter: blur(8px); z-index: 100;
+}
+.topbar-breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.topbar-breadcrumb a { color: var(--text3); text-decoration: none; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: var(--bg3); border-radius: 99px; color: var(--text2); }
+
+/* CONTENT */
+.content { padding: 3rem 2.5rem 5rem; max-width: 820px; }
+
+/* HEADER */
+.doc-header { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.doc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.doc-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.doc-title { font-family: var(--serif); font-size: clamp(26px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; color: var(--text); margin-bottom: 0.75rem; }
+.doc-title em { font-style: italic; color: var(--teal); }
+.doc-byline { font-size: 13px; color: var(--text3); display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 0 0 2.5rem; }
+.stat-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); background: white; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+.stat-value.amber { color: var(--amber); }
+.stat-value.teal { color: var(--teal); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.coral { color: var(--coral); }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.4; }
+
+/* ABSTRACT */
+.abstract-grid { display: grid; grid-template-columns: 110px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+.abstract-label { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding-top: 4px; }
+.abstract-body { font-size: 14.5px; line-height: 1.75; color: var(--text2); }
+.abstract-body p + p { margin-top: 0.75rem; }
+.kw-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.kw { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 99px; color: var(--text3); }
+
+/* SECTIONS */
+.section { margin-bottom: 4rem; }
+.section-heading { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: baseline; gap: 12px; }
+.section-num { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.subsection-heading { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.subsection-heading::before { content: ''; display: block; width: 20px; height: 1px; background: var(--border2); }
+.body-text { font-size: 14.5px; line-height: 1.75; color: var(--text2); margin-bottom: 1rem; }
+.body-text strong { color: var(--text); font-weight: 500; }
+.body-text code { font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+
+/* CALLOUT */
+.callout { border-left: 2px solid var(--border2); padding: 1rem 1.25rem; margin: 1.5rem 0; background: var(--bg2); }
+.callout.amber { border-color: var(--amber-border); background: var(--amber-bg); }
+.callout.teal { border-color: var(--teal-border); background: var(--teal-bg); }
+.callout.purple { border-color: var(--purple-border); background: var(--purple-bg); }
+.callout.blue { border-color: var(--blue-border); background: var(--blue-bg); }
+.callout.coral { border-color: var(--coral-border); background: var(--coral-bg); }
+.callout-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.teal .callout-label { color: var(--teal); }
+.callout.purple .callout-label { color: var(--purple); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.coral .callout-label { color: var(--coral); }
+.callout-body { font-size: 13.5px; line-height: 1.65; color: var(--text2); }
+
+/* FIGURE */
+.figure { margin: 2rem 0; }
+.figure-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.figure-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.figure-sublabel { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 0.75rem; }
+.figure-body { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem; overflow: hidden; }
+.figure-note { font-size: 12px; color: var(--text3); margin-top: 0.5rem; font-style: italic; }
+
+/* COMPARISON / DATA TABLE */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 1.5rem 0; }
+.comp-table th { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg2); }
+.comp-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.comp-table td:first-child { font-weight: 500; color: var(--text); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .highlight td { background: var(--amber-bg); }
+.comp-table .row-flag td { background: var(--coral-bg); }
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.badge.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.badge.gray { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.badge.red { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.badge.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.mono-note { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.ok-text { color: var(--teal); font-weight: 500; }
+.warn-text { color: var(--amber); font-weight: 500; }
+.fail-text { color: var(--coral); font-weight: 500; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.kpi-row.dk { background: var(--bg2); border-color: var(--border); }
+.kpi-cell { padding: 1rem 1.1rem; border-right: 1px solid var(--border); background: white; }
+.kpi-row.dk .kpi-cell { background: var(--bg2); border-right: 1px solid var(--border); }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 6px; }
+.kpi-row.dk .kpi-label { color: var(--text3); }
+.kpi-val { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.kpi-delta { font-family: var(--mono); font-size: 10px; }
+.kpi-row.dk .kpi-delta { color: var(--text3); }
+.delta-up { color: var(--teal); } .delta-dn { color: var(--coral); } .delta-flat { color: var(--text3); }
+
+/* RING / POSTURE CARD */
+.posture-grid { display: grid; grid-template-columns: 250px 1fr; gap: 1.25rem; align-items: start; margin: 1.5rem 0; }
+.ring-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; }
+.ring-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1rem; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.ring-score { font-family: var(--serif); font-size: 32px; color: var(--teal); line-height: 1; }
+.ring-sub { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-top: 3px; text-transform: uppercase; }
+.ring-title { font-family: var(--mono); font-size: 10px; color: var(--text); letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.ring-date { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-align: center; }
+.ring-legend { display: flex; gap: 14px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.rl-item { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.rl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FRAMEWORK TILES */
+.fw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.fw-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; background: white; }
+.fw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.fw-name { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); }
+.fw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fw-dot.g { background: var(--teal); } .fw-dot.a { background: var(--amber); } .fw-dot.r { background: var(--coral); }
+.fw-art { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 8px; line-height: 1.45; }
+.fw-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.fw-bar-fill { height: 100%; border-radius: 99px; }
+.fw-bar-fill.g { background: var(--teal); } .fw-bar-fill.a { background: var(--amber); } .fw-bar-fill.r { background: var(--coral); }
+.fw-pct { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-top: 5px; }
+
+/* PROGRESS INLINE */
+.prog-wrap { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.prog-bg { height: 5px; background: var(--bg2); border-radius: 99px; width: 60px; display: inline-block; }
+.prog-fill { height: 100%; border-radius: 99px; display: block; }
+
+/* XAI CARDS */
+.xai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+.xai-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.1rem 1.2rem; background: white; }
+.xai-card.flag { border-color: var(--amber-border); background: var(--amber-bg); }
+.xai-model { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.xai-module { font-family: var(--mono); font-size: 9.5px; color: var(--text3); margin-bottom: 0.9rem; }
+.xai-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.xai-lbl { font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.xai-val { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.xai-bar-bg { height: 4px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-bottom: 0.7rem; }
+.xai-bar-fill { height: 100%; border-radius: 99px; }
+.drift-chip { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
+.drift-chip.stable { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.drift-chip.warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+/* GDPR PANELS */
+.gdpr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.gdpr-panel { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; padding: 1.25rem 1.4rem; }
+.gdpr-panel-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.gdpr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.gdpr-row:last-child { border-bottom: none; }
+.gdpr-key { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.gdpr-val { font-family: var(--mono); font-size: 11px; color: var(--teal); font-weight: 500; }
+
+/* CALENDAR LIST */
+.cal-list { display: flex; flex-direction: column; gap: 10px; margin: 1.5rem 0; }
+.cal-item { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r); padding: 0.9rem 1.1rem; background: white; }
+.cal-item.flag-red { border-left-color: var(--coral); }
+.cal-item.flag-amber { border-left-color: var(--amber); }
+.cal-item.flag-blue { border-left-color: var(--blue); }
+.cal-item.flag-teal { border-left-color: var(--teal); }
+.cal-date { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.5; }
+.cal-date .sub { display: block; font-size: 9.5px; color: var(--text3); font-weight: 400; }
+.cal-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.cal-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.cal-pill { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 99px; white-space: nowrap; align-self: start; }
+
+/* ADR CARDS (already defined below in shared block, reused) */
+.adr-card { border: 1px solid var(--border); border-radius: var(--r-lg); background: white; margin: 1.5rem 0; overflow: hidden; }
+.adr-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.adr-id { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
+.adr-title { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.adr-status-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.adr-status-badge.accepted { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.adr-body-block { padding: 1.25rem 1.5rem; }
+.adr-body-block p { font-size: 13.5px; line-height: 1.65; color: var(--text2); margin-bottom: 0.75rem; }
+.adr-body-block p:last-child { margin-bottom: 0; }
+.adr-body-block strong { color: var(--text); font-weight: 500; }
+
+/* REBUTTAL GRID */
+.rebuttal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.5rem 0; }
+.rb-card { border: 1px solid var(--border); border-radius: var(--r-lg); border-top: 3px solid var(--border2); padding: 1.25rem 1.4rem; background: white; }
+.rb-card.caio { border-top-color: var(--coral); }
+.rb-card.clo { border-top-color: var(--blue); }
+.rb-card.cfo { border-top-color: var(--teal); }
+.rb-card.cpo { border-top-color: var(--purple); }
+.rb-who { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rb-card.caio .rb-who { color: var(--coral); }
+.rb-card.clo .rb-who { color: var(--blue); }
+.rb-card.cfo .rb-who { color: var(--teal); }
+.rb-card.cpo .rb-who { color: var(--purple); }
+.rb-concern { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.4; }
+.rb-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border2); }
+.rb-rl { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--teal); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.rb-r { font-size: 12.5px; line-height: 1.65; color: var(--text2); margin-bottom: 10px; }
+.rb-ev { padding: 8px 12px; font-size: 11.5px; line-height: 1.55; border-radius: var(--r); }
+.rb-card.caio .rb-ev { background: var(--coral-bg); color: var(--coral); }
+.rb-card.clo .rb-ev { background: var(--blue-bg); color: var(--blue); }
+.rb-card.cfo .rb-ev { background: var(--teal-bg); color: var(--teal); }
+.rb-card.cpo .rb-ev { background: var(--purple-bg); color: var(--purple); }
+
+/* DOC FOOTER */
+.doc-footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+/* NEXT-MODULE NAV */
+.next-modules { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.next-mod-link { display: grid; grid-template-columns: 70px 1fr 20px; align-items: center; gap: 12px; padding: 1rem 1.25rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.next-mod-link:last-child { border-bottom: none; }
+.next-mod-link:hover { background: var(--bg2); }
+.next-mod-id { font-family: var(--mono); font-size: 10.5px; color: var(--text3); }
+.next-mod-name { font-family: var(--sans); font-size: 13.5px; font-weight: 500; color: var(--text); }
+.next-mod-desc { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-top: 2px; }
+.next-mod-arrow { font-family: var(--mono); font-size: 13px; color: var(--text3); }
+
+/* ADM TRACK */
+.adm-track { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 1.5rem; }
+.adm-phase { background: var(--bg2); padding: 1.1rem 1rem; border-radius: var(--r); border: 1px solid var(--border); transition: transform 0.18s; }
+.adm-phase:hover { transform: translateY(-2px); }
+.adm-phase.prelim { background: var(--bg3); }
+.adm-phase.reqs { background: var(--coral-bg); border-color: var(--coral-border); }
+.adm-p-label { font-family: var(--mono); font-size: 9px; font-weight: 500; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.adm-phase.reqs .adm-p-label { color: var(--coral); }
+.adm-p-name { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.2; }
+.adm-p-artifact { font-family: var(--mono); font-size: 9.5px; color: var(--text3); line-height: 1.4; }
+
+/* PHASE BLOCKS */
+.phase-block { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 1.5rem 0; }
+.phase-block-hdr { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 18px; }
+.ph-badge-pill { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+.pb-pa { background: var(--blue-bg); color: var(--blue); }
+.pb-pb { background: var(--teal-bg); color: var(--teal); }
+.pb-pc { background: var(--teal-bg); color: var(--teal); }
+.pb-pd { background: var(--purple-bg); color: var(--purple); }
+.pb-pef { background: var(--amber-bg); color: var(--amber); }
+.phase-block-title { font-family: var(--sans); font-size: 16px; font-weight: 700; color: var(--text); }
+.phase-block-output { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-left: auto; letter-spacing: 0.03em; }
+.phase-block-body { padding: 1.6rem; background: white; }
+
+/* PRINCIPLES GRID */
+.principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 0.5rem; }
+.principle-card { background: var(--bg2); border: 1px solid var(--border); border-top: 3px solid var(--border2); border-radius: var(--r); padding: 1.1rem 1.1rem; transition: border-top-color 0.2s, background 0.2s; }
+.principle-card:hover { background: white; border-top-color: var(--blue); }
+.pr-id { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 8px; }
+.pr-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.25; }
+.pr-rationale { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.pr-constraint { padding: 6px 9px; background: var(--blue-bg); font-size: 10.5px; color: var(--blue); line-height: 1.5; border-radius: var(--r); }
+
+/* DIAGRAM WRAPPER */
+.diagram-wrap { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-top: 0.5rem; }
+.diagram-wrap.dk-bg { background: var(--bg2); border-color: var(--border); }
+.diag-title { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.diag-title::before { content: ''; width: 3px; height: 14px; background: var(--blue); display: block; flex-shrink: 0; }
+.diagram-wrap.dk-bg .diag-title { color: var(--text); }
+.diagram-wrap.dk-bg .diag-title::before { background: var(--amber); }
+.diag-sub { font-family: var(--mono); font-size: 10.5px; color: var(--text3); margin-bottom: 1.2rem; }
+.diagram-wrap.dk-bg .diag-sub { color: var(--text3); }
+.diag-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.diagram-wrap.dk-bg .diag-legend { border-top-color: var(--border); }
+.diag-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text2); }
+.diagram-wrap.dk-bg .diag-legend-item { color: var(--text2); }
+.dl-box { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* ENTITY TABLE (for canonical data model) */
+.entity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.entity-card { border: 2px solid; border-radius: var(--r); overflow: hidden; }
+.entity-hdr { padding: 8px 12px; font-family: var(--sans); font-size: 12px; font-weight: 700; color: white; text-align: center; }
+.entity-body { padding: 10px 12px; font-family: var(--mono); font-size: 9.5px; color: var(--text2); line-height: 1.7; background: white; }
+.entity-body .arrow-ref { font-weight: 600; display: block; margin-top: 4px; }
+
+/* PHASE DETAIL GRID */
+.phase-detail-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.pd-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1.1rem; }
+.pd-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.pd-val { font-size: 12px; color: var(--text); line-height: 1.55; }
+
+/* APP PORTFOLIO / 4-COL CARDS */
+.appcard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.5rem; }
+.appcard { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1rem; }
+.appcard-label { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 6px; }
+.appcard-body { font-family: var(--mono); font-size: 10.5px; color: var(--text2); line-height: 1.55; }
+
+/* PILLAR LINK CARDS */
+.pillar-link-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 1rem; }
+.pl-card { display: block; padding: 0.9rem 1.1rem; border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+.pl-card:hover { border-color: var(--blue); background: var(--blue-bg); }
+.pl-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+.pl-title { font-family: var(--serif); font-size: 15px; color: var(--text); margin-top: 2px; }
+
+/* WORK PACKAGE / TRACEABILITY TABLES (shared with comp-table) */
+
+/* ADR ROW (page-03 specific 4-up) */
+.adr-row-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 0.5rem; }
+.adr-mini-card { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--border2); border-radius: var(--r); padding: 1rem 1.2rem; }
+.adr-mini-card.green { border-left-color: var(--teal); }
+.adr-mini-card.teal { border-left-color: var(--teal); }
+.adr-mini-card.blue { border-left-color: var(--blue); }
+.adr-mini-card.amber { border-left-color: var(--amber); }
+.adr-mini-id { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 6px; }
+.adr-mini-card.green .adr-mini-id, .adr-mini-card.teal .adr-mini-id { color: var(--teal); }
+.adr-mini-card.blue .adr-mini-id { color: var(--blue); }
+.adr-mini-card.amber .adr-mini-id { color: var(--amber); }
+.adr-mini-title { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.25; }
+.adr-mini-decision { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+/* DOMAIN PILLS */
+.d2-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; }
+.pill-seller { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.pill-buyer { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+.pill-finance { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.pill-sc { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+.pill-platform { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+.pill-gold { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.pill-mono { background: var(--bg2); color: var(--text2); border: 1px solid var(--border); }
+
+/* HERO META STATS */
+.d2-hero-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; margin-top: 1.5rem; }
+.d2-hero-meta-item { background: white; padding: 1rem 1.2rem; }
+.d2-hero-meta-num { font-family: var(--serif); font-size: 28px; color: var(--text); display: block; }
+.d2-hero-meta-lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; color: var(--text3); margin-top: 4px; display: block; text-transform: uppercase; }
+
+/* GOVERNANCE TIER BOXES */
+.tier-box { border-radius: var(--r); padding: 1.3rem 1.5rem; margin-bottom: 4px; border: 1px solid; }
+.tier-box.tier1 { background: var(--amber-bg); border-color: var(--amber-border); }
+.tier-box.tier3 { background: var(--purple-bg); border-color: var(--purple-border); }
+.tier-flow-label { text-align: center; color: var(--text3); font-size: 11px; padding: 6px; font-family: var(--mono); }
+.tier2-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 4px; }
+.tier2-cell { border-radius: var(--r); padding: 1rem 0.9rem; border: 1px solid; }
+.tier2-cell.seller { background: var(--blue-bg); border-color: var(--blue-border); }
+.tier2-cell.buyer { background: var(--teal-bg); border-color: var(--teal-border); }
+.tier2-cell.finance { background: var(--amber-bg); border-color: var(--amber-border); }
+.tier2-cell.sc { background: var(--coral-bg); border-color: var(--coral-border); }
+
+/* ARCH FLOW (ML Gate steps) */
+.d2-arch-flow { display: flex; align-items: stretch; gap: 0; margin: 1.3rem 0; flex-wrap: wrap; }
+.d2-arch-node { flex: 1; min-width: 120px; background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 0.8rem; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--text2); letter-spacing: 0.02em; }
+.d2-arch-arrow { display: flex; align-items: center; padding: 0 6px; color: var(--text3); font-size: 14px; }
+
+/* KPI ROW (greenops/finops) */
+.d2-kpi-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.d2-kpi { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 1rem 1.3rem; flex: 1; min-width: 160px; }
+.d2-kpi-val { font-family: var(--serif); font-size: 30px; color: var(--text); display: block; line-height: 1; margin-bottom: 4px; }
+.d2-kpi-lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.07em; color: var(--text3); text-transform: uppercase; }
+
+/* D2 TIMELINE (error budget / runbook) */
+.d2-timeline { position: relative; padding-left: 2rem; }
+.d2-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--amber) 0%, var(--border) 100%); }
+.d2-timeline-item { position: relative; margin-bottom: 1.5rem; }
+.d2-timeline-item:last-child { margin-bottom: 0; }
+.d2-timeline-dot { position: absolute; left: -2.3rem; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--amber); border: 2px solid white; box-shadow: 0 0 0 1px var(--border); }
+.d2-timeline-item h4 { font-family: var(--sans); font-weight: 700; font-size: 13.5px; color: var(--text); margin-bottom: 5px; }
+.d2-timeline-phase { font-family: var(--mono); font-size: 9.5px; color: var(--amber); letter-spacing: 0.08em; margin-bottom: 6px; display: block; }
+
+/* D2 CARD with top accent */
+.d2-card { background: white; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; position: relative; overflow: hidden; }
+.d2-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+
+/* D2 CALLOUT VARIANTS */
+.d2-callout { border-left: 3px solid var(--amber); background: var(--amber-bg); padding: 1rem 1.3rem; border-radius: 0 var(--r) var(--r) 0; font-size: 12.5px; color: var(--text2); line-height: 1.7; }
+.d2-callout strong { color: var(--amber); }
+.d2-callout.red { border-color: var(--coral); background: var(--coral-bg); }
+.d2-callout.red strong { color: var(--coral); }
+.d2-callout.blue { border-color: var(--blue); background: var(--blue-bg); }
+.d2-callout.blue strong { color: var(--blue); }
+.d2-callout.green { border-color: var(--teal); background: var(--teal-bg); }
+.d2-callout.green strong { color: var(--teal); }
+
+/* D2 SLO TABLE ROW ACCENTS */
+.slo-row-crit td:nth-child(3) { color: var(--coral); }
+.slo-row-warn td:nth-child(3) { color: var(--amber); }
+.slo-row-ok td:nth-child(3) { color: var(--teal); }
+
+/* D2 GRIDS */
+.d2-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.d2-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; }
+.d2-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fw-grid, .xai-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid, .kpi-row { grid-template-columns: 1fr; }
+  .posture-grid, .gdpr-pair, .rebuttal-grid { grid-template-columns: 1fr; }
+  .abstract-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 1fr; }
+  .adm-track { grid-template-columns: repeat(3, 1fr); }
+  .principles-grid, .entity-grid, .appcard-grid, .adr-row-grid, .pillar-link-grid { grid-template-columns: 1fr 1fr; }
+  .d2-hero-meta, .tier2-grid, .d2-grid-2, .d2-grid-3, .d2-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">the autonomous enterprise</div>
+  <div class="sidebar-project">Day 2<br>Design</div>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#what-day2-means">What Day 2 Means</a></li>
+      <li><a href="#governance-model">Governance Model</a></li>
+      <li><a href="#operational-arch">Operational Arch</a></li>
+      <li><a href="#sre">SRE &amp; SLOs</a></li>
+      <li><a href="#mlops-day2">Enterprise MLOps</a></li>
+      <li><a href="#day2-runbook">Day 2 Runbook</a></li>
+      <li><a href="#togaf-phase-h">TOGAF Phase H</a></li>
+      <li><a href="#greenops-finops">GreenOps + FinOps</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#principles">Principles</a></li>
+    </ul>
+  </nav>
+
+  <div class="stack-block">
+    <div class="stack-title">Scope Tags</div>
+    <div class="stack-item"><strong>TOGAF Phase H</strong>architecture change management</div>
+    <div class="stack-item"><strong>GCP CAF</strong>six governance pillars</div>
+    <div class="stack-item"><strong>Google SRE</strong>error budgets · toil reduction</div>
+    <div class="stack-item"><strong>EU AI Act Annex III</strong>enterprise model registry</div>
+    <div class="stack-item"><strong>ADR-017 · 018 · 019</strong>Day 2 decisions</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <a href="index.html">the-autonomous-enterprise</a> / <a href="#">day2-design</a>
+    </div>
+    <div class="topbar-right">
+      <a href="#governance-model" class="topbar-tag" style="text-decoration:none">Governance Model</a>
+      <a href="#day2-runbook" class="topbar-tag" style="text-decoration:none">Day 2 Runbook</a>
+      <span class="topbar-tag">TOGAF Phase H · GCP CAF · SRE</span>
+    </div>
+  </div>
+
+  <div class="content" style="max-width:1080px;">
+
+    <!-- HEADER / HERO -->
+    <header class="doc-header" id="top">
+      <div class="doc-eyebrow">TOGAF Phase H &nbsp;·&nbsp; Architecture Change Management &nbsp;·&nbsp; 2026</div>
+      <h1 class="doc-title">The Autonomous Enterprise <em>Day 2 Design</em></h1>
+      <div class="doc-byline">
+        <span>How the Autonomous Enterprise operates, governs itself, evolves, and enforces compliance at runtime — across all four process pillars simultaneously</span>
+        <span>A single governance spine · Four autonomous domains · Zero unaudited configuration drift</span>
+      </div>
+
+      <div class="d2-hero-meta">
+        <div class="d2-hero-meta-item"><span class="d2-hero-meta-num">4</span><span class="d2-hero-meta-lbl">Domain Suites</span></div>
+        <div class="d2-hero-meta-item"><span class="d2-hero-meta-num">1</span><span class="d2-hero-meta-lbl">Governance Spine</span></div>
+        <div class="d2-hero-meta-item"><span class="d2-hero-meta-num">H</span><span class="d2-hero-meta-lbl">TOGAF Phase</span></div>
+        <div class="d2-hero-meta-item"><span class="d2-hero-meta-num">0</span><span class="d2-hero-meta-lbl">Unaudited Decisions</span></div>
+      </div>
+    </header>
+
+    <!-- §01 WHAT DAY 2 MEANS -->
+    <section class="section" id="what-day2-means">
+      <h2 class="section-heading"><span class="section-num">§1</span> Framing</h2>
+      <p class="body-text">What "Day 2" actually means for an <em style="color:var(--teal)">agentic enterprise.</em></p>
+      <p class="body-text">Day 1 is the design. Day 2 is everything that happens after the first agent fires its first inference in production — and it is architecturally harder than Day 1.</p>
+
+      <div class="d2-grid-3">
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--blue),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--blue);margin-bottom:0.9rem;">TOGAF Phase H</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Architecture Change Management</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">TOGAF defines Phase H as the ongoing process of monitoring the architecture for performance, compliance, and change drivers — and deciding whether to trigger a new ADM cycle. For the AE, this means each of the four process pillars must continuously report its architecture conformance status to the Enterprise Architecture Board (EAB).</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,#137333,transparent);"></div>
+          <div class="doc-eyebrow" style="color:#137333;margin-bottom:0.9rem;">GCP Cloud Adoption Framework</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Six Governance Pillars</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Google's CAF defines six operational governance pillars for production cloud environments: <strong>Security, Privacy, Compliance, Reliability, Performance Efficiency,</strong> and <strong>Cost/FinOps.</strong> Day 2 design is the engineering expression of these pillars applied to all four AE process pillars — each pillar instantiated as a concrete control plane, not a policy document.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--amber),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.9rem;">Google SRE Model</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Error Budgets &amp; Toil Reduction</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Google SRE teaches that reliability is a <em>product feature</em>, not an operations afterthought. For an enterprise AI platform, this means every agent, every model, and every HITL checkpoint has an SLO. Error budgets govern how aggressively new model versions can be deployed. Toil — manual, repetitive, automatable work — is metered and eliminated first.</p>
+        </div>
+      </div>
+
+      <div class="d2-callout" style="margin-top:1.5rem;">
+        <strong>The Day 2 thesis:</strong> An agentic enterprise that can design itself but cannot govern itself at runtime is architecturally incomplete. The Autonomous Enterprise Platform's Day 2 design closes that gap — with a single governance control plane that operates above all four process pillars, enforces the same compliance and reliability contract across all of them, and is itself governed by a formal Architecture Board running TOGAF Phase H continuously.
+      </div>
+    </section>
+
+    <!-- §02 GOVERNANCE MODEL -->
+    <section class="section" id="governance-model">
+      <h2 class="section-heading"><span class="section-num">§2</span> Enterprise Governance Model</h2>
+      <p class="body-text">One governance spine. <em style="color:var(--teal)">Four domain contracts.</em></p>
+      <p class="body-text">The Enterprise Governance Layer sits above the four process pillars — Quote-to-Cash, Procure-to-Pay, Finance Operations, Supply Chain — and enforces a uniform policy contract across all of them. Domain autonomy is bounded, not abolished.</p>
+
+      <!-- Three-Tier Governance Model -->
+      <div class="figure">
+        <div class="figure-label">Figure 1</div>
+        <div class="figure-sublabel">Governance hierarchy — three tiers, policy inheritance via GCP Resource Hierarchy</div>
+        <div class="tier-box tier1">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.8rem;">Tier 1 · Enterprise Architecture Board (EAB)</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="d2-pill pill-gold">GCP Org Policy</span>
+            <span class="d2-pill pill-gold">TOGAF Phase H</span>
+            <span class="d2-pill pill-gold">EU AI Act Annex III Registry</span>
+            <span class="d2-pill pill-gold">Enterprise IAM Policy</span>
+            <span class="d2-pill pill-gold">CMEK Key Custodian</span>
+            <span class="d2-pill pill-gold">Cross-Domain Audit Ledger</span>
+            <span class="d2-pill pill-gold">Shared VPC Authority</span>
+            <span class="d2-pill pill-gold">FinOps Budget Envelope</span>
+          </div>
+          <p class="body-text" style="font-size:12px;margin-top:0.9rem;margin-bottom:0;">The EAB is not a committee — it is a <strong>technical control plane</strong>. Decisions are enforced via GCP Organization Policies applied at the organization node, not by memo. TOGAF Architecture Compliance Reviews are automated: every module deployment runs a Terraform conformance check against the architecture blueprint.</p>
+        </div>
+        <div class="tier-flow-label">↕ delegated authority envelope · policy inheritance via GCP Resource Hierarchy</div>
+        <div class="tier2-grid">
+          <div class="tier2-cell seller">
+            <div class="doc-eyebrow" style="color:var(--blue);margin-bottom:0.5rem;">Tier 2 · Seller Domain</div>
+            <div class="body-text" style="font-size:11.5px;margin-bottom:0;">AS Platform Owner<br>CCAI · ContractGuard<br>RevRec · FinRisk<br>Asset IQ</div>
+          </div>
+          <div class="tier2-cell buyer">
+            <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:0.5rem;">Tier 2 · Buyer Domain</div>
+            <div class="body-text" style="font-size:11.5px;margin-bottom:0;">AB Platform Owner<br>Sourcing · Contract<br>PO · 3-Way Match<br>Supplier Risk</div>
+          </div>
+          <div class="tier2-cell finance">
+            <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.5rem;">Tier 2 · Finance Domain</div>
+            <div class="body-text" style="font-size:11.5px;margin-bottom:0;">AF Platform Owner<br>Intercompany Recon<br>Treasury Visibility<br>AP Exception</div>
+          </div>
+          <div class="tier2-cell sc">
+            <div class="doc-eyebrow" style="color:var(--coral);margin-bottom:0.5rem;">Tier 2 · Supply Chain</div>
+            <div class="body-text" style="font-size:11.5px;margin-bottom:0;">ASC Platform Owner<br>DemandIQ · Supplier<br>Sentinel · QualityTrace<br>ScopeTracer</div>
+          </div>
+        </div>
+        <div class="tier-flow-label">↕ domain-specific service accounts · scoped IAM bindings · Workload Identity per namespace</div>
+        <div class="tier-box tier3" style="margin-bottom:0;">
+          <div class="doc-eyebrow" style="color:var(--purple);margin-bottom:0.8rem;">Tier 3 · Shared Platform Services (consumed by all four domains)</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="d2-pill pill-platform">Vertex AI Feature Store</span>
+            <span class="d2-pill pill-platform">Pub/Sub Event Bus</span>
+            <span class="d2-pill pill-platform">BigQuery Audit Ledger</span>
+            <span class="d2-pill pill-platform">Cloud Spanner (HITL State)</span>
+            <span class="d2-pill pill-platform">Secret Manager</span>
+            <span class="d2-pill pill-platform">Security Command Center</span>
+            <span class="d2-pill pill-platform">Cloud Armor WAF</span>
+            <span class="d2-pill pill-platform">Assured Workloads</span>
+            <span class="d2-pill pill-platform">GreenOps Scheduler</span>
+            <span class="d2-pill pill-platform">Strategy Dashboard (M-07)</span>
+            <span class="d2-pill pill-platform">Data Governance (M-08)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GCP Resource Hierarchy -->
+      <div class="subsection-heading">2.1 GCP Resource Hierarchy — Recommended Day 2 Structure</div>
+      <div class="figure">
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>GCP Node</th><th>Type</th><th>Owner</th><th>Org Policy Constraints Applied</th><th>Rationale</th></tr></thead>
+            <tbody>
+              <tr><td>claravis.com</td><td><span class="badge amber">Organization</span></td><td class="mono-note">EAB / Cloud CoE</td><td class="mono-note">constraints/gcp.resourceLocations (europe-west3), iam.disableServiceAccountKeyCreation, compute.requireShieldedVm, gcp.restrictCmekCryptoKeyProjects</td><td>Root policy inheritance node. All constraints here propagate to all projects unless explicitly overridden by folder-level exception (requires EAB approval).</td></tr>
+              <tr><td>ae-shared-services</td><td><span class="badge purple">Folder</span></td><td class="mono-note">Platform SRE</td><td class="mono-note">Inherits org + adds: constraints/compute.disableSerialPortAccess, storage.uniformBucketLevelAccess</td><td>Houses BigQuery audit ledger, Feature Store, Pub/Sub, Spanner. Shared services must be equally accessible to all four domain folders via Shared VPC.</td></tr>
+              <tr><td>ae-seller / ae-buyer / ae-finance / ae-supplychain</td><td><span class="badge gray">Folder × 4</span></td><td class="mono-note">Domain Platform Owner</td><td class="mono-note">Inherits org + folder-specific: Assured Workloads (EU Sovereign Controls where applicable)</td><td>Domain isolation at folder level allows independent billing, IAM, and deployment cadence without compromising shared governance. Prevents cross-domain data access at the infrastructure layer.</td></tr>
+              <tr><td>[domain]-prod / [domain]-staging / [domain]-dev</td><td><span class="badge gray">Project × 12</span></td><td class="mono-note">Domain Engineering Lead</td><td class="mono-note">Environment-specific: prod projects have deletion protection + mandatory CMEK; dev projects have cost quotas</td><td>Three projects per domain enforces environment parity. Staging must mirror prod configuration (Terraform workspace parity check in CI). Dev projects have cost quotas enforced by Org Policy budget constraints.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Governance Pillars (6-CAF) -->
+      <div class="subsection-heading">2.2 GCP CAF — Six Governance Pillars Instantiated for the AE</div>
+      <p class="body-text">Each pillar is a concrete control plane, not a documentation section. Every pillar applies uniformly across all four process pillars.</p>
+
+      <div class="d2-grid-3" style="margin-bottom:1.2rem;">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--blue);margin-bottom:0.7rem;">Pillar 01 · Security</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">BeyondCorp zero-trust enforced at the org level. No implicit network trust. All agent-to-agent calls authenticated via Workload Identity Federation — no service account keys.</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">BeyondCorp Enterprise</span>
+            <span class="d2-pill pill-mono">VPC Service Controls</span>
+            <span class="d2-pill pill-mono">Cloud Armor WAF</span>
+            <span class="d2-pill pill-mono">SCC Premium</span>
+            <span class="d2-pill pill-mono">Workload Identity</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> Security Command Center Premium runs continuous Asset Inventory and Threat Detection across all four domains. Findings ≥ HIGH auto-create an incident in Cloud Operations and pause the affected agent's Pub/Sub subscription.</div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:0.7rem;">Pillar 02 · Privacy</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">All PII and PHI confined within VPC-SC perimeter. CMEK encryption — ClaraVis holds the keys (Cloud KMS, europe-west3). Data residency enforced via Org Policy, not application logic.</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">Assured Workloads</span>
+            <span class="d2-pill pill-mono">CMEK / Cloud KMS</span>
+            <span class="d2-pill pill-mono">Cloud DLP</span>
+            <span class="d2-pill pill-mono">VPC-SC Perimeter</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> Cloud DLP Discovery scans all four domains' BigQuery datasets on a 24-hour schedule. Any un-tagged PII discovered auto-triggers a Data Governance quarantine event (M-08 pattern) and pages the domain's Data Steward.</div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.7rem;">Pillar 03 · Compliance</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">EU AI Act Annex III registry maintained at the EAB level — not per domain. Every high-risk AI model across all four suites is registered, versioned, and mapped to its HITL checkpoint and Model Card.</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">Vertex Model Registry</span>
+            <span class="d2-pill pill-mono">BigQuery Audit Log</span>
+            <span class="d2-pill pill-mono">Cloud Logging Sinks</span>
+            <span class="d2-pill pill-mono">Policy Controller</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> GKE Policy Controller (OPA Gatekeeper) enforces that no Kubernetes deployment in any domain project can reference an ML model image that is not present in the enterprise Vertex Model Registry with an approved Model Card. "Ghost model" deployments are structurally impossible.</div>
+        </div>
+      </div>
+
+      <div class="d2-grid-3">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--coral);margin-bottom:0.7rem;">Pillar 04 · Reliability</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">SLOs defined per agent, per HITL checkpoint, and per ML pipeline. Error budgets govern deployment velocity. SLO burn rate alerts defined in Cloud Monitoring — not in Slack.</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">Cloud Monitoring SLOs</span>
+            <span class="d2-pill pill-mono">Error Budget Policy</span>
+            <span class="d2-pill pill-mono">Chaos Engineering</span>
+            <span class="d2-pill pill-mono">Multi-region Spanner</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> Error Budget Policy: if 50% of any domain's monthly error budget is consumed, all non-emergency releases to that domain are frozen at the Artifact Registry level (Terraform CODEOWNERS enforcement). Reliability recovers before velocity resumes.</div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--purple);margin-bottom:0.7rem;">Pillar 05 · Performance</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">Vertex AI endpoint latency p99 is a first-class SLO for every model in production. Feature Store read latency ≤ 50ms at p95. Pub/Sub message delivery latency ≤ 500ms cross-domain.</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">Vertex AI Endpoints</span>
+            <span class="d2-pill pill-mono">Feature Store SLOs</span>
+            <span class="d2-pill pill-mono">Cloud Trace</span>
+            <span class="d2-pill pill-mono">Pub/Sub Metrics</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> Cloud Trace distributed tracing is mandatory for all agent-initiated inference calls. Trace sampling rate 100% for HITL-path requests (compliance requirement), 1% for autonomous-path requests. Latency regression detected within 5 minutes via Cloud Monitoring alert policy.</div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.7rem;">Pillar 06 · FinOps / Cost</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0.9rem;">Every GCP resource carries four mandatory labels: ae-domain, ae-module, ae-environment, ae-cost-centre. No resource without all four labels can be provisioned (Org Policy + Terraform sentinel).</p>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.9rem;">
+            <span class="d2-pill pill-mono">Budget Alerts</span>
+            <span class="d2-pill pill-mono">Committed Use Discounts</span>
+            <span class="d2-pill pill-mono">GreenOps Scheduling</span>
+            <span class="d2-pill pill-mono">Cost Allocation Labels</span>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:0.7rem;font-size:11.5px;color:var(--text2);"><strong style="color:var(--text);">Day 2 Control:</strong> GreenOps (M-06) is elevated from an AS-module to an enterprise-wide scheduler. All four domains submit their batch workload manifests to GreenOps, which optimises the cross-domain compute schedule against the GCP Cloud Carbon Footprint API — reducing emissions and cost simultaneously.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §03 OPERATIONAL ARCHITECTURE -->
+    <section class="section" id="operational-arch">
+      <h2 class="section-heading"><span class="section-num">§3</span> Operational Architecture</h2>
+      <p class="body-text">The runtime contract between <em style="color:var(--teal)">all four process pillars.</em></p>
+      <p class="body-text">Day 2 is where domains stop being independent apps and start being a coherent enterprise. The A2A event fabric, the shared audit ledger, and the cross-domain HITL escalation chain are what make the AE a platform — not a collection of four similar-looking portals.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 2</div>
+        <div class="figure-sublabel">Cross-domain event fabric — Day 2 runtime topology</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Layer</th><th>Component</th><th>Detail</th></tr></thead>
+            <tbody>
+              <tr class="row-flag"><td><span class="badge amber">Governance</span></td><td>Enterprise Governance Layer</td><td class="mono-note">GCP Org Policy · TOGAF EAB · Cross-Domain BigQuery Audit Ledger · VPC-SC Perimeter · Global IAM · CMEK Key Ring</td></tr>
+              <tr><td><span class="badge blue">Q2C</span></td><td>Autonomous Quote-to-Cash</td><td class="mono-note">CCAI Sales Agent · ContractGuard · RevRec · FinRisk Sentinel · Asset IQ · GreenOps</td></tr>
+              <tr><td><span class="badge teal" style="background:var(--teal-bg)">P2P</span></td><td>Autonomous Procure-to-Pay</td><td class="mono-note">Sourcing Agent · Contract Agent · PO Agent · 3-Way Match · Payment · Supplier Risk</td></tr>
+              <tr><td><span class="badge amber" style="background:var(--amber-bg)">Fin</span></td><td>Autonomous Finance Operations</td><td class="mono-note">Intercompany Recon · Treasury Visibility · AP Exception Agent · CSRD Scope 3 Feed</td></tr>
+              <tr><td><span class="badge red">SC</span></td><td>Autonomous Supply Chain</td><td class="mono-note">DemandIQ · SupplierSentinel · ProcureGuard · ContractIntel. · InventoryOrchestrator · QualityTrace · ScopeTracer</td></tr>
+              <tr class="row-flag"><td><span class="badge purple">Event Fabric</span></td><td>Enterprise Pub/Sub — Cross-Domain Topics</td><td class="mono-note">ae.qtc.events · ae.p2p.events · ae.finance.events · ae.sc.events · ae.hitl.escalations · ae.audit.writes · ae.governance.alerts</td></tr>
+              <tr><td><span class="badge purple">Shared Platform</span></td><td>Vertex AI Feature Store · BigQuery Audit Ledger · Spanner HITL State</td><td class="mono-note">Strategy Dashboard (M-07) · Data Governance (M-08) · Secret Manager · Cloud KMS</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="diag-legend">
+          <div class="diag-legend-item"><div class="dl-box" style="background:var(--amber)"></div>Gold — policy inheritance / governance constraint push-down</div>
+          <div class="diag-legend-item"><div class="dl-box" style="background:var(--blue)"></div>Blue — A2A cross-domain agent protocol events</div>
+          <div class="diag-legend-item"><div class="dl-box" style="background:var(--border2)"></div>Dashed — Pub/Sub publish (down) / subscribe (up)</div>
+        </div>
+      </div>
+
+      <div class="d2-callout blue" style="margin:1.5rem 0;">
+        <strong>Day 2 Design Decision — Cross-Domain Event Naming Convention (Google Pub/Sub):</strong><br>All cross-domain Pub/Sub topics follow the schema <code>ae.{domain}.{event-class}.{version}</code>. For example: <code>ae.qtc.contract.signed.v1</code> triggers a subscription in the Finance domain that initiates RevRec classification. The schema registry is owned by the EAB and versioned in the Apigee Developer Portal — domain teams cannot create topics without EAB schema approval.
+      </div>
+
+      <div class="figure">
+        <div class="figure-label">Figure 3</div>
+        <div class="figure-sublabel">Canonical cross-domain event flows — Day 2 runtime</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Publisher</th><th>Event</th><th>Subscriber(s)</th><th>Action Triggered</th><th>HITL Required?</th></tr></thead>
+            <tbody>
+              <tr><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td><code>ae.qtc.contract.signed.v1</code></td><td><span class="d2-pill pill-finance">Finance</span></td><td>RevRec AI classifies transaction under ASC 606. If multi-element: Finance Controller HITL queued.</td><td class="mono-note">If confidence &lt; 0.85 or EU AI Act Annex III</td></tr>
+              <tr><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td><code>ae.qtc.asset.shipped.v1</code></td><td><span class="d2-pill pill-sc">Supply Chain</span> <span class="d2-pill pill-finance">Finance</span></td><td>SC: QualityTrace writes ISO 13485 device history record. Finance: CSRD Scope 3 emission tagged.</td><td class="mono-note">No (autonomous write-path)</td></tr>
+              <tr class="row-flag"><td><span class="d2-pill pill-sc">Supply Chain</span></td><td><code>ae.sc.supplier.risk.elevated.v1</code></td><td><span class="d2-pill pill-buyer">Procure-to-Pay</span> <span class="d2-pill pill-finance">Finance</span></td><td>Procure-to-Pay: ProcureGuard initiates emergency A2A RFQ. Finance: AP Exception Agent flags pending payments to affected supplier.</td><td class="mono-note">Yes — CPO approval for RFQ above autonomy threshold</td></tr>
+              <tr><td><span class="d2-pill pill-buyer">Procure-to-Pay</span></td><td><code>ae.p2p.po.committed.v1</code></td><td><span class="d2-pill pill-finance">Finance</span> <span class="d2-pill pill-sc">Supply Chain</span></td><td>Finance: AP agent creates payment obligation in AP Exception queue. SC: InventoryOrchestrator updates inbound supply forecast.</td><td class="mono-note">No (below threshold PO)</td></tr>
+              <tr class="row-flag"><td><span class="d2-pill pill-finance">Finance</span></td><td><code>ae.finance.anomaly.detected.v1</code></td><td><span class="d2-pill pill-seller">Quote-to-Cash</span> <span class="d2-pill pill-gold">EAB</span></td><td>Quote-to-Cash: FinRisk Sentinel cross-references with customer exposure. EAB: Cross-domain risk event logged to enterprise audit ledger. Dual HITL required.</td><td class="mono-note">Yes — CFO + Finance Controller dual-approval (FinRisk ADR-010 pattern)</td></tr>
+              <tr><td><span class="d2-pill pill-sc">Supply Chain</span></td><td><code>ae.sc.asset.rul.critical.v1</code></td><td><span class="d2-pill pill-seller">Quote-to-Cash</span> <span class="d2-pill pill-finance">Finance</span></td><td>Quote-to-Cash: Asset IQ HITL queued for Field Service Manager. Finance: Warranty reserve model re-evaluated for the asset's customer segment.</td><td class="mono-note">Yes — Field Service Manager HITL for maintenance dispatch</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §04 SRE MODEL & SLOs -->
+    <section class="section" id="sre">
+      <h2 class="section-heading"><span class="section-num">§4</span> SRE Model &amp; SLOs</h2>
+      <p class="body-text">Error budgets govern <em style="color:var(--teal)">deployment velocity.</em></p>
+      <p class="body-text">Google SRE doctrine applied to an agentic enterprise: every agent, every ML model endpoint, and every HITL checkpoint has a quantified reliability target. Error budgets are the mechanism that prevents the platform from being deployed into unreliability.</p>
+
+      <div class="d2-callout red" style="margin-bottom:1.5rem;">
+        <strong>Google SRE Principle applied to the AE:</strong> "The error budget provides a clear, objective metric that determines how unreliable the service is allowed to be within a single quarter." For the AE, this means: if FinRisk Sentinel's error budget is exhausted — meaning it has been unavailable beyond its SLO target — no new FinRisk model version may be promoted to production until reliability is restored. This is enforced by Artifact Registry tag policy, not by a manager's discretion.
+      </div>
+
+      <div class="figure">
+        <div class="figure-label">Figure 4</div>
+        <div class="figure-sublabel">Enterprise SLO register — all four domains</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Module / Component</th><th>Domain</th><th>SLI (Measurement)</th><th>SLO Target</th><th>Error Budget (30d)</th><th>Breach Consequence</th></tr></thead>
+            <tbody>
+              <tr><td>CCAI Sales Agent</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">Turn completion success rate</td><td class="ok-text">99.5% availability</td><td class="mono-note">3.6 hours</td><td class="mono-note">All new agent prompts frozen; SRE incident opened</td></tr>
+              <tr><td>ContractGuard (Gemini inference)</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">Clause extraction p99 latency</td><td class="ok-text">≤ 8s p99</td><td class="mono-note">43.2 min latency budget</td><td class="mono-note">Rollback to prior model version; ADR required</td></tr>
+              <tr><td>RevRec AI (XGBoost endpoint)</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">Inference availability + SHAP write success</td><td class="ok-text">99.9% (financial SLO)</td><td class="mono-note">43.2 min</td><td class="mono-note">Financial write-path blocked; CFO paged</td></tr>
+              <tr class="row-flag"><td>FinRisk Sentinel</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">Anomaly detection freshness (model refresh)</td><td class="warn-text">Refresh ≤ 4h latency</td><td class="mono-note">2.4 hours overage/month</td><td class="mono-note">Dual HITL reviewer automatically cc'd on all anomalies pending</td></tr>
+              <tr><td>3-Way Match Agent</td><td><span class="d2-pill pill-buyer">Procure-to-Pay</span></td><td class="mono-note">Straight-through match rate</td><td class="ok-text">≥ 90% STR</td><td class="mono-note">Degradation to 85% triggers alert</td><td class="mono-note">AP queue manually reviewed; match model retraining triggered</td></tr>
+              <tr><td>Supplier Risk Model</td><td><span class="d2-pill pill-buyer">Procure-to-Pay</span></td><td class="mono-note">Score freshness (all 480 suppliers scored)</td><td class="ok-text">Rescored within 24h of new signal</td><td class="mono-note">4-hour refresh window</td><td class="mono-note">Stale-score flag added to all supplier decisions in HITL UI</td></tr>
+              <tr><td>Intercompany Recon Agent</td><td><span class="d2-pill pill-finance">Finance</span></td><td class="mono-note">Month-end close cycle &lt; 3 days</td><td class="ok-text">Day 3 completion rate ≥ 95%</td><td class="mono-note">1 missed close/quarter</td><td class="mono-note">EAB notified; domain SRE incident; CFO review</td></tr>
+              <tr><td>Treasury Visibility Agent</td><td><span class="d2-pill pill-finance">Finance</span></td><td class="mono-note">Cash position staleness</td><td class="ok-text">≤ 15 min data age at p95</td><td class="mono-note">43.2 min/month above threshold</td><td class="mono-note">Treasury exec dashboard shows data-age warning banner</td></tr>
+              <tr><td>DemandIQ (Vertex endpoint)</td><td><span class="d2-pill pill-sc">Supply Chain</span></td><td class="mono-note">Forecast refresh cadence</td><td class="ok-text">Daily refresh by 06:00 CET</td><td class="mono-note">2 missed refreshes/month</td><td class="mono-note">GreenOps scheduler cannot defer; hard deadline ADR-hardcoded</td></tr>
+              <tr class="row-flag"><td>QualityTrace (MDR SLA)</td><td><span class="d2-pill pill-sc">Supply Chain</span></td><td class="mono-note">NCR-to-vigilance-report latency</td><td class="fail-text">≤ 72h (MDR Art. 87 hard SLA)</td><td class="mono-note">Zero budget — regulatory hard deadline</td><td class="mono-note">MDR Art. 87 violation. Immediate CCO escalation. GCP alert to on-call SRE.</td></tr>
+              <tr><td>Cross-Domain BigQuery Audit Ledger</td><td><span class="d2-pill pill-gold">Platform</span></td><td class="mono-note">Write availability (HITL records)</td><td class="ok-text">99.99%</td><td class="mono-note">4.3 min/month</td><td class="mono-note">All agent write operations globally suspended. P0 incident.</td></tr>
+              <tr><td>HITL Approval UI (Cloud Run)</td><td><span class="d2-pill pill-gold">Platform</span></td><td class="mono-note">UI availability for all four domains</td><td class="ok-text">99.95%</td><td class="mono-note">21.9 min/month</td><td class="mono-note">SMS fallback to named approver. Agent holds state in Spanner.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d2-grid-2">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:1rem;">Error Budget Policy — Formal Definition</div>
+          <div class="d2-timeline">
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">Threshold 1 — 50% Budget Consumed</span>
+              <h4>Release Freeze for affected domain</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">All non-emergency releases to the affected domain project are blocked at Artifact Registry. Only P0 security patches bypass. Freeze lifted when error budget recovers above 50%. Terraform <code>CODEOWNERS</code> enforces the block.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot" style="background:var(--amber);"></div>
+              <span class="d2-timeline-phase" style="color:var(--amber);">Threshold 2 — 75% Budget Consumed</span>
+              <h4>Domain SRE Incident Opened</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Automated PagerDuty-equivalent alert to Domain SRE on-call. Incident requires root cause identification within 4 hours. HITL timeout policy relaxed to 120 minutes (from 60) to reduce HITL as a latency source.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot" style="background:var(--coral);"></div>
+              <span class="d2-timeline-phase" style="color:var(--coral);">Threshold 3 — 100% Budget Consumed</span>
+              <h4>EAB TOGAF Phase H Review Triggered</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Error budget exhaustion triggers a mandatory TOGAF Phase H Architecture Review for the affected domain. The domain's deployment to production is paused until an Architecture Change Request is approved by the EAB and a new baseline is established.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:1rem;">Toil Reduction Register — AE Day 2</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:1rem;">Google SRE defines toil as manual, repetitive, automatable work that scales with service growth. The AE Day 2 design actively meters and eliminates toil across all four domains.</p>
+          <table class="comp-table" style="font-size:11px;">
+            <thead><tr><th>Toil Category</th><th>Current State</th><th>AE Day 2 Elimination</th></tr></thead>
+            <tbody>
+              <tr><td>Model deployment approval</td><td class="mono-note">Manual Slack approval</td><td class="mono-note">Vertex AI Model Registry gate with auto-promotion criteria (eval metrics + model card completeness check)</td></tr>
+              <tr><td>HITL queue monitoring</td><td class="mono-note">Named reviewer checks email</td><td class="mono-note">Cloud Tasks with named-approver push notification; SMS fallback after 30-min timeout</td></tr>
+              <tr><td>Compliance audit preparation</td><td class="mono-note">Manual log extraction</td><td class="mono-note">BigQuery scheduled query produces EU AI Act audit report nightly; exportable to regulator-facing PDF</td></tr>
+              <tr><td>Cost anomaly detection</td><td class="mono-note">Monthly budget review</td><td class="mono-note">Cloud Billing Budget alert at 80% of each domain's envelope; FinOps dashboard auto-refreshed daily</td></tr>
+              <tr><td>Terraform drift detection</td><td class="mono-note">Ad hoc manual review</td><td class="mono-note">Cloud Build drift-detection pipeline runs on 6-hour cron; drift alerts to domain Engineering Lead</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §05 ENTERPRISE MLOPS -->
+    <section class="section" id="mlops-day2">
+      <h2 class="section-heading"><span class="section-num">§5</span> Enterprise MLOps at Day 2</h2>
+      <p class="body-text">Every model in every domain <em style="color:var(--teal)">under one registry.</em></p>
+      <p class="body-text">Day 2 MLOps governance means no model reaches production in any of the four domains without passing through the Enterprise ML Gate — a standardised, automated promotion pipeline that is owned by the EAB, not by individual domain teams.</p>
+
+      <div class="figure">
+        <div class="figure-label">Figure 5</div>
+        <div class="figure-sublabel">Enterprise ML Gate — promotion pipeline (all four domains)</div>
+        <div class="d2-arch-flow">
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--blue);margin-bottom:6px;">STEP 01</div>Domain Team<br>Trains Model<br>(Vertex AI Pipelines)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--amber);margin-bottom:6px;">STEP 02</div>Model Card<br>Auto-Generated<br>(Vertex Registry)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--amber);margin-bottom:6px;">STEP 03</div>Eval Metrics<br>Threshold Check<br>(Cloud Build gate)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--coral);margin-bottom:6px;">STEP 04</div>EU AI Act<br>Annex III Check<br>(EAB policy gate)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--teal);margin-bottom:6px;">STEP 05</div>SHAP Contract<br>Validation<br>(XAI test suite)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node"><div style="font-size:9.5px;color:var(--teal);margin-bottom:6px;">STEP 06</div>Shadow Deployment<br>7-day canary<br>(1% live traffic)</div>
+          <div class="d2-arch-arrow">→</div>
+          <div class="d2-arch-node" style="border-color:var(--amber-border);background:var(--amber-bg);"><div style="font-size:9.5px;color:var(--amber);margin-bottom:6px;">STEP 07</div>Promoted to<br>Production<br>(Artifact Registry tag)</div>
+        </div>
+        <div class="d2-callout" style="margin-top:1rem;">
+          <strong>ADR recommendation:</strong> Step 04 is the <em>only</em> step that requires a human sign-off (the EAB Compliance Reviewer). All other steps are automated. This is the ADR-010/ADR-012 pattern extended to the enterprise level. The EU AI Act Annex III registry check confirms: (a) the model is registered, (b) its Model Card is complete and current, (c) a named HITL approver is assigned, and (d) the confidence threshold and SHAP contract are documented. Any missing field blocks promotion.
+        </div>
+      </div>
+
+      <div class="figure">
+        <div class="figure-label">Figure 6</div>
+        <div class="figure-sublabel">Enterprise AI Act Annex III model registry — Day 2 view</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Model</th><th>Domain</th><th>Annex III Classification</th><th>HITL Approver Role</th><th>Confidence Threshold</th><th>Drift Detection Cadence</th><th>Model Card Status</th></tr></thead>
+            <tbody>
+              <tr><td>RevRec XGBoost v2.3</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">§5(b) — Revenue recognition</td><td class="mono-note">Finance Controller</td><td class="mono-note">0.85 (auto) / 1.0 (high-risk txn)</td><td class="mono-note">Daily PSI on transaction features</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>ContractGuard XGBoost v1.8</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">§5(b) — Contract risk in regulated context</td><td class="mono-note">Legal Counsel</td><td class="mono-note">0.80 (clause flag) / 1.0 (non-standard)</td><td class="mono-note">Weekly on clause distribution shift</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>FinRisk Isolation Forest v3.1</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">§5(b) — Financial anomaly, dual-risk</td><td class="mono-note">CFO + Finance Controller (dual)</td><td class="mono-note">Threshold: anomaly score &gt; 0.72</td><td class="mono-note">Daily on transaction volume features</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>Asset IQ RUL Regression v2.1</td><td><span class="d2-pill pill-seller">Quote-to-Cash</span></td><td class="mono-note">§5(b) — Safety-critical device maintenance</td><td class="mono-note">Field Service Manager</td><td class="mono-note">RUL ≤ 14 days triggers HITL</td><td class="mono-note">Daily on sensor telemetry drift</td><td class="ok-text">✓ Current</td></tr>
+              <tr class="row-flag"><td>Supplier Risk XGBoost v1.4</td><td><span class="d2-pill pill-buyer">Procure-to-Pay</span></td><td class="mono-note">§8 — Supply chain critical infrastructure</td><td class="mono-note">Category Manager / CPO</td><td class="mono-note">0.78 (flag) / elevated: HITL always</td><td class="mono-note">24h on financial signal features</td><td class="warn-text">⚠ Review due</td></tr>
+              <tr><td>3-Way Match Classifier v2.0</td><td><span class="d2-pill pill-buyer">Procure-to-Pay</span></td><td class="mono-note">§5(b) — Payment decisions (automated)</td><td class="mono-note">AP Supervisor (exception queue)</td><td class="mono-note">0.90 (auto-match) / below: HITL</td><td class="mono-note">Daily on invoice format distribution</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>Intercompany Recon GNN v1.2</td><td><span class="d2-pill pill-finance">Finance</span></td><td class="mono-note">§5(b) — Cross-entity financial reporting</td><td class="mono-note">Finance Controller (per entity pair)</td><td class="mono-note">Mismatch &gt; €10k → HITL mandatory</td><td class="mono-note">Weekly on entity-graph topology shift</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>DemandIQ Ensemble v3.4</td><td><span class="d2-pill pill-sc">Supply Chain</span></td><td class="mono-note">§8 — Critical medical device supply</td><td class="mono-note">Supply Chain Planner</td><td class="mono-note">±15% CI: HITL on adj &gt; safety stock</td><td class="mono-note">Daily MAPE + signal distribution</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>SupplierSentinel v2.7</td><td><span class="d2-pill pill-sc">Supply Chain</span></td><td class="mono-note">§8 — Real-time supply disruption risk</td><td class="mono-note">CPO (above autonomy threshold)</td><td class="mono-note">Risk score &gt; 0.75 → HITL</td><td class="mono-note">Continuous (streaming features)</td><td class="ok-text">✓ Current</td></tr>
+              <tr><td>QualityTrace NCR Classifier v1.6</td><td><span class="d2-pill pill-sc">Supply Chain</span></td><td class="mono-note">§5(b) — Medical device vigilance (MDR)</td><td class="mono-note">Quality Manager (72h hard SLA)</td><td class="mono-note">Severity ≥ HIGH: HITL always</td><td class="mono-note">Daily on defect distribution</td><td class="ok-text">✓ Current</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §06 DAY 2 RUNBOOK -->
+    <section class="section" id="day2-runbook">
+      <h2 class="section-heading"><span class="section-num">§6</span> Day 2 Runbook</h2>
+      <p class="body-text">Operational procedures <em style="color:var(--teal)">for every failure mode.</em></p>
+      <p class="body-text">A runbook is not a document. It is an executable decision tree that an on-call SRE can follow under pressure. Every operational failure mode in the AE has a defined runbook entry — a trigger condition, a severity classification, a response sequence, and a recovery criterion.</p>
+
+      <div class="d2-grid-2" style="margin-bottom:1.5rem;">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--coral);margin-bottom:1rem;">Incident Severity — AE Classification</div>
+          <table class="comp-table" style="font-size:11px;">
+            <thead><tr><th>Severity</th><th>Definition</th><th>Response SLA</th></tr></thead>
+            <tbody>
+              <tr><td><span class="fail-text" style="font-weight:700;">P0</span></td><td>Audit ledger write failure. All agent writes globally suspended.</td><td class="mono-note">15 min acknowledge; 1h resolve</td></tr>
+              <tr><td><span class="fail-text" style="font-weight:700;">P0</span></td><td>MDR Art. 87 vigilance SLA at risk (&lt; 24h remaining).</td><td class="mono-note">Immediate; CCO + SRE on-call</td></tr>
+              <tr><td><span class="warn-text" style="font-weight:700;">P1</span></td><td>HITL approval UI unavailable. Agents holding state &gt; 30 min.</td><td class="mono-note">30 min acknowledge; 4h resolve</td></tr>
+              <tr><td><span class="warn-text" style="font-weight:700;">P1</span></td><td>SLO error budget &gt; 75% consumed in any domain.</td><td class="mono-note">1h acknowledge; 8h resolve</td></tr>
+              <tr><td><span style="color:var(--amber);font-weight:700;">P2</span></td><td>ML model drift threshold breached; SHAP distribution shifted &gt; 20%.</td><td class="mono-note">4h acknowledge; next business day</td></tr>
+              <tr><td><span class="ok-text" style="font-weight:700;">P3</span></td><td>Terraform drift detected; resource configuration out of IaC state.</td><td class="mono-note">Next business day</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:1rem;">Critical Runbook — P0: Audit Ledger Failure</div>
+          <div class="d2-timeline">
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot" style="background:var(--coral);"></div>
+              <span class="d2-timeline-phase" style="color:var(--coral);">T+0 min — Detection</span>
+              <h4>Cloud Monitoring alert fires</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">BigQuery write error rate &gt; 0.01% triggers <code>ae-audit-ledger-failure</code> alert. All Pub/Sub subscriptions for agent write operations are automatically paused via Cloud Monitoring <code>notificationChannels</code> — alert → Cloud Function → Pub/Sub admin API.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot" style="background:var(--coral);"></div>
+              <span class="d2-timeline-phase" style="color:var(--coral);">T+5 min — Triage</span>
+              <h4>SRE On-Call: Isolate failure scope</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Check: is failure in BigQuery dataset, VPC-SC perimeter, or IAM binding? Cloud Logging query: <code>resource.type="bigquery_dataset" severity="ERROR"</code>. Identify affected domain(s). All HITL approvals in flight are held in Spanner state — no data loss.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot" style="background:var(--amber);"></div>
+              <span class="d2-timeline-phase" style="color:var(--amber);">T+15 min — Mitigation</span>
+              <h4>Failover to Cloud Spanner audit replica</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Enterprise Spanner instance (multi-region: eur3) acts as hot failover for audit writes. Agent write path has a circuit-breaker that auto-detects BigQuery unavailability and routes to Spanner within 30 seconds. Agents resume. BigQuery backfilled on recovery.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">T+60 min — Recovery</span>
+              <h4>Validate audit continuity + resume writes</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Confirm Spanner → BigQuery backfill completes with zero gap. Verify record count parity. Re-enable Pub/Sub subscriptions. EAB Post-Incident Review required within 48 hours. ADR update if root cause requires architectural change.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="figure">
+        <div class="figure-label">Figure 7</div>
+        <div class="figure-sublabel">Day 2 operational runbooks — all failure modes</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Failure Mode</th><th>Domains Affected</th><th>Severity</th><th>Detection</th><th>Mitigation</th><th>Recovery Criterion</th></tr></thead>
+            <tbody>
+              <tr><td>ML model confidence collapse (score &lt; 0.5 sustained)</td><td class="mono-note">Domain-specific</td><td><span class="warn-text">P1</span></td><td class="mono-note">Vertex AI Monitoring: prediction drift alert</td><td>Route all inferences to HITL queue immediately. Freeze new deployments. Trigger emergency retraining pipeline.</td><td>Eval metrics recover to pre-drift baseline on staging. EAB approval for re-promotion.</td></tr>
+              <tr><td>HITL timeout cascade (approver unresponsive)</td><td class="mono-note">All (shared HITL layer)</td><td><span class="warn-text">P1</span></td><td class="mono-note">Cloud Tasks deadline-exceeded alert per HITL item</td><td>Escalate to secondary approver (pre-defined in Spanner approver chain). SMS + email. Log escalation to audit record.</td><td>All pending HITL items have a named active approver. Queue depth &lt; 10 items.</td></tr>
+              <tr><td>Cross-domain Pub/Sub topic misconfiguration</td><td class="mono-note">All (event fabric)</td><td><span class="warn-text">P1</span></td><td class="mono-note">Dead-letter queue spike; subscriber error rate alert</td><td>Re-route affected topics to dead-letter queue. Manual inspection of schema mismatch. Rollback to last known good schema version via Apigee registry.</td><td>Dead-letter queue drains to zero. Schema validated against EAB registry.</td></tr>
+              <tr class="row-flag"><td>VPC-SC perimeter breach attempt</td><td class="mono-note">All</td><td><span class="fail-text">P0</span></td><td class="mono-note">Security Command Center: VPC-SC violation log</td><td>Automatic: violating request blocked by VPC-SC policy. SRE on-call notified. Principal's access reviewed. EAB notified.</td><td>Root cause identified. IAM binding corrected. Forensic log preserved. Security ADR raised if pattern is new.</td></tr>
+              <tr><td>Terraform state drift (&gt; 3 resources)</td><td class="mono-note">Affected domain</td><td><span class="ok-text">P3</span></td><td class="mono-note">Cloud Build drift-detection cron; <code>terraform plan -detailed-exitcode</code></td><td>Domain Engineering Lead reviews drift report. Approved: <code>terraform apply</code> to reconcile. Unapproved drift: immediate rollback via <code>terraform destroy -target</code> for out-of-policy resources.</td><td><code>terraform plan</code> returns exit code 0 (no diff). Drift report archived in Cloud Storage.</td></tr>
+              <tr><td>GreenOps scheduler defer causes SLO breach</td><td class="mono-note">All (batch workloads)</td><td><span style="color:var(--amber);font-weight:600;">P2</span></td><td class="mono-note">Cloud Monitoring: batch job start latency &gt; hard deadline</td><td>Hard-deadline bypass (ADR-016 pattern): GreenOps cannot defer jobs with SLO hard deadlines. Scheduler config has <code>defer: false</code> flag for all P0-impacting batches. Alert fires if flag is missing.</td><td>Scheduler config audited. Hard-deadline flags verified across all four domain manifests.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §07 TOGAF PHASE H -->
+    <section class="section" id="togaf-phase-h">
+      <h2 class="section-heading"><span class="section-num">§7</span> TOGAF Phase H: Architecture Change Management</h2>
+      <p class="body-text">How the architecture <em style="color:var(--teal)">governs its own evolution.</em></p>
+      <p class="body-text">TOGAF Phase H is not a gate at the end of the ADM — it is a continuous monitoring loop that runs in parallel with operations. For the AE, it is the mechanism by which the Enterprise Architecture Board decides whether a change to any of the four process pillars requires a new ADM cycle or can be handled as a managed change.</p>
+
+      <div class="d2-grid-2" style="margin-bottom:1.5rem;">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:1rem;">Architecture Change Request (ACR) Classification</div>
+          <table class="comp-table" style="font-size:11px;">
+            <thead><tr><th>Change Type</th><th>Examples in AE Context</th><th>ADM Trigger?</th><th>EAB Approval?</th></tr></thead>
+            <tbody>
+              <tr><td><span class="fail-text">Major</span></td><td>New process pillar addition; cross-domain event schema breaking change; Shared VPC topology redesign</td><td class="mono-note">Yes — new ADM cycle Phase A–F</td><td class="mono-note">Full EAB vote</td></tr>
+              <tr><td><span class="warn-text">Significant</span></td><td>New high-risk AI model (Annex III); HITL checkpoint addition/removal; new cross-domain Pub/Sub topic</td><td class="mono-note">Partial — ADM Phase C/D review</td><td class="mono-note">EAB Compliance + Technical leads</td></tr>
+              <tr><td><span class="ok-text">Incremental</span></td><td>Model version update (same architecture); new feature in existing module; SLO threshold adjustment</td><td class="mono-note">No — managed change process</td><td class="mono-note">Domain Platform Owner</td></tr>
+              <tr><td><span class="mono-note">Emergency</span></td><td>P0 incident remediation; security patch; regulatory deadline forcing function</td><td class="mono-note">Post-incident ADR required</td><td class="mono-note">On-call SRE + Domain Lead (retroactive EAB)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:1rem;">EAB Operating Cadence — Phase H Rhythm</div>
+          <div class="d2-timeline">
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">Weekly — EAB Operations Review</span>
+              <h4>SLO dashboard review + ACR triage</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">30-minute sync. Strategy Dashboard (M-07) is the single source of truth. All four domain SLOs reviewed. Pending ACRs classified. Error budget status per domain reviewed. No domain with &gt;50% budget consumed may present new feature requests.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">Monthly — Architecture Conformance Review</span>
+              <h4>TOGAF compliance + model registry audit</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">GKE Policy Controller conformance report reviewed. All Model Cards in EU AI Act registry verified current. Terraform drift report from prior 4 weeks reviewed. FinOps cost allocation report reviewed. GreenOps carbon efficiency score per domain.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">Quarterly — Architecture Maturity Assessment</span>
+              <h4>Domain maturity scoring + roadmap prioritisation</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Each process pillar assessed against the Architecture Maturity Model (5 dimensions: HITL coverage, SLO achievement, model card completeness, toil reduction, FinOps efficiency). Bottom-quartile domain triggers a formal Phase H review. Roadmap for next quarter set.</p>
+            </div>
+            <div class="d2-timeline-item">
+              <div class="d2-timeline-dot"></div>
+              <span class="d2-timeline-phase">Annually — Strategic Architecture Review</span>
+              <h4>Full ADM Phase A revisit + market signal integration</h4>
+              <p class="body-text" style="font-size:11.5px;margin-bottom:0;">Enterprise architecture vision refreshed against regulatory, technology, and competitive signals. GCP service roadmap reviewed for platform opportunities (new Vertex capabilities, new Gemini context windows, ADK updates). Architecture Principles revalidated.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADR-017/018/019 -->
+      <div class="d2-callout" style="margin-bottom:0.8rem;">
+        <strong>ADR-017 (Day 2 — new):</strong> The enterprise Pub/Sub schema registry is owned by the EAB, managed in Apigee, and versioned independently of domain code. No domain team may create a cross-domain topic without an approved schema version in the registry. This prevents the event fabric from becoming an undocumented, untestable inter-domain dependency graph — the single largest operational failure mode in event-driven enterprise architectures.
+      </div>
+      <div class="d2-callout blue" style="margin-bottom:0.8rem;">
+        <strong>ADR-018 (Day 2 — new):</strong> GreenOps (M-06) is promoted from an Autonomous Quote-to-Cash module to an Enterprise Platform Service. All four process pillars submit batch workload manifests to the GreenOps scheduler. GreenOps optimises the cross-domain compute schedule against the GCP Cloud Carbon Footprint API. Rationale: carbon reduction and cost reduction are the same optimisation target. Centralising the scheduler achieves 40% better carbon efficiency than four independent domain-level schedulers competing for the same low-carbon compute windows.
+      </div>
+      <div class="d2-callout green">
+        <strong>ADR-019 (Day 2 — new):</strong> The Data Governance module (M-08) is promoted from an Autonomous Quote-to-Cash module to an Enterprise Platform Service. All four domains share a single TFX Validate schema registry and a single quarantine pipeline. Rationale: a financial anomaly detected in the Finance domain (ae.finance.anomaly.detected.v1) often traces to a data quality failure that originated in the Procure-to-Pay domain's invoice ingestion. Domain-isolated data governance cannot catch cross-domain lineage failures. Enterprise data governance can.
+      </div>
+    </section>
+
+    <!-- §08 GREENOPS + FINOPS -->
+    <section class="section" id="greenops-finops">
+      <h2 class="section-heading"><span class="section-num">§8</span> GreenOps + FinOps at Enterprise Scale</h2>
+      <p class="body-text">Carbon and cost as <em style="color:var(--teal)">a single optimisation.</em></p>
+      <p class="body-text">GreenOps and FinOps are architecturally the same problem: minimise resource consumption per unit of enterprise value delivered. The AE Day 2 design treats them as a single cross-domain optimisation loop, not two separate dashboards.</p>
+
+      <div class="d2-kpi-row">
+        <div class="d2-kpi"><span class="d2-kpi-val">~40%</span><span class="d2-kpi-lbl">Carbon reduction vs. independent domain scheduling</span></div>
+        <div class="d2-kpi"><span class="d2-kpi-val">4</span><span class="d2-kpi-lbl">Mandatory resource labels per GCP resource</span></div>
+        <div class="d2-kpi"><span class="d2-kpi-val">12</span><span class="d2-kpi-lbl">Production projects across 4 domains × 3 envs</span></div>
+        <div class="d2-kpi"><span class="d2-kpi-val">0</span><span class="d2-kpi-lbl">Hard-deadline batch jobs eligible for deferral</span></div>
+      </div>
+
+      <div class="d2-grid-2">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:1rem;">FinOps — Mandatory Resource Labelling Policy</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:1rem;">Every GCP resource across all four domains carries exactly four labels, enforced by Org Policy <code>constraints/gcp.resourceLocations</code> and a Terraform Sentinel policy that blocks <code>terraform apply</code> for any resource missing a required label.</p>
+          <table class="comp-table" style="font-size:11px;">
+            <thead><tr><th>Label Key</th><th>Allowed Values</th><th>Enforcement</th></tr></thead>
+            <tbody>
+              <tr><td>ae-domain</td><td class="mono-note">seller, buyer, finance, supplychain, platform</td><td class="mono-note">Terraform Sentinel + Org Policy</td></tr>
+              <tr><td>ae-module</td><td class="mono-note">ccai, contractguard, revrec, finrisk, assetiq, greenops, demandiq, suppliersent., qualitytrace, scopetracer, recon, treasury, ap-exception, po, 3waymatch, platform</td><td class="mono-note">Terraform Sentinel</td></tr>
+              <tr><td>ae-environment</td><td class="mono-note">prod, staging, dev</td><td class="mono-note">Org Policy workspace binding</td></tr>
+              <tr><td>ae-cost-centre</td><td class="mono-note">ERP cost centre code (e.g. CC-4400-SELLER)</td><td class="mono-note">Terraform variable validation</td></tr>
+            </tbody>
+          </table>
+          <div class="d2-callout" style="margin-top:0.9rem;font-size:11.5px;">
+            <strong>Day 2 outcome:</strong> Every line item in the GCP billing export is attributable to a specific module in a specific domain. The Strategy Dashboard (M-07) FinOps panel shows cost per agent inference, cost per HITL checkpoint, and cost per compliance event — in real time.
+          </div>
+        </div>
+
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:1rem;">GreenOps — Enterprise Batch Scheduling Model</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:1rem;">GreenOps (formerly M-06 in Autonomous Quote-to-Cash) becomes the enterprise-wide batch scheduler. Every domain submits its non-time-critical batch jobs to GreenOps via a manifest. GreenOps optimises the schedule against the GCP Cloud Carbon Footprint API.</p>
+          <table class="comp-table" style="font-size:11px;">
+            <thead><tr><th>Job Type</th><th>Domain(s)</th><th>Deferrable?</th><th>GreenOps Action</th></tr></thead>
+            <tbody>
+              <tr><td>Model retraining pipelines</td><td class="mono-note">All</td><td class="ok-text">Yes (within 24h window)</td><td class="mono-note">Schedule to low-carbon grid window</td></tr>
+              <tr><td>Feature Store materialisation</td><td class="mono-note">All</td><td class="ok-text">Yes (within 6h window)</td><td class="mono-note">Batch with other domain jobs</td></tr>
+              <tr><td>CSRD Scope 3 consolidation</td><td class="mono-note">Finance, SC</td><td class="ok-text">Yes (weekly)</td><td class="mono-note">Schedule to weekend low-load window</td></tr>
+              <tr class="row-flag"><td>DemandIQ daily refresh</td><td class="mono-note">Supply Chain</td><td class="fail-text"><strong>No</strong> — hard deadline 06:00 CET</td><td class="mono-note">Guaranteed slot; ADR-018 override</td></tr>
+              <tr class="row-flag"><td>MDR vigilance report generation</td><td class="mono-note">Supply Chain</td><td class="fail-text"><strong>No</strong> — 72h regulatory SLA</td><td class="mono-note">P0 slot; never deferred</td></tr>
+              <tr class="row-flag"><td>Audit ledger BigQuery export</td><td class="mono-note">Platform</td><td class="fail-text"><strong>No</strong> — compliance requirement</td><td class="mono-note">P0 slot; never deferred</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §09 ROADMAP -->
+    <section class="section" id="roadmap">
+      <h2 class="section-heading"><span class="section-num">§9</span> Day 2 Operational Roadmap</h2>
+      <p class="body-text">How the Autonomous Enterprise <em style="color:var(--teal)">reaches full operational maturity.</em></p>
+      <p class="body-text">Day 2 is not a destination — it is a maturity progression. The AE reaches full operational maturity across four horizons, each building on the governance foundations of the prior horizon.</p>
+
+      <div class="d2-grid-4" style="margin-bottom:1.5rem;">
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.5rem;">Horizon 1</div>
+          <div style="font-family:var(--serif);font-size:16px;color:var(--text);margin-bottom:0.6rem;">Governance Spine Live</div>
+          <p class="body-text" style="font-size:11.5px;margin-bottom:0.8rem;">Months 1–3. The prerequisite for everything.</p>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">EAB constituted</span>
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">GCP Org Policy set</span>
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">BigQuery audit ledger live</span>
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">Shared VPC provisioned</span>
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">M-08 Data Gov. live</span>
+            <span class="d2-pill pill-gold" style="justify-content:flex-start;">Pub/Sub schema registry</span>
+          </div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--blue);margin-bottom:0.5rem;">Horizon 2</div>
+          <div style="font-family:var(--serif);font-size:16px;color:var(--text);margin-bottom:0.6rem;">Domain Operations</div>
+          <p class="body-text" style="font-size:11.5px;margin-bottom:0.8rem;">Months 3–9. Each domain live with SLOs.</p>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">All 4 domains in prod</span>
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">SLO register published</span>
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">Error budget policy live</span>
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">ML Gate operational</span>
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">Runbooks tested (GameDay)</span>
+            <span class="d2-pill pill-seller" style="justify-content:flex-start;">EU AI Act registry complete</span>
+          </div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:0.5rem;">Horizon 3</div>
+          <div style="font-family:var(--serif);font-size:16px;color:var(--text);margin-bottom:0.6rem;">Cross-Domain Intelligence</div>
+          <p class="body-text" style="font-size:11.5px;margin-bottom:0.8rem;">Months 9–18. The compound value layer.</p>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">Cross-domain events live</span>
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">A2A inter-domain flows</span>
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">GreenOps enterprise-wide</span>
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">Strategy Dashboard M-07</span>
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">FinOps label compliance 100%</span>
+            <span class="d2-pill pill-buyer" style="justify-content:flex-start;">CSRD Scope 3 real-time</span>
+          </div>
+        </div>
+        <div class="d2-card">
+          <div class="doc-eyebrow" style="color:var(--purple);margin-bottom:0.5rem;">Horizon 4</div>
+          <div style="font-family:var(--serif);font-size:16px;color:var(--text);margin-bottom:0.6rem;">Self-Governing Enterprise</div>
+          <p class="body-text" style="font-size:11.5px;margin-bottom:0.8rem;">Month 18+. The target state.</p>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">Auto-remediation for P3</span>
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">ML drift auto-retraining</span>
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">TOGAF Phase H automated</span>
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">Zero-toil model promotion</span>
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">Regulatory auto-reporting</span>
+            <span class="d2-pill pill-platform" style="justify-content:flex-start;">Inter-enterprise A2A commerce</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Maturity Model -->
+      <div class="figure">
+        <div class="figure-label">Figure 8</div>
+        <div class="figure-sublabel">Architecture Maturity Model — Day 2 assessment dimensions</div>
+        <div class="figure-body" style="padding:0;overflow-x:auto;">
+          <table class="comp-table">
+            <thead><tr><th>Dimension</th><th>Level 1 — Defined</th><th>Level 2 — Measured</th><th>Level 3 — Optimised</th><th>Current Target (AE Day 2)</th></tr></thead>
+            <tbody>
+              <tr><td>HITL Coverage</td><td class="mono-note">HITL checkpoints exist per module</td><td class="mono-note">HITL queue depth, timeout rate measured</td><td class="mono-note">HITL timeout rate &lt; 2%; approver SLAs tracked</td><td>Level 3 by Horizon 2</td></tr>
+              <tr><td>SLO Achievement</td><td class="mono-note">SLOs defined per service</td><td class="mono-note">Error budgets calculated and reported</td><td class="mono-note">Error budget policy auto-enforces release gates</td><td>Level 3 by Horizon 2</td></tr>
+              <tr><td>Model Card Completeness</td><td class="mono-note">Model Cards exist for all Annex III models</td><td class="mono-note">Completeness score measured; registry up-to-date</td><td class="mono-note">Model Card auto-generated by Vertex AI Pipelines; review due date enforced</td><td>Level 2 Horizon 1; Level 3 Horizon 2</td></tr>
+              <tr><td>Toil Reduction</td><td class="mono-note">Toil catalogue documented per domain</td><td class="mono-note">Toil hours/week measured per team</td><td class="mono-note">Toil as % of SRE capacity &lt; 50% (Google SRE target)</td><td>Level 2 by Horizon 2; Level 3 Horizon 3</td></tr>
+              <tr><td>FinOps / GreenOps Efficiency</td><td class="mono-note">Cost labels applied; carbon tracked</td><td class="mono-note">Cost per inference per module tracked; carbon per domain</td><td class="mono-note">GreenOps auto-schedules all deferrable jobs; cost anomalies auto-detected</td><td>Level 3 by Horizon 3</td></tr>
+              <tr><td>Cross-Domain Intelligence</td><td class="mono-note">Domains operate independently</td><td class="mono-note">Cross-domain events defined and tested</td><td class="mono-note">Cross-domain A2A flows live; compound value events measured</td><td>Level 3 by Horizon 3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- §10 PRINCIPLES -->
+    <section class="section" id="principles">
+      <h2 class="section-heading"><span class="section-num">§10</span> Day 2 Design Principles</h2>
+      <p class="body-text">The rules the enterprise <em style="color:var(--teal)">cannot break.</em></p>
+
+      <div class="d2-grid-2">
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--amber),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.7rem;">Principle D2-01</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Governance is infrastructure, not process</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Every governance control in this document is enforced by a GCP service, a Terraform policy, or a Cloud Build gate — not by a committee decision or a policy document. If it cannot be enforced by code, it is not a governance control. It is a guideline.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--blue),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--blue);margin-bottom:0.7rem;">Principle D2-02</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Domain autonomy is bounded, not absolute</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Each process pillar has a defined autonomy envelope — the set of architectural decisions it can make without EAB approval. Breaking changes to cross-domain contracts (event schemas, shared services, IAM policies) are always above the autonomy boundary. Domain velocity is preserved within the envelope.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--teal),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--teal);margin-bottom:0.7rem;">Principle D2-03</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">The audit ledger is the enterprise's ground truth</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Every consequential event — agent action, HITL decision, model inference, cross-domain event, compliance obligation satisfaction — is written to the enterprise BigQuery audit ledger before any downstream effect executes. The audit record is not a report. It is the system of record.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--amber),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--amber);margin-bottom:0.7rem;">Principle D2-04</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Error budgets are the only deployment gate that matters</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">Release cadence is governed by error budgets, not by approval committees. A domain whose SLO error budget is healthy has earned the right to deploy. A domain whose budget is exhausted has not — regardless of feature priority or business pressure. This principle is enforced by Artifact Registry policy.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--coral),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--coral);margin-bottom:0.7rem;">Principle D2-05</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Regulatory deadlines are hard constraints on the scheduler</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">GreenOps, FinOps, and performance optimisation are desirable. MDR Art. 87 SLAs, HITL timeout policies, and daily forecast refresh deadlines are not. Hard-deadline jobs carry an immutable <code>defer: false</code> flag in the GreenOps manifest. No scheduler — carbon-optimised or otherwise — may override a hard regulatory or SLO deadline.</p>
+        </div>
+        <div class="d2-card">
+          <div class="d2-card-accent" style="background:linear-gradient(90deg,var(--purple),transparent);"></div>
+          <div class="doc-eyebrow" style="color:var(--purple);margin-bottom:0.7rem;">Principle D2-06</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:0.6rem;">Shared services are enterprise infrastructure, not domain shared code</div>
+          <p class="body-text" style="font-size:12px;margin-bottom:0;">The BigQuery audit ledger, Pub/Sub event fabric, Vertex AI Feature Store, and Data Governance module are enterprise infrastructure — owned and SRE'd by the Platform team, not by any domain. Domain teams are consumers, not co-owners. Breaking changes to shared infrastructure require an EAB Major ACR and a new ADM cycle.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>The Autonomous Enterprise · Day 2 Design · TOGAF Phase H · GCP CAF · Google SRE Model · EU AI Act Annex III</span>
+    <span>ADR-017 · ADR-018 · ADR-019 · © 2026 Siddharthan Rao</span>
+  </footer>
+
+</main>
+</div><!-- /page-wrap -->
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  links.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
